@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white">
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/white">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="125dp"
+            android:id="@+id/profile_image"
+            android:src="@drawable/johnlennon23"
+            android:layout_marginRight="15dp"
+            />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:fontFamily="sans-serif-light"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:text = "Full Name"
+                android:id="@+id/full_name"
+                android:textSize="24sp"
+                android:textIsSelectable="false"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:fontFamily="sans-serif-light"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text= "Next Election"
+                android:id="@+id/nextElection"
+                android:textSize="18sp"
+                android:layout_marginBottom="15dp"
+                android:textColor="@android:color/darker_gray"/>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:id="@+id/call_image"
+                    android:layout_weight="1"
+                    android:src="@drawable/phone"
+                    />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:id="@+id/email_image"
+                    android:src="@drawable/mail"
+                    android:layout_weight="1"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:id="@+id/twitter_image"
+                    android:layout_weight="1"
+                    android:src="@drawable/twitter"
+                    android:onClick="onClickTweet"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
