@@ -10,9 +10,9 @@
     tools:context="com.mobilonix.voices.VoicesMainActivity">
 
     <FrameLayout
+        android:id="@+id/main_content_frame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-
     </FrameLayout>
 
 </RelativeLayout>

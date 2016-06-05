@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Voices</string>
+
+    <!-- Splash Related -->
+    <string name="splash_voices_intro">Voices is your first civic tool. It\'s the smart way to make your voice heard.</string>
+
+    <!-- Location Request -->
+    <string name="location_request_text">Turn on location services to Voices can show you who represents your community. </string>
+
 </resources>

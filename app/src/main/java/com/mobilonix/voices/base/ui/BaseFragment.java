@@ -1,4 +1,6 @@
 package com.mobilonix.voices.base.ui;
 
-public class BaseFragment {
+import android.support.v4.app.Fragment;
+
+public class BaseFragment extends Fragment {
 }
