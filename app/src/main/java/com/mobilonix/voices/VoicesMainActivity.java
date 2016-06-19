@@ -3,28 +3,26 @@ package com.mobilonix.voices;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ListView;
 
 import com.badoo.mobile.util.WeakHandler;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.mobilonix.voices.base.util.GeneralUtil;
-import com.mobilonix.voices.delegates.Callback;
-import com.mobilonix.voices.util.RESTUtil;
-
-import java.util.ArrayList;
 
 public class VoicesMainActivity extends AppCompatActivity {
 
+    public String TAG = VoicesMainActivity.class.getCanonicalName();
 
     FrameLayout mainContentFrame;
 
@@ -131,11 +129,36 @@ public class VoicesMainActivity extends AppCompatActivity {
             locationEntryFrame = (FrameLayout)
                     inflater.inflate(R.layout.view_location_entry, null, false);
 
-            final ListView autoCompleteLocationList = (ListView)locationEntryFrame.findViewById(R.id.autocomplete_location_list);
-            EditText locationEntryField = (EditText)locationEntryFrame.findViewById(R.id.location_entry_field);
+            //final ListView autoCompleteLocationList = (ListView)locationEntryFrame.findViewById(R.id.autocomplete_location_list);
+            //EditText locationEntryField = (EditText)locationEntryFrame.findViewById(R.id.location_entry_field);
             Button findByLocationButton = (Button)locationEntryFrame.findViewById(R.id.find_for_current_location_button);
             Button findByEntryButton = (Button)locationEntryFrame.findViewById(R.id.find_for_current_location_button);
 
+            PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                    getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+            //filter returns only results with a precise address.
+
+            AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                    .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
+                    .build();
+            autocompleteFragment.setFilter(typeFilter);
+
+            autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+                @Override
+                public void onPlaceSelected(Place place) {
+                    // TODO: Get info about the selected place.
+                    Log.i(TAG, "Place: " + place.getName());//get place details here
+                }
+
+                @Override
+                public void onError(Status status) {
+                    // TODO: Handle the error.
+                    Log.i(TAG, "An error occurred: " + status);
+                }
+            });
+
+            /**
             locationEntryField.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -167,6 +190,7 @@ public class VoicesMainActivity extends AppCompatActivity {
 
                 }
             });
+            **/
 
             findByEntryButton.setOnClickListener(new View.OnClickListener() {
                 @Override
