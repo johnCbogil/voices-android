@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.provider.Settings;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -19,7 +20,12 @@ import android.widget.ListView;
 import com.badoo.mobile.util.WeakHandler;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.delegates.Callback;
+import com.mobilonix.voices.representatives.model.Representative;
+import com.mobilonix.voices.representatives.model.RepresentativesPage;
+import com.mobilonix.voices.representatives.ui.RepresentativesPageLayout;
+import com.mobilonix.voices.representatives.ui.RepresentativesPagerAdapter;
 import com.mobilonix.voices.util.RESTUtil;
+import com.mobilonix.voices.util.ViewUtil;
 
 import java.util.ArrayList;
 
@@ -75,10 +81,10 @@ public class VoicesMainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     toggleSplashScreen(false);
                     if(GeneralUtil.isGPSEnabled(VoicesMainActivity.this)) {
-                        GeneralUtil.toast(VoicesMainActivity.this, "Location services already enabled");
+                        GeneralUtil.toast("Location services already enabled");
                         toggleLocationEntryScreen(true);
                     } else {
-                        GeneralUtil.toast(VoicesMainActivity.this, "Location services not enabled...");
+                        GeneralUtil.toast("Location services not enabled...");
                         toggleLocationRequestScreen(true);
                     }
                 }
@@ -107,7 +113,7 @@ public class VoicesMainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if(GeneralUtil.isGPSEnabled(VoicesMainActivity.this)) {
-                        GeneralUtil.toast(VoicesMainActivity.this, "Location services already enabled");
+                        GeneralUtil.toast("Location services already enabled");
                         toggleLocationRequestScreen(false);
                         toggleLocationEntryScreen(true);
                     } else {
@@ -171,14 +177,16 @@ public class VoicesMainActivity extends AppCompatActivity {
             findByEntryButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    toggleRepresentativesScreen(true);
+                    toggleLocationEntryScreen(false);
                 }
             });
 
             findByLocationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    toggleRepresentativesScreen(true);
+                    toggleLocationEntryScreen(false);
                 }
             });
             mainContentFrame.addView(locationEntryFrame);
@@ -193,6 +201,69 @@ public class VoicesMainActivity extends AppCompatActivity {
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             representativesFrame = (FrameLayout)
                     inflater.inflate(R.layout.view_representatives, null, false);
+
+
+            final ArrayList<RepresentativesPage> pages = new ArrayList<>();
+            final ViewPager representativesPager = (ViewPager)representativesFrame.findViewById(R.id.reprsentatives_pager);
+
+            RESTUtil.makeRepresentativesRequest(new Callback<ArrayList<Representative>>() {
+                @Override
+                public boolean onExecuted(final ArrayList<Representative> data) {
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            GeneralUtil.toast("Representatives data: " + data.toString());
+                            pages.add(new RepresentativesPage(data));
+                            representativesPager.setAdapter(new RepresentativesPagerAdapter(pages));
+
+                        }
+                    });
+
+                    return false;
+                }
+            });
+
+            RESTUtil.makeRepresentativesRequest(new Callback<ArrayList<Representative>>() {
+                @Override
+                public boolean onExecuted(final ArrayList<Representative> data) {
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            GeneralUtil.toast("Representatives data: " + data.toString());
+                            pages.add(new RepresentativesPage(data));
+                            representativesPager.setAdapter(new RepresentativesPagerAdapter(pages));
+
+                        }
+                    });
+
+                    return false;
+                }
+            });
+
+            RESTUtil.makeRepresentativesRequest(new Callback<ArrayList<Representative>>() {
+                @Override
+                public boolean onExecuted(final ArrayList<Representative> data) {
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            GeneralUtil.toast("Representatives data: " + data.toString());
+                            pages.add(new RepresentativesPage(data));
+                            representativesPager.setAdapter(new RepresentativesPagerAdapter(pages));
+                        }
+                    });
+
+                    return false;
+                }
+            });
+
+
+
+
+            GeneralUtil.toast("Representatives screen toggled on");
+
             mainContentFrame.addView(representativesFrame);
         } else {
             mainContentFrame.removeView(representativesFrame);

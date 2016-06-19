@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<com.mobilonix.voices.representatives.ui.RepresentativesPageLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+    <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.9"
+            android:id="@+id/representatives_list"
+            />
+    <ImageView
+            android:id="@+id/representatives_info_icon"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_weight="0.1"
+            android:src="@android:drawable/ic_menu_info_details"/>
 
-</LinearLayout>
+</com.mobilonix.voices.representatives.ui.RepresentativesPageLayout>

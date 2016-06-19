@@ -65,7 +65,7 @@ public class RESTUtil {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.e(TAG, "Record request failed...");
-                representativesCallback.onExecuted(new ArrayList<String>());
+                representativesCallback.onExecuted(new ArrayList<Representative>());
             }
 
             @Override
@@ -73,8 +73,9 @@ public class RESTUtil {
 
                 /* Om Success return auto-complete Address results to callback */
                 String responseString = response.body().string();
-                ArrayList<String> suggestions = parseSuggestionList(responseString);
-                representativesCallback.onExecuted(suggestions);
+                ArrayList<Representative> representatives = parseRepresentativesList(responseString);
+                representativesCallback.onExecuted(representatives);
+
             }
         });
     }
@@ -126,9 +127,9 @@ public class RESTUtil {
         dummyEmailAddresses.add("pcraker69@gmail.com");
         dummyEmailAddresses.add("deathhole19991@verizon.net");
 
-        dummyImageUrls.add("bmcsneedy123123@gmail.com");
-        dummyImageUrls.add("pcraker69@gmail.com");
-        dummyImageUrls.add("deathhole19991@verizon.net");
+        dummyImageUrls.add("https://lh4.ggpht.com/wKrDLLmmxjfRG2-E-k5L5BUuHWpCOe4lWRF7oVs1Gzdn5e5yvr8fj-ORTlBF43U47yI=w300");
+        dummyImageUrls.add("https://lh4.ggpht.com/wKrDLLmmxjfRG2-E-k5L5BUuHWpCOe4lWRF7oVs1Gzdn5e5yvr8fj-ORTlBF43U47yI=w300");
+        dummyImageUrls.add("https://lh4.ggpht.com/wKrDLLmmxjfRG2-E-k5L5BUuHWpCOe4lWRF7oVs1Gzdn5e5yvr8fj-ORTlBF43U47yI=w300");
 
         dummyLocations.add("Camden, NJ");
         dummyLocations.add("Asshole, NY");
