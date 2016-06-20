@@ -134,8 +134,9 @@ public class VoicesMainActivity extends AppCompatActivity {
             Button findByLocationButton = (Button)locationEntryFrame.findViewById(R.id.find_for_current_location_button);
             Button findByEntryButton = (Button)locationEntryFrame.findViewById(R.id.find_for_current_location_button);
 
-            PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+            final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                     getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+            findViewById(R.id.place_autocomplete_fragment).setVisibility(View.GONE);
 
             //filter returns only results with a precise address.
 
@@ -202,9 +203,11 @@ public class VoicesMainActivity extends AppCompatActivity {
             findByLocationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    findViewById(R.id.place_autocomplete_fragment).setVisibility(View.VISIBLE);
                 }
+
             });
+
             mainContentFrame.addView(locationEntryFrame);
         } else {
             mainContentFrame.removeView(locationEntryFrame);
