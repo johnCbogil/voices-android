@@ -3,6 +3,7 @@ package com.mobilonix.voices.util;
 import android.util.Log;
 
 import com.mobilonix.voices.delegates.Callback;
+import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.model.Representative;
 
 import java.io.IOException;
@@ -52,13 +53,27 @@ public class RESTUtil {
 
     }
 
-    public static void makeRepresentativesRequest(final Callback<ArrayList<Representative>> representativesCallback) {
+    /**
+     * Make a request for the representatives list.  This should be obtained from the UI (via the user choice)
+     *
+     * TODO: This is just a dummy method for now. The logic here needs to be replaced with the actual parsing logic
+     *
+     * @param repLat
+     * @param repLong
+     * @param type (The type of representatives.  This will inform what URL and params are used to make the request)
+     * @param representativesCallback
+     */
+    public static void makeRepresentativesRequest(double repLat,
+                                                  double repLong,
+                                                  RepresentativesManager.RepresentativesType type,
+                                                  final Callback<ArrayList<Representative>> representativesCallback) {
+
         final OkHttpClient client = new OkHttpClient.Builder()
                 .readTimeout(REQUEST_READ_TIMEOUT, TimeUnit.SECONDS)
                 .build();
 
         final Request recordRequest = new Request.Builder()
-                .url(AUTO_COMPLETE_URL).build();
+                .url(type.getUrl()).build();
 
         /* Make call to auto-complete api */
         client.newCall(recordRequest).enqueue(new okhttp3.Callback() {
@@ -127,9 +142,10 @@ public class RESTUtil {
         dummyEmailAddresses.add("pcraker69@gmail.com");
         dummyEmailAddresses.add("deathhole19991@verizon.net");
 
-        dummyImageUrls.add("https://lh4.ggpht.com/wKrDLLmmxjfRG2-E-k5L5BUuHWpCOe4lWRF7oVs1Gzdn5e5yvr8fj-ORTlBF43U47yI=w300");
-        dummyImageUrls.add("https://lh4.ggpht.com/wKrDLLmmxjfRG2-E-k5L5BUuHWpCOe4lWRF7oVs1Gzdn5e5yvr8fj-ORTlBF43U47yI=w300");
-        dummyImageUrls.add("https://lh4.ggpht.com/wKrDLLmmxjfRG2-E-k5L5BUuHWpCOe4lWRF7oVs1Gzdn5e5yvr8fj-ORTlBF43U47yI=w300");
+        dummyImageUrls.add("http://blog.gkphotography.com/uploads/5/7/5/6/57567107/5357176_orig.jpg");
+        dummyImageUrls.add("http://dvo53oxmpmca8.cloudfront.net/wp-content/uploads/2016/02/Kingston-Headshot-Square.jpg");
+        dummyImageUrls.add("https://jenandajay.files.wordpress.com/2008/09/bill_clinton.jpg");
+        dummyImageUrls.add("http://a4.res.cloudinary.com/talent/image/fetch/t_face_s270/http://speakerdata.s3.amazonaws.com/photo/image/801782/Cheney.jpg");
 
         dummyLocations.add("Camden, NJ");
         dummyLocations.add("Asshole, NY");
@@ -138,7 +154,7 @@ public class RESTUtil {
 
         ArrayList<Representative> representatives = new ArrayList<>();
 
-        int number = (int)(Math.random()*10);
+        int number = (int)(Math.random()*7) + 3;
 
 
         for(int i = 0; i < number; i++) {
@@ -165,14 +181,6 @@ public class RESTUtil {
 
         return representatives;
     }
-
-//    String title,
-//    String name,
-//    String location,
-//    String phoneNumber,
-//    String twitterHandle,
-//    String emailAddress,
-//    String representativeImageUrl
 
     /**
      * Random integer

@@ -17,6 +17,7 @@ import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.delegates.Callback;
+import com.mobilonix.voices.location.model.LatLong;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.util.RESTUtil;
 
@@ -83,7 +84,7 @@ public enum LocationRequestManager {
                     inflater.inflate(R.layout.view_location_entry, null, false);
 
             final ListView autoCompleteLocationList = (ListView)locationEntryFrame.findViewById(R.id.autocomplete_location_list);
-            EditText locationEntryField = (EditText)locationEntryFrame.findViewById(R.id.location_entry_field);
+            final EditText locationEntryField = (EditText)locationEntryFrame.findViewById(R.id.location_entry_field);
             Button findByLocationButton = (Button)locationEntryFrame.findViewById(R.id.find_for_current_location_button);
             Button findByEntryButton = (Button)locationEntryFrame.findViewById(R.id.find_for_current_location_button);
 
@@ -123,7 +124,7 @@ public enum LocationRequestManager {
                 @Override
                 public void onClick(View v) {
                     RepresentativesManager.INSTANCE
-                            .toggleRepresentativesScreen(activity, true);
+                            .toggleRepresentativesScreen(getLatLongFromLocation(locationEntryField.getText().toString()), activity, true);
                     toggleLocationEntryScreen(activity, false);
                 }
             });
@@ -132,7 +133,7 @@ public enum LocationRequestManager {
                 @Override
                 public void onClick(View v) {
                     RepresentativesManager.INSTANCE
-                            .toggleRepresentativesScreen(activity, true);
+                            .toggleRepresentativesScreen(getLatLongFromLocation(locationEntryField.getText().toString()), activity, true);
                     toggleLocationEntryScreen(activity, false);
                 }
             });
@@ -145,4 +146,16 @@ public enum LocationRequestManager {
     public boolean isLocationRequestScreenOn() {
         return locationRequestScreenOn;
     }
+
+    /**
+     * This method takes in a location and returns a lat long.  The location can come from some form
+     * of user Input
+     *
+     * @param location
+     * @return
+     */
+    public LatLong getLatLongFromLocation(String location) {
+        return new LatLong(0, 0);
+    }
+
 }
