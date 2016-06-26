@@ -8,4 +8,5 @@ public class RepresentativesPageLayout extends LinearLayout {
     public RepresentativesPageLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
+
 }
