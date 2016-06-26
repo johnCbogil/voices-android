@@ -39,7 +39,7 @@ public enum RepresentativesManager {
                     activity.getHandler().post(new Runnable() {
                         @Override
                         public void run() {
-                            GeneralUtil.toast("Representatives data: " + data.toString());
+                            //GeneralUtil.toast("Representatives data: " + data.toString());
                             pages.add(new RepresentativesPage(data));
                             representativesPager.setAdapter(new RepresentativesPagerAdapter(pages));
 
@@ -57,7 +57,7 @@ public enum RepresentativesManager {
                     activity.getHandler().post(new Runnable() {
                         @Override
                         public void run() {
-                            GeneralUtil.toast("Representatives data: " + data.toString());
+                            //GeneralUtil.toast("Representatives data: " + data.toString());
                             pages.add(new RepresentativesPage(data));
                             representativesPager.setAdapter(new RepresentativesPagerAdapter(pages));
 
@@ -75,7 +75,7 @@ public enum RepresentativesManager {
                     activity.getHandler().post(new Runnable() {
                         @Override
                         public void run() {
-                            GeneralUtil.toast("Representatives data: " + data.toString());
+                            //GeneralUtil.toast("Representatives data: " + data.toString());
                             pages.add(new RepresentativesPage(data));
                             representativesPager.setAdapter(new RepresentativesPagerAdapter(pages));
                         }
@@ -84,11 +84,6 @@ public enum RepresentativesManager {
                     return false;
                 }
             });
-
-
-
-
-            GeneralUtil.toast("Representatives screen toggled on");
 
             activity.getMainContentFrame().addView(representativesFrame);
         } else {
