@@ -12,18 +12,19 @@
         android:id="@+id/representatives_page_search_field"
         android:drawableLeft="@android:drawable/ic_menu_search"/>
     <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_weight="0.9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.9"
+
             android:id="@+id/representatives_list"/>
     </android.support.v4.widget.SwipeRefreshLayout>
     <ImageView
             android:id="@+id/representatives_info_icon"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_weight="0.1"
             android:src="@android:drawable/ic_menu_info_details"/>
 
