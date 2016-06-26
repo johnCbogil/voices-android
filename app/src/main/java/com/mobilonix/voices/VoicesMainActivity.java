@@ -20,6 +20,7 @@ import android.widget.ListView;
 import com.badoo.mobile.util.WeakHandler;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.delegates.Callback;
+import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.representatives.model.RepresentativesPage;
 import com.mobilonix.voices.representatives.ui.RepresentativesPageLayout;
@@ -37,9 +38,7 @@ public class VoicesMainActivity extends AppCompatActivity {
     /* Views Different Actions */
     FrameLayout splashContentFrame;
     FrameLayout locationRequestFrame;
-    FrameLayout representativesFrame;
     FrameLayout locationEntryFrame;
-
 
     Button splashGettingStartedButton;
     Button locationRequestButton;
@@ -156,7 +155,7 @@ public class VoicesMainActivity extends AppCompatActivity {
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if(autoCompleteLocationList != null) {
+                                    if (autoCompleteLocationList != null) {
                                         autoCompleteLocationList
                                                 .setAdapter(new ArrayAdapter(VoicesMainActivity.this,
                                                         android.R.layout.simple_list_item_1, data));
@@ -177,7 +176,8 @@ public class VoicesMainActivity extends AppCompatActivity {
             findByEntryButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    toggleRepresentativesScreen(true);
+                    RepresentativesManager.INSTANCE
+                            .toggleRepresentativesScreen(VoicesMainActivity.this, true);
                     toggleLocationEntryScreen(false);
                 }
             });
@@ -185,7 +185,8 @@ public class VoicesMainActivity extends AppCompatActivity {
             findByLocationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    toggleRepresentativesScreen(true);
+                    RepresentativesManager.INSTANCE
+                            .toggleRepresentativesScreen(VoicesMainActivity.this, true);
                     toggleLocationEntryScreen(false);
                 }
             });
@@ -195,79 +196,17 @@ public class VoicesMainActivity extends AppCompatActivity {
         }
     }
 
+    public FrameLayout getMainContentFrame() {
+        return mainContentFrame;
+    }
 
-    public void toggleRepresentativesScreen(boolean state) {
-        if(state) {
-            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            representativesFrame = (FrameLayout)
-                    inflater.inflate(R.layout.view_representatives, null, false);
+    public WeakHandler getHandler() {
 
-
-            final ArrayList<RepresentativesPage> pages = new ArrayList<>();
-            final ViewPager representativesPager = (ViewPager)representativesFrame.findViewById(R.id.reprsentatives_pager);
-
-            RESTUtil.makeRepresentativesRequest(new Callback<ArrayList<Representative>>() {
-                @Override
-                public boolean onExecuted(final ArrayList<Representative> data) {
-
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            GeneralUtil.toast("Representatives data: " + data.toString());
-                            pages.add(new RepresentativesPage(data));
-                            representativesPager.setAdapter(new RepresentativesPagerAdapter(pages));
-
-                        }
-                    });
-
-                    return false;
-                }
-            });
-
-            RESTUtil.makeRepresentativesRequest(new Callback<ArrayList<Representative>>() {
-                @Override
-                public boolean onExecuted(final ArrayList<Representative> data) {
-
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            GeneralUtil.toast("Representatives data: " + data.toString());
-                            pages.add(new RepresentativesPage(data));
-                            representativesPager.setAdapter(new RepresentativesPagerAdapter(pages));
-
-                        }
-                    });
-
-                    return false;
-                }
-            });
-
-            RESTUtil.makeRepresentativesRequest(new Callback<ArrayList<Representative>>() {
-                @Override
-                public boolean onExecuted(final ArrayList<Representative> data) {
-
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            GeneralUtil.toast("Representatives data: " + data.toString());
-                            pages.add(new RepresentativesPage(data));
-                            representativesPager.setAdapter(new RepresentativesPagerAdapter(pages));
-                        }
-                    });
-
-                    return false;
-                }
-            });
-
-
-
-
-            GeneralUtil.toast("Representatives screen toggled on");
-
-            mainContentFrame.addView(representativesFrame);
-        } else {
-            mainContentFrame.removeView(representativesFrame);
+        if (handler == null) {
+            handler = new WeakHandler();
         }
+
+        return handler;
     }
 
     @Override
