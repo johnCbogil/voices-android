@@ -20,6 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".RssService" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_places_api_key"/>

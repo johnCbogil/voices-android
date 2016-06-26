@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -224,6 +226,14 @@ public class VoicesMainActivity extends AppCompatActivity {
         } else {
             mainContentFrame.removeView(representativesFrame);
         }
+    }
+
+    private void addRssFragment() {
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        RssFragment fragment = new RssFragment();
+        transaction.add(R.id.fragment_container, fragment);
+        transaction.commit();
     }
 
     @Override
