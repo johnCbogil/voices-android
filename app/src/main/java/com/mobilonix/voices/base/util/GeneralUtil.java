@@ -4,6 +4,9 @@ import android.content.Context;
 import android.location.LocationManager;
 import android.widget.Toast;
 
+import com.mobilonix.voices.VoicesApplication;
+import com.mobilonix.voices.VoicesMainActivity;
+
 public class GeneralUtil {
 
     /**
@@ -39,7 +42,7 @@ public class GeneralUtil {
         return networkEnabled;
     }
 
-    public static void toast(Context context, String message) {
-        Toast.makeText(context,message, Toast.LENGTH_SHORT).show();
+    public static void toast(String message) {
+        Toast.makeText(VoicesApplication.getContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

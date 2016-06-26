@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.provider.Settings;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -19,7 +20,13 @@ import android.widget.ListView;
 import com.badoo.mobile.util.WeakHandler;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.delegates.Callback;
+import com.mobilonix.voices.representatives.RepresentativesManager;
+import com.mobilonix.voices.representatives.model.Representative;
+import com.mobilonix.voices.representatives.model.RepresentativesPage;
+import com.mobilonix.voices.representatives.ui.RepresentativesPageLayout;
+import com.mobilonix.voices.representatives.ui.RepresentativesPagerAdapter;
 import com.mobilonix.voices.util.RESTUtil;
+import com.mobilonix.voices.util.ViewUtil;
 
 import java.util.ArrayList;
 
@@ -31,9 +38,7 @@ public class VoicesMainActivity extends AppCompatActivity {
     /* Views Different Actions */
     FrameLayout splashContentFrame;
     FrameLayout locationRequestFrame;
-    FrameLayout representativesFrame;
     FrameLayout locationEntryFrame;
-
 
     Button splashGettingStartedButton;
     Button locationRequestButton;
@@ -75,10 +80,10 @@ public class VoicesMainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     toggleSplashScreen(false);
                     if(GeneralUtil.isGPSEnabled(VoicesMainActivity.this)) {
-                        GeneralUtil.toast(VoicesMainActivity.this, "Location services already enabled");
+                        GeneralUtil.toast("Location services already enabled");
                         toggleLocationEntryScreen(true);
                     } else {
-                        GeneralUtil.toast(VoicesMainActivity.this, "Location services not enabled...");
+                        GeneralUtil.toast("Location services not enabled...");
                         toggleLocationRequestScreen(true);
                     }
                 }
@@ -107,7 +112,7 @@ public class VoicesMainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if(GeneralUtil.isGPSEnabled(VoicesMainActivity.this)) {
-                        GeneralUtil.toast(VoicesMainActivity.this, "Location services already enabled");
+                        GeneralUtil.toast("Location services already enabled");
                         toggleLocationRequestScreen(false);
                         toggleLocationEntryScreen(true);
                     } else {
@@ -150,7 +155,7 @@ public class VoicesMainActivity extends AppCompatActivity {
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if(autoCompleteLocationList != null) {
+                                    if (autoCompleteLocationList != null) {
                                         autoCompleteLocationList
                                                 .setAdapter(new ArrayAdapter(VoicesMainActivity.this,
                                                         android.R.layout.simple_list_item_1, data));
@@ -171,14 +176,18 @@ public class VoicesMainActivity extends AppCompatActivity {
             findByEntryButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    RepresentativesManager.INSTANCE
+                            .toggleRepresentativesScreen(VoicesMainActivity.this, true);
+                    toggleLocationEntryScreen(false);
                 }
             });
 
             findByLocationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    RepresentativesManager.INSTANCE
+                            .toggleRepresentativesScreen(VoicesMainActivity.this, true);
+                    toggleLocationEntryScreen(false);
                 }
             });
             mainContentFrame.addView(locationEntryFrame);
@@ -187,16 +196,17 @@ public class VoicesMainActivity extends AppCompatActivity {
         }
     }
 
+    public FrameLayout getMainContentFrame() {
+        return mainContentFrame;
+    }
 
-    public void toggleRepresentativesScreen(boolean state) {
-        if(state) {
-            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            representativesFrame = (FrameLayout)
-                    inflater.inflate(R.layout.view_representatives, null, false);
-            mainContentFrame.addView(representativesFrame);
-        } else {
-            mainContentFrame.removeView(representativesFrame);
+    public WeakHandler getHandler() {
+
+        if (handler == null) {
+            handler = new WeakHandler();
         }
+
+        return handler;
     }
 
     @Override
