@@ -13,12 +13,22 @@
         android:name=".VoicesApplication"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".VoicesMainActivity">
+        <activity android:name=".data.TestActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <activity android:name=".">
+                <intent-filter>
+
+                    <action android:name="com.mobilonix.voices.VoicesMainActivity" />
+
+                    <category android:name="android.intent.category.DEFAULT" />
+
+                </intent-filter>
+            </activity>
+
         </activity>
     </application>
 
