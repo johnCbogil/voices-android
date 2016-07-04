@@ -3,8 +3,6 @@ package com.mobilonix.voices.data.api;
 import com.mobilonix.voices.data.api.util.HttpRequestor;
 import com.mobilonix.voices.data.model.Politico;
 
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.List;
 

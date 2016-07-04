@@ -1,7 +1,9 @@
 package com.mobilonix.voices.data.api.engines;//package com.tryvoices.apis.api.engines;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 
+import com.mobilonix.voices.R;
 import com.mobilonix.voices.data.api.ApiEngine;
 import com.mobilonix.voices.data.api.util.HttpRequestor;
 import com.mobilonix.voices.data.api.util.UrlConnectionRequestor;
@@ -25,7 +27,6 @@ public class OpenStatesApi implements ApiEngine {
     public static final String LATITUDE_KEY = "lat";
     public static final String LONGITUDE_KEY = "long";
     public static final String API_KEY = "apikey";
-    public static final String API_KEY_KEY = ""; //TODO REMOVE
 
     String mLatitude;
     String mLongitude;
@@ -35,7 +36,9 @@ public class OpenStatesApi implements ApiEngine {
 
     Bundle mUrlBundle;
 
-    public OpenStatesApi() {
+    public OpenStatesApi(String apiKey) {
+
+        mApiKey = apiKey;
         mUrlBundle = new Bundle();
     }
 
@@ -46,9 +49,7 @@ public class OpenStatesApi implements ApiEngine {
         mLatitude = Double.toString(latitude);
         mLongitude = Double.toString(longitude);
 
-        // ---------------------------- Specific to Congress Api ----------------------------------
-
-        mApiKey = API_KEY_KEY;
+        // ---------------------------- Specific to OpenStates Api --------------------------------
 
         mUrlBundle.putString(LATITUDE_KEY, mLatitude);
         mUrlBundle.putString(LONGITUDE_KEY, mLongitude);

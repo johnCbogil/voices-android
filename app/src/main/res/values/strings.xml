@@ -7,4 +7,7 @@
     <!-- Location Request -->
     <string name="location_request_text">Turn on location services to Voices can show you who represents your community. </string>
 
+    <string name="sunlight_api_key">key is empty</string>
+    <string name="open_states_api_key">key is empty</string>
+
 </resources>

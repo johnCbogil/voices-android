@@ -1,7 +1,9 @@
 package com.mobilonix.voices.data.api.engines;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 
+import com.mobilonix.voices.R;
 import com.mobilonix.voices.data.api.ApiEngine;
 import com.mobilonix.voices.data.api.util.HttpRequestor;
 import com.mobilonix.voices.data.api.util.UrlGenerator;
@@ -20,7 +22,6 @@ public class CongressSunlightApi implements ApiEngine {
     public static final String LATITUDE_KEY = "latitude";
     public static final String LONGITUDE_KEY = "longitude";
     public static final String API_KEY = "apikey";
-    public static final String API_KEY_KEY = ""; //TODO remove
 
     public static final String IMAGE_BASE_URL = "https://theunitedstates.io/images/congress/225x275/";
     public static final String IMAGE_FILE_EXTENSION = ".jpg";
@@ -29,24 +30,26 @@ public class CongressSunlightApi implements ApiEngine {
     String mLongitude;
     String mApiKey;
 
+
     HttpRequestor mRequestor;
 
     Bundle mUrlBundle;
 
-    public CongressSunlightApi() {
+    public CongressSunlightApi(String apiKey) {
+
+        mApiKey = apiKey;
         mUrlBundle = new Bundle();
     }
 
     @Override
     public void initialize(double latitude, double longitude, HttpRequestor requestor) {
 
+
         mRequestor = requestor;
         mLatitude = Double.toString(latitude);
         mLongitude = Double.toString(longitude);
 
         // ---------------------------- Specific to Sunlight Api ----------------------------------
-
-        mApiKey = API_KEY_KEY;
 
         mUrlBundle.putString(LATITUDE_KEY, mLatitude);
         mUrlBundle.putString(LONGITUDE_KEY, mLongitude);
