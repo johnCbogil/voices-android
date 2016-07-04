@@ -18,7 +18,7 @@ public class AsyncRetrieverTask extends AsyncTask<ApiEngine, Void, Void> impleme
 
     @Override
     public void loadApiEngines(ApiEngine... engines) {
-
+        mEngines = engines;
     }
 
     @Override
@@ -54,15 +54,15 @@ public class AsyncRetrieverTask extends AsyncTask<ApiEngine, Void, Void> impleme
     protected Void doInBackground(ApiEngine... engines) {
 
         for (ApiEngine engine : engines) {
-            retrievePoliticos(engine);
+            retrievePoliticoData(engine);
         }
         return null;
     }
 
-
     void retrievePoliticoData(ApiEngine engine) {
 
         for (Politico p : retrievePoliticos(engine)) {
+//            Log.i ("async", retrievePoliticos(engine).toString());
             mPoliticos.add(p);
         }
     }
@@ -70,9 +70,7 @@ public class AsyncRetrieverTask extends AsyncTask<ApiEngine, Void, Void> impleme
 
     private List<Politico> retrievePoliticos(ApiEngine engine) {
         try {
-
             return engine.retrieveData();
-
         } catch (IOException e) {
             e.printStackTrace();
         }

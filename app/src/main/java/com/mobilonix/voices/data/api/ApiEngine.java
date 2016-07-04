@@ -12,7 +12,7 @@ import java.util.List;
  * Created by cakiadeg on 6/28/16.
  */
 
-//TODO this may be better as an abstract class
+//TODO this may be better as an abstract class due to all of the standard private methods
 public interface ApiEngine {
 
     void initialize(double latitude, double longitude, HttpRequestor requestor);

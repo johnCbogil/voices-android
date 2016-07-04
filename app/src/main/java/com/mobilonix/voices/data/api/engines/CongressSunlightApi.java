@@ -1,12 +1,9 @@
 package com.mobilonix.voices.data.api.engines;
 
 import android.os.Bundle;
-import android.util.Log;
-
 
 import com.mobilonix.voices.data.api.ApiEngine;
 import com.mobilonix.voices.data.api.util.HttpRequestor;
-import com.mobilonix.voices.data.api.util.UrlConnectionRequestor;
 import com.mobilonix.voices.data.api.util.UrlGenerator;
 import com.mobilonix.voices.data.model.Politico;
 
@@ -43,7 +40,7 @@ public class CongressSunlightApi implements ApiEngine {
     @Override
     public void initialize(double latitude, double longitude, HttpRequestor requestor) {
 
-        mRequestor = new UrlConnectionRequestor();
+        mRequestor = requestor;
         mLatitude = Double.toString(latitude);
         mLongitude = Double.toString(longitude);
 
@@ -60,13 +57,14 @@ public class CongressSunlightApi implements ApiEngine {
     public ArrayList<Politico> retrieveData() throws IOException {
 
         ArrayList<Politico> politicos;
-
-        politicos = httpResponseToPoliticos(retrievePoliticos());
+        politicos = httpResponseToPoliticos(retrieveRawResponse());
 
         return politicos;
     }
 
     private ArrayList<Politico> httpResponseToPoliticos(String response){
+
+        ArrayList<Politico> politicos = new ArrayList<>();
 
         try {
             JSONObject rawJson = new JSONObject(response);
@@ -92,11 +90,22 @@ public class CongressSunlightApi implements ApiEngine {
                         .setTwitterHandle(twitter)
                         .build(firstName, lastName);
 
-                Log.i("sunlight", politico.toString());
+                politicos.add(politico);
 
             }
         } catch (JSONException e) {
             e.printStackTrace(); //TODO handle exception
+        }
+
+        return politicos;
+    }
+
+
+    private String retrieveRawResponse() {
+        try {
+            return sunlightRetrieveData();
+        } catch (IOException e) {
+            e.printStackTrace();    //TODO handle exception
         }
 
         return null;
@@ -106,21 +115,8 @@ public class CongressSunlightApi implements ApiEngine {
 
         UrlGenerator generator = new UrlGenerator(BASE_URL, mUrlBundle);
 
-        Log.i("sunlight", "request made");
         String response = mRequestor.makeGetRequest(generator.generateGetUrlString());
 
-        Log.i("sunlight", response);
-
         return response;
-    }
-
-    private String retrievePoliticos() {
-        try {
-            return sunlightRetrieveData();
-        } catch (IOException e) {
-            e.printStackTrace();    //TODO handle exception
-        }
-
-        return null;
     }
 }
