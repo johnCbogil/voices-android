@@ -24,7 +24,7 @@ public class DataRetriever {
     ApiEngine[] mApiEngines;
     HttpRequestor mRequestor;
 
-    DataRetriever(double lat, double lon, ApiEngine... apiEngines) {
+    public DataRetriever(double lat, double lon, ApiEngine... apiEngines) {
 
         mRequestor = new UrlConnectionRequestor();
 

@@ -80,7 +80,7 @@ public class CongressSunlightApi implements ApiEngine {
                 JSONObject jsonPolitico = (JSONObject) p.get(i);
 
                 String firstName = jsonPolitico.getString("first_name");
-                String lastName = jsonPolitico.getString("first_name");
+                String lastName = jsonPolitico.getString("last_name");
                 String phoneNumber = jsonPolitico.getString("phone");
                 String twitter = jsonPolitico.getString("twitter_id");
                 String bioguide_id = jsonPolitico.getString("bioguide_id");

@@ -40,7 +40,7 @@ public class Politico {
 
     @Override
     public String toString() {
-        return "Full Name: " + getFullName() +
+        return  "\nFull Name: " + mFullName +
                 "\nPhone Number: " + mPhoneNumber +
                 "\nEmail Addy: " + mEmailAddy +
                 "\nTwitter Handle: " + mTwitterHandle +
