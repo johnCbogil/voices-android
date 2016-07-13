@@ -45,14 +45,14 @@ public class DataRetriever {
 
     public void retrieveData() {
 
-        retrieverTask.setOnRetrievalCompletedListener(new RetrievalCompletedListener() {
-            @Override
-            public void onRetrievalComplete(ArrayList<Politico> responses) {
-                Log.i(TAG, responses.toString());
-            }
-        });
-
         retrieverTask.loadApiEngines(mApiEngines);
         retrieverTask.startRetrieval();
     }
+
+    public void setOnRetrievalCompletedListener(RetrievalCompletedListener listener) {
+
+        retrieverTask.setOnRetrievalCompletedListener(listener);
+
+    }
+
 }

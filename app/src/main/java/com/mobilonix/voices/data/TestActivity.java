@@ -12,7 +12,11 @@ import android.widget.TextView;
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.data.api.engines.CongressSunlightApi;
 import com.mobilonix.voices.data.api.engines.OpenStatesApi;
+import com.mobilonix.voices.data.api.tasks.RetrievalCompletedListener;
 import com.mobilonix.voices.data.api.util.GpsLocationManager;
+import com.mobilonix.voices.data.model.Politico;
+
+import java.util.ArrayList;
 
 
 public class TestActivity extends AppCompatActivity {
@@ -65,8 +69,18 @@ public class TestActivity extends AppCompatActivity {
             CongressSunlightApi sunlightApi = new CongressSunlightApi(getString(R.string.sunlight_api_key));
             OpenStatesApi api = new OpenStatesApi(getString(R.string.open_states_api_key));
 
+
             mRetriever = new DataRetriever(lat, lon, sunlightApi, api);
+
+            mRetriever.setOnRetrievalCompletedListener(new RetrievalCompletedListener() {
+                @Override
+                public void onRetrievalComplete(ArrayList<Politico> responses) {
+                    Log.i(TAG, responses.toString());
+                }
+            });
+
             mRetriever.retrieveData();
+
         } else {
 
             TextView v = (TextView) findViewById(R.id.test_textview);

@@ -70,8 +70,6 @@ public class OpenStatesApi implements ApiEngine {
 
                 JSONObject jsonPolitico = rawJsonArray.getJSONObject(i);
 
-                Log.i("OSAPI",jsonPolitico.toString());
-                Log.i("OSAPI",jsonPolitico.toString().substring(4000));
                 String fullName = jsonPolitico.getString("full_name");
                 String email = jsonPolitico.getString("email");
                 String phoneNumber = jsonPolitico.getJSONArray("offices").getJSONObject(0).getString("phone");
