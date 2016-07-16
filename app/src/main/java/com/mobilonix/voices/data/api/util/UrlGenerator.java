@@ -1,6 +1,7 @@
 package com.mobilonix.voices.data.api.util;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -55,7 +56,7 @@ public class UrlGenerator {
                 fullUrlAsString += name + EQUALS + mNameValuePairs.getString(name) + AMPERSAND;
             }
         }
-
+        Log.i("URL",fullUrlAsString);
         return fullUrlAsString;
     }
 }

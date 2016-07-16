@@ -30,7 +30,6 @@ public class CongressSunlightApi implements ApiEngine {
     String mLongitude;
     String mApiKey;
 
-
     HttpRequestor mRequestor;
 
     Bundle mUrlBundle;
@@ -43,7 +42,6 @@ public class CongressSunlightApi implements ApiEngine {
 
     @Override
     public void initialize(double latitude, double longitude, HttpRequestor requestor) {
-
 
         mRequestor = requestor;
         mLatitude = Double.toString(latitude);

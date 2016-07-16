@@ -35,7 +35,6 @@ public class TestActivity extends AppCompatActivity {
 
         Log.i(TAG, "HELLO before permission check");
 
-
         if(doesHavePermissions()) {
 
             Log.i(TAG, "HAS PERMISSIONS");
@@ -69,7 +68,6 @@ public class TestActivity extends AppCompatActivity {
             CongressSunlightApi sunlightApi = new CongressSunlightApi(getString(R.string.sunlight_api_key));
             OpenStatesApi api = new OpenStatesApi(getString(R.string.open_states_api_key));
 
-
             mRetriever = new DataRetriever(lat, lon, sunlightApi, api);
 
             mRetriever.setOnRetrievalCompletedListener(new RetrievalCompletedListener() {
@@ -84,9 +82,7 @@ public class TestActivity extends AppCompatActivity {
         } else {
 
             TextView v = (TextView) findViewById(R.id.test_textview);
-
             v.setText("Insufficient permissions to run app, see logcat");
-
         }
     }
 

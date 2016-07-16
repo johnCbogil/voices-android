@@ -67,7 +67,6 @@ public class AsyncRetrieverTask extends AsyncTask<ApiEngine, Void, Void> impleme
         }
     }
 
-
     private List<Politico> retrievePoliticos(ApiEngine engine) {
         try {
             return engine.retrieveData();
