@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.VoicesMainActivity;
 
+//What a horrible name for a class
 public class GeneralUtil {
 
     /**
