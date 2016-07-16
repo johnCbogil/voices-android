@@ -2,6 +2,7 @@ package com.mobilonix.voices.util;
 
 import android.util.Log;
 
+import com.mobilonix.voices.data.model.Politico;
 import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.model.Representative;
@@ -65,7 +66,7 @@ public class RESTUtil {
      */
     public static void makeRepresentativesRequest(double repLat,
                                                   double repLong,
-                                                  RepresentativesManager.RepresentativesType type,
+                                                  final RepresentativesManager.RepresentativesType type,
                                                   final Callback<ArrayList<Representative>> representativesCallback) {
 
         final OkHttpClient client = new OkHttpClient.Builder()
@@ -73,10 +74,11 @@ public class RESTUtil {
                 .build();
 
         final Request recordRequest = new Request.Builder()
-                .url(type.getUrl()).build();
+                .url(type.getUrl(repLat, repLong)).build();
 
         /* Make call to auto-complete api */
         client.newCall(recordRequest).enqueue(new okhttp3.Callback() {
+
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.e(TAG, "Record request failed...");
@@ -88,9 +90,8 @@ public class RESTUtil {
 
                 /* Om Success return auto-complete Address results to callback */
                 String responseString = response.body().string();
-                ArrayList<Representative> representatives = parseRepresentativesList(responseString);
+                ArrayList<Representative> representatives = parseRepresentativesList(responseString, type);
                 representativesCallback.onExecuted(representatives);
-
             }
         });
     }
@@ -112,71 +113,22 @@ public class RESTUtil {
 
     /* TODO: Replace this method's logic here with ACTUAL AUTOCOPLETE LOGIC.  A real address autocomplete list
     *  TODO: needs to be returned instead of this dummy random list*/
-    private static ArrayList<Representative> parseRepresentativesList(String response) {
-
-        ArrayList<String> dummyPhoneNumbers = new ArrayList<>();
-        ArrayList<String> dummyNames = new ArrayList<>();
-        ArrayList<String> dummyTitles = new ArrayList<>();
-        ArrayList<String> dummyTwitterHandles = new ArrayList<>();
-        ArrayList<String> dummyEmailAddresses = new ArrayList<>();
-        ArrayList<String> dummyImageUrls = new ArrayList<>();
-        ArrayList<String> dummyLocations = new ArrayList<>();
-
-        dummyPhoneNumbers.add("2012220418");
-        dummyPhoneNumbers.add("2012599877");
-        dummyPhoneNumbers.add("2012599877");
-
-        dummyTitles.add("2012220418");
-        dummyTitles.add("2012599877");
-        dummyTitles.add("2012599877");
-
-        dummyNames.add("Buster McSneedy");
-        dummyNames.add("Phil Mckraken");
-        dummyNames.add("Jason Bourne");
-
-        dummyTwitterHandles.add("Buster McSneedy");
-        dummyTwitterHandles.add("Phil Mckraken");
-        dummyTwitterHandles.add("Jason Bourne");
-
-        dummyEmailAddresses.add("bmcsneedy123123@gmail.com");
-        dummyEmailAddresses.add("pcraker69@gmail.com");
-        dummyEmailAddresses.add("deathhole19991@verizon.net");
-
-        dummyImageUrls.add("http://blog.gkphotography.com/uploads/5/7/5/6/57567107/5357176_orig.jpg");
-        dummyImageUrls.add("http://dvo53oxmpmca8.cloudfront.net/wp-content/uploads/2016/02/Kingston-Headshot-Square.jpg");
-        dummyImageUrls.add("https://jenandajay.files.wordpress.com/2008/09/bill_clinton.jpg");
-        dummyImageUrls.add("http://a4.res.cloudinary.com/talent/image/fetch/t_face_s270/http://speakerdata.s3.amazonaws.com/photo/image/801782/Cheney.jpg");
-
-        dummyLocations.add("Camden, NJ");
-        dummyLocations.add("Asshole, NY");
-        dummyLocations.add("XYZ, MX");
-
+    private static ArrayList<Representative> parseRepresentativesList(String response, RepresentativesManager.RepresentativesType type) {
 
         ArrayList<Representative> representatives = new ArrayList<>();
+        ArrayList<Politico> politicos = type.parseJsonResponse(response);
 
-        int number = (int)(Math.random()*7) + 3;
-
-
-        for(int i = 0; i < number; i++) {
-
-            String name = dummyNames.get(getRandomInt(0, dummyNames.size()));
-            String title = dummyTitles.get(getRandomInt(0, dummyTitles.size()));
-            String phoneNumber = dummyPhoneNumbers.get(getRandomInt(0, dummyPhoneNumbers.size()));
-            String twitterHandle = dummyTwitterHandles.get(getRandomInt(0, dummyTwitterHandles.size()));
-            String emailAddress = dummyEmailAddresses.get(getRandomInt(0, dummyEmailAddresses.size()));
-            String imageUrl = dummyImageUrls.get(getRandomInt(0, dummyImageUrls.size()));
-            String location = dummyLocations.get(getRandomInt(0, dummyLocations.size()));
+        for(Politico poli : politicos) {
 
             representatives.add(
                     new Representative(
-                            title,
-                            name,
-                            location,
-                            phoneNumber,
-                            twitterHandle,
-                            emailAddress,
-                            imageUrl));
-
+                            "TITLE",
+                            poli.getFullName(),
+                            poli.getDistrict(),
+                            poli.getPhoneNumber(),
+                            poli.getTwitterHandle(),
+                            poli.getEmailAddy(),
+                            poli.getPicUrl()));
         }
 
         return representatives;

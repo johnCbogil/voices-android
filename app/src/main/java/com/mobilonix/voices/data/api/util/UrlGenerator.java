@@ -19,7 +19,6 @@ public class UrlGenerator {
     Bundle mNameValuePairs;
 
     public UrlGenerator(String baseURL, Bundle nameValuePairs) {
-
         mBaseUrl = baseURL;
         mNameValuePairs = nameValuePairs;
     }
@@ -56,7 +55,8 @@ public class UrlGenerator {
                 fullUrlAsString += name + EQUALS + mNameValuePairs.getString(name) + AMPERSAND;
             }
         }
-        Log.i("URL",fullUrlAsString);
+        //Delete last AMPERSAND
+        //fullUrlAsString = fullUrlAsString.substring(0,fullUrlAsString.length()-1);
         return fullUrlAsString;
     }
 }

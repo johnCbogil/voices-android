@@ -9,38 +9,63 @@ import android.widget.FrameLayout;
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.base.util.GeneralUtil;
+import com.mobilonix.voices.data.api.ApiEngine;
+import com.mobilonix.voices.data.api.ApiUtil;
+import com.mobilonix.voices.data.api.engines.UsCongressSunlightApi;
+import com.mobilonix.voices.data.model.Politico;
 import com.mobilonix.voices.delegates.Callback;
-import com.mobilonix.voices.location.LocationRequestManager;
 import com.mobilonix.voices.location.model.LatLong;
 import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.representatives.model.RepresentativesPage;
 import com.mobilonix.voices.representatives.ui.RepresentativesPagerAdapter;
 import com.mobilonix.voices.util.RESTUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.net.ssl.SSLPeerUnverifiedException;
 
 public enum RepresentativesManager {
 
     INSTANCE;
+
+    static UsCongressSunlightApi sunlightApi = new UsCongressSunlightApi();
 
     FrameLayout representativesFrame;
 
     /**
      * The enum value contains the URL that needs to be called to make the representatives request
      */
+
+    /* Fixme The old enum structure assumed that only an Api URL was necessary to pull data     */
+    /* Fixme but every Api response has its own unique JSON signature.                          */
+
+    /* Fixme Currently composing apis in each enum node. I think the nomenclature should change */
+    /* Fixme to reflect the fact that there is an ApiEngine intrinsic to "RepresentativesType." */
+
     public enum RepresentativesType {
-        CONGRESS("http://www.google.com"),
-        STATE_LEGISLATORS("http://www.google.com"),
-        COUNCIL_MEMBERS("http://www.google.com");
 
-        private final String url;
+        CONGRESS(sunlightApi),
+        STATE_LEGISLATORS(sunlightApi),
+        COUNCIL_MEMBERS(sunlightApi);
 
-        RepresentativesType(String s) {
-            url = s;
+        ApiUtil mApi;
+
+        RepresentativesType(ApiUtil a) {
+            mApi = a;
         }
 
-        public String getUrl() {
-            return this.url;
+        public String getUrl(double lat, double lon) {
+            return mApi.generateUrl(lat,lon);
+        }
+
+        public ArrayList<Politico> parseJsonResponse(String response) {
+
+            try {
+                return mApi.parseData(response);
+            } catch (IOException e){
+                return null;
+            }
         }
     }
 
@@ -58,7 +83,8 @@ public enum RepresentativesManager {
                     + ", LONG: "
                     + location.getLongitude());
 
-            refreshRepresentativesContent(location.getLatitude(), location.getLongitude(), activity, pages, representativesPager);
+//          refreshRepresentativesContent(location.getLatitude(), location.getLongitude(), activity, pages, representativesPager);
+            refreshRepresentativesContent(40.758896, -73.985, activity, pages, representativesPager);
 
             activity.getMainContentFrame().addView(representativesFrame);
         } else {

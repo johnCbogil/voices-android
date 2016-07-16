@@ -14,5 +14,6 @@ import java.util.List;
 public interface ApiEngine {
 
     void initialize(double latitude, double longitude, HttpRequestor requestor);
+    void getUrl(double latitude, double longitude);
     List<Politico> retrieveData() throws IOException;
 }

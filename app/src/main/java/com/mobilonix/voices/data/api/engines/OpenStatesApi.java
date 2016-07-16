@@ -57,6 +57,10 @@ public class OpenStatesApi implements ApiEngine {
         mUrlBundle.putString(API_KEY, mApiKey);
     }
 
+    @Override
+    public void getUrl(double latitude, double longitude) {
+
+    }
 
     private ArrayList<Politico> httpResponseToPoliticos(String response){
 
