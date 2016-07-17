@@ -2,7 +2,7 @@ package com.mobilonix.voices.data.api.engines;
 
 import android.os.Bundle;
 
-import com.mobilonix.voices.data.api.ApiUtil;
+import com.mobilonix.voices.data.api.ApiEngine;
 import com.mobilonix.voices.data.api.util.UrlGenerator;
 import com.mobilonix.voices.data.model.Politico;
 
@@ -12,7 +12,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class UsOpenStatesApi implements ApiUtil {
+public class StateOpenStatesApi implements ApiEngine {
 
     //  legislator strings
 
@@ -23,7 +23,7 @@ public class UsOpenStatesApi implements ApiUtil {
 
     public static final String API_VALUE = "e39ba83d7c5b4e348db144c4b4c33108";
 
-    public UsOpenStatesApi() {}
+    public StateOpenStatesApi() {}
 
     @Override
     public String generateUrl(double latitude, double longitude) {

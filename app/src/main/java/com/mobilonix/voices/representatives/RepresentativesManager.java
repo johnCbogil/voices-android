@@ -9,9 +9,8 @@ import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.data.api.ApiEngine;
-import com.mobilonix.voices.data.api.ApiUtil;
 import com.mobilonix.voices.data.api.engines.UsCongressSunlightApi;
-import com.mobilonix.voices.data.api.engines.UsOpenStatesApi;
+import com.mobilonix.voices.data.api.engines.StateOpenStatesApi;
 import com.mobilonix.voices.data.model.Politico;
 import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.location.model.LatLong;
@@ -23,14 +22,12 @@ import com.mobilonix.voices.util.RESTUtil;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.net.ssl.SSLPeerUnverifiedException;
-
 public enum RepresentativesManager {
 
     INSTANCE;
 
     static UsCongressSunlightApi sunlightApiEngine = new UsCongressSunlightApi();
-    static UsOpenStatesApi openStatesApiEngine = new UsOpenStatesApi();
+    static StateOpenStatesApi openStatesApiEngine = new StateOpenStatesApi();
 
     FrameLayout representativesFrame;
 
@@ -50,9 +47,9 @@ public enum RepresentativesManager {
         STATE_LEGISLATORS(openStatesApiEngine),
         COUNCIL_MEMBERS(sunlightApiEngine);
 
-        ApiUtil mApi;
+        ApiEngine mApi;
 
-        RepresentativesType(ApiUtil a) {
+        RepresentativesType(ApiEngine a) {
             mApi = a;
         }
 
@@ -65,6 +62,7 @@ public enum RepresentativesManager {
             try {
                 return mApi.parseData(response);
             } catch (IOException e){
+                e.printStackTrace(); //TODO Handle exception with appropriate dialog or activity msg
                 return null;
             }
         }

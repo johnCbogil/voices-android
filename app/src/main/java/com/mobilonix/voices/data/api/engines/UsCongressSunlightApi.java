@@ -1,12 +1,8 @@
 package com.mobilonix.voices.data.api.engines;
 
-import android.content.res.Resources;
 import android.os.Bundle;
 
-import com.mobilonix.voices.R;
 import com.mobilonix.voices.data.api.ApiEngine;
-import com.mobilonix.voices.data.api.ApiUtil;
-import com.mobilonix.voices.data.api.util.HttpRequestor;
 import com.mobilonix.voices.data.api.util.UrlGenerator;
 import com.mobilonix.voices.data.model.Politico;
 
@@ -14,11 +10,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
-public class UsCongressSunlightApi implements ApiUtil {
+public class UsCongressSunlightApi implements ApiEngine {
 
     public static final String BASE_URL = "https://congress.api.sunlightfoundation.com/legislators/locate";
     public static final String LATITUDE_KEY = "latitude";

@@ -1,19 +1,15 @@
 package com.mobilonix.voices.data.api;
 
-import com.mobilonix.voices.data.api.util.HttpRequestor;
 import com.mobilonix.voices.data.model.Politico;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
- * Created by cakiadeg on 6/28/16.
+ * Created by cakiadeg on 7/16/16.
  */
-
-//TODO this may be better as an abstract class due to all of the standard private methods
 public interface ApiEngine {
 
-    void initialize(double latitude, double longitude, HttpRequestor requestor);
-    void getUrl(double latitude, double longitude);
-    List<Politico> retrieveData() throws IOException;
+    String generateUrl(double latitude, double longitude);
+    ArrayList<Politico> parseData(String response) throws IOException;
 }
