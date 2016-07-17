@@ -3,7 +3,6 @@ package com.mobilonix.voices.representatives;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import com.mobilonix.voices.R;
@@ -12,6 +11,7 @@ import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.data.api.ApiEngine;
 import com.mobilonix.voices.data.api.ApiUtil;
 import com.mobilonix.voices.data.api.engines.UsCongressSunlightApi;
+import com.mobilonix.voices.data.api.engines.UsOpenStatesApi;
 import com.mobilonix.voices.data.model.Politico;
 import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.location.model.LatLong;
@@ -29,7 +29,8 @@ public enum RepresentativesManager {
 
     INSTANCE;
 
-    static UsCongressSunlightApi sunlightApi = new UsCongressSunlightApi();
+    static UsCongressSunlightApi sunlightApiEngine = new UsCongressSunlightApi();
+    static UsOpenStatesApi openStatesApiEngine = new UsOpenStatesApi();
 
     FrameLayout representativesFrame;
 
@@ -45,9 +46,9 @@ public enum RepresentativesManager {
 
     public enum RepresentativesType {
 
-        CONGRESS(sunlightApi),
-        STATE_LEGISLATORS(sunlightApi),
-        COUNCIL_MEMBERS(sunlightApi);
+        CONGRESS(sunlightApiEngine),
+        STATE_LEGISLATORS(openStatesApiEngine),
+        COUNCIL_MEMBERS(sunlightApiEngine);
 
         ApiUtil mApi;
 
