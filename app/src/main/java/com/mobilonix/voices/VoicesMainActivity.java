@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.widget.FrameLayout;
 
 import com.badoo.mobile.util.WeakHandler;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.location.LocationRequestManager;
 import com.mobilonix.voices.splash.SplashManager;
@@ -27,9 +28,14 @@ public class VoicesMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voices_main);
 
+        FirebaseMessaging.getInstance().subscribeToTopic("news");
+        FirebaseMessaging.getInstance().subscribeToTopic("EFF");
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         initViews();
+
+        GeneralUtil.toast("App packagename: " + getPackageName());
 
         SplashManager.INSTANCE.toggleSplashScreen(this, true);
 
