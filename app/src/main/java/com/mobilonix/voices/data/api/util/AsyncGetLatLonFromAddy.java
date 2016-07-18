@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,7 +16,7 @@ public class AsyncGetLatLonFromAddy extends AsyncTask<String, String, String> {
 
         Context context;
 
-        AsyncGetLatLonFromAddy(Context context) {
+        public AsyncGetLatLonFromAddy(Context context) {
 
             this.context = context;
 
@@ -70,7 +69,6 @@ public class AsyncGetLatLonFromAddy extends AsyncTask<String, String, String> {
 
             }
 
-            NycCouncilGeoUtil geoUtil = new NycCouncilGeoUtil(context, );
+            //NycCouncilGeoUtil geoUtil = new NycCouncilGeoUtil(context, );
         }
-    }
 }

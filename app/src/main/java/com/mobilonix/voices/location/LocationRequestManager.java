@@ -1,7 +1,11 @@
 package com.mobilonix.voices.location;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,6 +22,7 @@ import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.location.model.LatLong;
+import com.mobilonix.voices.location.util.LocationUtil;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.util.RESTUtil;
 
@@ -53,8 +58,11 @@ public enum LocationRequestManager {
             locationRequestButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(GeneralUtil.isGPSEnabled(activity)) {
+                    if(LocationUtil.isGPSEnabled(activity)) {
                         GeneralUtil.toast("Location services already enabled");
+
+                        LocationUtil.triggerLocationUpdate(activity, null);
+
                         toggleLocationRequestScreen(activity, false);
                         toggleLocationEntryScreen(activity, true);
                     } else {
@@ -86,7 +94,7 @@ public enum LocationRequestManager {
             final ListView autoCompleteLocationList = (ListView)locationEntryFrame.findViewById(R.id.autocomplete_location_list);
             final EditText locationEntryField = (EditText)locationEntryFrame.findViewById(R.id.location_entry_field);
             Button findByLocationButton = (Button)locationEntryFrame.findViewById(R.id.find_for_current_location_button);
-            Button findByEntryButton = (Button)locationEntryFrame.findViewById(R.id.find_for_current_location_button);
+            Button findByEntryButton = (Button)locationEntryFrame.findViewById(R.id.find_for_entered_location_button);
 
             locationEntryField.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -123,8 +131,11 @@ public enum LocationRequestManager {
             findByEntryButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     RepresentativesManager.INSTANCE
-                            .toggleRepresentativesScreen(getLatLongFromLocation(locationEntryField.getText().toString()), activity, true);
+                            .toggleRepresentativesScreen(
+                                    getLatLongFromLocation(locationEntryField.getText().toString()),
+                                    activity, true);
                     toggleLocationEntryScreen(activity, false);
                 }
             });
@@ -132,11 +143,23 @@ public enum LocationRequestManager {
             findByLocationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    if(!LocationUtil.isGPSEnabled(activity)) {
+                        GeneralUtil.toast("LOcationn IS NOT ENABLED!");
+                        LocationRequestManager.INSTANCE.showGPSNotEnabledDialog(activity);
+                    } else {
+                        GeneralUtil.toast("LOcationn IS ENABLED!");
+                    }
+
                     RepresentativesManager.INSTANCE
-                            .toggleRepresentativesScreen(getLatLongFromLocation(locationEntryField.getText().toString()), activity, true);
+                                .toggleRepresentativesScreen(
+                                        activity.getCurrentLocation(),
+                                        activity, true);
                     toggleLocationEntryScreen(activity, false);
+
                 }
             });
+
             activity.getMainContentFrame().addView(locationEntryFrame);
         } else {
             activity.getMainContentFrame().removeView(locationEntryFrame);
@@ -156,6 +179,46 @@ public enum LocationRequestManager {
      */
     public LatLong getLatLongFromLocation(String location) {
         return new LatLong(0, 0);
+    }
+
+    /**
+     * Show the enable GPS Button
+     *
+     * @param activity
+     */
+    public void showGPSNotEnabledDialog(VoicesMainActivity activity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle("Location Not Enabled!");
+        builder.setMessage("Location is not enabled.  You won't be able get accurate location requests until this is done.  Please goto your device settings and enable 'Location");
+        builder.setPositiveButton("Alright", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }
+        );
+        Dialog dialog = builder.create();
+        dialog.show();
+    }
+
+    /**
+     * Show the enable GPS Button
+     *
+     * @param activity
+     */
+    public void showGPSEnabledDialog(VoicesMainActivity activity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle("Location Enabled!");
+        builder.setMessage("Your device's Location detection is now enabled!  You'll be able to get representatives from your current location");
+        builder.setPositiveButton("Great!", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }
+        );
+        Dialog dialog = builder.create();
+        dialog.show();
     }
 
 }

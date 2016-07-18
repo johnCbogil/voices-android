@@ -10,6 +10,7 @@ import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.location.LocationRequestManager;
+import com.mobilonix.voices.location.util.LocationUtil;
 
 public enum  SplashManager {
 
@@ -29,6 +30,7 @@ public enum  SplashManager {
         splashContentFrame
                 = (FrameLayout)inflater.inflate(R.layout.view_splash_screen, null, false);
 
+
         if(state) {
 
             Button splashGettingStartedButton = (Button)splashContentFrame
@@ -38,7 +40,7 @@ public enum  SplashManager {
                 @Override
                 public void onClick(View v) {
                     INSTANCE.toggleSplashScreen(activity, false);
-                    if (GeneralUtil.isGPSEnabled(activity)) {
+                    if (LocationUtil.isGPSEnabled(activity)) {
                         GeneralUtil.toast("Location services already enabled");
                         LocationRequestManager.INSTANCE.toggleLocationEntryScreen(activity, true);
                     } else {

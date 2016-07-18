@@ -3,6 +3,7 @@ package com.mobilonix.voices.representatives;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 
 import com.mobilonix.voices.R;
@@ -28,6 +29,8 @@ public enum RepresentativesManager {
 
     static UsCongressSunlightApi sunlightApiEngine = new UsCongressSunlightApi();
     static StateOpenStatesApi openStatesApiEngine = new StateOpenStatesApi();
+
+    boolean representativesScreenVisible = false;
 
     FrameLayout representativesFrame;
 
@@ -69,6 +72,9 @@ public enum RepresentativesManager {
     }
 
     public void toggleRepresentativesScreen(LatLong location, final VoicesMainActivity activity, boolean state) {
+
+
+
         if(state) {
             LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             representativesFrame = (FrameLayout)
@@ -77,18 +83,28 @@ public enum RepresentativesManager {
             final ArrayList<RepresentativesPage> pages = new ArrayList<>();
             final ViewPager representativesPager = (ViewPager)representativesFrame.findViewById(R.id.reprsentatives_pager);
 
+            /* Hide soft keyboard */
+            InputMethodManager imm = (InputMethodManager) activity
+                    .getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
             GeneralUtil.toast("Finding representatives for location LAT: "
                     + location.getLatitude()
                     + ", LONG: "
                     + location.getLongitude());
 
-//          refreshRepresentativesContent(location.getLatitude(), location.getLongitude(), activity, pages, representativesPager);
-            refreshRepresentativesContent(40.758896, -73.985, activity, pages, representativesPager);
+            refreshRepresentativesContent(activity.getCurrentLocation().getLatitude(),
+                    activity.getCurrentLocation().getLongitude(),
+                    activity,
+                    pages,
+                    representativesPager);
 
             activity.getMainContentFrame().addView(representativesFrame);
         } else {
             activity.getMainContentFrame().removeView(representativesFrame);
         }
+
+        representativesScreenVisible = state;
     }
 
     /**
@@ -134,5 +150,9 @@ public enum RepresentativesManager {
      */
     public FrameLayout getRepresentativesFrame() {
         return representativesFrame;
+    }
+
+    public boolean isRepresentativesScreenVisible() {
+        return representativesScreenVisible;
     }
 }
