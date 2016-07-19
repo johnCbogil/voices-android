@@ -1,10 +1,14 @@
 package com.mobilonix.voices.representatives;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
@@ -19,6 +23,7 @@ import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.representatives.model.RepresentativesPage;
 import com.mobilonix.voices.representatives.ui.RepresentativesPagerAdapter;
 import com.mobilonix.voices.util.RESTUtil;
+import com.mobilonix.voices.util.ViewUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -74,7 +79,6 @@ public enum RepresentativesManager {
     public void toggleRepresentativesScreen(LatLong location, final VoicesMainActivity activity, boolean state) {
 
 
-
         if(state) {
             LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             representativesFrame = (FrameLayout)
@@ -99,12 +103,53 @@ public enum RepresentativesManager {
                     pages,
                     representativesPager);
 
+            initTabView();
+
             activity.getMainContentFrame().addView(representativesFrame);
         } else {
             activity.getMainContentFrame().removeView(representativesFrame);
         }
 
         representativesScreenVisible = state;
+    }
+
+    /**
+     * Initialize the representatives and view tabs and thir respective actions
+     */
+    private void initTabView() {
+
+        final LinearLayout groupsTab = (LinearLayout)representativesFrame.findViewById(R.id.groups_tab);
+        final LinearLayout representativesTab = (LinearLayout)representativesFrame.findViewById(R.id.representatives_tab);
+
+        final ViewPager representativesPager = (ViewPager)representativesFrame.findViewById(R.id.reprsentatives_pager);
+        final FrameLayout groupsView = (FrameLayout)representativesFrame.findViewById(R.id.groups_view);
+
+        ViewUtil.setViewColor(representativesTab, android.R.color.holo_blue_light);
+
+        groupsTab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                representativesPager.setVisibility(View.GONE);
+                groupsView.setVisibility(View.VISIBLE);
+
+                ViewUtil.setViewColor(groupsTab, android.R.color.holo_blue_light);
+                ViewUtil.setViewColor(representativesTab, android.R.color.darker_gray);
+
+            }
+        });
+
+        representativesTab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                representativesPager.setVisibility(View.VISIBLE);
+                groupsView.setVisibility(View.GONE);
+
+                ViewUtil.setViewColor(groupsTab, android.R.color.darker_gray);
+                ViewUtil.setViewColor(representativesTab, android.R.color.holo_blue_light);
+            }
+        });
     }
 
     /**
@@ -155,4 +200,5 @@ public enum RepresentativesManager {
     public boolean isRepresentativesScreenVisible() {
         return representativesScreenVisible;
     }
+
 }

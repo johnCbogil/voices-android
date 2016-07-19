@@ -42,6 +42,7 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
 
         final ListView representativesList = (ListView)layout.findViewById(R.id.representatives_list);
         final SwipeRefreshLayout pageRefresh = (SwipeRefreshLayout)layout.findViewById(R.id.swipe_refresh_layout);
+
         pageRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
