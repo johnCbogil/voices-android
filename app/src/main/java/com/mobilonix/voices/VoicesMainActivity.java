@@ -6,18 +6,26 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telecom.Call;
 import android.widget.FrameLayout;
 
 import com.badoo.mobile.util.WeakHandler;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.location.LocationRequestManager;
+import com.mobilonix.voices.location.model.LatLong;
+import com.mobilonix.voices.location.util.LocationUtil;
+import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.splash.SplashManager;
-import com.mobilonix.voices.util.ViewUtil;
 
-public class VoicesMainActivity extends AppCompatActivity {
+public class VoicesMainActivity extends AppCompatActivity implements LocationListener {
+
+    LatLong currentLocation = new LatLong(0, 0);
 
     FrameLayout mainContentFrame;
     boolean leaveAppDialogShowing = false;
@@ -33,6 +41,8 @@ public class VoicesMainActivity extends AppCompatActivity {
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        currentLocation = LocationUtil.getLastLocation(this);
+
         initViews();
 
         GeneralUtil.toast("App packagename: " + getPackageName());
@@ -44,6 +54,7 @@ public class VoicesMainActivity extends AppCompatActivity {
     private void initViews() {
         mainContentFrame = (FrameLayout)findViewById(R.id.main_content_frame);
     }
+
 
     public FrameLayout getMainContentFrame() {
         return mainContentFrame;
@@ -60,6 +71,23 @@ public class VoicesMainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+
+        /* Since we aren't using fragments, we need to fabricate a back stack.
+        * This absolutely OK because it's easy to do, and we get much better
+        * control of the back flow than if we were relying on fragment/child
+        * fragment lifecycles */
+        if(RepresentativesManager.INSTANCE.isRepresentativesScreenVisible()) {
+            RepresentativesManager.INSTANCE.toggleRepresentativesScreen(currentLocation, this, false);
+            LocationRequestManager.INSTANCE.toggleLocationEntryScreen(this, true);
+
+            return;
+        } else if(LocationRequestManager.INSTANCE.isLocationRequestScreenOn()) {
+            LocationRequestManager.INSTANCE.toggleLocationRequestScreen(this, false);
+            SplashManager.INSTANCE.toggleSplashScreen(this, true);
+
+            return;
+        }
+
         if(!leaveAppDialogShowing) {
             showLeaveAppDialog();
         }
@@ -98,7 +126,7 @@ public class VoicesMainActivity extends AppCompatActivity {
         super.onResume();
 
         if(LocationRequestManager.INSTANCE.isLocationRequestScreenOn()) {
-            if(GeneralUtil.isGPSEnabled(this)) {
+            if(LocationUtil.isGPSEnabled(this)) {
                 LocationRequestManager.INSTANCE.toggleLocationRequestScreen(this, false);
                 LocationRequestManager.INSTANCE.toggleLocationEntryScreen(this, true);
             }
@@ -106,18 +134,46 @@ public class VoicesMainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(newBase);
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        /**
+         * If the GPS is enabled at this point, then we trigger a location update
+         */
+        if(LocationUtil.isGPSEnabled(this) || LocationUtil.isNetworkLocationEnabled(this) ) {
+            LocationRequestManager.INSTANCE.showGPSEnabledDialog(this);
+            LocationUtil.triggerLocationUpdate(this, null);
+        } else {
+            LocationRequestManager.INSTANCE.showGPSNotEnabledDialog(this);
+        }
+
         LocationRequestManager.INSTANCE.toggleLocationRequestScreen(this, false);
         LocationRequestManager.INSTANCE.toggleLocationEntryScreen(this, true);
-
     }
 
+    @Override
+    protected void onDestroy() {
+        LocationUtil.stopLocationUpdates(this);
+        super.onDestroy();
+    }
 
+    public LatLong getCurrentLocation() {
+        return currentLocation;
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        currentLocation = new LatLong(location.getLatitude(), location.getLongitude());
+
+        GeneralUtil.toast("Location Changed: " + location);
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+    @Override
+    public void onProviderEnabled(String provider) {}
+
+    @Override
+    public void onProviderDisabled(String provider) {}
 }
