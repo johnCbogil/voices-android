@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telecom.Call;
 import android.widget.FrameLayout;
+import android.widget.Toolbar;
 
 import com.badoo.mobile.util.WeakHandler;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -53,6 +54,7 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
 
     private void initViews() {
         mainContentFrame = (FrameLayout)findViewById(R.id.main_content_frame);
+        setSupportActionBar((android.support.v7.widget.Toolbar)findViewById(R.id.primary_toolbar));
     }
 
 
