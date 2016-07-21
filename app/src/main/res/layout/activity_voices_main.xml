@@ -1,14 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
     android:background="@android:color/white"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.mobilonix.voices.VoicesMainActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/primary_toolbar"
+        android:background="@color/bar_color"
+        android:layout_height="@android:dimen/app_icon_size"
+        android:layout_width="match_parent">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp">
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="@dimen/toolbar_option_width"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:id="@+id/action_selection_text"
+                    android:layout_gravity="center"
+                    android:background="@drawable/button_back"
+                    android:text="Actions"/>
+                <TextView
+                    android:layout_width="@dimen/toolbar_option_width"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:id="@+id/groups_selection_text"
+                    android:background="@drawable/button_back_selected"
+                    android:layout_gravity="center"
+                    android:text="My Groups"/>
+
+            </LinearLayout>
+        </FrameLayout>
+    </android.support.v7.widget.Toolbar>
 
     <FrameLayout
         android:id="@+id/main_content_frame"
@@ -16,4 +50,4 @@
         android:layout_height="wrap_content">
     </FrameLayout>
 
-</RelativeLayout>
+</LinearLayout>

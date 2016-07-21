@@ -1,5 +1,6 @@
 package com.mobilonix.voices.representatives;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -9,6 +10,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
@@ -124,6 +126,11 @@ public enum RepresentativesManager {
         final ViewPager representativesPager = (ViewPager)representativesFrame.findViewById(R.id.reprsentatives_pager);
         final FrameLayout groupsView = (FrameLayout)representativesFrame.findViewById(R.id.groups_view);
 
+        final View primaryToolbar = ((VoicesMainActivity)groupsTab.getContext()).findViewById(R.id.primary_toolbar);
+
+        final TextView actionSelectionButton = (TextView)primaryToolbar.findViewById(R.id.action_selection_text);
+        final TextView groupsSelectionButton = (TextView)primaryToolbar.findViewById(R.id.groups_selection_text);
+
         ViewUtil.setViewColor(representativesTab, android.R.color.holo_blue_light);
 
         groupsTab.setOnClickListener(new View.OnClickListener() {
@@ -132,9 +139,11 @@ public enum RepresentativesManager {
 
                 representativesPager.setVisibility(View.GONE);
                 groupsView.setVisibility(View.VISIBLE);
+                primaryToolbar.setVisibility(View.VISIBLE);
 
                 ViewUtil.setViewColor(groupsTab, android.R.color.holo_blue_light);
                 ViewUtil.setViewColor(representativesTab, android.R.color.darker_gray);
+
 
             }
         });
@@ -145,9 +154,27 @@ public enum RepresentativesManager {
 
                 representativesPager.setVisibility(View.VISIBLE);
                 groupsView.setVisibility(View.GONE);
+                primaryToolbar.setVisibility(View.GONE);
 
                 ViewUtil.setViewColor(groupsTab, android.R.color.darker_gray);
                 ViewUtil.setViewColor(representativesTab, android.R.color.holo_blue_light);
+
+            }
+        });
+
+        actionSelectionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actionSelectionButton.setBackgroundResource(R.drawable.button_back_selected);
+                groupsSelectionButton.setBackgroundResource(R.drawable.button_back);
+            }
+        });
+
+        groupsSelectionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actionSelectionButton.setBackgroundResource(R.drawable.button_back);
+                groupsSelectionButton.setBackgroundResource(R.drawable.button_back_selected);
             }
         });
     }
