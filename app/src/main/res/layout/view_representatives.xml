@@ -13,7 +13,7 @@
         <android.support.v4.view.ViewPager
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="0.15"
+            android:layout_weight="0.1"
             android:id="@+id/reprsentatives_pager">
         </android.support.v4.view.ViewPager>
 
@@ -21,7 +21,7 @@
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="0.15"
+            android:layout_weight="0.1"
             android:id="@+id/groups_view"
             android:visibility="gone">
             <TextView
@@ -36,7 +36,7 @@
             android:layout_gravity="bottom"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.85"
+            android:layout_weight="0.9"
             android:orientation="horizontal"
             android:weightSum="1">
 

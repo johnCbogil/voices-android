@@ -12,6 +12,10 @@ import android.location.LocationManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telecom.Call;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.Toolbar;
 
@@ -55,8 +59,17 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
     private void initViews() {
         mainContentFrame = (FrameLayout)findViewById(R.id.main_content_frame);
         setSupportActionBar((android.support.v7.widget.Toolbar)findViewById(R.id.primary_toolbar));
+        findViewById(R.id.primary_toolbar).setVisibility(View.GONE);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.primary_menu, menu);
+
+        return true;
+    }
 
     public FrameLayout getMainContentFrame() {
         return mainContentFrame;

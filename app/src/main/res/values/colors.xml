@@ -3,4 +3,13 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!-- Color Map -->
+    <color name="cream">#ccffcc</color>
+    <color name="transparent">#00000000</color>
+    <color name="darker_red">#cc0000</color>
+
+    <!-- Toolbar -->
+    <color name="bar_color">@color/cream</color>
+
 </resources>
