@@ -3,10 +3,89 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:background="@android:color/white"
     android:layout_height="match_parent">
-    <android.support.v4.view.ViewPager
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/reprsentatives_pager">
-    </android.support.v4.view.ViewPager>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1"
+        android:orientation="vertical">
+
+        <!-- The primary view for the reps window -->
+        <android.support.v4.view.ViewPager
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.15"
+            android:id="@+id/reprsentatives_pager">
+        </android.support.v4.view.ViewPager>
+
+        <!-- The primary view for the groups view -->
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.15"
+            android:id="@+id/groups_view"
+            android:visibility="gone">
+            <TextView
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="TODO: Add Group View"/>
+        </FrameLayout>
+
+        <!-- Tabs View to switch between above views -->
+        <LinearLayout
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.85"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@android:color/darker_gray"
+                android:id="@+id/groups_tab"
+                android:weightSum="1"
+                android:layout_weight="0.5">
+                <ImageView
+                    android:layout_gravity="center"
+                    android:layout_weight="0.3"
+                    android:src="@drawable/groups_tab_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    android:layout_weight="0.7"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Reps"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/darker_gray"
+                android:orientation="vertical"
+                android:id="@+id/representatives_tab"
+                android:weightSum="1"
+                android:layout_weight="0.5">
+                <ImageView
+                    android:layout_weight="0.3"
+                    android:layout_gravity="center"
+                    android:src="@drawable/representatives_tab_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    android:layout_weight="0.7"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Groups"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
 
 </FrameLayout>
