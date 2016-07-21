@@ -94,15 +94,18 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
         if(RepresentativesManager.INSTANCE.isRepresentativesScreenVisible()) {
             RepresentativesManager.INSTANCE.toggleRepresentativesScreen(currentLocation, this, false);
             LocationRequestManager.INSTANCE.toggleLocationEntryScreen(this, true);
+            findViewById(R.id.primary_toolbar).setVisibility(View.GONE);
 
             return;
         } else if(LocationRequestManager.INSTANCE.isLocationRequestScreenOn()) {
             LocationRequestManager.INSTANCE.toggleLocationRequestScreen(this, false);
             SplashManager.INSTANCE.toggleSplashScreen(this, true);
+            findViewById(R.id.primary_toolbar).setVisibility(View.GONE);
 
             return;
         }
 
+        /* If we back out too far, we want to make sure the user is ok leaving the app */
         if(!leaveAppDialogShowing) {
             showLeaveAppDialog();
         }
