@@ -7,13 +7,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <EditText
+        <fragment
+            android:id="@+id/place_autocomplete_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/location_entry_field"
-            android:drawableLeft="@android:drawable/ic_menu_search"
-            android:hint="Enter location to search"
-            android:layout_gravity="left|top" />
+            android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+        />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -32,20 +31,9 @@
                 android:layout_weight="0.5"
                 android:layout_height="wrap_content"
                 android:text="Find For Current Location"
-                android:id="@+id/find_for_current_location_button"
-                />
+                android:id="@+id/find_for_current_location_button"/>
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="Suggestions (Select One)"
-            android:layout_gravity="left|center_vertical" />
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/autocomplete_location_list"></ListView>
     </LinearLayout>
 </FrameLayout>

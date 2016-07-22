@@ -2,22 +2,17 @@ package com.mobilonix.voices;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.telecom.Call;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.Toolbar;
 
 import com.badoo.mobile.util.WeakHandler;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -32,7 +27,7 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
 
     LatLong currentLocation = new LatLong(0, 0);
 
-    FrameLayout mainContentFrame;
+    public FrameLayout mainContentFrame;
     boolean leaveAppDialogShowing = false;
     WeakHandler handler = new WeakHandler();
 
