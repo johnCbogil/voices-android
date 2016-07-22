@@ -3,4 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- List views for now, recycler view's later!-->
+    <ListView
+        android:id="@+id/action_groups_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </ListView>
+
+    <!-- List of the users groups -->
+    <ListView
+        android:id="@+id/my_groups_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </ListView>
 </FrameLayout>
