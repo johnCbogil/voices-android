@@ -1,14 +1,10 @@
 package com.mobilonix.voices.representatives;
 
-import android.app.Activity;
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,8 +12,8 @@ import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.data.api.ApiEngine;
-import com.mobilonix.voices.data.api.engines.UsCongressSunlightApi;
 import com.mobilonix.voices.data.api.engines.StateOpenStatesApi;
+import com.mobilonix.voices.data.api.engines.UsCongressSunlightApi;
 import com.mobilonix.voices.data.model.Politico;
 import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.groups.GroupManager;
@@ -39,6 +35,7 @@ public enum RepresentativesManager {
     static StateOpenStatesApi openStatesApiEngine = new StateOpenStatesApi();
 
     boolean representativesScreenVisible = false;
+
 
     FrameLayout representativesFrame;
 
@@ -81,7 +78,6 @@ public enum RepresentativesManager {
 
     public void toggleRepresentativesScreen(LatLong location, final VoicesMainActivity activity, boolean state) {
 
-
         if(state) {
             LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             representativesFrame = (FrameLayout)
@@ -89,11 +85,6 @@ public enum RepresentativesManager {
 
             final ArrayList<RepresentativesPage> pages = new ArrayList<>();
             final ViewPager representativesPager = (ViewPager)representativesFrame.findViewById(R.id.reprsentatives_pager);
-
-            /* Hide soft keyboard */
-            InputMethodManager imm = (InputMethodManager) activity
-                    .getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
             GeneralUtil.toast("Finding representatives for location LAT: "
                     + location.getLatitude()
@@ -185,6 +176,7 @@ public enum RepresentativesManager {
 
             }
         });
+
     }
 
     /**
@@ -235,5 +227,6 @@ public enum RepresentativesManager {
     public boolean isRepresentativesScreenVisible() {
         return representativesScreenVisible;
     }
+
 
 }

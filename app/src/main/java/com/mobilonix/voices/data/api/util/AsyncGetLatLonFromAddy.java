@@ -69,6 +69,5 @@ public class AsyncGetLatLonFromAddy extends AsyncTask<String, String, String> {
 
             }
 
-            //NycCouncilGeoUtil geoUtil = new NycCouncilGeoUtil(context, );
         }
 }

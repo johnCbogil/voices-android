@@ -10,7 +10,9 @@ import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.location.LocationRequestManager;
+
 import com.mobilonix.voices.location.util.LocationUtil;
+
 
 public enum  SplashManager {
 
@@ -29,7 +31,6 @@ public enum  SplashManager {
                 = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         splashContentFrame
                 = (FrameLayout)inflater.inflate(R.layout.view_splash_screen, null, false);
-
 
         if(state) {
 
