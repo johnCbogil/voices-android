@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mobilonix.voices.representatives.ui.RepresentativesPageLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Representative Location"
+        android:id="@+id/representatives_page_search_field"
+        android:drawableLeft="@android:drawable/ic_menu_search"/>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_weight="0.9"
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:id="@+id/representatives_list"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
+    <ImageView
+            android:id="@+id/representatives_info_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="0.1"
+            android:src="@android:drawable/ic_menu_info_details"/>
+
+</com.mobilonix.voices.representatives.ui.RepresentativesPageLayout>
