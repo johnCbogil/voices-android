@@ -13,7 +13,7 @@ necessarily fit into any specific category */
 public class GeneralUtil {
 
     public static void toast(String message) {
-        Toast.makeText(VoicesApplication.getContext(), message, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(VoicesApplication.getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
 }

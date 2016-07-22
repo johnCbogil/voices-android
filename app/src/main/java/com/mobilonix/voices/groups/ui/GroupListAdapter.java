@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobilonix.voices.R;
+import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.groups.model.Group;
 import com.squareup.picasso.Picasso;
 
@@ -20,13 +21,15 @@ public class GroupListAdapter extends ArrayAdapter<Group> {
     Context context;
     int resource;
     ArrayList<Group> groups;
+    GroupManager.GroupType groupType;
 
-    public GroupListAdapter(Context context, int resource, ArrayList<Group> groups) {
+    public GroupListAdapter(Context context, int resource, ArrayList<Group> groups, GroupManager.GroupType groupType) {
         super(context, resource, groups);
 
         this.resource = resource;
         this.context = context;
         this.groups = groups;
+        this.groupType = groupType;
     }
 
     @Override
@@ -38,9 +41,15 @@ public class GroupListAdapter extends ArrayAdapter<Group> {
             convertView = inflater.inflate(resource, parent, false);
 
             ImageView groupImage = (ImageView) convertView.findViewById(R.id.cell_group_image);
+            ImageView arrowImage = (ImageView) convertView.findViewById(R.id.arrow_image);
+
             TextView groupDescription = (TextView)convertView.findViewById(R.id.cell_group_description);
             TextView groupName = (TextView)convertView.findViewById(R.id.cell_group_name);
             TextView groupCategory = (TextView)convertView.findViewById(R.id.cell_group_category);
+
+            groupName.setText(groups.get(position).getGroupName());
+            groupCategory.setText(groups.get(position).getGroupCategory());
+            groupDescription.setText(groups.get(position).getGroupDescription());
 
             Button learnMoreButton = (Button)convertView.findViewById(R.id.cell_group_learn_more_button);
 
@@ -49,6 +58,16 @@ public class GroupListAdapter extends ArrayAdapter<Group> {
                     .placeholder(R.drawable.representatives_place_holder)
                     .fit()
                     .into(groupImage);
+
+            if(groupType == GroupManager.GroupType.USER) {
+                groupDescription.setVisibility(View.GONE);
+                learnMoreButton.setVisibility(View.GONE);
+                arrowImage.setVisibility(View.VISIBLE);
+            } else {
+                arrowImage.setVisibility(View.GONE);
+                groupDescription.setVisibility(View.VISIBLE);
+                learnMoreButton.setVisibility(View.VISIBLE);
+            }
 
         }
 

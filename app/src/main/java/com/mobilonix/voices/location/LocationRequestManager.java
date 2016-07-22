@@ -145,11 +145,8 @@ public enum LocationRequestManager {
                 public void onClick(View v) {
 
                     if(!LocationUtil.isGPSEnabled(activity)) {
-                        GeneralUtil.toast("LOcationn IS NOT ENABLED!");
                         LocationRequestManager.INSTANCE.showGPSNotEnabledDialog(activity);
-                    } else {
-                        GeneralUtil.toast("LOcationn IS ENABLED!");
-                    }
+                    } else {}
 
                     RepresentativesManager.INSTANCE
                                 .toggleRepresentativesScreen(
