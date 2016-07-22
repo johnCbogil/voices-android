@@ -16,6 +16,7 @@ import com.mobilonix.voices.data.api.engines.StateOpenStatesApi;
 import com.mobilonix.voices.data.api.engines.UsCongressSunlightApi;
 import com.mobilonix.voices.data.model.Politico;
 import com.mobilonix.voices.delegates.Callback;
+import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.location.model.LatLong;
 import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.representatives.model.RepresentativesPage;
@@ -135,7 +136,7 @@ public enum RepresentativesManager {
                 ViewUtil.setViewColor(groupsTab, android.R.color.holo_blue_light);
                 ViewUtil.setViewColor(representativesTab, android.R.color.darker_gray);
 
-
+                GroupManager.INSTANCE.toggleGroupPage(groupsView, true);
             }
         });
 
@@ -150,6 +151,7 @@ public enum RepresentativesManager {
                 ViewUtil.setViewColor(groupsTab, android.R.color.darker_gray);
                 ViewUtil.setViewColor(representativesTab, android.R.color.holo_blue_light);
 
+                GroupManager.INSTANCE.toggleGroupPage(groupsView, false);
             }
         });
 
@@ -158,6 +160,9 @@ public enum RepresentativesManager {
             public void onClick(View v) {
                 actionSelectionButton.setBackgroundResource(R.drawable.button_back_selected);
                 groupsSelectionButton.setBackgroundResource(R.drawable.button_back);
+
+                GroupManager.INSTANCE.toggleActionGroups(true);
+
             }
         });
 
@@ -166,6 +171,9 @@ public enum RepresentativesManager {
             public void onClick(View v) {
                 actionSelectionButton.setBackgroundResource(R.drawable.button_back);
                 groupsSelectionButton.setBackgroundResource(R.drawable.button_back_selected);
+
+                GroupManager.INSTANCE.toggleActionGroups(false);
+
             }
         });
 
