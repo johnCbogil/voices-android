@@ -9,4 +9,9 @@ public class RepresentativesPage {
     public RepresentativesPage(ArrayList<Representative> representatives) {
         this.representatives = representatives;
     }
+
+    public ArrayList<Representative> getRepresentatives() {
+        return representatives;
+    }
+
 }

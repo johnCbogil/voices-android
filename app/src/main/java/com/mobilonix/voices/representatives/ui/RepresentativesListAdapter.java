@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobilonix.voices.R;
-import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.representatives.model.Representative;
 import com.squareup.picasso.Picasso;
 
@@ -48,7 +47,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
             Picasso.with(listImage.getContext())
                     .load(representatives.get(position).getRepresentativeImageUrl())
                     .fit()
-                    .placeholder(android.R.drawable.ic_menu_search)
+                    .placeholder(R.drawable.representatives_place_holder)
                     .into(listImage);
 
             ImageView twitterImage = (ImageView)convertView.findViewById(R.id.representatives_list_twitter_image);
@@ -59,7 +58,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                 @Override
                 public void onClick(View v) {
                     String url = "https://twitter.com/intent/tweet?text="
-                            + representatives.get(position).getTwitterHandle();
+                            + "@" + representatives.get(position).getTwitterHandle();
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(url));
                     v.getContext().startActivity(i);

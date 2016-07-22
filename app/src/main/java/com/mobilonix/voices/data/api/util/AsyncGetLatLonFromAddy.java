@@ -16,7 +16,7 @@ public class AsyncGetLatLonFromAddy extends AsyncTask<String, String, String> {
 
         Context context;
 
-        AsyncGetLatLonFromAddy(Context context) {
+        public AsyncGetLatLonFromAddy(Context context) {
 
             this.context = context;
 
@@ -69,6 +69,5 @@ public class AsyncGetLatLonFromAddy extends AsyncTask<String, String, String> {
 
             }
 
-            //NycCouncilGeoUtil geoUtil = new NycCouncilGeoUtil(context,);
         }
 }

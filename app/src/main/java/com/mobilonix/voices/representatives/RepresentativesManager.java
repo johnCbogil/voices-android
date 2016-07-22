@@ -3,14 +3,17 @@ package com.mobilonix.voices.representatives;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.data.api.ApiEngine;
-import com.mobilonix.voices.data.api.engines.UsCongressSunlightApi;
 import com.mobilonix.voices.data.api.engines.StateOpenStatesApi;
+import com.mobilonix.voices.data.api.engines.UsCongressSunlightApi;
 import com.mobilonix.voices.data.model.Politico;
 import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.location.model.LatLong;
@@ -18,6 +21,7 @@ import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.representatives.model.RepresentativesPage;
 import com.mobilonix.voices.representatives.ui.RepresentativesPagerAdapter;
 import com.mobilonix.voices.util.RESTUtil;
+import com.mobilonix.voices.util.ViewUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,6 +32,9 @@ public enum RepresentativesManager {
 
     static UsCongressSunlightApi sunlightApiEngine = new UsCongressSunlightApi();
     static StateOpenStatesApi openStatesApiEngine = new StateOpenStatesApi();
+
+    boolean representativesScreenVisible = false;
+
 
     FrameLayout representativesFrame;
 
@@ -69,6 +76,7 @@ public enum RepresentativesManager {
     }
 
     public void toggleRepresentativesScreen(LatLong location, final VoicesMainActivity activity, boolean state) {
+
         if(state) {
             LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             representativesFrame = (FrameLayout)
@@ -82,13 +90,85 @@ public enum RepresentativesManager {
                     + ", LONG: "
                     + location.getLongitude());
 
-//          refreshRepresentativesContent(location.getLatitude(), location.getLongitude(), activity, pages, representativesPager);
-            refreshRepresentativesContent(40.758896, -73.985, activity, pages, representativesPager);
+            refreshRepresentativesContent(activity.getCurrentLocation().getLatitude(),
+                    activity.getCurrentLocation().getLongitude(),
+                    activity,
+                    pages,
+                    representativesPager);
+
+            initTabView();
 
             activity.getMainContentFrame().addView(representativesFrame);
         } else {
             activity.getMainContentFrame().removeView(representativesFrame);
         }
+
+        representativesScreenVisible = state;
+    }
+
+    /**
+     * Initialize the representatives and view tabs and thir respective actions
+     */
+    private void initTabView() {
+
+        final LinearLayout groupsTab = (LinearLayout)representativesFrame.findViewById(R.id.groups_tab);
+        final LinearLayout representativesTab = (LinearLayout)representativesFrame.findViewById(R.id.representatives_tab);
+
+        final ViewPager representativesPager = (ViewPager)representativesFrame.findViewById(R.id.reprsentatives_pager);
+        final FrameLayout groupsView = (FrameLayout)representativesFrame.findViewById(R.id.groups_view);
+
+        final View primaryToolbar = ((VoicesMainActivity)groupsTab.getContext()).findViewById(R.id.primary_toolbar);
+
+        final TextView actionSelectionButton = (TextView)primaryToolbar.findViewById(R.id.action_selection_text);
+        final TextView groupsSelectionButton = (TextView)primaryToolbar.findViewById(R.id.groups_selection_text);
+
+        ViewUtil.setViewColor(representativesTab, android.R.color.holo_blue_light);
+
+        groupsTab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                representativesPager.setVisibility(View.GONE);
+                groupsView.setVisibility(View.VISIBLE);
+                primaryToolbar.setVisibility(View.VISIBLE);
+
+                ViewUtil.setViewColor(groupsTab, android.R.color.holo_blue_light);
+                ViewUtil.setViewColor(representativesTab, android.R.color.darker_gray);
+
+
+            }
+        });
+
+        representativesTab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                representativesPager.setVisibility(View.VISIBLE);
+                groupsView.setVisibility(View.GONE);
+                primaryToolbar.setVisibility(View.GONE);
+
+                ViewUtil.setViewColor(groupsTab, android.R.color.darker_gray);
+                ViewUtil.setViewColor(representativesTab, android.R.color.holo_blue_light);
+
+            }
+        });
+
+        actionSelectionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actionSelectionButton.setBackgroundResource(R.drawable.button_back_selected);
+                groupsSelectionButton.setBackgroundResource(R.drawable.button_back);
+            }
+        });
+
+        groupsSelectionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actionSelectionButton.setBackgroundResource(R.drawable.button_back);
+                groupsSelectionButton.setBackgroundResource(R.drawable.button_back_selected);
+            }
+        });
+
     }
 
     /**
@@ -135,4 +215,10 @@ public enum RepresentativesManager {
     public FrameLayout getRepresentativesFrame() {
         return representativesFrame;
     }
+
+    public boolean isRepresentativesScreenVisible() {
+        return representativesScreenVisible;
+    }
+
+
 }

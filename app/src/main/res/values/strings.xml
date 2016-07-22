@@ -8,6 +8,9 @@
     <string name="location_request_text">Turn on location services to Voices can show you who represents your community. </string>
 
     <string name="google_places_api_key">AIzaSyAT87ms7SyySJIG5OrimyKbrHAZRQ2qgcI</string>
+
+    <!--<string name="sunlight_api_key">key is empty</string>-->
+    <!--<string name="open_states_api_key">key is empty</string>-->
     <string name="sunlight_api_key">939e3373a07c468bac51ddd604ebba1f</string>
     <string name="open_states_api_key">e39ba83d7c5b4e348db144c4b4c33108</string>
 

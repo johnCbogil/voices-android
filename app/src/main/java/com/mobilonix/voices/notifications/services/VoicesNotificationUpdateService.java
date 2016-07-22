@@ -13,7 +13,6 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
-import com.mobilonix.voices.base.util.GeneralUtil;
 
 public class VoicesNotificationUpdateService extends FirebaseMessagingService{
 

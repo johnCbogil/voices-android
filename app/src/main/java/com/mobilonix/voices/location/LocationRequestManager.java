@@ -1,6 +1,9 @@
 package com.mobilonix.voices.location;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.provider.Settings;
 import android.util.Log;
@@ -17,6 +20,8 @@ import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.location.model.LatLong;
+import com.mobilonix.voices.location.util.LocationUtil;
+import com.mobilonix.voices.representatives.RepresentativesManager;
 
 public enum LocationRequestManager {
 
@@ -50,8 +55,11 @@ public enum LocationRequestManager {
             locationRequestButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(GeneralUtil.isGPSEnabled(activity)) {
+                    if(LocationUtil.isGPSEnabled(activity)) {
                         GeneralUtil.toast("Location services already enabled");
+
+                        LocationUtil.triggerLocationUpdate(activity, null);
+
                         toggleLocationRequestScreen(activity, false);
                         toggleLocationEntryScreen(activity, true);
                     } else {
@@ -73,48 +81,57 @@ public enum LocationRequestManager {
         if(state) {
             activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             LayoutInflater inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            locationEntryFrame = (FrameLayout)inflater.inflate(R.layout.view_location_entry, null, false);
-
+            try {
+                locationEntryFrame = (FrameLayout) inflater.inflate(R.layout.view_location_entry, null, false);
+            } catch (Exception e) {}
             Button findByLocationButton = (Button)locationEntryFrame.findViewById(R.id.find_for_current_location_button);
             Button findByEntryButton = (Button)locationEntryFrame.findViewById(R.id.find_for_current_location_button);
 
-            final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-                    activity.getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+            try {
+                final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                        activity.getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
-            autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-                @Override
-                public void onPlaceSelected(Place place) {
-                    Log.e(TAG, "It worked!");
-                }
+                autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+                    @Override
+                    public void onPlaceSelected(Place place) {
+                        Log.e(TAG, "It worked!");
+                    }
 
-                @Override
-                public void onError(Status status) {
-                    // TODO: Handle the error.
-                    Log.e(TAG, "An error occurred: " + status);
-                }
-            });
+                    @Override
+                    public void onError(Status status) {
+                        // TODO: Handle the error.
+                        Log.e(TAG, "An error occurred: " + status);
+
+                    }
+                });
+            } catch (Exception e) {}
 
             findByEntryButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
+
+                    if(!LocationUtil.isGPSEnabled(activity)) {
+                        GeneralUtil.toast("LOcationn IS NOT ENABLED!");
+                        LocationRequestManager.INSTANCE.showGPSNotEnabledDialog(activity);
+                    } else {
+                        GeneralUtil.toast("LOcationn IS ENABLED!");
+                    }
+
+                    RepresentativesManager.INSTANCE
+                                .toggleRepresentativesScreen(
+                                        activity.getCurrentLocation(),
+                                        activity, true);
+                    toggleLocationEntryScreen(activity, false);
+
                 }
             });
 
-            findByLocationButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    activity.findViewById(R.id.place_autocomplete_fragment).setVisibility(View.VISIBLE);
-                }
-
-            });
-
-            activity.mainContentFrame.addView(locationEntryFrame);
+            activity.getMainContentFrame().addView(locationEntryFrame);
         } else {
-            activity.mainContentFrame.removeView(locationEntryFrame);
+            activity.getMainContentFrame().removeView(locationEntryFrame);
         }
     }
-
 
     public boolean isLocationRequestScreenOn() {
         return locationRequestScreenOn;
@@ -129,6 +146,46 @@ public enum LocationRequestManager {
      */
     public LatLong getLatLongFromLocation(String location) {
         return new LatLong(0, 0);
+    }
+
+    /**
+     * Show the enable GPS Button
+     *
+     * @param activity
+     */
+    public void showGPSNotEnabledDialog(VoicesMainActivity activity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle("Location Not Enabled!");
+        builder.setMessage("Location is not enabled.  You won't be able get accurate location requests until this is done.  Please goto your device settings and enable 'Location");
+        builder.setPositiveButton("Alright", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }
+        );
+        Dialog dialog = builder.create();
+        dialog.show();
+    }
+
+    /**
+     * Show the enable GPS Button
+     *
+     * @param activity
+     */
+    public void showGPSEnabledDialog(VoicesMainActivity activity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle("Location Enabled!");
+        builder.setMessage("Your device's Location detection is now enabled!  You'll be able to get representatives from your current location");
+        builder.setPositiveButton("Great!", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }
+        );
+        Dialog dialog = builder.create();
+        dialog.show();
     }
 
 }
