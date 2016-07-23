@@ -3,6 +3,7 @@ package com.mobilonix.voices.representatives;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -86,10 +87,10 @@ public enum RepresentativesManager {
             final ArrayList<RepresentativesPage> pages = new ArrayList<>();
             final ViewPager representativesPager = (ViewPager)representativesFrame.findViewById(R.id.reprsentatives_pager);
 
-            GeneralUtil.toast("Finding representatives for location LAT: "
-                    + location.getLatitude()
-                    + ", LONG: "
-                    + location.getLongitude());
+//            GeneralUtil.toast("Finding representatives for location LAT: "
+//                    + location.getLatitude()
+//                    + ", LONG: "
+//                    + location.getLongitude());
 
             refreshRepresentativesContent(activity.getCurrentLocation().getLatitude(),
                     activity.getCurrentLocation().getLongitude(),
@@ -161,7 +162,7 @@ public enum RepresentativesManager {
                 actionSelectionButton.setBackgroundResource(R.drawable.button_back_selected);
                 groupsSelectionButton.setBackgroundResource(R.drawable.button_back);
 
-                GroupManager.INSTANCE.toggleActionGroups(true);
+                GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ACTION);
 
             }
         });
@@ -172,8 +173,20 @@ public enum RepresentativesManager {
                 actionSelectionButton.setBackgroundResource(R.drawable.button_back);
                 groupsSelectionButton.setBackgroundResource(R.drawable.button_back_selected);
 
-                GroupManager.INSTANCE.toggleActionGroups(false);
+                GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.USER);
 
+            }
+        });
+
+        /* Show all the groups */
+        ((VoicesMainActivity)groupsTab.getContext()).getAddGroup()
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ALL);
+
+                return false;
             }
         });
 

@@ -10,14 +10,21 @@ public class Group {
     String groupName;
     String groupCategory;
     String groupDescription;
+    String extendedDescription;
     String groupImageUrl;
     ArrayList<Policy> policies;
 
-    public Group(String groupName, String groupCategory, String groupDescription, String groupImageUrl, ArrayList<Policy> policies) {
+    public Group(String groupName,
+                 String groupCategory,
+                 String groupDescription,
+                 String groupImageUrl,
+                 String extendedDescription,
+                 ArrayList<Policy> policies) {
         this.groupName = groupName;
         this.groupCategory = groupCategory;
         this.groupDescription = groupDescription;
         this.policies = policies;
+        this.extendedDescription = extendedDescription;
         this.groupImageUrl = groupImageUrl;
     }
 
@@ -39,5 +46,9 @@ public class Group {
 
     public String getGroupName() {
         return groupName;
+    }
+
+    public String getExtendedDescription() {
+        return extendedDescription;
     }
 }

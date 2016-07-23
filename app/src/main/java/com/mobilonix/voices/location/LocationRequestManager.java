@@ -56,7 +56,6 @@ public enum LocationRequestManager {
                 @Override
                 public void onClick(View v) {
                     if(LocationUtil.isGPSEnabled(activity)) {
-                        GeneralUtil.toast("Location services already enabled");
 
                         LocationUtil.triggerLocationUpdate(activity, null);
 
