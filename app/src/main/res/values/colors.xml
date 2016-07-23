@@ -11,4 +11,5 @@
     <!-- Toolbar -->
     <color name="bar_color">@color/cream</color>
 
+    <color name="voices_orange">#FC9225</color>
 </resources>
