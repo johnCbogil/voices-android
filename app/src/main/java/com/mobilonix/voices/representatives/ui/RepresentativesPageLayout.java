@@ -47,8 +47,6 @@ public class RepresentativesPageLayout extends LinearLayout {
             }
         });
 
-        GeneralUtil.toast("Page attched!");
-
         findViewById(R.id.google_are_assholes_layout).requestFocus();
 
         hideKeyboard((VoicesMainActivity)getContext());

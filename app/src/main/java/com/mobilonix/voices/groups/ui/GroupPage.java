@@ -16,6 +16,7 @@ public class GroupPage extends FrameLayout {
 
     ArrayList<Group> actionGroups;
     ArrayList<Group> userGroups;
+    ArrayList<Group> allGroups;
 
     boolean userGroupsSet = false;
     boolean actionGroupsSet = false;
@@ -54,7 +55,21 @@ public class GroupPage extends FrameLayout {
         }
     }
 
+    public void setAllGroups(ArrayList<Group> allGroups) {
+        ListView allGroupsList = ((ListView) findViewById(R.id.all_groups_list));
+        allGroupsList
+                    .setAdapter(new GroupListAdapter(getContext(),
+                            R.layout.cell_group,
+                            allGroups,
+                            GroupManager.GroupType.ALL));
+
+    }
+
+    /**
+     * Force a clearing of all groups and actions
+     */
     public void clearAllGroups() {
+
         ListView actionGroupsList = ((ListView) findViewById(R.id.action_groups_list));
         ListView userGroupsList = ((ListView) findViewById(R.id.user_groups_list));
 
