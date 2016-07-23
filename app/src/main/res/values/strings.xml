@@ -7,10 +7,20 @@
     <!-- Location Request -->
     <string name="location_request_text">Turn on location services to Voices can show you who represents your community. </string>
 
-    <string name="google_places_api_key">AIzaSyAT87ms7SyySJIG5OrimyKbrHAZRQ2qgcI</string>
+    <!--Sample Response-->
+    <string name="response_title">Here\'s what to say</string>
+    <string name="response_1">Hello my name is</string>
+    <string name="response_2"> [your name]</string>
+    <string name="response_3">and I am a constituent.</string>
+    <string name="response_4">I would like the representative to</string>
+    <string name="response_5">[support or oppose]</string>
+    <string name="response_6">[an issue that you care about]</string>
+    <string name="response_7">and I will be voting in November.</string>
+    <string name="dialog_email_button">Launch Email</string>
+    <string name="dialog_close_button">Close Window</string>
 
-    <!--<string name="sunlight_api_key">key is empty</string>-->
-    <!--<string name="open_states_api_key">key is empty</string>-->
+    <!--API keys-->
+    <string name="google_places_api_key">AIzaSyAT87ms7SyySJIG5OrimyKbrHAZRQ2qgcI</string>
     <string name="sunlight_api_key">939e3373a07c468bac51ddd604ebba1f</string>
     <string name="open_states_api_key">e39ba83d7c5b4e348db144c4b4c33108</string>
 

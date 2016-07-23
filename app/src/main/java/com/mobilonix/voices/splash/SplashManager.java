@@ -42,10 +42,8 @@ public enum  SplashManager {
                 public void onClick(View v) {
                     INSTANCE.toggleSplashScreen(activity, false);
                     if (LocationUtil.isGPSEnabled(activity)) {
-                        GeneralUtil.toast("Location services already enabled");
                         LocationRequestManager.INSTANCE.toggleLocationEntryScreen(activity, true);
                     } else {
-                        GeneralUtil.toast("Location services not enabled...");
                         LocationRequestManager.INSTANCE.toggleLocationRequestScreen(activity, true);
                     }
                 }

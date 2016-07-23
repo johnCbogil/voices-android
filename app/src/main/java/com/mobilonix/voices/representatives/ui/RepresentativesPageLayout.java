@@ -1,12 +1,12 @@
 package com.mobilonix.voices.representatives.ui;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -15,6 +15,7 @@ import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.base.util.GeneralUtil;
 
 public class RepresentativesPageLayout extends LinearLayout {
+   Dialog responseDialog;
 
     public RepresentativesPageLayout(Context context, AttributeSet attrs) {
 
@@ -31,23 +32,22 @@ public class RepresentativesPageLayout extends LinearLayout {
         infoIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(getContext())
-                        .setTitle("Delete entry")
-                        .setMessage("Are you sure you want to delete this entry?")
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
+                responseDialog = new Dialog(getContext());
+                responseDialog.setContentView(R.layout.info_dialog);
+                responseDialog.setTitle(R.string.response_title);
+
+                Button dialogCloseButton = (Button)responseDialog.findViewById(R.id.dialog_close_button);
+                // if button is clicked, close the custom dialog
+                dialogCloseButton.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        responseDialog.dismiss();
+                    }
+                });
+
+                responseDialog.show();
             }
         });
-
-        GeneralUtil.toast("Page attched!");
 
         findViewById(R.id.google_are_assholes_layout).requestFocus();
 

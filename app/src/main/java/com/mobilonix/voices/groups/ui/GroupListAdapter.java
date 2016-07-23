@@ -65,7 +65,7 @@ public class GroupListAdapter extends ArrayAdapter<Group> {
                     .fit()
                     .into(groupImage);
 
-            if(groupType == GroupManager.GroupType.USER) {
+            if((groupType == GroupManager.GroupType.USER) || (groupType == GroupManager.GroupType.ALL)) {
                 groupDescription.setVisibility(View.GONE);
                 learnMoreButton.setVisibility(View.GONE);
                 arrowImage.setVisibility(View.VISIBLE);
