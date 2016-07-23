@@ -52,6 +52,12 @@ public class GroupListAdapter extends ArrayAdapter<Group> {
             groupDescription.setText(groups.get(position).getGroupDescription());
 
             Button learnMoreButton = (Button)convertView.findViewById(R.id.cell_group_learn_more_button);
+            learnMoreButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             Picasso.with(groupImage.getContext())
                     .load(groups.get(position).getGroupImageUrl())
