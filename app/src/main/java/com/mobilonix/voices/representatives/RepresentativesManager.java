@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
+import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.data.api.ApiEngine;
 import com.mobilonix.voices.data.api.engines.NycCouncilApi;
 import com.mobilonix.voices.data.api.engines.UsCongressSunlightApi;
@@ -42,7 +43,6 @@ public enum RepresentativesManager {
 
     boolean representativesScreenVisible = false;
 
-
     FrameLayout representativesFrame;
 
     /**
@@ -59,8 +59,8 @@ public enum RepresentativesManager {
 
 
         CONGRESS(sunlightApiEngine),
-        STATE_LEGISLATORS(openStatesApiEngine);
-        //COUNCIL_MEMBERS(nycScraperApi);
+        STATE_LEGISLATORS(openStatesApiEngine),
+        COUNCIL_MEMBERS(nycScraperApi);
 
         ApiEngine mApi;
 
@@ -101,10 +101,12 @@ public enum RepresentativesManager {
             final ArrayList<RepresentativesPage> pages = new ArrayList<>();
             final ViewPager representativesPager = (ViewPager)representativesFrame.findViewById(R.id.reprsentatives_pager);
 
-            Log.i("latlon","Finding representatives for location LAT: "
-                    + location.getLatitude()
-                    + ", LONG: "
-                    + location.getLongitude());
+//            GeneralUtil.toast("Finding representatives for location LAT: "
+//                    + location.getLatitude()
+//                    + ", LONG: "
+//                    + location.getLongitude());
+
+
 
             refreshRepresentativesContent(location.getLatitude(),
                     location.getLongitude(),
@@ -195,14 +197,14 @@ public enum RepresentativesManager {
         /* Show all the groups */
         ((VoicesMainActivity)groupsTab.getContext()).getAddGroup()
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
 
-                GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ALL);
+                        GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ALL);
 
-                return false;
-            }
-        });
+                        return false;
+                    }
+                });
 
     }
 
@@ -220,6 +222,10 @@ public enum RepresentativesManager {
                                               final VoicesMainActivity activity,
                                               final ArrayList<RepresentativesPage> pages,
                                               final ViewPager representativesPager) {
+
+//        Below is used to test NYC council class if location isn't working
+//        repLat = 40.730610;
+//        repLong = -73.935242;
 
         for (RepresentativesType type : RepresentativesType.values()) {
             RESTUtil.makeRepresentativesRequest(repLat, repLong, type, new Callback<ArrayList<Representative>>() {
