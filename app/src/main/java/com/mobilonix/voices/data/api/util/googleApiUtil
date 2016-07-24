@@ -2,9 +2,7 @@ package com.tryvoices.apis.api.util;
 
 import java.net.URL;
 
-/**
- * Created by cakiadeg on 6/19/16.
- */
+
 public class googleApiUtil {
 
     // google api client strings

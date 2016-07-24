@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -16,6 +17,7 @@ import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.data.api.ApiEngine;
+import com.mobilonix.voices.data.api.engines.NycCouncilApi;
 import com.mobilonix.voices.data.api.engines.UsCongressSunlightApi;
 import com.mobilonix.voices.data.api.engines.StateOpenStatesApi;
 import com.mobilonix.voices.data.model.Politico;
@@ -24,11 +26,14 @@ import com.mobilonix.voices.location.model.LatLong;
 import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.representatives.model.RepresentativesPage;
 import com.mobilonix.voices.representatives.ui.RepresentativesPagerAdapter;
+import com.mobilonix.voices.util.GeocoderUtil;
 import com.mobilonix.voices.util.RESTUtil;
 import com.mobilonix.voices.util.ViewUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.Request;
 
 public enum RepresentativesManager {
 
@@ -36,6 +41,7 @@ public enum RepresentativesManager {
 
     static UsCongressSunlightApi sunlightApiEngine = new UsCongressSunlightApi();
     static StateOpenStatesApi openStatesApiEngine = new StateOpenStatesApi();
+    static NycCouncilApi nycScraperApi = new NycCouncilApi();
 
     boolean representativesScreenVisible = false;
 
@@ -53,9 +59,10 @@ public enum RepresentativesManager {
 
     public enum RepresentativesType {
 
+
         CONGRESS(sunlightApiEngine),
-        STATE_LEGISLATORS(openStatesApiEngine),
-        COUNCIL_MEMBERS(sunlightApiEngine);
+        STATE_LEGISLATORS(openStatesApiEngine);
+        //gitCOUNCIL_MEMBERS(nycScraperApi);
 
         ApiEngine mApi;
 
@@ -63,8 +70,16 @@ public enum RepresentativesManager {
             mApi = a;
         }
 
-        public String getUrl(double lat, double lon) {
-            return mApi.generateUrl(lat,lon);
+        //TODO have this throw an error on API failure rather than network failure
+        public Request getRequest(double lat, double lon) throws IOException {
+
+            Request a = mApi.generateRequest(lat, lon);
+
+            if(a == null) {
+                throw new IOException("API Failure");
+            }
+
+            return a;
         }
 
         public ArrayList<Politico> parseJsonResponse(String response) {
@@ -79,7 +94,6 @@ public enum RepresentativesManager {
     }
 
     public void toggleRepresentativesScreen(LatLong location, final VoicesMainActivity activity, boolean state) {
-
 
         if(state) {
             LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -99,8 +113,8 @@ public enum RepresentativesManager {
                     + ", LONG: "
                     + location.getLongitude());
 
-            refreshRepresentativesContent(activity.getCurrentLocation().getLatitude(),
-                    activity.getCurrentLocation().getLongitude(),
+            refreshRepresentativesContent(location.getLatitude(),
+                    location.getLongitude(),
                     activity,
                     pages,
                     representativesPager);
@@ -199,15 +213,21 @@ public enum RepresentativesManager {
                 @Override
                 public boolean onExecuted(final ArrayList<Representative> data) {
 
-                    activity.getHandler().post(new Runnable() {
-                        @Override
-                        public void run() {
-                            pages.add(new RepresentativesPage(data));
-                            representativesPager.setAdapter(new RepresentativesPagerAdapter(pages));
+                    //TODO below if statement was put in primarily to handle case when NycCouncilApi
+                    //  is executed outside of NYC. Prefer an a priori way of checking city. Also,
+                    //  as more cities are on-boarded, a city API selector will be implemented that
+                    //  also requires a priori knowledge
 
-                        }
-                    });
+                    if(data != null && !data.isEmpty()) {
+                        activity.getHandler().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                pages.add(new RepresentativesPage(data));
+                                representativesPager.setAdapter(new RepresentativesPagerAdapter(pages));
 
+                            }
+                        });
+                    }
                     return false;
                 }
             });
