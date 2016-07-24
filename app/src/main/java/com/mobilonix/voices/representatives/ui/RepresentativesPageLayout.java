@@ -1,14 +1,13 @@
 package com.mobilonix.voices.representatives.ui;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.mobilonix.voices.R;
@@ -16,6 +15,7 @@ import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.base.util.GeneralUtil;
 
 public class RepresentativesPageLayout extends LinearLayout {
+   Dialog responseDialog;
 
     public RepresentativesPageLayout(Context context, AttributeSet attrs) {
 
@@ -28,7 +28,26 @@ public class RepresentativesPageLayout extends LinearLayout {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
 
-        GeneralUtil.toast("Page attched!");
+        ImageView infoIcon = (ImageView)findViewById(R.id.representatives_info_icon);
+        infoIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                responseDialog = new Dialog(getContext());
+                responseDialog.setContentView(R.layout.info_dialog);
+                responseDialog.setTitle(R.string.response_title);
+
+                Button dialogCloseButton = (Button)responseDialog.findViewById(R.id.dialog_close_button);
+                // if button is clicked, close the custom dialog
+                dialogCloseButton.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        responseDialog.dismiss();
+                    }
+                });
+
+                responseDialog.show();
+            }
+        });
 
         findViewById(R.id.google_are_assholes_layout).requestFocus();
 

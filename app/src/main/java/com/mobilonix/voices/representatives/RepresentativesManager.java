@@ -1,32 +1,29 @@
 package com.mobilonix.voices.representatives;
 
-import android.app.Activity;
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
-import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.data.api.ApiEngine;
 import com.mobilonix.voices.data.api.engines.NycCouncilApi;
 import com.mobilonix.voices.data.api.engines.UsCongressSunlightApi;
+
 import com.mobilonix.voices.data.api.engines.StateOpenStatesApi;
 import com.mobilonix.voices.data.model.Politico;
 import com.mobilonix.voices.delegates.Callback;
+import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.location.model.LatLong;
 import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.representatives.model.RepresentativesPage;
 import com.mobilonix.voices.representatives.ui.RepresentativesPagerAdapter;
-import com.mobilonix.voices.util.GeocoderUtil;
 import com.mobilonix.voices.util.RESTUtil;
 import com.mobilonix.voices.util.ViewUtil;
 
@@ -45,6 +42,7 @@ public enum RepresentativesManager {
 
     boolean representativesScreenVisible = false;
 
+
     FrameLayout representativesFrame;
 
     /**
@@ -62,7 +60,7 @@ public enum RepresentativesManager {
 
         CONGRESS(sunlightApiEngine),
         STATE_LEGISLATORS(openStatesApiEngine);
-        //gitCOUNCIL_MEMBERS(nycScraperApi);
+        //COUNCIL_MEMBERS(nycScraperApi);
 
         ApiEngine mApi;
 
@@ -103,12 +101,7 @@ public enum RepresentativesManager {
             final ArrayList<RepresentativesPage> pages = new ArrayList<>();
             final ViewPager representativesPager = (ViewPager)representativesFrame.findViewById(R.id.reprsentatives_pager);
 
-            /* Hide soft keyboard */
-            InputMethodManager imm = (InputMethodManager) activity
-                    .getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-
-            GeneralUtil.toast("Finding representatives for location LAT: "
+            Log.i("latlon","Finding representatives for location LAT: "
                     + location.getLatitude()
                     + ", LONG: "
                     + location.getLongitude());
@@ -158,7 +151,7 @@ public enum RepresentativesManager {
                 ViewUtil.setViewColor(groupsTab, android.R.color.holo_blue_light);
                 ViewUtil.setViewColor(representativesTab, android.R.color.darker_gray);
 
-
+                GroupManager.INSTANCE.toggleGroupPage(groupsView, true);
             }
         });
 
@@ -173,6 +166,7 @@ public enum RepresentativesManager {
                 ViewUtil.setViewColor(groupsTab, android.R.color.darker_gray);
                 ViewUtil.setViewColor(representativesTab, android.R.color.holo_blue_light);
 
+                GroupManager.INSTANCE.toggleGroupPage(groupsView, false);
             }
         });
 
@@ -181,6 +175,9 @@ public enum RepresentativesManager {
             public void onClick(View v) {
                 actionSelectionButton.setBackgroundResource(R.drawable.button_back_selected);
                 groupsSelectionButton.setBackgroundResource(R.drawable.button_back);
+
+                GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ACTION);
+
             }
         });
 
@@ -189,8 +186,24 @@ public enum RepresentativesManager {
             public void onClick(View v) {
                 actionSelectionButton.setBackgroundResource(R.drawable.button_back);
                 groupsSelectionButton.setBackgroundResource(R.drawable.button_back_selected);
+
+                GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.USER);
+
             }
         });
+
+        /* Show all the groups */
+        ((VoicesMainActivity)groupsTab.getContext()).getAddGroup()
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ALL);
+
+                return false;
+            }
+        });
+
     }
 
     /**
@@ -247,5 +260,6 @@ public enum RepresentativesManager {
     public boolean isRepresentativesScreenVisible() {
         return representativesScreenVisible;
     }
+
 
 }

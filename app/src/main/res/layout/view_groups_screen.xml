@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.mobilonix.voices.groups.ui.GroupPage xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</FrameLayout>
+    <!-- List views for now, recycler view's later!-->
+    <ListView
+        android:id="@+id/action_groups_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </ListView>
+
+    <!-- List of the users groups -->
+    <ListView
+        android:id="@+id/user_groups_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+    </ListView>
+
+    <!-- List of the users groups -->
+    <ListView
+        android:id="@+id/all_groups_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+    </ListView>
+
+
+</com.mobilonix.voices.groups.ui.GroupPage>

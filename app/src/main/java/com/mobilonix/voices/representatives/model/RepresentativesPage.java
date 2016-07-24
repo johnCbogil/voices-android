@@ -13,4 +13,5 @@ public class RepresentativesPage {
     public ArrayList<Representative> getRepresentatives() {
         return representatives;
     }
+
 }

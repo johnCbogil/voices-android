@@ -2,39 +2,41 @@ package com.mobilonix.voices;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.telecom.Call;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.Toolbar;
 
 import com.badoo.mobile.util.WeakHandler;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mobilonix.voices.base.util.GeneralUtil;
+import com.mobilonix.voices.groups.GroupManager;
+import com.mobilonix.voices.groups.model.Group;
 import com.mobilonix.voices.location.LocationRequestManager;
 import com.mobilonix.voices.location.model.LatLong;
 import com.mobilonix.voices.location.util.LocationUtil;
 import com.mobilonix.voices.representatives.RepresentativesManager;
+import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.splash.SplashManager;
 
 public class VoicesMainActivity extends AppCompatActivity implements LocationListener {
 
     LatLong currentLocation = new LatLong(0, 0);
 
-    FrameLayout mainContentFrame;
+    public FrameLayout mainContentFrame;
     boolean leaveAppDialogShowing = false;
     WeakHandler handler = new WeakHandler();
+
+    MenuItem addGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,15 +52,13 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
 
         initViews();
 
-        GeneralUtil.toast("App packagename: " + getPackageName());
-
         SplashManager.INSTANCE.toggleSplashScreen(this, true);
 
     }
 
     private void initViews() {
         mainContentFrame = (FrameLayout)findViewById(R.id.main_content_frame);
-        setSupportActionBar((android.support.v7.widget.Toolbar)findViewById(R.id.primary_toolbar));
+        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.primary_toolbar));
         findViewById(R.id.primary_toolbar).setVisibility(View.GONE);
     }
 
@@ -67,6 +67,8 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.primary_menu, menu);
+
+        addGroup = menu.findItem(R.id.action_add_groups);
 
         return true;
     }
@@ -86,6 +88,14 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
 
     @Override
     public void onBackPressed() {
+
+
+        if(GroupManager.INSTANCE.isGroupPageVisible()) {
+            if(GroupManager.INSTANCE.getMODE() == GroupManager.GroupType.ALL) {
+                GroupManager.INSTANCE.onBackPress();
+                return;
+            }
+        }
 
         /* Since we aren't using fragments, we need to fabricate a back stack.
         * This absolutely OK because it's easy to do, and we get much better
@@ -169,6 +179,14 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
         LocationRequestManager.INSTANCE.toggleLocationEntryScreen(this, true);
     }
 
+    public Toolbar getToolbar() {
+        return (Toolbar)findViewById(R.id.primary_toolbar);
+    }
+
+    public MenuItem getAddGroup() {
+        return addGroup;
+    }
+
     @Override
     protected void onDestroy() {
         LocationUtil.stopLocationUpdates(this);
@@ -194,4 +212,5 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
 
     @Override
     public void onProviderDisabled(String provider) {}
+
 }

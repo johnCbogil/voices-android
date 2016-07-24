@@ -18,8 +18,6 @@ public class VoicesBackgroundPushService extends FirebaseInstanceIdService {
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "Refreshed token: " + refreshedToken);
 
-        GeneralUtil.toast("New token: " + refreshedToken);
-
         SessionManager.INSTANCE.setCurrentNotificationToken(refreshedToken);
     }
 
