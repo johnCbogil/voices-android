@@ -76,7 +76,7 @@ public class NycCouncilGeoUtil {
         if(mAddresses != null) {
 
             for (int i = 0; i < mAddresses.size(); i++) {
-                if (mAddressLine == null) mAddressLine = mAddresses.get(0).getAddressLine(0);
+                if (mAddressLine == null) mAddressLine = mAddresses.get(i).getAddressLine(0);
             }
             Log.d("TAG", "address: " + mAddressLine);
         }

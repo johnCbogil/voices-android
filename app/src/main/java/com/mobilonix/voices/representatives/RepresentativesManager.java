@@ -223,7 +223,7 @@ public enum RepresentativesManager {
                                               final ArrayList<RepresentativesPage> pages,
                                               final ViewPager representativesPager) {
 
-//        Below is used to test NYC council class if location isn't working
+//        Below is used to test officials for a specific lat / lon
 //        repLat = 40.730610;
 //        repLong = -73.935242;
 

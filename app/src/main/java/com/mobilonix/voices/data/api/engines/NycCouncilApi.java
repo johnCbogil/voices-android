@@ -70,7 +70,7 @@ public class NycCouncilApi implements ApiEngine {
             url = null;
         }
 
-        if(address != null || !borough.equals("0")) {
+        if(address != null && !borough.equals("0")) {
             Headers headers = new Headers.Builder()
                     .add(POST_CONTENT_KEY, POST_CONTENT_VALUE)
                     .build();
