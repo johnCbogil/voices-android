@@ -10,63 +10,86 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Created by cakiadeg on 4/24/16.
+ * Converts NYC lat / lon to physical address String and provides address String and mBorough
+ *
+ *
+ * TODO Designed to work with {@link .api.engines.NycCouncilApi} but could be generalized or
+ * TODO    substituted
+ *
  */
 
 public class NycCouncilGeoUtil {
 
-    Geocoder geocoder;
-    int borough;
-    String addressLine;
-    List<Address> addresses = null;
+    Geocoder mGeocoder;
+    int mBorough;
+    String mAddressLine;
+    List<Address> mAddresses = null;
 
-    public NycCouncilGeoUtil(Context context, double lat, double lon) {
+    public static final int NUMBER_OF_LISTINGS = 5;
 
-        geocoder = new Geocoder(context, Locale.getDefault());
+    public NycCouncilGeoUtil(Context context) {
+
+        mGeocoder = new Geocoder(context);
+    }
+
+    public void init(double lat, double lon){
 
         try {
-            addresses = geocoder.getFromLocation(lat, lon, 5);
-        } catch (IOException e) {
-            e.printStackTrace();
+            mAddresses = mGeocoder.getFromLocation(lat, lon, NUMBER_OF_LISTINGS);
+
+        } catch (IOException ioException) {
+            Log.e("mGeocoder", ioException.toString());
+
+        } catch (IllegalArgumentException illegalArgumentException) {
+            Log.e("mGeocoder", illegalArgumentException.toString());
         }
 
         parseAddressLine();
         parseBorough();
     }
 
+    //TODO switch to regex match in order to take advantage of matches() method for multiple terms
     private void parseBorough() {
 
-        if (addresses != null) {
-            if (addresses.toString().toLowerCase().contains("staten island")) {
-                borough = 5;
-            } else if (addresses.toString().toLowerCase().contains("bronx")) {
-                borough = 2;
-            } else if (addresses.toString().toLowerCase().contains("brooklyn")) {
-                borough = 3;
-            } else if (addresses.toString().toLowerCase().contains("queens")) {
-                borough = 4;
-            } else if (addresses.toString().toLowerCase().contains("manhattan")) {
-                borough = 1;
+        String allAddys = mAddresses.toString().toLowerCase();
+
+        if (allAddys != null) {
+            if (allAddys.contains("staten island")) {
+                mBorough = 5;
+            } else if (allAddys.contains("bronx")) {
+                mBorough = 2;
+            } else if (allAddys.contains("brooklyn")) {
+                mBorough = 3;
+            } else if (allAddys.contains("queens")
+                    || allAddys.contains("long island city")) {
+                mBorough = 4;
+            } else if (allAddys.toString().contains("manhattan")) {
+                mBorough = 1;
             }
         }
     }
 
     private void parseAddressLine() {
 
-        if(addresses != null) {
+        Log.i("maddresses", "" + mAddresses);
 
-            for (int i = 0; i < addresses.size(); i++) {
-                if (addressLine == null) addressLine = addresses.get(0).getAddressLine(0);
+        if(mAddresses != null) {
+
+            for (int i = 0; i < mAddresses.size(); i++) {
+                if (mAddressLine == null) mAddressLine = mAddresses.get(i).getAddressLine(0);
             }
-            Log.d("TAG", "address: " + addressLine);
+            Log.d("TAG", "address: " + mAddressLine);
         }
     }
 
     public String getAddressLine() {
-        return  addressLine;
+        return  mAddressLine;
     }
-
-    public int getBorough() {
-        return borough;
+    public String getBorough() {
+        return Integer.toString(mBorough);
+    }
+    
+    public boolean isNyc() {
+        return mBorough == 0;
     }
 }

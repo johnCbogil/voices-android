@@ -2,6 +2,7 @@ package com.mobilonix.voices.representatives;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,8 +14,10 @@ import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.data.api.ApiEngine;
-import com.mobilonix.voices.data.api.engines.StateOpenStatesApi;
+import com.mobilonix.voices.data.api.engines.NycCouncilApi;
 import com.mobilonix.voices.data.api.engines.UsCongressSunlightApi;
+
+import com.mobilonix.voices.data.api.engines.StateOpenStatesApi;
 import com.mobilonix.voices.data.model.Politico;
 import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.groups.GroupManager;
@@ -28,15 +31,17 @@ import com.mobilonix.voices.util.ViewUtil;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import okhttp3.Request;
+
 public enum RepresentativesManager {
 
     INSTANCE;
 
     static UsCongressSunlightApi sunlightApiEngine = new UsCongressSunlightApi();
     static StateOpenStatesApi openStatesApiEngine = new StateOpenStatesApi();
+    static NycCouncilApi nycScraperApi = new NycCouncilApi();
 
     boolean representativesScreenVisible = false;
-
 
     FrameLayout representativesFrame;
 
@@ -52,9 +57,10 @@ public enum RepresentativesManager {
 
     public enum RepresentativesType {
 
+
         CONGRESS(sunlightApiEngine),
         STATE_LEGISLATORS(openStatesApiEngine),
-        COUNCIL_MEMBERS(sunlightApiEngine);
+        COUNCIL_MEMBERS(nycScraperApi);
 
         ApiEngine mApi;
 
@@ -62,8 +68,16 @@ public enum RepresentativesManager {
             mApi = a;
         }
 
-        public String getUrl(double lat, double lon) {
-            return mApi.generateUrl(lat,lon);
+        //TODO have this throw an error on API failure rather than network failure
+        public Request getRequest(double lat, double lon) throws IOException {
+
+            Request a = mApi.generateRequest(lat, lon);
+
+            if(a == null) {
+                throw new IOException("API Failure");
+            }
+
+            return a;
         }
 
         public ArrayList<Politico> parseJsonResponse(String response) {
@@ -92,8 +106,10 @@ public enum RepresentativesManager {
 //                    + ", LONG: "
 //                    + location.getLongitude());
 
-            refreshRepresentativesContent(activity.getCurrentLocation().getLatitude(),
-                    activity.getCurrentLocation().getLongitude(),
+
+
+            refreshRepresentativesContent(location.getLatitude(),
+                    location.getLongitude(),
                     activity,
                     pages,
                     representativesPager);
@@ -181,14 +197,14 @@ public enum RepresentativesManager {
         /* Show all the groups */
         ((VoicesMainActivity)groupsTab.getContext()).getAddGroup()
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
 
-                GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ALL);
+                        GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ALL);
 
-                return false;
-            }
-        });
+                        return false;
+                    }
+                });
 
     }
 
@@ -207,20 +223,30 @@ public enum RepresentativesManager {
                                               final ArrayList<RepresentativesPage> pages,
                                               final ViewPager representativesPager) {
 
+//        Below is used to test officials for a specific lat / lon
+//        repLat = 40.730610;
+//        repLong = -73.935242;
+
         for (RepresentativesType type : RepresentativesType.values()) {
             RESTUtil.makeRepresentativesRequest(repLat, repLong, type, new Callback<ArrayList<Representative>>() {
                 @Override
                 public boolean onExecuted(final ArrayList<Representative> data) {
 
-                    activity.getHandler().post(new Runnable() {
-                        @Override
-                        public void run() {
-                            pages.add(new RepresentativesPage(data));
-                            representativesPager.setAdapter(new RepresentativesPagerAdapter(pages));
+                    //TODO below if statement was put in primarily to handle case when NycCouncilApi
+                    //  is executed outside of NYC. Prefer an a priori way of checking city. Also,
+                    //  as more cities are on-boarded, a city API selector will be implemented that
+                    //  also requires a priori knowledge
 
-                        }
-                    });
+                    if(data != null && !data.isEmpty()) {
+                        activity.getHandler().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                pages.add(new RepresentativesPage(data));
+                                representativesPager.setAdapter(new RepresentativesPagerAdapter(pages));
 
+                            }
+                        });
+                    }
                     return false;
                 }
             });

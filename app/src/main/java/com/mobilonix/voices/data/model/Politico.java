@@ -1,5 +1,7 @@
 package com.mobilonix.voices.data.model;
 
+import android.util.Log;
+
 /**
  * Created by cakiadeg on 4/24/16.
  */
@@ -71,14 +73,19 @@ public class Politico {
 
             fullName = firstName + " " + lastName;
 
-            return new Politico(fullName, district, electionDate,
+            Politico a = new Politico(fullName, district, electionDate,
                     phoneNumber, emailAddy,twitterHandle, picUrl);
+            Log.i("API",a.toString());
+            return a ;
         }
 
         public Politico build(String fullName) {
 
-            return new Politico(fullName, district, electionDate,
+            Politico a = new Politico(fullName, district, electionDate,
                     phoneNumber, emailAddy,twitterHandle, picUrl);
+            Log.i("API",a.toString());
+            return a ;
+
         }
     }
 }

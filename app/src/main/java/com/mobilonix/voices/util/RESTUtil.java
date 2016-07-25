@@ -64,6 +64,7 @@ public class RESTUtil {
      * @param type (The type of representatives.  This will inform what URL and params are used to make the request)
      * @param representativesCallback
      */
+
     public static void makeRepresentativesRequest(double repLat,
                                                   double repLong,
                                                   final RepresentativesManager.RepresentativesType type,
@@ -73,27 +74,30 @@ public class RESTUtil {
                 .readTimeout(REQUEST_READ_TIMEOUT, TimeUnit.SECONDS)
                 .build();
 
-        final Request recordRequest = new Request.Builder()
-                .url(type.getUrl(repLat, repLong)).build();
-
         /* Make call to auto-complete api */
-        client.newCall(recordRequest).enqueue(new okhttp3.Callback() {
+        try {
+            client.newCall(type.getRequest(repLat, repLong)).enqueue(new okhttp3.Callback() {
 
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.e(TAG, "Record request failed...");
-                representativesCallback.onExecuted(new ArrayList<Representative>());
-            }
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.e(TAG, "Record request failed..." + e);
+                    representativesCallback.onExecuted(new ArrayList<Representative>());
+                }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    Log.e(TAG, "Record request success... with response" + response);
 
                 /* Om Success return auto-complete Address results to callback */
-                String responseString = response.body().string();
-                ArrayList<Representative> representatives = parseRepresentativesList(responseString, type);
-                representativesCallback.onExecuted(representatives);
-            }
-        });
+                    String responseString = response.body().string();
+                    ArrayList<Representative> representatives = parseRepresentativesList(responseString, type);
+                    representativesCallback.onExecuted(representatives);
+                }
+            });
+        } catch (IOException e) {
+            Log.e(TAG, "API request failed..." + e);
+            representativesCallback.onExecuted(new ArrayList<Representative>());
+        }
     }
 
     /* TODO: Replace this method's logic here with ACTUAL AUTOCOPLETE LOGIC.  A real address autocomplete list
