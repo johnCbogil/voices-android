@@ -2,18 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
+
+   <TextView
+        android:id="@+id/response_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/response_title"
+        android:background="@color/voices_orange"
+        android:textColor="#FFF"/>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center">
         <TextView
             android:id="@+id/response_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/response_1"
-            android:textColor="#000000"/>
+            android:textColor="#000000" />
         <TextView
             android:id="@+id/response_2"
             android:layout_width="wrap_content"
@@ -26,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/response_3"
-            android:textColor="#000000"/>
+            android:textColor="#000000" />
     <TextView
         android:id="@+id/response_4"
         android:layout_width="wrap_content"
@@ -60,19 +71,21 @@
         android:layout_height="wrap_content">
         <Button
             android:id="@+id/dialog_email_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
             android:text="@string/dialog_email_button"
             android:background="@color/voices_orange"
             android:textColor="#FFF"
-            android:layout_marginLeft="50dp"/>
+            android:layout_marginRight="25dp"/>
         <Button
             android:id="@+id/dialog_close_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
             android:text="@string/dialog_close_button"
             android:background="@color/voices_orange"
             android:textColor="#FFF"
-            android:layout_marginLeft="50dp"/>
+            android:layout_marginLeft="25dp"/>
     </LinearLayout>
 </LinearLayout>

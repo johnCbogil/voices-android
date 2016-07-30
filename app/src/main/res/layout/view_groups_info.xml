@@ -27,11 +27,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/group_info_follow_this_group_button"
+        android:background="@color/voices_orange"
+        android:textColor="#FFF"
         android:text="Follow This Group"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:textColor="#000"
         android:text="Policy Positions"/>
     <ListView
         android:id="@+id/policy_list"

@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
-import com.mobilonix.voices.base.util.GeneralUtil;
 
 public class RepresentativesPageLayout extends LinearLayout {
    Dialog responseDialog;
@@ -32,6 +31,7 @@ public class RepresentativesPageLayout extends LinearLayout {
         infoIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 responseDialog = new Dialog(getContext());
                 responseDialog.setContentView(R.layout.info_dialog);
                 responseDialog.setTitle(R.string.response_title);

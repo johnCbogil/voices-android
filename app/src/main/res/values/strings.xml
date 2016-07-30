@@ -9,8 +9,8 @@
 
     <!--Sample Response-->
     <string name="response_title">Here\'s what to say</string>
-    <string name="response_1">Hello my name is</string>
-    <string name="response_2"> [your name]</string>
+    <string name="response_1">Hello my name is &#160;</string>
+    <string name="response_2">[your name]</string>
     <string name="response_3">and I am a constituent.</string>
     <string name="response_4">I would like the representative to</string>
     <string name="response_5">[support or oppose]</string>
