@@ -45,8 +45,8 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voices_main);
 
-        FirebaseMessaging.getInstance().subscribeToTopic("news");
-        FirebaseMessaging.getInstance().subscribeToTopic("EFF");
+//        FirebaseMessaging.getInstance().subscribeToTopic("news");
+//        FirebaseMessaging.getInstance().subscribeToTopic("EFF");
 
         SessionManager.INSTANCE.signIn();
 

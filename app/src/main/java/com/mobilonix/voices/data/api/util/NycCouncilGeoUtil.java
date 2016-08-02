@@ -5,6 +5,8 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.util.Log;
 
+import com.mobilonix.voices.base.util.GeneralUtil;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -50,8 +52,13 @@ public class NycCouncilGeoUtil {
 
     //TODO switch to regex match in order to take advantage of matches() method for multiple terms
     private void parseBorough() {
+        String allAddys = null;
 
-        String allAddys = mAddresses.toString().toLowerCase();
+        try {
+            allAddys = mAddresses.toString().toLowerCase();
+        } catch (Exception e) {
+            GeneralUtil.toast("Problem parsing boroughs");
+        }
 
         if (allAddys != null) {
             if (allAddys.contains("staten island")) {

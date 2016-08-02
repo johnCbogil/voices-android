@@ -84,7 +84,7 @@ public enum LocationRequestManager {
                 locationEntryFrame = (FrameLayout) inflater.inflate(R.layout.view_location_entry, null, false);
             } catch (Exception e) {}
             Button findByLocationButton = (Button)locationEntryFrame.findViewById(R.id.find_for_current_location_button);
-            Button findByEntryButton = (Button)locationEntryFrame.findViewById(R.id.find_for_current_location_button);
+            Button findByEntryButton = (Button)locationEntryFrame.findViewById(R.id.find_for_entered_location_button);
 
             try {
                 final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
@@ -118,6 +118,26 @@ public enum LocationRequestManager {
                                 .toggleRepresentativesScreen(
                                         activity.getCurrentLocation(),
                                         activity, true);
+                    toggleLocationEntryScreen(activity, false);
+
+                }
+            });
+
+            findByLocationButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    LatLong location = activity.getCurrentLocation();
+                    location = new LatLong(40.7282, -74.0776);
+
+                    if(!LocationUtil.isGPSEnabled(activity)) {
+                        LocationRequestManager.INSTANCE.showGPSNotEnabledDialog(activity);
+                    } else {}
+
+                    RepresentativesManager.INSTANCE
+                            .toggleRepresentativesScreen(
+                                    location,
+                                    activity, true);
                     toggleLocationEntryScreen(activity, false);
 
                 }
