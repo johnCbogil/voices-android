@@ -19,4 +19,10 @@
     <string name="dialog_email_button">Launch Email</string>
     <string name="dialog_close_button">Close Window</string>
 
+    <string name="firebase_endpoint">https://voices-430ae.firebaseio.com</string>
+
+    <string name="google_places_api_key">AIzaSyAT87ms7SyySJIG5OrimyKbrHAZRQ2qgcI</string>
+    <string name="sunlight_api_key">939e3373a07c468bac51ddd604ebba1f</string>
+    <string name="open_states_api_key">e39ba83d7c5b4e348db144c4b4c33108</string>
+
 </resources>

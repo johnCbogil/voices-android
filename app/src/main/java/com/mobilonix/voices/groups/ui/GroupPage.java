@@ -7,6 +7,7 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.mobilonix.voices.R;
+import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.groups.model.Group;
 
@@ -56,6 +57,9 @@ public class GroupPage extends FrameLayout {
     }
 
     public void setAllGroups(ArrayList<Group> allGroups) {
+
+        GeneralUtil.toast("All groups set: " + allGroups);
+
         ListView allGroupsList = ((ListView) findViewById(R.id.all_groups_list));
         allGroupsList
                     .setAdapter(new GroupListAdapter(getContext(),

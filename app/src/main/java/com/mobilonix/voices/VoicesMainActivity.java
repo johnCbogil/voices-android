@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.badoo.mobile.util.WeakHandler;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.groups.GroupManager;
@@ -26,6 +27,7 @@ import com.mobilonix.voices.location.model.LatLong;
 import com.mobilonix.voices.location.util.LocationUtil;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.model.Representative;
+import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.splash.SplashManager;
 
 public class VoicesMainActivity extends AppCompatActivity implements LocationListener {
@@ -43,8 +45,10 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voices_main);
 
-        FirebaseMessaging.getInstance().subscribeToTopic("news");
-        FirebaseMessaging.getInstance().subscribeToTopic("EFF");
+//        FirebaseMessaging.getInstance().subscribeToTopic("news");
+//        FirebaseMessaging.getInstance().subscribeToTopic("EFF");
+
+        SessionManager.INSTANCE.signIn();
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -190,6 +194,8 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
     @Override
     protected void onDestroy() {
         LocationUtil.stopLocationUpdates(this);
+        FirebaseAuth.getInstance().signOut();
+
         super.onDestroy();
     }
 
@@ -212,5 +218,6 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
 
     @Override
     public void onProviderDisabled(String provider) {}
+
 
 }
