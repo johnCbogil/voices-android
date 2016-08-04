@@ -41,11 +41,14 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Map;
 
 public enum SessionManager {
 
     INSTANCE;
+
+    private final static String TAG = SessionManager.class.getCanonicalName();
 
     String currentUserToken = FIREBASE_NO_TOKEN;
 
@@ -66,7 +69,7 @@ public enum SessionManager {
 
         final FirebaseAuth firebase = FirebaseAuth.getInstance();
 
-        Log.e("SESSIONS", "FINGERPRINT: " + getCertificateSHA1Fingerprint());
+        Log.e(TAG, "FINGERPRINT: " + getCertificateSHA1Fingerprint());
 
         currentUserToken = PreferenceManager
                 .getDefaultSharedPreferences(VoicesApplication.getContext())
@@ -105,9 +108,7 @@ public enum SessionManager {
         HashMap<String, String> map = new HashMap<>();
         map.put("userId", userId);
 
-        addGroupForCurrentUser(new Group("TEST", "TEST", "", "", "", null, null, "TEST"));
-
-        database.getReference("users/" + userId).addValueEventListener(new ValueEventListener() {
+        database.getReference("users/" + userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -131,16 +132,16 @@ public enum SessionManager {
 
     }
 
-    public void addGroupForCurrentUser(final Group group) {
+    public void addGroupForCurrentUser(final Group group, final Callback<Boolean> callback) {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         database.getReference("users")
-                .addValueEventListener(new ValueEventListener() {
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.child(currentUserToken).child("groups").exists()) {
-                            GeneralUtil.toast("Groups doesnt exist for " + currentUserToken);
-                            HashMap<String, Integer> groups = new HashMap<>();
+                        if (dataSnapshot.child(currentUserToken).child("groups").exists()) {
+
+                            HashMap<String, Integer> groups = (HashMap) dataSnapshot.child(currentUserToken).child("groups").getValue();
                             groups.put(group.getGroupKey(), 1);
                             database.getReference()
                                     .child("users")
@@ -157,13 +158,16 @@ public enum SessionManager {
                                     .child(currentUserToken)
                                     .child("groups")
                                     .setValue(groups);
-                            GeneralUtil.toast("Groups DOES INDEED exist for " + currentUserToken);
                         }
+
+                        callback.onExecuted(true);
                     }
 
                     @Override
-                    public void onCancelled(DatabaseError databaseError) {}
-        });
+                    public void onCancelled(DatabaseError databaseError) {
+                        callback.onExecuted(true);
+                    }
+                });
     }
 
     /**
@@ -176,17 +180,15 @@ public enum SessionManager {
                                            final Callback<ArrayList<Group>> userGroupsCallback) {
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference groupsRef = database.getReference("groups");
+        final DatabaseReference groupsRef = database.getReference("groups");
 
-        groupsRef.addValueEventListener(new ValueEventListener() {
+        groupsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                GeneralUtil.toast("Successfully retreived all group data");
-
                 /* Fetch all groups accross all available groups to subscribe to  */
                 ArrayList<Group> allGroups = new ArrayList<>();
-                for(DataSnapshot group : dataSnapshot.getChildren()) {
+                for (DataSnapshot group : dataSnapshot.getChildren()) {
 
                     String groupKey = group.getKey();
 
@@ -195,21 +197,32 @@ public enum SessionManager {
                     String name = group.child("name").getValue().toString();
                     String groupTyle = group.child("groupType").getValue().toString();
 
-                    HashMap<String, String> policyMap = (HashMap)group.child("policyPositions").getValue();
+                    HashMap<String, String> policyMap = (HashMap) group.child("policyPositions").getValue();
                     ArrayList<Policy> policies = new ArrayList<>();
                     Iterator it = policyMap.entrySet().iterator();
                     while (it.hasNext()) {
-                        Map.Entry pair = (Map.Entry)it.next();
-                        policies.add(new Policy((String)pair.getKey(), (String)pair.getValue(), ""));
+                        Map.Entry pair = (Map.Entry) it.next();
+                        policies.add(new Policy((String) pair.getKey(), (String) pair.getValue(), ""));
                         it.remove();
                     }
 
-                    Group groupToAdd = new Group(name, groupTyle, description, imageUrl, "", policies, null, groupKey);
+                    HashMap<String, String> actionMap = (HashMap) group.child("actions").getValue();
+                    ArrayList<String> actions = new ArrayList<>();
+                    Iterator actionIt = actionMap.entrySet().iterator();
+                    while (actionIt.hasNext()) {
+                        Map.Entry pair = (Map.Entry) actionIt.next();
+                        actions.add((String) pair.getKey());
+                        actionIt.remove();
+                    }
+
+                    Group groupToAdd = new Group(name, groupTyle, description, imageUrl, "", policies, actions, groupKey);
                     allGroups.add(groupToAdd);
                 }
 
+
                 allGroupsCallback.onExecuted(allGroups);
                 fetchUserGroups(database, allGroups, userGroupsCallback);
+
             }
 
             @Override
@@ -219,9 +232,6 @@ public enum SessionManager {
                    The latest groups response needs to be de-serialized and added to our list  */
 
                 ArrayList<Group> allGroups = new ArrayList<Group>();
-
-                GeneralUtil.toast("Problem fetching all group data");
-
                 fetchUserGroups(database, allGroups, userGroupsCallback);
             }
         });
@@ -238,12 +248,11 @@ public enum SessionManager {
                                  final ArrayList<Group> allGroups,
                                  final Callback<ArrayList<Group>> userGroupsCallback) {
 
-        DatabaseReference ref = database.getReference("users");
-        ref.addValueEventListener(new ValueEventListener() {
+
+        final DatabaseReference ref = database.getReference("users");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                GeneralUtil.toast("Successfully user data");
 
                 ArrayList<Group> userGroups = new ArrayList<Group>();
 
@@ -253,21 +262,21 @@ public enum SessionManager {
                 }
 
                 /* TODO: Improve this algorithm here.  It's linear, can be optimized with Hash Structures */
-                for(DataSnapshot user : dataSnapshot.getChildren()) {
+                for (DataSnapshot user : dataSnapshot.getChildren()) {
 
                     String dummyToken = "";
 
                     //Uncomment this if you want to test if the group adding functionality works
-                    //String dummyToken = "EG5DNLSonjNCtpPqgUzZRDmih1L2";
+                    //dummyToken = "EG5DNLSonjNCtpPqgUzZRDmih1L2";
 
-                    if(currentUserToken.equals(user.getKey()) || user.getKey().equals(dummyToken)) {
+                    if (currentUserToken.equals(user.getKey()) || user.getKey().equals(dummyToken)) {
 
-                        if(user.child("groups").exists()) {
+                        if (user.child("groups").exists()) {
 
                             HashMap<String, String> groupMap
                                     = (HashMap) user.child("groups").getValue();
 
-                            Log.e("SESSION", "User: " + user.getKey().toString() + "has groups " + groupMap);
+                            Log.e(TAG, "User: " + user.getKey().toString() + "has groups " + groupMap);
 
                             Iterator it = groupMap.entrySet().iterator();
                             while (it.hasNext()) {
@@ -275,9 +284,7 @@ public enum SessionManager {
                                 for (Group group : allGroups) {
                                     if (pair.getKey().equals(group.getGroupKey())) {
                                         userGroups.add(group);
-
-                                        /* Here we subscribe the user to all groups that they are a part of */
-                                        GroupManager.INSTANCE.subscribeToGroup(group);
+                                        GroupManager.INSTANCE.subscribeToGroup(group, false);
                                     }
                                 }
                                 it.remove();
@@ -294,13 +301,74 @@ public enum SessionManager {
             }
 
             @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
+    }
+
+    public static boolean allActionsFetched = false;
+
+    public void fetchAllActions(final Callback<ArrayList<Action>> callback) {
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference ref = database.getReference("actions");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<Action> allActions = new ArrayList<Action>();
+
+                for (DataSnapshot action : dataSnapshot.getChildren()) {
+
+                    String actionKey = action.getKey();
+                    String body = (String) action.child("body").getValue();
+                    String groupKey = (String) action.child("groupKey").getValue();
+                    String groupName = (String) action.child("groupName").getValue();
+                    String imageUrl = (String) action.child("imageURL").getValue();
+                    String subject = (String) action.child("subject").getValue();
+                    String timestamp = action.child("timestamp").toString();
+                    String title = (String) action.child("title").getValue();
+
+                    allActions.add(new Action(action.getKey(),
+                            (String) action.child("body").getValue(),
+                            (String) action.child("groupKey").getValue(),
+                            (String) action.child("groupName").getValue(),
+                            (String) action.child("imageUrl").getValue(),
+                            (String) action.child("subject").getValue(),
+                            action.child("timestamp").toString(),
+                            (String) action.child("title").getValue()));
+
+                    Action actionToAdd =
+                            new Action(actionKey,
+                                    body,
+                                    groupKey,
+                                    groupName,
+                                    imageUrl,
+                                    subject,
+                                    timestamp,
+                                    title);
+
+                    allActions.add(actionToAdd);
+                }
+
+                callback.onExecuted(allActions);
+            }
+
+            @Override
             public void onCancelled(DatabaseError databaseError) {
-                GeneralUtil.toast("Problem fetching user group data");
+
+                /* TODO: Cache actions here */
+
             }
         });
 
     }
 
+    /**
+     * Use this to obtain the SHA finger print of the keystore. Useful for double checking the idenity
+     * of the build
+     *
+     * @return
+     */
     private String getCertificateSHA1Fingerprint() {
         PackageManager pm = VoicesApplication.getContext().getPackageManager();
         String packageName = VoicesApplication.getContext().getPackageName();
