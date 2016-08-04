@@ -41,11 +41,14 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Map;
 
 public enum SessionManager {
 
     INSTANCE;
+
+    private final static String TAG = SessionManager.class.getCanonicalName();
 
     String currentUserToken = FIREBASE_NO_TOKEN;
 
@@ -66,7 +69,7 @@ public enum SessionManager {
 
         final FirebaseAuth firebase = FirebaseAuth.getInstance();
 
-        Log.e("SESSIONS", "FINGERPRINT: " + getCertificateSHA1Fingerprint());
+        Log.e(TAG, "FINGERPRINT: " + getCertificateSHA1Fingerprint());
 
         currentUserToken = PreferenceManager
                 .getDefaultSharedPreferences(VoicesApplication.getContext())
@@ -205,7 +208,16 @@ public enum SessionManager {
                         it.remove();
                     }
 
-                    Group groupToAdd = new Group(name, groupTyle, description, imageUrl, "", policies, null, groupKey);
+                    HashMap<String, String> actionMap = (HashMap) group.child("actions").getValue();
+                    ArrayList<String> actions = new ArrayList<>();
+                    Iterator actionIt = actionMap.entrySet().iterator();
+                    while (actionIt.hasNext()) {
+                        Map.Entry pair = (Map.Entry) actionIt.next();
+                        actions.add((String) pair.getKey());
+                        actionIt.remove();
+                    }
+
+                    Group groupToAdd = new Group(name, groupTyle, description, imageUrl, "", policies, actions, groupKey);
                     allGroups.add(groupToAdd);
                 }
 
@@ -259,7 +271,7 @@ public enum SessionManager {
                     String dummyToken = "";
 
                     //Uncomment this if you want to test if the group adding functionality works
-                    //String dummyToken = "EG5DNLSonjNCtpPqgUzZRDmih1L2";
+                    dummyToken = "EG5DNLSonjNCtpPqgUzZRDmih1L2";
 
                     if(currentUserToken.equals(user.getKey()) || user.getKey().equals(dummyToken)) {
 
@@ -268,7 +280,7 @@ public enum SessionManager {
                             HashMap<String, String> groupMap
                                     = (HashMap) user.child("groups").getValue();
 
-                            Log.e("SESSION", "User: " + user.getKey().toString() + "has groups " + groupMap);
+                            Log.e(TAG, "User: " + user.getKey().toString() + "has groups " + groupMap);
 
                             Iterator it = groupMap.entrySet().iterator();
                             while (it.hasNext()) {
@@ -302,21 +314,55 @@ public enum SessionManager {
 
     }
 
-    public void fetchActions() {
+    public void fetchAllActions(final Callback<ArrayList<Action>> callback) {
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("actions");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<Group> allActions = new ArrayList<Group>();
+                ArrayList<Action> allActions = new ArrayList<Action>();
+
                 for(DataSnapshot action : dataSnapshot.getChildren()) {
-                    //allActions.add(new Group(action.getKey()));
+
+                    String actionKey = action.getKey();
+                    String body = (String)action.child("body").getValue();
+                    String groupKey = (String)action.child("groupKey").getValue();
+                    String groupName = (String)action.child("groupName").getValue();
+                    String imageUrl = (String)action.child("imageURL").getValue();
+                    String subject = (String)action.child("subject").getValue();
+                    String timestamp = action.child("timestamp").toString();
+                    String title = (String)action.child("title").getValue();
+
+                    allActions.add(new Action(action.getKey(),
+                            (String) action.child("body").getValue(),
+                            (String) action.child("groupKey").getValue(),
+                            (String) action.child("groupName").getValue(),
+                            (String) action.child("imageUrl").getValue(),
+                            (String) action.child("subject").getValue(),
+                            action.child("timestamp").toString(),
+                            (String) action.child("title").getValue()));
+
+                    Action actionToAdd =
+                            new Action(actionKey,
+                                        body,
+                                        groupKey,
+                                        groupName,
+                                        imageUrl,
+                                        subject,
+                                        timestamp,
+                                        title);
+
+                    allActions.add(actionToAdd);
                 }
+
+                callback.onExecuted(allActions);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+
+                /* TODO: Cache actions here */
 
             }
         });

@@ -15,7 +15,7 @@ public class Group {
     String groupKey;
 
     ArrayList<Policy> policies;
-    ArrayList<Integer> actions;
+    ArrayList<String> actions;
 
     public Group(String groupName,
                  String groupCategory,
@@ -23,7 +23,8 @@ public class Group {
                  String groupImageUrl,
                  String extendedDescription,
                  ArrayList<Policy> policies,
-                 ArrayList<Integer> actions, String groupKey) {
+                 ArrayList<String> actions,
+                 String groupKey) {
         this.groupName = groupName;
         this.groupCategory = groupCategory;
         this.groupDescription = groupDescription;
@@ -67,7 +68,7 @@ public class Group {
      *
      * @return
      */
-    public ArrayList<Integer> getActions() {
+    public ArrayList<String> getActions() {
         return actions;
     }
 }

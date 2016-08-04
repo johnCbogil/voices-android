@@ -1,6 +1,7 @@
 package com.mobilonix.voices.groups.ui;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,11 @@ import com.mobilonix.voices.groups.model.Group;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 
 public class ActionListAdapter extends ArrayAdapter<Action> {
+
+    private final static String TAG = ActionListAdapter.class.getCanonicalName();
 
     Context context;
     int resource;
@@ -26,16 +30,23 @@ public class ActionListAdapter extends ArrayAdapter<Action> {
     public ActionListAdapter(Context context, int resource, ArrayList<Action> actions) {
         super(context, resource, actions);
 
+        for(Action action : actions) {
+            Log.wtf(TAG, "Adapter Action Name: " + action.getTitle());
+            Log.wtf(TAG, "Adapter Action IMAGE: " + action.getImageUrl());
+
+        }
+
         this.resource = resource;
         this.context = context;
-        this.actions = actions;
+
+        ArrayList<Action> nonDuplicatedActionList = new ArrayList<>(new LinkedHashSet<>(actions));
+        this.actions =  nonDuplicatedActionList;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        if(convertView == null) {
-            LayoutInflater inflater =
+        LayoutInflater inflater =
                     (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(resource, parent, false);
 
@@ -45,6 +56,8 @@ public class ActionListAdapter extends ArrayAdapter<Action> {
             TextView actionDescription = (TextView)convertView.findViewById(R.id.cell_group_description);
             TextView actionName = (TextView)convertView.findViewById(R.id.cell_group_name);
             TextView actionCategory = (TextView)convertView.findViewById(R.id.cell_group_category);
+
+            Log.wtf(TAG, "Adapter GET VIEW: " +actions.get(position).getTitle());
 
             actionName.setText(actions.get(position).getTitle());
             actionCategory.setText(actions.get(position).getSubject());
@@ -58,12 +71,9 @@ public class ActionListAdapter extends ArrayAdapter<Action> {
                     .fit()
                     .into(actionImage);
 
-
             arrowImage.setVisibility(View.GONE);
             actionDescription.setVisibility(View.VISIBLE);
             learnMoreButton.setVisibility(View.VISIBLE);
-
-        }
 
         return convertView;
     }

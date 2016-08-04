@@ -28,6 +28,7 @@ public class GroupPage extends FrameLayout {
     }
 
     public void setActions(ArrayList<Action> actions) {
+
         this.actions = actions;
 
         if(!actionGroupsSet) {
@@ -35,7 +36,7 @@ public class GroupPage extends FrameLayout {
             actionGroupsList
                     .setAdapter(new ActionListAdapter(getContext(),
                             R.layout.cell_group,
-                            actions));
+                            selectUserActions(actions, userGroups)));
 
             actionGroupsSet = true;
         }
@@ -82,6 +83,33 @@ public class GroupPage extends FrameLayout {
 
         userGroupsSet = false;
         actionGroupsSet = false;
+    }
+
+    /**
+     * Get the user's specific actions, as long as they are subscribed to particular groups
+     *
+     * TODO: Optimize this based on data structure
+     *
+     * @param allActions
+     * @param userGroups
+     * @return
+     */
+    public ArrayList<Action> selectUserActions(ArrayList<Action> allActions, ArrayList<Group> userGroups) {
+
+        ArrayList<Action> userActions = new ArrayList<>();
+
+        for(Group group : userGroups) {
+            ArrayList<String> groupActions = group.getActions();
+            for (String actionString : groupActions) {
+                for(Action action : allActions) {
+                    if(action.getActionKey().equals(actionString)) {
+                        userActions.add(action);
+                    }
+                }
+            }
+        }
+
+        return userActions;
     }
 
 }
