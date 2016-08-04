@@ -12,6 +12,7 @@ import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.delegates.Callback;
+import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
 import com.mobilonix.voices.groups.model.Policy;
 import com.mobilonix.voices.groups.ui.GroupPage;
@@ -37,12 +38,12 @@ public enum GroupManager {
     boolean groupPageVisible = false;
 
     ArrayList<Group> USER_GROUPS_DUMMY_DATA = new ArrayList<>();
-    ArrayList<Group> ACTION_GROUPS_DUMMY_DATA = new ArrayList<>();
     ArrayList<Group> ALL_GROUPS_DUMMY_DATA = new ArrayList<>();
+    ArrayList<Action> ACTIONS_DUMMY_DATA = new ArrayList<>();
 
     ArrayList<Group> userGroupsData = new ArrayList<>();
-    ArrayList<Group> actionGroupsData = new ArrayList<>();
     ArrayList<Group> allGroupsData = new ArrayList<>();
+    ArrayList<Action> actionsData = new ArrayList<>();
 
     /* Instance initialization for all you noobs :) */
     {
@@ -62,23 +63,24 @@ public enum GroupManager {
                         "BUM"));
 
         /* Sub for actions that should be pulled remotely from user account */
-        ACTION_GROUPS_DUMMY_DATA.add(
-                new Group("Electronic Frontier Foundation",
-                        "Privacy Rights",
+        ACTIONS_DUMMY_DATA.add(
+                new Action("001",
                         "Tell the FBI Not to abuse its massive biometric database.",
-                        "https://www.eff.org/files/2015/03/02/eff-og-3.png", "",
-                        null,
-                        actions,
-                        "BUM"));
-        ACTION_GROUPS_DUMMY_DATA.add(
-                new Group("Electronic Frontier Foundation",
-                        "Encryption",
-                        "Join EFA allies in NYC on Thursday 6/30.",
+                        "EFF",
+                        "Electronic Frontier Foundation",
                         "https://www.eff.org/files/2015/03/02/eff-og-3.png",
-                        "",
-                        null,
-                        actions,
-                        "BUM"));
+                        "Digital Rights",
+                        "13123434534",
+                        "Join EFA allies in NYC on Thursday 6/30"));
+        ACTIONS_DUMMY_DATA.add(
+                new Action("001",
+                        "Tell the FBI Not to abuse its massive biometric database.",
+                        "EFF",
+                        "Electronic Frontier Foundation",
+                        "https://www.eff.org/files/2015/03/02/eff-og-3.png",
+                        "Digital Rights",
+                        "13123434534",
+                        "Join EFA allies in NYC on Thursday 6/30"));
 
         /* Sub for all groups that should be pulled remotely from user account */
         ALL_GROUPS_DUMMY_DATA.add(
@@ -109,7 +111,7 @@ public enum GroupManager {
 
 
         userGroupsData.addAll(USER_GROUPS_DUMMY_DATA);
-        actionGroupsData.addAll(ACTION_GROUPS_DUMMY_DATA);
+        actionsData.addAll(ACTIONS_DUMMY_DATA);
     }
 
     public void toggleGroupPage(ViewGroup pageRoot, boolean state) {
@@ -147,7 +149,7 @@ public enum GroupManager {
                 }
             });
 
-            groupPage.setActionGroups(actionGroupsData);
+            groupPage.setActions(actionsData);
             //groupPage.setUserGroups(userGroupsData);
 
             toggleGroups(GroupType.ACTION);

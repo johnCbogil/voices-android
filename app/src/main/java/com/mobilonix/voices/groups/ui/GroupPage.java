@@ -9,13 +9,14 @@ import android.widget.ListView;
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.groups.GroupManager;
+import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
 
 import java.util.ArrayList;
 
 public class GroupPage extends FrameLayout {
 
-    ArrayList<Group> actionGroups;
+    ArrayList<Action> actions;
     ArrayList<Group> userGroups;
     ArrayList<Group> allGroups;
 
@@ -26,16 +27,15 @@ public class GroupPage extends FrameLayout {
         super(context, attrs);
     }
 
-    public void setActionGroups(ArrayList<Group> actionGroups) {
-        this.actionGroups = actionGroups;
+    public void setActions(ArrayList<Action> actions) {
+        this.actions = actions;
 
         if(!actionGroupsSet) {
             ListView actionGroupsList = ((ListView) findViewById(R.id.action_groups_list));
             actionGroupsList
-                    .setAdapter(new GroupListAdapter(getContext(),
+                    .setAdapter(new ActionListAdapter(getContext(),
                             R.layout.cell_group,
-                            actionGroups,
-                            GroupManager.GroupType.ACTION));
+                            actions));
 
             actionGroupsSet = true;
         }
@@ -83,7 +83,5 @@ public class GroupPage extends FrameLayout {
         userGroupsSet = false;
         actionGroupsSet = false;
     }
-
-
 
 }

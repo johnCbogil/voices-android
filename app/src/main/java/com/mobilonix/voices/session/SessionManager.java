@@ -138,7 +138,7 @@ public enum SessionManager {
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.child(currentUserToken).child("groups").exists()) {
+                        if (dataSnapshot.child(currentUserToken).child("groups").exists()) {
                             GeneralUtil.toast("Groups doesnt exist for " + currentUserToken);
                             HashMap<String, Integer> groups = new HashMap<>();
                             groups.put(group.getGroupKey(), 1);
@@ -162,8 +162,9 @@ public enum SessionManager {
                     }
 
                     @Override
-                    public void onCancelled(DatabaseError databaseError) {}
-        });
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
     }
 
     /**
@@ -186,7 +187,7 @@ public enum SessionManager {
 
                 /* Fetch all groups accross all available groups to subscribe to  */
                 ArrayList<Group> allGroups = new ArrayList<>();
-                for(DataSnapshot group : dataSnapshot.getChildren()) {
+                for (DataSnapshot group : dataSnapshot.getChildren()) {
 
                     String groupKey = group.getKey();
 
@@ -195,12 +196,12 @@ public enum SessionManager {
                     String name = group.child("name").getValue().toString();
                     String groupTyle = group.child("groupType").getValue().toString();
 
-                    HashMap<String, String> policyMap = (HashMap)group.child("policyPositions").getValue();
+                    HashMap<String, String> policyMap = (HashMap) group.child("policyPositions").getValue();
                     ArrayList<Policy> policies = new ArrayList<>();
                     Iterator it = policyMap.entrySet().iterator();
                     while (it.hasNext()) {
-                        Map.Entry pair = (Map.Entry)it.next();
-                        policies.add(new Policy((String)pair.getKey(), (String)pair.getValue(), ""));
+                        Map.Entry pair = (Map.Entry) it.next();
+                        policies.add(new Policy((String) pair.getKey(), (String) pair.getValue(), ""));
                         it.remove();
                     }
 
@@ -296,6 +297,27 @@ public enum SessionManager {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 GeneralUtil.toast("Problem fetching user group data");
+            }
+        });
+
+    }
+
+    public void fetchActions() {
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("actions");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<Group> allActions = new ArrayList<Group>();
+                for(DataSnapshot action : dataSnapshot.getChildren()) {
+                    //allActions.add(new Group(action.getKey()));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
 
