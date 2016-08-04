@@ -4,30 +4,30 @@
     android:layout_height="match_parent">
 
     <!-- List views for now, recycler view's later!-->
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/action_groups_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    </ListView>
+    </android.support.v7.widget.RecyclerView>
 
     <!-- List of the users groups -->
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/user_groups_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone">
 
-    </ListView>
+    </android.support.v7.widget.RecyclerView>
 
     <!-- List of the users groups -->
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/all_groups_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone">
 
-    </ListView>
+    </android.support.v7.widget.RecyclerView>
 
 
 </com.mobilonix.voices.groups.ui.GroupPage>

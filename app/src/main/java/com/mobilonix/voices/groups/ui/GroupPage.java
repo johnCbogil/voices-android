@@ -1,6 +1,8 @@
 package com.mobilonix.voices.groups.ui;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
@@ -21,7 +23,7 @@ public class GroupPage extends FrameLayout {
     ArrayList<Group> allGroups;
 
     boolean userGroupsSet = false;
-    boolean actionGroupsSet = false;
+    boolean actionsSet = false;
 
     public GroupPage(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -31,42 +33,40 @@ public class GroupPage extends FrameLayout {
 
         this.actions = actions;
 
-        if(!actionGroupsSet) {
-            ListView actionGroupsList = ((ListView) findViewById(R.id.action_groups_list));
-            actionGroupsList
-                    .setAdapter(new ActionListAdapter(getContext(),
-                            R.layout.cell_group,
-                            selectUserActions(actions, userGroups)));
+        RecyclerView actionsRecycler = ((RecyclerView) findViewById(R.id.action_groups_list));
+        actionsRecycler.setLayoutManager(new LinearLayoutManager(actionsRecycler.getContext()));
+        actionsRecycler.setAdapter(new
+                ActionListRecylerAdapter(actionsRecycler.getContext(),
+                selectUserActions(actions, userGroups)));
 
-            actionGroupsSet = true;
-        }
+        actionsSet = true;
     }
 
+    /**
+     * Set the user specific groups for a page
+     *
+     * @param userGroups
+     */
     public void setUserGroups(ArrayList<Group> userGroups) {
         this.userGroups = userGroups;
-        if(!userGroupsSet) {
-            ListView userGroupsList = ((ListView) findViewById(R.id.user_groups_list));
-            userGroupsList
-                    .setAdapter(new GroupListAdapter(getContext(),
-                            R.layout.cell_group,
-                            userGroups,
-                            GroupManager.GroupType.USER));
 
-            userGroupsSet = true;
+        RecyclerView userGroupsRecycler = ((RecyclerView) findViewById(R.id.user_groups_list));
+        userGroupsRecycler.setLayoutManager(new LinearLayoutManager(userGroupsRecycler.getContext()));
+        userGroupsRecycler.setAdapter(new GroupListRecylerAdapter(getContext(),
+                userGroups,
+                GroupManager.GroupType.USER));
 
-        }
+        userGroupsSet = true;
     }
 
     public void setAllGroups(ArrayList<Group> allGroups) {
+        this.allGroups = allGroups;
 
-        GeneralUtil.toast("All groups set: " + allGroups);
-
-        ListView allGroupsList = ((ListView) findViewById(R.id.all_groups_list));
-        allGroupsList
-                    .setAdapter(new GroupListAdapter(getContext(),
-                            R.layout.cell_group,
-                            allGroups,
-                            GroupManager.GroupType.ALL));
+        RecyclerView allGroupsRecycler = ((RecyclerView) findViewById(R.id.all_groups_list));
+        allGroupsRecycler.setLayoutManager(new LinearLayoutManager(allGroupsRecycler.getContext()));
+        allGroupsRecycler.setAdapter(new GroupListRecylerAdapter(getContext(),
+                allGroups,
+                GroupManager.GroupType.ALL));
 
     }
 
@@ -82,7 +82,7 @@ public class GroupPage extends FrameLayout {
         userGroupsList.setAdapter(new ArrayAdapter<Group>(getContext(), R.layout.cell_group, new ArrayList<Group>()));
 
         userGroupsSet = false;
-        actionGroupsSet = false;
+        actionsSet = false;
     }
 
     /**
