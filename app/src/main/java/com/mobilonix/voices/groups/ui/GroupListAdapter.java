@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -61,6 +62,7 @@ public class GroupListAdapter extends ArrayAdapter<Group> {
                 @Override
                 public void onClick(View v) {
                     groupDialog = new Dialog(getContext());
+                    groupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     groupDialog.setContentView(R.layout.groups_dialog);
                     Button dialogCloseButton = (Button)groupDialog.findViewById(R.id.dialog_close_button);
                     PolicyObject policy1 = new PolicyObject("Policy1");

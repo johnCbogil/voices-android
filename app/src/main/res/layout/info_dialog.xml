@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:padding="20dp"
         android:text="@string/response_title"
         android:background="@color/voices_orange"
         android:textColor="#FFF"/>
@@ -18,7 +19,8 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center">
+        android:gravity="center"
+        android:padding="10dp">
         <TextView
             android:id="@+id/response_1"
             android:layout_width="wrap_content"
@@ -36,12 +38,14 @@
             android:id="@+id/response_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="10dp"
             android:text="@string/response_3"
             android:textColor="#000000" />
     <TextView
         android:id="@+id/response_4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="10dp"
         android:text="@string/response_4"
         android:textColor="#000000"/>
 
@@ -49,6 +53,7 @@
         android:id="@+id/response_5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="10dp"
         android:text="@string/response_5"
         android:textColor="@color/voices_orange"/>'
 
@@ -56,6 +61,7 @@
         android:id="@+id/response_6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="10dp"
         android:text="@string/response_6"
         android:textColor="@color/voices_orange"/>
 
@@ -63,11 +69,13 @@
         android:id="@+id/response_7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="10dp"
         android:text="@string/response_7"
         android:textColor="#000000"/>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
+        android:padding="10dp"
         android:layout_height="wrap_content">
         <Button
             android:id="@+id/dialog_email_button"
@@ -75,7 +83,7 @@
             android:layout_height="50dp"
             android:layout_weight="1"
             android:text="@string/dialog_email_button"
-            android:background="@color/voices_orange"
+            android:background="@drawable/rounded_button"
             android:textColor="#FFF"
             android:layout_marginRight="25dp"/>
         <Button
@@ -84,7 +92,7 @@
             android:layout_height="50dp"
             android:layout_weight="1"
             android:text="@string/dialog_close_button"
-            android:background="@color/voices_orange"
+            android:background="@drawable/rounded_button"
             android:textColor="#FFF"
             android:layout_marginLeft="25dp"/>
     </LinearLayout>

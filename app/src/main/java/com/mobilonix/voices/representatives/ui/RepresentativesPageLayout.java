@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -32,6 +33,7 @@ public class RepresentativesPageLayout extends LinearLayout {
             @Override
             public void onClick(View v) {
                 responseDialog = new Dialog(getContext());
+                responseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 responseDialog.setContentView(R.layout.info_dialog);
                 responseDialog.setTitle(R.string.response_title);
 
