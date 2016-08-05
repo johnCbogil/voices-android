@@ -32,9 +32,14 @@ public class PolicyListAdapter extends ArrayAdapter<PolicyObject>{
             convertView = inflater.inflate(R.layout.policy_list_item, parent, false);
 
             TextView policyText = (TextView)convertView.findViewById(R.id.policy_list_item_text);
+            policyText.setText(policies.get(position).getPolicyText());
             ImageButton policyButton = (ImageButton)convertView.findViewById(R.id.policy_list_item_button);
+            policyButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-            //policyText.setText(policies.get(position).getName();
+                }
+            });
         }
         return convertView;
     }

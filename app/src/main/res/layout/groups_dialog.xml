@@ -28,10 +28,19 @@
         android:layout_height="wrap_content"
         android:padding="20dp"
         android:layout_gravity="center"
-        android:id="@+id/group_info_follow_this_group_button"
+        android:id="@+id/follow_button"
         android:background="@drawable/splash_button"
         android:textColor="#FFF"
         android:text="Follow This Group"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:layout_gravity="center"
+        android:id="@+id/dialog_close_button"
+        android:background="@drawable/splash_button"
+        android:textColor="#FFF"
+        android:text="Close Window"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
