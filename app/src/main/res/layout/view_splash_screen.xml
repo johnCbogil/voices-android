@@ -27,10 +27,11 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
+        android:padding="20dp"
         android:text="Getting Started"
         android:layout_marginBottom="30dp"
         android:textColor="@android:color/white"
-        android:background="@android:color/holo_orange_dark"
+        android:background="@drawable/splash_button"
         android:id="@+id/splash_getting_started_button"
         android:layout_gravity="center_horizontal|bottom" />
 

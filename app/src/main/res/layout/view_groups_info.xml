@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/group_info_description_text"
-            android:text="Electronic Frontier Foundation is a non-non profit group"/>
+            android:text="Electronic Frontier Foundation is an international non-profit digital rights group based"/>
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"
@@ -24,10 +24,12 @@
         android:id="@+id/group_info_policy_text"
         android:text="Digital Rights"/>
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:layout_gravity="center"
         android:id="@+id/group_info_follow_this_group_button"
-        android:background="@color/voices_orange"
+        android:background="@drawable/splash_button"
         android:textColor="#FFF"
         android:text="Follow This Group"/>
     <TextView

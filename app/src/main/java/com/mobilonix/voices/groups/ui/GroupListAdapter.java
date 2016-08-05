@@ -55,7 +55,7 @@ public class GroupListAdapter extends ArrayAdapter<Group> {
             learnMoreButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    //togglePolicyScreen();
                 }
             });
 

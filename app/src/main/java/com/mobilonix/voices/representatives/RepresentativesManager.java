@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
-import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.data.api.ApiEngine;
 import com.mobilonix.voices.data.api.engines.StateOpenStatesApi;
 import com.mobilonix.voices.data.api.engines.UsCongressSunlightApi;
@@ -31,6 +30,8 @@ import java.util.ArrayList;
 public enum RepresentativesManager {
 
     INSTANCE;
+
+    public String TAG = RepresentativesManager.class.getCanonicalName();
 
     static UsCongressSunlightApi sunlightApiEngine = new UsCongressSunlightApi();
     static StateOpenStatesApi openStatesApiEngine = new StateOpenStatesApi();
@@ -217,7 +218,6 @@ public enum RepresentativesManager {
                         public void run() {
                             pages.add(new RepresentativesPage(data));
                             representativesPager.setAdapter(new RepresentativesPagerAdapter(pages));
-
                         }
                     });
 

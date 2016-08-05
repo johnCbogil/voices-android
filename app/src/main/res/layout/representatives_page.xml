@@ -21,12 +21,13 @@
         android:focusableInTouchMode="true">
     </LinearLayout>
 
-    <EditText
+    <!---<fragment
+        android:id="@+id/place_autocomplete_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Representative Location"
-        android:id="@+id/representatives_page_search_field"
-        android:drawableLeft="@android:drawable/ic_menu_search"/>
+        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+    />-->
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_weight="0.9"
         android:id="@+id/swipe_refresh_layout"

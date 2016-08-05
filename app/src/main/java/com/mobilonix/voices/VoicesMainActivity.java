@@ -20,12 +20,10 @@ import com.badoo.mobile.util.WeakHandler;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.groups.GroupManager;
-import com.mobilonix.voices.groups.model.Group;
 import com.mobilonix.voices.location.LocationRequestManager;
 import com.mobilonix.voices.location.model.LatLong;
 import com.mobilonix.voices.location.util.LocationUtil;
 import com.mobilonix.voices.representatives.RepresentativesManager;
-import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.splash.SplashManager;
 
 public class VoicesMainActivity extends AppCompatActivity implements LocationListener {
@@ -105,11 +103,10 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
             RepresentativesManager.INSTANCE.toggleRepresentativesScreen(currentLocation, this, false);
             LocationRequestManager.INSTANCE.toggleLocationEntryScreen(this, true);
             findViewById(R.id.primary_toolbar).setVisibility(View.GONE);
-
             return;
         } else if(LocationRequestManager.INSTANCE.isLocationRequestScreenOn()) {
             LocationRequestManager.INSTANCE.toggleLocationRequestScreen(this, false);
-            SplashManager.INSTANCE.toggleSplashScreen(this, true);
+            //SplashManager.INSTANCE.toggleSplashScreen(this, true);
             findViewById(R.id.primary_toolbar).setVisibility(View.GONE);
 
             return;
