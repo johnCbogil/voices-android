@@ -160,6 +160,7 @@ public enum GroupManager {
 
             @Override
             public boolean onExecuted(ArrayList<Group> data) {
+                allGroupsData = data;
                 groupPage.setAllGroups(data);
                 return false;
             }
@@ -316,6 +317,22 @@ public enum GroupManager {
 
         toolbar.findViewById(R.id.action_selection_text).setBackgroundResource(R.drawable.button_back);
         toolbar.findViewById(R.id.groups_selection_text).setBackgroundResource(R.drawable.button_back_selected);
+    }
+
+    /**
+     * Find the group for a specific key
+     *
+     * @param actionKey
+     * @return
+     */
+    public Group findGroupWithKey(String actionKey) {
+        for (Group group : allGroupsData) {
+            if(group.getGroupKey().equals(actionKey)) {
+                return group;
+            }
+        }
+
+        return null;
     }
 
     public GroupType getMODE() {

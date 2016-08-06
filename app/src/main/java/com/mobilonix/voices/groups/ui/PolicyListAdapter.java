@@ -9,14 +9,15 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.mobilonix.voices.R;
+import com.mobilonix.voices.groups.model.Policy;
 
 import java.util.ArrayList;
 
-public class PolicyListAdapter extends ArrayAdapter<PolicyObject>{
+public class PolicyListAdapter extends ArrayAdapter<Policy>{
     private final Context context;
-    private final ArrayList<PolicyObject> policies;
+    private final ArrayList<Policy> policies;
 
-    public PolicyListAdapter(Context context, int resource, ArrayList<PolicyObject> policies) {
+    public PolicyListAdapter(Context context, int resource, ArrayList<Policy> policies) {
         super(context, R.layout.policy_list_item, policies);
         this.context = context;
         this.policies = policies;
@@ -32,7 +33,7 @@ public class PolicyListAdapter extends ArrayAdapter<PolicyObject>{
             convertView = inflater.inflate(R.layout.policy_list_item, parent, false);
 
             TextView policyText = (TextView)convertView.findViewById(R.id.policy_list_item_text);
-            policyText.setText(policies.get(position).getPolicyText());
+            policyText.setText(policies.get(position).getPolicyName());
             ImageButton policyButton = (ImageButton)convertView.findViewById(R.id.policy_list_item_button);
             policyButton.setOnClickListener(new View.OnClickListener() {
                 @Override
