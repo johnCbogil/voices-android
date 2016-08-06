@@ -27,7 +27,6 @@
 
         </activity>
 
-
         <service
             android:name=".notifications.services.VoicesNotificationUpdateService">
             <intent-filter>

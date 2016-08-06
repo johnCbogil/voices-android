@@ -1,6 +1,7 @@
 package com.mobilonix.voices.data.api.engines;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.mobilonix.voices.data.api.ApiEngine;
 import com.mobilonix.voices.data.api.util.UrlGenerator;
@@ -11,6 +12,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import okhttp3.Request;
 
 public class UsCongressSunlightApi implements ApiEngine {
 
@@ -24,10 +27,14 @@ public class UsCongressSunlightApi implements ApiEngine {
 
     public static final String API_VALUE = "939e3373a07c468bac51ddd604ebba1f";
 
-    public UsCongressSunlightApi() {}
+    public UsCongressSunlightApi() {
+        Log.i("response","in sunlight" );
+    }
 
     @Override
-    public String generateUrl(double latitude, double longitude) {
+    public Request generateRequest(double latitude, double longitude) {
+
+        Log.i("sunlight", "lat: " + latitude + "lon: " + longitude);
 
         Bundle urlBundle = new Bundle();
 
@@ -37,15 +44,21 @@ public class UsCongressSunlightApi implements ApiEngine {
 
         UrlGenerator generator = new UrlGenerator(BASE_URL, urlBundle);
 
-        return generator.generateGetUrlString();
+        final Request recordRequest = new Request.Builder()
+                .url(generator.generateGetUrl())
+                .build();
+
+        return recordRequest;
     }
 
     @Override
     public ArrayList<Politico> parseData(String response) {
+        Log.i("response",response );
         return httpResponseToPoliticos(response);
     }
 
     private ArrayList<Politico> httpResponseToPoliticos(String response){
+
 
         ArrayList<Politico> politicos = new ArrayList<>();
 

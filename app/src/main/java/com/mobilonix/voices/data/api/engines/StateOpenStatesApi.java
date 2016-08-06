@@ -1,6 +1,7 @@
 package com.mobilonix.voices.data.api.engines;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.mobilonix.voices.data.api.ApiEngine;
 import com.mobilonix.voices.data.api.util.UrlGenerator;
@@ -11,6 +12,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import okhttp3.Request;
 
 public class StateOpenStatesApi implements ApiEngine {
 
@@ -23,10 +26,14 @@ public class StateOpenStatesApi implements ApiEngine {
 
     public static final String API_VALUE = "e39ba83d7c5b4e348db144c4b4c33108";
 
-    public StateOpenStatesApi() {}
+    public StateOpenStatesApi() {
+
+        Log.i("response","in openstates" );
+
+    }
 
     @Override
-    public String generateUrl(double latitude, double longitude) {
+    public Request generateRequest(double latitude, double longitude) {
 
         Bundle urlBundle = new Bundle();
 
@@ -36,11 +43,17 @@ public class StateOpenStatesApi implements ApiEngine {
 
         UrlGenerator generator = new UrlGenerator(BASE_URL, urlBundle);
 
-        return generator.generateGetUrlString();
+        Request recordRequest = new Request.Builder()
+                .url(generator.generateGetUrl())
+                .build();
+
+        return recordRequest;
     }
 
     @Override
     public ArrayList<Politico> parseData(String response){
+
+        Log.i("response",response );
 
         ArrayList<Politico> politicos = new ArrayList<>();
 

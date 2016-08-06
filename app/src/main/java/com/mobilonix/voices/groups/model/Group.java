@@ -12,20 +12,27 @@ public class Group {
     String groupDescription;
     String extendedDescription;
     String groupImageUrl;
+    String groupKey;
+
     ArrayList<Policy> policies;
+    ArrayList<String> actions;
 
     public Group(String groupName,
                  String groupCategory,
                  String groupDescription,
                  String groupImageUrl,
                  String extendedDescription,
-                 ArrayList<Policy> policies) {
+                 ArrayList<Policy> policies,
+                 ArrayList<String> actions,
+                 String groupKey) {
         this.groupName = groupName;
         this.groupCategory = groupCategory;
         this.groupDescription = groupDescription;
         this.policies = policies;
         this.extendedDescription = extendedDescription;
         this.groupImageUrl = groupImageUrl;
+        this.actions = actions;
+        this.groupKey = groupKey;
     }
 
     public ArrayList<Policy> getPolicies() {
@@ -50,5 +57,18 @@ public class Group {
 
     public String getExtendedDescription() {
         return extendedDescription;
+    }
+
+    public String getGroupKey() {
+        return groupKey;
+    }
+
+    /**
+     * Return the indices of associated actions obtained from the list of all actions
+     *
+     * @return
+     */
+    public ArrayList<String> getActions() {
+        return actions;
     }
 }
