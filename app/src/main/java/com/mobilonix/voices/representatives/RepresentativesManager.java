@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
-import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.data.api.ApiEngine;
 import com.mobilonix.voices.data.api.engines.NycCouncilApi;
 import com.mobilonix.voices.data.api.engines.UsCongressSunlightApi;
@@ -36,6 +35,8 @@ import okhttp3.Request;
 public enum RepresentativesManager {
 
     INSTANCE;
+
+    public String TAG = RepresentativesManager.class.getCanonicalName();
 
     static UsCongressSunlightApi sunlightApiEngine = new UsCongressSunlightApi();
     static StateOpenStatesApi openStatesApiEngine = new StateOpenStatesApi();
@@ -247,6 +248,7 @@ public enum RepresentativesManager {
                             }
                         });
                     }
+
                     return false;
                 }
             });

@@ -1,19 +1,23 @@
 package com.mobilonix.voices.groups.ui;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
+import com.mobilonix.voices.groups.model.Policy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -103,6 +107,8 @@ public class GroupListRecylerAdapter extends RecyclerView.Adapter<GroupListRecyl
 
         Button learnMoreButton;
 
+        Dialog groupDialog;
+
         int position;
 
         public GroupListHolder(View itemView, ArrayList<Group> groups) {
@@ -118,6 +124,38 @@ public class GroupListRecylerAdapter extends RecyclerView.Adapter<GroupListRecyl
             groupCategory = (TextView)itemView.findViewById(R.id.cell_group_category);
 
             learnMoreButton = (Button)itemView.findViewById(R.id.cell_group_learn_more_button);
+
+            learnMoreButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    ArrayList<PolicyObject> policyArray = new ArrayList<>();
+
+                    groupDialog = new Dialog(v.getContext());
+                    groupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    groupDialog.setContentView(R.layout.groups_dialog);
+                    Button dialogCloseButton = (Button)groupDialog.findViewById(R.id.dialog_close_button);
+                    PolicyObject policy1 = new PolicyObject("Policy1");
+                    PolicyObject policy2 = new PolicyObject("Policy2");
+                    policyArray.add(policy1);
+                    policyArray.add(policy2);
+                    PolicyListAdapter policyAdapter
+                            = new PolicyListAdapter(v.getContext(),
+                            R.layout.policy_list_item,
+                            policyArray);
+                    ListView policyListView = (ListView)groupDialog.findViewById(R.id.policy_list);
+                    policyListView.setAdapter(policyAdapter);
+                    // if button is clicked, close the custom dialog
+                    dialogCloseButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            groupDialog.dismiss();
+                        }
+                    });
+
+                    groupDialog.show();
+                }
+            });
 
         }
 

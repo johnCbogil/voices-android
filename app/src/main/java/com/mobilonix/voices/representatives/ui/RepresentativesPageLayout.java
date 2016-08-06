@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -12,27 +13,27 @@ import android.widget.LinearLayout;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
-import com.mobilonix.voices.base.util.GeneralUtil;
 
 public class RepresentativesPageLayout extends LinearLayout {
-   Dialog responseDialog;
+    public String TAG = RepresentativesPageLayout.class.getCanonicalName();
+    Dialog responseDialog;
 
     public RepresentativesPageLayout(Context context, AttributeSet attrs) {
-
         super(context, attrs);
-
         hideKeyboard((VoicesMainActivity)getContext());
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-
+        //final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                //((VoicesMainActivity)getContext()).getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         ImageView infoIcon = (ImageView)findViewById(R.id.representatives_info_icon);
         infoIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 responseDialog = new Dialog(getContext());
+                responseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 responseDialog.setContentView(R.layout.info_dialog);
                 responseDialog.setTitle(R.string.response_title);
 
@@ -70,5 +71,4 @@ public class RepresentativesPageLayout extends LinearLayout {
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
-
 }
