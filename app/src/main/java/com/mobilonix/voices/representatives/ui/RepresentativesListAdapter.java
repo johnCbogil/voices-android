@@ -47,7 +47,8 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
             Picasso.with(listImage.getContext())
                     .load(representatives.get(position).getRepresentativeImageUrl())
                     .fit()
-                    .placeholder(R.drawable.representatives_place_holder)
+                    .placeholder(R.drawable.placeholder_spinner)
+                    .error(R.drawable.representatives_place_holder)
                     .into(listImage);
 
             ImageView twitterImage = (ImageView)convertView.findViewById(R.id.representatives_list_twitter_image);

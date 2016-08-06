@@ -14,7 +14,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mobilonix.voices.R;
+import com.mobilonix.voices.base.util.GeneralUtil;
+import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.groups.model.Action;
+import com.mobilonix.voices.groups.model.Group;
+import com.mobilonix.voices.groups.model.Policy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -52,7 +56,8 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
 
         Picasso.with(holder.actionImage.getContext())
                 .load(actions.get(position).getImageUrl())
-                .placeholder(R.drawable.representatives_place_holder)
+                .placeholder(R.drawable.placeholder_spinner)
+                .error(R.drawable.representatives_place_holder)
                 .fit()
                 .into(holder.actionImage);
 
@@ -82,7 +87,7 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
 
         int position;
 
-        public ActionListHolder(View itemView, ArrayList<Action> actions) {
+        public ActionListHolder(View itemView, final ArrayList<Action> actions) {
             super(itemView);
 
             actionImage = (ImageView) itemView.findViewById(R.id.cell_group_image);
@@ -97,16 +102,42 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
             learnMoreButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArrayList<PolicyObject> policyArray = new ArrayList<>();
+                    ArrayList<Policy> policyArray = new ArrayList<>();
+
+                    GeneralUtil.toast("Finding policies for action: "
+                            + actions.get(position).getTitle()
+                            + " and groupkey: "
+                            + actions.get(position).getGroupKey()
+                            + "and policies "
+                            +  GroupManager.INSTANCE.findGroupWithKey(actions.get(position).getGroupKey()));
+
+                    Group associatedGroup = GroupManager.INSTANCE
+                            .findGroupWithKey(actions.get(position).getGroupKey());
+
+                    if(associatedGroup == null) {
+                        return;
+                    }
 
                     groupDialog = new Dialog(v.getContext());
                     groupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     groupDialog.setContentView(R.layout.groups_dialog);
+
                     Button dialogCloseButton = (Button)groupDialog.findViewById(R.id.dialog_close_button);
-                    PolicyObject policy1 = new PolicyObject("Policy1");
-                    PolicyObject policy2 = new PolicyObject("Policy2");
-                    policyArray.add(policy1);
-                    policyArray.add(policy2);
+                    TextView groupInfoDescriptionText = (TextView)groupDialog.findViewById(R.id.group_info_description_text);
+                    TextView groupInfoPolicyText = (TextView)groupDialog.findViewById(R.id.group_info_policy_text);
+                    ImageView groupInfoImage = (ImageView)groupDialog.findViewById(R.id.group_info_image);
+
+                    groupInfoDescriptionText.setText(associatedGroup.getGroupDescription());
+                    groupInfoPolicyText.setText(associatedGroup.getGroupCategory());
+
+                    Picasso.with(groupInfoImage.getContext())
+                            .load(associatedGroup.getGroupImageUrl())
+                            .fit()
+                            .error(R.drawable.representatives_place_holder)
+                            .placeholder(R.drawable.placeholder_spinner)
+                            .into(groupInfoImage);
+
+                    policyArray.addAll(associatedGroup.getPolicies());
                     PolicyListAdapter policyAdapter
                             = new PolicyListAdapter(v.getContext(),
                             R.layout.policy_list_item,

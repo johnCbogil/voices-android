@@ -57,7 +57,8 @@ public class GroupListRecylerAdapter extends RecyclerView.Adapter<GroupListRecyl
 
         Picasso.with(holder.groupImage.getContext())
                 .load(groups.get(position).getGroupImageUrl())
-                .placeholder(R.drawable.representatives_place_holder)
+                .placeholder(R.drawable.placeholder_spinner)
+                .error(R.drawable.representatives_place_holder)
                 .fit()
                 .into(holder.groupImage);
 
@@ -124,38 +125,6 @@ public class GroupListRecylerAdapter extends RecyclerView.Adapter<GroupListRecyl
             groupCategory = (TextView)itemView.findViewById(R.id.cell_group_category);
 
             learnMoreButton = (Button)itemView.findViewById(R.id.cell_group_learn_more_button);
-
-            learnMoreButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    ArrayList<PolicyObject> policyArray = new ArrayList<>();
-
-                    groupDialog = new Dialog(v.getContext());
-                    groupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    groupDialog.setContentView(R.layout.groups_dialog);
-                    Button dialogCloseButton = (Button)groupDialog.findViewById(R.id.dialog_close_button);
-                    PolicyObject policy1 = new PolicyObject("Policy1");
-                    PolicyObject policy2 = new PolicyObject("Policy2");
-                    policyArray.add(policy1);
-                    policyArray.add(policy2);
-                    PolicyListAdapter policyAdapter
-                            = new PolicyListAdapter(v.getContext(),
-                            R.layout.policy_list_item,
-                            policyArray);
-                    ListView policyListView = (ListView)groupDialog.findViewById(R.id.policy_list);
-                    policyListView.setAdapter(policyAdapter);
-                    // if button is clicked, close the custom dialog
-                    dialogCloseButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            groupDialog.dismiss();
-                        }
-                    });
-
-                    groupDialog.show();
-                }
-            });
 
         }
 
