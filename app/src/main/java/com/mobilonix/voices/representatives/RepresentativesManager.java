@@ -224,9 +224,14 @@ public enum RepresentativesManager {
                                               final ArrayList<RepresentativesPage> pages,
                                               final ViewPager representativesPager) {
 
-//        Below is used to test officials for a specific lat / lon
-        repLat = 40.75702286;
-        repLong = -73.87436676;
+//      Below is used to test officials for a specific lat / lon
+//          Should return district 3 Corey Johnson
+//        repLat = 40.74493027;
+//        repLong = -73.99040485;
+
+//      Below is used to test an address that will fail
+//        repLat = 40.76404572;
+//        repLong = -73.88193512;
 
         for (RepresentativesType type : RepresentativesType.values()) {
             RESTUtil.makeRepresentativesRequest(repLat, repLong, type, new Callback<ArrayList<Representative>>() {
