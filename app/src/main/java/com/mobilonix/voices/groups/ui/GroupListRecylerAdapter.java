@@ -54,10 +54,10 @@ public class GroupListRecylerAdapter extends RecyclerView.Adapter<GroupListRecyl
 
         Picasso.with(holder.groupImage.getContext())
                 .load(groups.get(position).getGroupImageUrl())
+                .fit()
                 .placeholder(R.drawable.placeholder_spinner)
                 .error(R.drawable.representatives_place_holder)
                 .transform(new RoundedTransformation(50, 4))
-                .fit()
                 .into(holder.groupImage);
 
         holder.arrowImage.setVisibility(View.GONE);
