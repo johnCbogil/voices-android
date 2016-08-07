@@ -122,6 +122,10 @@ public class RESTUtil {
         ArrayList<Representative> representatives = new ArrayList<>();
         ArrayList<Politico> politicos = type.parseJsonResponse(response);
 
+        //todo make below error mitigation line display a dialog
+        //Really this should be handled by throwing an error
+        if(politicos == null || politicos.isEmpty()) return null;
+
         for(Politico poli : politicos) {
 
             representatives.add(
