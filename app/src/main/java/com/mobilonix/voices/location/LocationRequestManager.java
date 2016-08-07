@@ -129,7 +129,7 @@ public enum LocationRequestManager {
 
                     LatLong location = activity.getCurrentLocation();
                     //FIXME unhardcode below
-                    location = new LatLong(40.7282, -74.0776);
+//                    location = new LatLong(40.7282, -74.0776);
 
                     if(!LocationUtil.isGPSEnabled(activity)) {
                         LocationRequestManager.INSTANCE.showGPSNotEnabledDialog(activity);

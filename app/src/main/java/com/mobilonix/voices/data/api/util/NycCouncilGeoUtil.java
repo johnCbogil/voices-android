@@ -57,7 +57,8 @@ public class NycCouncilGeoUtil {
         try {
             allAddys = mAddresses.toString().toLowerCase();
         } catch (Exception e) {
-            GeneralUtil.toast("Problem parsing boroughs");
+            //FIXME add proper exception handling
+            Log.e("NycCouncilGeoUtil","Problem parsing boroughs");
         }
 
         if (allAddys != null) {
