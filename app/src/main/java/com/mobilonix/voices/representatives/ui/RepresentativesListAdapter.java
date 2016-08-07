@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobilonix.voices.R;
+import com.mobilonix.voices.RoundedTransformation;
 import com.mobilonix.voices.representatives.model.Representative;
 import com.squareup.picasso.Picasso;
 
@@ -46,9 +47,10 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
 
             Picasso.with(listImage.getContext())
                     .load(representatives.get(position).getRepresentativeImageUrl())
-                    .fit()
+                    .resize(450,550)
                     .placeholder(R.drawable.placeholder_spinner)
                     .error(R.drawable.representatives_place_holder)
+                    .transform(new RoundedTransformation(50, 4))
                     .into(listImage);
 
             ImageView twitterImage = (ImageView)convertView.findViewById(R.id.representatives_list_twitter_image);
