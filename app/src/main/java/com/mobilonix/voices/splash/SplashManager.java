@@ -12,6 +12,7 @@ import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.location.LocationRequestManager;
 
 import com.mobilonix.voices.location.util.LocationUtil;
+import com.mobilonix.voices.representatives.RepresentativesManager;
 
 
 public enum  SplashManager {
@@ -19,6 +20,8 @@ public enum  SplashManager {
     INSTANCE;
 
     FrameLayout splashContentFrame;
+
+    public boolean splashScreenVisible = false;
 
     /**
      * Toggle splash screen on and off
@@ -42,7 +45,10 @@ public enum  SplashManager {
                 public void onClick(View v) {
                     INSTANCE.toggleSplashScreen(activity, false);
                     if (LocationUtil.isGPSEnabled(activity)) {
-                        LocationRequestManager.INSTANCE.toggleLocationEntryScreen(activity, true);
+                        RepresentativesManager.INSTANCE
+                                .toggleRepresentativesScreen(
+                                        activity.getCurrentLocation(),
+                                        activity, true);
                     } else {
                         LocationRequestManager.INSTANCE.toggleLocationRequestScreen(activity, true);
                     }
@@ -50,8 +56,13 @@ public enum  SplashManager {
             });
 
 
+            splashScreenVisible = true;
+
             activity.getMainContentFrame().addView(splashContentFrame);
         } else {
+
+            splashScreenVisible = false;
+
             splashContentFrame.setVisibility(View.GONE);
             activity.getMainContentFrame().removeView(splashContentFrame);
         }
