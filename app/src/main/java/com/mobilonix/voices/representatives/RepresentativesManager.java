@@ -214,7 +214,7 @@ public enum RepresentativesManager {
      *
      * @param repLat
      * @param repLong
-     * @param activity
+     * @param activity;
      * @param pages
      * @param representativesPager
      */
@@ -225,8 +225,8 @@ public enum RepresentativesManager {
                                               final ViewPager representativesPager) {
 
 //        Below is used to test officials for a specific lat / lon
-//        repLat = 40.730610;
-//        repLong = -73.935242;
+        repLat = 40.75702286;
+        repLong = -73.87436676;
 
         for (RepresentativesType type : RepresentativesType.values()) {
             RESTUtil.makeRepresentativesRequest(repLat, repLong, type, new Callback<ArrayList<Representative>>() {

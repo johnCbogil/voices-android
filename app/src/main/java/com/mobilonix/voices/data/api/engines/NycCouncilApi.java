@@ -19,6 +19,8 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.FormBody;
 import okhttp3.Headers;
@@ -98,16 +100,14 @@ public class NycCouncilApi implements ApiEngine {
 
         Politico politico = politicianFromDistrict(getDistrict(response));
 
-        politicos.add(politico);
-
-        Log.i("nyc", "address: " + politico) ;
+        if(politico != null)  politicos.add(politico);
 
         return politicos;
     }
 
     public Politico politicianFromDistrict(Integer district) {
 
-        Log.i("response","politician from disctrict: " +district);
+        Log.i("response","politician from disctrict: " + district);
 
         try {
             JSONObject districts = getJsonFromResource(VoicesApplication.getContext(), R.raw.nyc_district_data);
@@ -138,27 +138,24 @@ public class NycCouncilApi implements ApiEngine {
 
         } catch (JSONException e) {
             Log.e("response","json parse: " + e);
-            //TODO handle exception
+            return null;
         }
-
-        return null;
     }
 
 
     public int getDistrict(String response)  {
 
         int breadCrumb = response.indexOf("District");
-
-//TODO implement exceptions in API
-//        if(breadCrumb == -1 ) {
-//            throw new IllegalArgumentException("Cannot find district - is the LatLon in NYC?");
-//        }
-
-        //Log.i("geocoder", "district #: " + response);
-
-
         Log.i("geocoder", "district #: " + response.substring(breadCrumb + 9, breadCrumb + 11).trim().replace("<","") );
-        return Integer.parseInt(response.substring(breadCrumb + 9, breadCrumb + 11).trim().replace("<",""));
+
+        Matcher matcher = Pattern.compile("\\d+").matcher(response);
+        matcher.find();
+
+        if(matcher.matches()) {
+            return Integer.valueOf(matcher.group());
+        }
+
+        return 0;
     }
 
     private JSONObject getJsonFromResource(Context context, int jsonResource)  {
