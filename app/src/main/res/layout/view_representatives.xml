@@ -45,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="@android:color/darker_gray"
+                android:background="#FFF"
                 android:id="@+id/representatives_tab"
                 android:weightSum="1"
                 android:layout_weight="0.5">
@@ -66,7 +66,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@android:color/darker_gray"
+                android:background="#FFF"
                 android:orientation="vertical"
                 android:id="@+id/groups_tab"
                 android:weightSum="1"
@@ -75,6 +75,7 @@
                     android:layout_weight="0.3"
                     android:layout_gravity="center"
                     android:src="@drawable/representatives_tab_icon"
+                    android:tint="@color/voices_orange"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"/>
                 <TextView

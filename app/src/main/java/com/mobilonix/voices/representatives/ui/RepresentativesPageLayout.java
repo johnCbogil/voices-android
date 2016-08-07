@@ -7,7 +7,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -34,17 +33,8 @@ public class RepresentativesPageLayout extends LinearLayout {
             public void onClick(View v) {
                 responseDialog = new Dialog(getContext());
                 responseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                responseDialog.setContentView(R.layout.info_dialog);
+                responseDialog.setContentView(R.layout.dialog_info);
                 responseDialog.setTitle(R.string.response_title);
-
-                Button dialogCloseButton = (Button)responseDialog.findViewById(R.id.dialog_close_button);
-                // if button is clicked, close the custom dialog
-                dialogCloseButton.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        responseDialog.dismiss();
-                    }
-                });
 
                 responseDialog.show();
             }

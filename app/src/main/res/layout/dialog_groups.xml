@@ -35,15 +35,6 @@
             android:background="@drawable/rounded_button"
             android:textColor="#FFF"
             android:text="Follow This Group"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:layout_gravity="center"
-            android:id="@+id/dialog_close_button"
-            android:background="@drawable/rounded_button"
-            android:textColor="#FFF"
-            android:text="Close Window"/>
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"

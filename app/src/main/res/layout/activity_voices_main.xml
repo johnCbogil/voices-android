@@ -9,7 +9,7 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/primary_toolbar"
-        android:background="@color/bar_color"
+        android:background="#FFF"
         android:layout_height="@android:dimen/app_icon_size"
         android:layout_width="match_parent">
         <FrameLayout
