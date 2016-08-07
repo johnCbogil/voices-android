@@ -18,14 +18,12 @@ import android.widget.FrameLayout;
 
 import com.badoo.mobile.util.WeakHandler;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.location.LocationRequestManager;
 import com.mobilonix.voices.location.model.LatLong;
 import com.mobilonix.voices.location.util.LocationUtil;
 import com.mobilonix.voices.representatives.RepresentativesManager;
-import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.splash.SplashManager;
 
@@ -43,9 +41,6 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voices_main);
-
-//        FirebaseMessaging.getInstance().subscribeToTopic("news");
-//        FirebaseMessaging.getInstance().subscribeToTopic("EFF");
 
         SessionManager.INSTANCE.signIn();
 
@@ -93,28 +88,15 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
     public void onBackPressed() {
 
 
+        /* Since we aren't using fragments, we need to fabricate a back stack.
+        * This absolutely OK because it's easy to do, and we get much better
+        * control of the back flow than if we were relying on fragment/child
+        * fragment lifecycles */
         if(GroupManager.INSTANCE.isGroupPageVisible()) {
             if(GroupManager.INSTANCE.getMODE() == GroupManager.GroupType.ALL) {
                 GroupManager.INSTANCE.onBackPress();
                 return;
             }
-        }
-
-        /* Since we aren't using fragments, we need to fabricate a back stack.
-        * This absolutely OK because it's easy to do, and we get much better
-        * control of the back flow than if we were relying on fragment/child
-        * fragment lifecycles */
-        if(RepresentativesManager.INSTANCE.isRepresentativesScreenVisible()) {
-            RepresentativesManager.INSTANCE.toggleRepresentativesScreen(currentLocation, this, false);
-            LocationRequestManager.INSTANCE.toggleLocationEntryScreen(this, true);
-            findViewById(R.id.primary_toolbar).setVisibility(View.GONE);
-            return;
-        } else if(LocationRequestManager.INSTANCE.isLocationRequestScreenOn()) {
-            LocationRequestManager.INSTANCE.toggleLocationRequestScreen(this, false);
-            //SplashManager.INSTANCE.toggleSplashScreen(this, true);
-            findViewById(R.id.primary_toolbar).setVisibility(View.GONE);
-
-            return;
         }
 
         /* If we back out too far, we want to make sure the user is ok leaving the app */
@@ -156,9 +138,15 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
         super.onResume();
 
         if(LocationRequestManager.INSTANCE.isLocationRequestScreenOn()) {
-            if(LocationUtil.isGPSEnabled(this)) {
+            if (LocationUtil.isGPSEnabled(this)) {
                 LocationRequestManager.INSTANCE.toggleLocationRequestScreen(this, false);
-                LocationRequestManager.INSTANCE.toggleLocationEntryScreen(this, true);
+                LocationUtil.triggerLocationUpdate(this, null);
+                RepresentativesManager.INSTANCE
+                        .toggleRepresentativesScreen(LocationUtil.getLastLocation(this), this, true);
+            }
+        } else {
+            if(!LocationUtil.isGPSEnabled(this) && !SplashManager.INSTANCE.splashScreenVisible) {
+                LocationRequestManager.INSTANCE.showGPSNotEnabledDialog(this);
             }
         }
     }
@@ -178,7 +166,10 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
         }
 
         LocationRequestManager.INSTANCE.toggleLocationRequestScreen(this, false);
-        LocationRequestManager.INSTANCE.toggleLocationEntryScreen(this, true);
+        RepresentativesManager.INSTANCE
+                .toggleRepresentativesScreen(getCurrentLocation(),
+                this,
+                true);
     }
 
     public Toolbar getToolbar() {
