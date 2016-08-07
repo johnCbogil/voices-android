@@ -14,7 +14,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:layout_marginBottom="100dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
@@ -34,5 +34,4 @@
         android:background="@drawable/rounded_button"
         android:id="@+id/splash_getting_started_button"
         android:layout_gravity="center_horizontal|bottom" />
-
-</FrameLayout>
+    </FrameLayout>

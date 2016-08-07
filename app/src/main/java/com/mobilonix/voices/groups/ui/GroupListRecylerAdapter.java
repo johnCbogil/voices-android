@@ -7,17 +7,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mobilonix.voices.R;
+import com.mobilonix.voices.RoundedTransformation;
 import com.mobilonix.voices.groups.GroupManager;
-import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
-import com.mobilonix.voices.groups.model.Policy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -57,9 +54,10 @@ public class GroupListRecylerAdapter extends RecyclerView.Adapter<GroupListRecyl
 
         Picasso.with(holder.groupImage.getContext())
                 .load(groups.get(position).getGroupImageUrl())
+                .fit()
                 .placeholder(R.drawable.placeholder_spinner)
                 .error(R.drawable.representatives_place_holder)
-                .fit()
+                .transform(new RoundedTransformation(50, 4))
                 .into(holder.groupImage);
 
         holder.arrowImage.setVisibility(View.GONE);

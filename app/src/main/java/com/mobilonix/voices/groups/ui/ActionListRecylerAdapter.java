@@ -120,9 +120,8 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
 
                     groupDialog = new Dialog(v.getContext());
                     groupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    groupDialog.setContentView(R.layout.groups_dialog);
+                    groupDialog.setContentView(R.layout.dialog_groups);
 
-                    Button dialogCloseButton = (Button)groupDialog.findViewById(R.id.dialog_close_button);
                     TextView groupInfoDescriptionText = (TextView)groupDialog.findViewById(R.id.group_info_description_text);
                     TextView groupInfoPolicyText = (TextView)groupDialog.findViewById(R.id.group_info_policy_text);
                     ImageView groupInfoImage = (ImageView)groupDialog.findViewById(R.id.group_info_image);
@@ -143,14 +142,6 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
                             R.layout.policy_list_item,
                             policyArray);
                     ListView policyListView = (ListView)groupDialog.findViewById(R.id.policy_list);
-                    policyListView.setAdapter(policyAdapter);
-                    // if button is clicked, close the custom dialog
-                    dialogCloseButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            groupDialog.dismiss();
-                        }
-                    });
 
                     groupDialog.show();
                 }

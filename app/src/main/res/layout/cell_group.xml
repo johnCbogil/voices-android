@@ -61,7 +61,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:text="Learn More"
+                    android:padding="10dp"
+                    android:text="@string/button_learnmore"
+                    android:background="@drawable/rounded_button"
+                    android:textColor="#FFF"
                     android:id="@+id/cell_group_learn_more_button" />
             </FrameLayout>
 
