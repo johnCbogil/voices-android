@@ -3,6 +3,9 @@ package com.mobilonix.voices.splash;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
@@ -30,10 +33,12 @@ public enum  SplashManager {
      */
     public void toggleSplashScreen(final VoicesMainActivity activity, boolean state) {
 
+        /* TODO: This messes up the group tab, need to find out why */
         LayoutInflater inflater
                 = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
         splashContentFrame
-                = (FrameLayout)inflater.inflate(R.layout.view_splash_screen, null, false);
+                    = (FrameLayout) inflater.inflate(R.layout.view_splash_screen, null, false);
 
         if(state) {
 
@@ -57,15 +62,45 @@ public enum  SplashManager {
 
 
             splashScreenVisible = true;
-
             activity.getMainContentFrame().addView(splashContentFrame);
         } else {
 
-            splashScreenVisible = false;
+            GeneralUtil.toast("Toggling splash screen off to start anim");
 
-            splashContentFrame.setVisibility(View.GONE);
-            activity.getMainContentFrame().removeView(splashContentFrame);
+            final Animation animationFadeOut
+                    = AnimationUtils.loadAnimation(splashContentFrame.getContext(), R.anim.anim_fade_out);
+            animationFadeOut.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    splashScreenVisible = false;
+                    splashContentFrame.setVisibility(View.GONE);
+                    activity.getMainContentFrame().removeView(splashContentFrame);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            splashContentFrame.startAnimation(animationFadeOut);
+
         }
     }
 
+    public void toggleOnBoardingCopy(boolean status) {
+        if(!status) {
+            splashContentFrame.findViewById(R.id.splash_getting_started_button).setVisibility(View.GONE);
+            splashContentFrame.findViewById(R.id.splash_voices_intro_text).setVisibility(View.GONE);
+
+            View view = splashContentFrame.findViewById(R.id.splash_voices_image);
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+            params.setMargins(0, 0, 0, 0);
+            splashContentFrame.findViewById(R.id.splash_voices_image).setLayoutParams(params);
+        }
+    }
 }
