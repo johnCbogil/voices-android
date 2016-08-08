@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobilonix.voices.R;
-import com.mobilonix.voices.RoundedTransformation;
 import com.mobilonix.voices.representatives.model.Representative;
 import com.squareup.picasso.Picasso;
 
