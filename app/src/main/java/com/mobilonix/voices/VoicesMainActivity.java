@@ -4,10 +4,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -31,6 +33,8 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
 
     LatLong currentLocation = new LatLong(0, 0);
 
+    private static final int SPLASH_FADE_TIME = 2000;
+
     public FrameLayout mainContentFrame;
     boolean leaveAppDialogShowing = false;
     WeakHandler handler = new WeakHandler();
@@ -43,22 +47,53 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
         setContentView(R.layout.activity_voices_main);
 
         SessionManager.INSTANCE.signIn();
-
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
         currentLocation = LocationUtil.getLastLocation(this);
 
         initViews();
-
-        SplashManager.INSTANCE.toggleSplashScreen(this, true);
+        initialTransition();
 
     }
 
     private void initViews() {
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         mainContentFrame = (FrameLayout)findViewById(R.id.main_content_frame);
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.primary_toolbar));
         findViewById(R.id.primary_toolbar).setVisibility(View.GONE);
     }
+
+    /**
+     * The initial app work goes here
+     */
+    private void initialTransition() {
+
+        SplashManager.INSTANCE.toggleSplashScreen(this, true);
+        if(!SessionManager.INSTANCE.checkIfFirstRun()) {
+            SplashManager.INSTANCE.toggleOnBoardingCopy(false);
+            SplashManager.INSTANCE.toggleSplashScreen(VoicesMainActivity.this, false);
+            getHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    SplashManager.INSTANCE.toggleSplashScreen(VoicesMainActivity.this, false);
+
+                    if (LocationUtil.isGPSEnabled(VoicesMainActivity.this)) {
+                        LocationUtil.triggerLocationUpdate(VoicesMainActivity.this, null);
+                        RepresentativesManager.INSTANCE
+                                .toggleRepresentativesScreen(LocationUtil
+                                                .getLastLocation(VoicesMainActivity.this),
+                                        VoicesMainActivity.this, true);
+                    } else {
+                        LocationRequestManager.INSTANCE
+                                .toggleLocationRequestScreen(VoicesMainActivity.this, true);
+
+                    }
+
+                }
+            }, SPLASH_FADE_TIME);
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -210,7 +245,10 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
     public void onProviderEnabled(String provider) {}
 
     @Override
-    public void onProviderDisabled(String provider) {}
+    public void onProviderDisabled(String provider) {
+        LocationRequestManager.INSTANCE
+                .toggleLocationRequestScreen(VoicesMainActivity.this, false);
+    }
 
     public void toggleProgressSpinner(boolean state) {
         findViewById(R.id.app_progress_spinner).setVisibility(state ? View.VISIBLE : View.GONE);
