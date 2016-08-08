@@ -2,19 +2,27 @@ package com.mobilonix.voices;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.location.LocationListener;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.badoo.mobile.util.WeakHandler;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,6 +46,45 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
     WeakHandler handler = new WeakHandler();
 
     MenuItem addGroup;
+    boolean receiverRegistered = false;
+
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            boolean hasData = false;
+
+            Log.i("VoicesMainActivity","intent.getAction: " + intent.getAction().toString());
+
+
+            if (!intent.getAction().equals(WifiManager.NETWORK_STATE_CHANGED_ACTION) &&
+                    !intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION) &&
+                    !intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
+                return;
+            }
+
+            ConnectivityManager connManager = (ConnectivityManager)
+                    context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+            NetworkInfo info = connManager.getActiveNetworkInfo();
+
+            if (info != null && info.isConnectedOrConnecting() ) {
+                hasData = true;
+
+                //CONNECTED EVENT OR NETWORK SWITCH HERE
+
+                Log.d("VoicesMainActivity",
+                        "isConnected?: " + hasData + " route: " + info.getTypeName());
+            } else {
+
+                //DISCONNECTED EVENT HERE
+
+                Log.d("VoicesMainActivity",
+                        "isConnected?: " + hasData );
+            }
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +112,10 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
         findViewById(R.id.primary_toolbar).setVisibility(View.GONE);
     }
 
+    private void initBroadcastReceivers() {
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -72,6 +123,8 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
         inflater.inflate(R.menu.primary_menu, menu);
 
         addGroup = menu.findItem(R.id.action_add_groups);
+
+        initBroadcastReceivers();
 
         return true;
     }
@@ -161,6 +214,12 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
                 LocationRequestManager.INSTANCE.toggleLocationEntryScreen(this, true);
             }
         }
+
+        if (!receiverRegistered) {
+            receiverRegistered = true;
+            registerReceiver(broadcastReceiver,
+                    new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
+        }
     }
 
     @Override
@@ -216,6 +275,15 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
 
     @Override
     public void onProviderDisabled(String provider) {}
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (receiverRegistered) {
+            receiverRegistered = false;
+            unregisterReceiver(broadcastReceiver);
+        }
+    }
 
 
 }
