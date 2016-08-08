@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.mobilonix.voices.data.model.Politico;
 import com.mobilonix.voices.delegates.Callback;
+import com.mobilonix.voices.delegates.Callback2;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.model.Representative;
 
@@ -68,7 +69,9 @@ public class RESTUtil {
     public static void makeRepresentativesRequest(double repLat,
                                                   double repLong,
                                                   final RepresentativesManager.RepresentativesType type,
-                                                  final Callback<ArrayList<Representative>> representativesCallback) {
+                                                  final Callback2<ArrayList<Representative>,
+                                                          RepresentativesManager.RepresentativesType>
+                                                          representativesCallback) {
 
         final OkHttpClient client = new OkHttpClient.Builder()
                 .readTimeout(REQUEST_READ_TIMEOUT, TimeUnit.SECONDS)
@@ -81,7 +84,7 @@ public class RESTUtil {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     Log.e(TAG, "Record request failed..." + e);
-                    representativesCallback.onExecuted(new ArrayList<Representative>());
+                    representativesCallback.onExecuted(new ArrayList<Representative>(), type);
                 }
 
                 @Override
@@ -91,12 +94,12 @@ public class RESTUtil {
                 /* Om Success return auto-complete Address results to callback */
                     String responseString = response.body().string();
                     ArrayList<Representative> representatives = parseRepresentativesList(responseString, type);
-                    representativesCallback.onExecuted(representatives);
+                    representativesCallback.onExecuted(representatives, type);
                 }
             });
         } catch (IOException e) {
             Log.e(TAG, "API request failed..." + e);
-            representativesCallback.onExecuted(new ArrayList<Representative>());
+            representativesCallback.onExecuted(new ArrayList<Representative>(), type);
         }
     }
 
@@ -117,7 +120,9 @@ public class RESTUtil {
 
     /* TODO: Replace this method's logic here with ACTUAL AUTOCOPLETE LOGIC.  A real address autocomplete list
     *  TODO: needs to be returned instead of this dummy random list*/
-    private static ArrayList<Representative> parseRepresentativesList(String response, RepresentativesManager.RepresentativesType type) {
+    private static ArrayList<Representative> parseRepresentativesList(String response,
+                                                                      RepresentativesManager
+                                                                              .RepresentativesType type) {
 
         ArrayList<Representative> representatives = new ArrayList<>();
         ArrayList<Politico> politicos = type.parseJsonResponse(response);

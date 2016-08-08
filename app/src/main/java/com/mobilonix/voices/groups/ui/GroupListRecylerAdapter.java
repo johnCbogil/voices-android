@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobilonix.voices.R;
-import com.mobilonix.voices.RoundedTransformation;
+import com.mobilonix.voices.representatives.ui.RoundedTransformation;
 import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.groups.model.Group;
 import com.squareup.picasso.Picasso;

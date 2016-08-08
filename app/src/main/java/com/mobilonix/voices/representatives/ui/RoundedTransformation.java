@@ -1,4 +1,4 @@
-package com.mobilonix.voices;
+package com.mobilonix.voices.representatives.ui;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;

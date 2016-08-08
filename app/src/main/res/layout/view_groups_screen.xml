@@ -28,6 +28,5 @@
         android:visibility="gone">
 
     </android.support.v7.widget.RecyclerView>
-
-
+    
 </com.mobilonix.voices.groups.ui.GroupPage>

@@ -188,6 +188,10 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
         super.onDestroy();
     }
 
+    public void toggleToolbarDivider(boolean state) {
+        findViewById(R.id.divider).setVisibility(state ? View.VISIBLE : View.GONE);
+    }
+
     public LatLong getCurrentLocation() {
         return currentLocation;
     }
@@ -208,5 +212,8 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
     @Override
     public void onProviderDisabled(String provider) {}
 
+    public void toggleProgressSpinner(boolean state) {
+        findViewById(R.id.app_progress_spinner).setVisibility(state ? View.VISIBLE : View.GONE);
+    }
 
 }

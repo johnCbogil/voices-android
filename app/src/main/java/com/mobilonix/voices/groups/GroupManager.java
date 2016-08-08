@@ -18,6 +18,8 @@ import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
 import com.mobilonix.voices.groups.ui.GroupPage;
+import com.mobilonix.voices.representatives.RepresentativesManager;
+import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.session.SessionManager;
 
 import java.util.ArrayList;
@@ -25,6 +27,8 @@ import java.util.ArrayList;
 public enum GroupManager {
 
     INSTANCE;
+
+    boolean isRefreshing = false;
 
     private final String TAG = GroupManager.class.getCanonicalName();
 
@@ -119,6 +123,12 @@ public enum GroupManager {
 
     public void toggleGroupPage(ViewGroup pageRoot, boolean state) {
 
+        if(isRefreshing) {
+            ((VoicesMainActivity)pageRoot.getContext()).toggleProgressSpinner(true);
+        } else {
+            ((VoicesMainActivity)pageRoot.getContext()).toggleProgressSpinner(false);
+        }
+
         //String groupName, String groupCategory, String groupDescription, String groupImageUrl, ArrayList< Policy > policies
 
         if(state) {
@@ -126,6 +136,8 @@ public enum GroupManager {
                 LayoutInflater inflater = (LayoutInflater)pageRoot.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 groupPage = (GroupPage)inflater.inflate(R.layout.view_groups_screen, null, false);
             }
+
+            ((VoicesMainActivity)pageRoot.getContext()).toggleToolbarDivider(true);
 
             /* Add the groups view to the main page*/
             if(groupPage.getParent()!=null)
@@ -142,9 +154,14 @@ public enum GroupManager {
 
             toggleGroups(GroupType.ACTION);
 
+
             groupPageVisible = true;
         } else {
             if(groupPage != null) {
+
+                ((VoicesMainActivity)pageRoot.getContext()).toggleToolbarDivider(false);
+
+                ((VoicesMainActivity)pageRoot.getContext()).toggleProgressSpinner(false);
                 pageRoot.removeView(groupPage);
             }
 
@@ -155,6 +172,10 @@ public enum GroupManager {
     public void refreshGroupsAndActionList() {
         /* TODO: Make a request here via asynchronous callback to load the actual group data*/
         /* TODO: We wanto retrieve this from cache first, otherwise if not present, re-request it from backend */
+
+        isRefreshing = true;
+        ((VoicesMainActivity)groupPage.getContext())
+                .toggleProgressSpinner(isRefreshing);
 
         SessionManager.INSTANCE.fetchAllGroupsFromDatabase(new Callback<ArrayList<Group>>() {
 
@@ -174,6 +195,10 @@ public enum GroupManager {
                     public boolean onExecuted(ArrayList<Action> data) {
 
                         groupPage.setActions(data);
+                        isRefreshing = false;
+                        ((VoicesMainActivity)groupPage.getContext())
+                                .toggleProgressSpinner(isRefreshing);
+
                         return false;
                     }
                 });
@@ -181,16 +206,6 @@ public enum GroupManager {
                 return false;
             }
         });
-    }
-
-    /**
-     * Add to all group list
-     *
-     * @param groups
-     */
-    public void setAllGroupList(ArrayList<Group> groups) {
-        allGroupsData.clear();
-        allGroupsData.addAll(groups);
     }
 
     public void toggleGroups(GroupType groupType) {
@@ -206,6 +221,7 @@ public enum GroupManager {
             toolbar.findViewById(R.id.groups_selection_text).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.action_selection_text).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.action_add_groups).setVisibility(View.VISIBLE);
+            toolbar.findViewById(R.id.all_groups_info_text).setVisibility(View.GONE);
 
             MODE = GroupType.ACTION;
 
@@ -217,6 +233,7 @@ public enum GroupManager {
             toolbar.findViewById(R.id.groups_selection_text).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.action_selection_text).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.action_add_groups).setVisibility(View.VISIBLE);
+            toolbar.findViewById(R.id.all_groups_info_text).setVisibility(View.GONE);
 
             MODE = GroupType.USER;
 
@@ -226,6 +243,7 @@ public enum GroupManager {
             groupPage.findViewById(R.id.all_groups_list).setVisibility(View.VISIBLE);
 
             toolbar.findViewById(R.id.primary_toolbar_back_arrow).setVisibility(View.VISIBLE);
+            toolbar.findViewById(R.id.all_groups_info_text).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.action_add_groups).setVisibility(View.GONE);
             toolbar.findViewById(R.id.groups_selection_text).setVisibility(View.GONE);
             toolbar.findViewById(R.id.action_selection_text).setVisibility(View.GONE);
@@ -311,6 +329,8 @@ public enum GroupManager {
         groupPage.findViewById(R.id.user_groups_list).setVisibility(View.VISIBLE);
         groupPage.findViewById(R.id.all_groups_list).setVisibility(View.GONE);
         toolbar.findViewById(R.id.action_add_groups).setVisibility(View.VISIBLE);
+
+        toolbar.findViewById(R.id.all_groups_info_text).setVisibility(View.GONE);
 
         toolbar.findViewById(R.id.groups_selection_text).setVisibility(View.VISIBLE);
         toolbar.findViewById(R.id.action_selection_text).setVisibility(View.VISIBLE);
