@@ -71,21 +71,6 @@ public class GroupPage extends FrameLayout {
     }
 
     /**
-     * Force a clearing of all groups and actions
-     */
-    public void clearAllGroups() {
-
-        ListView actionGroupsList = ((ListView) findViewById(R.id.action_groups_list));
-        ListView userGroupsList = ((ListView) findViewById(R.id.user_groups_list));
-
-        actionGroupsList.setAdapter(new ArrayAdapter<Group>(getContext(), R.layout.cell_group, new ArrayList<Group>()));
-        userGroupsList.setAdapter(new ArrayAdapter<Group>(getContext(), R.layout.cell_group, new ArrayList<Group>()));
-
-        userGroupsSet = false;
-        actionsSet = false;
-    }
-
-    /**
      * Get the user's specific actions, as long as they are subscribed to particular groups
      *
      * TODO: Optimize this based on data structure

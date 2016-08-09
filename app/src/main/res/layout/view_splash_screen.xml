@@ -20,6 +20,7 @@
         android:layout_marginRight="25dp"
         android:gravity="center_horizontal"
         android:layout_gravity="center_horizontal|bottom"
+        android:id="@+id/splash_voices_intro_text"
         android:text="@string/splash_voices_intro"/>
 
     <Button
@@ -34,4 +35,4 @@
         android:background="@drawable/rounded_button"
         android:id="@+id/splash_getting_started_button"
         android:layout_gravity="center_horizontal|bottom" />
-    </FrameLayout>
+</FrameLayout>

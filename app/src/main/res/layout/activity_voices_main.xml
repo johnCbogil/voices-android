@@ -1,62 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white"
-    tools:context="com.mobilonix.voices.VoicesMainActivity">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/primary_toolbar"
-        android:background="#FFF"
-        android:layout_height="@android:dimen/app_icon_size"
-        android:layout_width="match_parent">
-        <FrameLayout
+    android:layout_height="match_parent">
+    <LinearLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        tools:context="com.mobilonix.voices.VoicesMainActivity">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/primary_toolbar"
+            android:background="#FFF"
+            android:layout_height="@android:dimen/app_icon_size"
+            android:layout_width="match_parent">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/primary_toolbar_back_arrow"
+                        android:src="@drawable/ic_action_previous_item"
+                        android:visibility="gone"/>
+                    <LinearLayout
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="20sp"
+                                android:id="@+id/all_groups_info_text"
+                                android:text="@string/all_groups_info"
+                                android:visibility="gone"
+                                android:layout_marginRight="10dp"
+                                android:layout_gravity="center|right"/>
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_gravity="center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent">
+                                    <TextView
+                                        android:layout_width="@dimen/toolbar_option_width"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:id="@+id/action_selection_text"
+                                        android:layout_gravity="center"
+                                        android:background="@drawable/button_back_selected"
+                                        android:text="Actions"
+                                        android:textColor="#FFF"/>
+                                    <TextView
+                                        android:layout_width="@dimen/toolbar_option_width"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:id="@+id/groups_selection_text"
+                                        android:background="@drawable/button_back"
+                                        android:layout_gravity="center"
+                                        android:text="My Groups"
+                                        android:textColor="@color/voices_orange"/>
+                                </LinearLayout>
+                    </LinearLayout>
+                </FrameLayout>
+            </android.support.v7.widget.Toolbar>
+        <View
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginRight="10dp">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/primary_toolbar_back_arrow"
-                android:src="@drawable/ic_action_previous_item"
-                android:visibility="gone"/>
-            <LinearLayout
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-                <TextView
-                    android:layout_width="@dimen/toolbar_option_width"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:id="@+id/action_selection_text"
-                    android:layout_gravity="center"
-                    android:background="@drawable/button_back_selected"
-                    android:text="Actions"
-                    android:textColor="@color/white" />
-                <TextView
-                    android:layout_width="@dimen/toolbar_option_width"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:id="@+id/groups_selection_text"
-                    android:background="@drawable/button_back"
-                    android:layout_gravity="center"
-                    android:text="My Groups"
-                    android:textColor="@color/voices_orange" />
-
-            </LinearLayout>
+            android:layout_height="1dp"
+            android:id="@+id/divider"
+            android:background="@color/grey"
+            android:layout_marginRight="-10dp"
+            android:layout_marginLeft="-10dp"
+            android:visibility="gone"
+            android:layout_gravity="bottom">
+        </View>
+        <FrameLayout
+            android:id="@+id/main_content_frame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
         </FrameLayout>
-    </android.support.v7.widget.Toolbar>
 
-    <FrameLayout
-        android:id="@+id/main_content_frame"
+    </LinearLayout>
+
+    <ProgressBar
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </FrameLayout>
-
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:id="@+id/app_progress_spinner"/>
+</FrameLayout>
 

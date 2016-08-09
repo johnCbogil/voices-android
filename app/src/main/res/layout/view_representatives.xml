@@ -1,28 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
     android:background="@android:color/white"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:weightSum="1"
+        android:weightSum="1.0"
         android:orientation="vertical">
+
+        <fragment
+            android:id="@+id/place_autocomplete_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"/>
+
+        <FrameLayout
+            android:id="@+id/pager_meta_frame"
+            android:layout_weight="0.1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Representatives"
+                android:id="@+id/representatives_type_text"/>
+
+            <com.mobilonix.voices.representatives.ui.PagerIndicator
+                android:id="@+id/pager_indicator"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="bottom|center">
+            </com.mobilonix.voices.representatives.ui.PagerIndicator>
+
+        </FrameLayout>
 
         <!-- The primary view for the reps window -->
         <android.support.v4.view.ViewPager
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.7"
             android:id="@+id/reprsentatives_pager">
         </android.support.v4.view.ViewPager>
 
         <!-- The primary view for the groups view -->
         <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.9"
             android:id="@+id/groups_view"
             android:visibility="gone">
             <TextView
@@ -34,10 +65,9 @@
 
         <!-- Tabs View to switch between above views -->
         <LinearLayout
-            android:layout_gravity="bottom"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.9"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
             android:orientation="horizontal"
             android:weightSum="1">
 

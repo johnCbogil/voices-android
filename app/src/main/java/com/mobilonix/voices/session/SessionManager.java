@@ -54,6 +54,7 @@ public enum SessionManager {
 
     private static final String FIREBASE_TOKEN_KEY = "FIREBASE_TOKEN_KEY";
     private static final String FIREBASE_NO_TOKEN = "FIREBASE_NO_TOKEN";
+    private static final String CHECK_IF_FIRST_RUN = "CHECK_IF_FIRST_RUN";
 
     private String currentNotificationToken;
 
@@ -418,6 +419,24 @@ public enum SessionManager {
             if (i < (arr.length - 1)) str.append(':');
         }
         return str.toString();
+    }
+
+    public boolean checkIfFirstRun() {
+        SharedPreferences preferences
+                = PreferenceManager.getDefaultSharedPreferences(VoicesApplication.getContext());
+
+        if(preferences.getBoolean(CHECK_IF_FIRST_RUN, true)) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(CHECK_IF_FIRST_RUN, false);
+            editor.commit();
+
+            /* Need to always commit editor changes */
+            return true;
+        } else {
+
+            return false;
+        }
+
     }
 
 }

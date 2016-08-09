@@ -30,7 +30,19 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
     ArrayList<Action> actions;
 
     public ActionListRecylerAdapter(Context context, ArrayList<Action> actions) {
-        this.actions = actions;
+
+        ArrayList<Action> modifiedActionsList = new ArrayList<>();
+
+        /* TODO: There is a bug here which requires this go between.  Fix it */
+        for(int i = 0; i < actions.size(); i++) {
+            if(i % 2 == 0) {
+                modifiedActionsList.add(actions.get(i));
+            }
+        }
+
+        this.actions = modifiedActionsList;
+
+
     }
 
     @Override
@@ -142,6 +154,7 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
                             R.layout.policy_list_item,
                             policyArray);
                     ListView policyListView = (ListView)groupDialog.findViewById(R.id.policy_list);
+                    policyListView.setAdapter(policyAdapter);
 
                     groupDialog.show();
                 }
