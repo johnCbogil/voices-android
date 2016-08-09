@@ -2,6 +2,7 @@ package com.mobilonix.voices.representatives;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;
+
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,9 +24,8 @@ import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.data.api.ApiEngine;
 import com.mobilonix.voices.data.api.engines.NycCouncilApi;
-import com.mobilonix.voices.data.api.engines.UsCongressSunlightApi;
-
 import com.mobilonix.voices.data.api.engines.StateOpenStatesApi;
+import com.mobilonix.voices.data.api.engines.UsCongressSunlightApi;
 import com.mobilonix.voices.data.model.Politico;
 import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.delegates.Callback2;
@@ -271,8 +271,13 @@ public enum RepresentativesManager {
         actionSelectionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 actionSelectionButton.setBackgroundResource(R.drawable.button_back_selected);
+                actionSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.white));
+
                 groupsSelectionButton.setBackgroundResource(R.drawable.button_back);
+                groupsSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.voices_orange));
 
                 GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ACTION);
 
@@ -282,7 +287,11 @@ public enum RepresentativesManager {
         groupsSelectionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 actionSelectionButton.setBackgroundResource(R.drawable.button_back);
+                actionSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.voices_orange));
+
+                groupsSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.white));
                 groupsSelectionButton.setBackgroundResource(R.drawable.button_back_selected);
 
                 GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.USER);
