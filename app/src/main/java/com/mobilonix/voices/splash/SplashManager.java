@@ -65,8 +65,6 @@ public enum  SplashManager {
             activity.getMainContentFrame().addView(splashContentFrame);
         } else {
 
-            GeneralUtil.toast("Toggling splash screen off to start anim");
-
             final Animation animationFadeOut
                     = AnimationUtils.loadAnimation(splashContentFrame.getContext(), R.anim.anim_fade_out);
             animationFadeOut.setAnimationListener(new Animation.AnimationListener() {
