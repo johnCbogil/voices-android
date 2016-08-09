@@ -2,13 +2,16 @@ package com.mobilonix.voices.representatives;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.android.gms.common.api.Status;
@@ -31,12 +34,15 @@ import com.mobilonix.voices.location.model.LatLong;
 import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.representatives.model.RepresentativesPage;
 import com.mobilonix.voices.representatives.ui.PagerIndicator;
+import com.mobilonix.voices.representatives.ui.RepresentativesListAdapter;
 import com.mobilonix.voices.representatives.ui.RepresentativesPagerAdapter;
 import com.mobilonix.voices.util.RESTUtil;
 import com.mobilonix.voices.util.ViewUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import okhttp3.Request;
 
@@ -54,7 +60,10 @@ public enum RepresentativesManager {
 
     FrameLayout representativesFrame;
 
+    PagerIndicator pagerIndicator;
+
     PlaceAutocompleteFragment autoCompleteTextView;
+    ConcurrentHashMap<String, ArrayList<Representative>> currentRepsMap = new ConcurrentHashMap<>();
 
     /**
      * The enum value contains the URL that needs to be called to make the representatives request
@@ -121,9 +130,17 @@ public enum RepresentativesManager {
 
             final ArrayList<RepresentativesPage> pages = new ArrayList<>();
             final ViewPager representativesPager = (ViewPager)representativesFrame.findViewById(R.id.reprsentatives_pager);
-            PagerIndicator pagerIndicator = ((PagerIndicator)representativesFrame
+
+            /* Initialize Pager Indicator */
+            pagerIndicator = ((PagerIndicator)representativesFrame
                     .findViewById(R.id.pager_meta_frame)
                     .findViewById(R.id.pager_indicator));
+
+            for(RepresentativesType representativesType : RepresentativesType.values()) {
+                pagerIndicator.addIndicator(representativesType.getIdentifier());
+                pages.add(new RepresentativesPage(new ArrayList<Representative>(), representativesType));
+            }
+            representativesPager.setAdapter(new RepresentativesPagerAdapter(pages));
 
             representativesPager.addOnPageChangeListener(pagerIndicator);
 
@@ -143,10 +160,23 @@ public enum RepresentativesManager {
                         }
                     }
 
+                    ListView listView = ((ListView)representativesFrame
+                            .findViewWithTag(pagerIndicator
+                                    .getCurrentIndicatorTag()));
+
+                    if(listView != null) {
+                        listView.setAdapter(
+                                new RepresentativesListAdapter(
+                                        listView.getContext(),
+                                        R.layout.representatives_list_item,
+                                        currentRepsMap.get(pagerIndicator.getCurrentIndicatorTag())));
+                    }
+
                     return false;
                 }
             });
 
+            /* Initialize Autocomplete fragment */
             autoCompleteTextView =
                     (PlaceAutocompleteFragment) activity.getFragmentManager()
                             .findFragmentById(R.id.place_autocomplete_fragment);
@@ -336,19 +366,30 @@ public enum RepresentativesManager {
                                    ArrayList<RepresentativesPage> pages,
                                    ViewPager representativesPager) {
 
-        PagerIndicator pagerIndicator
-                = ((PagerIndicator)representativesFrame
-                    .findViewById(R.id.pager_meta_frame)
-                    .findViewById(R.id.pager_indicator));
-        pagerIndicator.addIndicator();
+        currentRepsMap.put(type.getIdentifier(), data);
 
-        ArrayList<RepresentativesType> orderedRepList = new ArrayList<>();
-        pages.add(new RepresentativesPage(data, type));
-        representativesPager.setAdapter(new RepresentativesPagerAdapter(pages));
+        GeneralUtil.toast("Got new representatives for current location!" );
+
+        ListView representativesListView =
+                (ListView) representativesPager
+                        .findViewWithTag(type.getIdentifier());
+        SwipeRefreshLayout pageRefresh = (SwipeRefreshLayout)representativesPager
+                .findViewWithTag(type.getIdentifier() + "_REFRESH");
+
+        if (representativesListView != null) {
+            representativesListView.setAdapter(
+                    new RepresentativesListAdapter(representativesPager.getContext(),
+                            R.layout.representatives_list_item, data));
+        }
+
+        if(pageRefresh != null) {
+            pageRefresh.setRefreshing(false);
+        }
 
         if(pages.size() == RepresentativesType.values().length) {
-            ((VoicesMainActivity)pagerIndicator.getContext()).toggleProgressSpinner(false);
+            ((VoicesMainActivity)representativesPager.getContext()).toggleProgressSpinner(false);
         }
+
     }
 
     /**
@@ -384,6 +425,5 @@ public enum RepresentativesManager {
     public boolean isRepresentativesScreenVisible() {
         return representativesScreenVisible;
     }
-
 
 }
