@@ -29,6 +29,10 @@ public class GroupListRecylerAdapter extends RecyclerView.Adapter<GroupListRecyl
     public GroupListRecylerAdapter(Context context, ArrayList<Group> groups, GroupManager.GroupType groupType) {
         this.groups = groups;
         this.groupType = groupType;
+
+        if((groups.size() > 0) && (groupType == GroupManager.GroupType.USER)) {
+            GroupManager.INSTANCE.toggleNoActionGroupsLayout(false);
+        }
     }
 
     @Override

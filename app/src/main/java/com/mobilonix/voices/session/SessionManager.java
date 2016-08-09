@@ -200,20 +200,25 @@ public enum SessionManager {
 
                     HashMap<String, String> policyMap = (HashMap) group.child("policyPositions").getValue();
                     ArrayList<Policy> policies = new ArrayList<>();
-                    Iterator it = policyMap.entrySet().iterator();
-                    while (it.hasNext()) {
-                        Map.Entry pair = (Map.Entry) it.next();
-                        policies.add(new Policy((String) pair.getKey(), (String) pair.getValue(), ""));
-                        it.remove();
+                    if(policyMap != null) {
+                        Iterator it = policyMap.entrySet().iterator();
+                        while (it.hasNext()) {
+                            Map.Entry pair = (Map.Entry) it.next();
+                            policies.add(new Policy((String) pair.getKey(), (String) pair.getValue(), ""));
+                            it.remove();
+                        }
                     }
 
                     HashMap<String, String> actionMap = (HashMap) group.child("actions").getValue();
                     ArrayList<String> actions = new ArrayList<>();
-                    Iterator actionIt = actionMap.entrySet().iterator();
-                    while (actionIt.hasNext()) {
-                        Map.Entry pair = (Map.Entry) actionIt.next();
-                        actions.add((String) pair.getKey());
-                        actionIt.remove();
+                    if(actionMap != null) {
+
+                        Iterator actionIt = actionMap.entrySet().iterator();
+                        while (actionIt.hasNext()) {
+                            Map.Entry pair = (Map.Entry) actionIt.next();
+                            actions.add((String) pair.getKey());
+                            actionIt.remove();
+                        }
                     }
 
                     Group groupToAdd = new Group(name, groupTyle, description, imageUrl, "", policies, actions, groupKey);
@@ -306,8 +311,6 @@ public enum SessionManager {
         });
 
     }
-
-    public static boolean allActionsFetched = false;
 
     public void fetchAllActions(final Callback<ArrayList<Action>> callback) {
 
