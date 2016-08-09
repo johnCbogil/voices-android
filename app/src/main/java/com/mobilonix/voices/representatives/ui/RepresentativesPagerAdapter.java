@@ -26,7 +26,6 @@ import java.util.ArrayList;
 public class RepresentativesPagerAdapter extends PagerAdapter {
 
     private ArrayList<RepresentativesPage> representatives;
-    WeakHandler weakHandler = new WeakHandler();
 
 
     public RepresentativesPagerAdapter(ArrayList<RepresentativesPage> representatives) {
@@ -39,15 +38,27 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup collection, final int position) {
         LayoutInflater inflater = LayoutInflater.from(collection.getContext());
         ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.representatives_page, collection, false);
+        //layout.setTag(representatives.get(position).getType().getIdentifier());
 
         final ListView representativesList = (ListView)layout.findViewById(R.id.representatives_list);
         final SwipeRefreshLayout pageRefresh = (SwipeRefreshLayout)layout.findViewById(R.id.swipe_refresh_layout);
 
+        representativesList.setTag(representatives.get(position).getType().getIdentifier());
+        pageRefresh.setTag(representatives.get(position).getType().getIdentifier() + "_REFRESH");
+
         pageRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+
+                representativesList.setAdapter(new RepresentativesListAdapter
+                        (representativesList.getContext(),
+                                R.layout.representatives_list_item,
+                                new ArrayList<Representative>()));
+
                 RepresentativesManager.INSTANCE
-                        .refreshRepresentativesContent(0, 0,
+                        .refreshRepresentativesContent(
+                                ((VoicesMainActivity) pageRefresh.getContext()).getCurrentLocation().getLatitude(),
+                                ((VoicesMainActivity) pageRefresh.getContext()).getCurrentLocation().getLongitude(),
                                 ((VoicesMainActivity) pageRefresh.getContext()),
                                 representatives,
                                 (ViewPager) RepresentativesManager.INSTANCE.getRepresentativesFrame()
@@ -59,6 +70,7 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
                 .setAdapter(new RepresentativesListAdapter
                 (representativesList.getContext(),
                         R.layout.representatives_list_item, representatives.get(position).getRepresentatives()));
+
 
         collection.addView(layout);
         return layout;

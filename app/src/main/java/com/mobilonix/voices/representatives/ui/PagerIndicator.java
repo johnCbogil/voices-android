@@ -15,13 +15,17 @@ public class PagerIndicator extends LinearLayout implements ViewPager.OnPageChan
 
     ArrayList<ImageView> indicators = new ArrayList<>();
 
+    ArrayList<String> indicatorTags = new ArrayList<>();
+
+    String currentIndicatorTag;
+
     Callback callback;
 
     public PagerIndicator(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public void addIndicator() {
+    public void addIndicator(String indicatorTag) {
         ImageView circle = new ImageView(getContext());
         circle.setMaxHeight(10);
         circle.setMaxWidth(10);
@@ -30,11 +34,19 @@ public class PagerIndicator extends LinearLayout implements ViewPager.OnPageChan
         indicators.add(circle);
         addView(circle);
 
+        indicatorTags.add(indicatorTag);
+
         /* First indicator will always be selected */
         if(indicators.size() == 1) {
             indicators.get(0).setImageResource(R.drawable.filled_circle);
+
+            currentIndicatorTag = indicatorTags.get(0);
         }
 
+    }
+
+    public String getCurrentIndicatorTag() {
+        return currentIndicatorTag;
     }
 
     public void addIndicatorShiftCallback(Callback callback) {
@@ -55,6 +67,8 @@ public class PagerIndicator extends LinearLayout implements ViewPager.OnPageChan
                 indicators.get(i).setImageResource(R.drawable.empty_circle);
             }
         }
+
+        currentIndicatorTag = indicatorTags.get(position);
 
         if(callback != null) {
             callback.onExecuted(position);
