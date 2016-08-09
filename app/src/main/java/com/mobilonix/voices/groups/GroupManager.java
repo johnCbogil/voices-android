@@ -4,11 +4,14 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mobilonix.voices.R;
@@ -190,6 +193,11 @@ public enum GroupManager {
             public boolean onExecuted(ArrayList<Group> data) {
 
                 groupPage.setUserGroups(data);
+                if((data.size() > 0) && (GroupManager.INSTANCE.getMODE() == GroupType.USER)) {
+                    GeneralUtil.toast("Got more than one group. hiding no follow layout");
+                    GroupManager.INSTANCE.toggleNoActionGroupsLayout(false);
+                }
+
                 SessionManager.INSTANCE.fetchAllActions(new Callback<ArrayList<Action>>() {
                     @Override
                     public boolean onExecuted(ArrayList<Action> data) {
@@ -198,6 +206,10 @@ public enum GroupManager {
                         isRefreshing = false;
                         ((VoicesMainActivity)groupPage.getContext())
                                 .toggleProgressSpinner(isRefreshing);
+
+                        if((data.size() > 0) && (GroupManager.INSTANCE.getMODE() == GroupType.ACTION)) {
+                            GroupManager.INSTANCE.toggleNoActionGroupsLayout(false);
+                        }
 
                         return false;
                     }
@@ -218,10 +230,27 @@ public enum GroupManager {
             groupPage.findViewById(R.id.user_groups_list).setVisibility(View.GONE);
             groupPage.findViewById(R.id.all_groups_list).setVisibility(View.GONE);
 
+            if(((RecyclerView)groupPage
+                    .findViewById(R.id.action_groups_list)).getChildCount() > 0) {
+                groupPage.findViewById(R.id.no_follow_layout).setVisibility(View.GONE);
+            } else {
+                groupPage.findViewById(R.id.no_follow_layout).setVisibility(View.VISIBLE);
+            }
+
+            ((TextView)groupPage
+                    .findViewById(R.id.no_follow_layout)
+                    .findViewById(R.id.no_follows_top_line)).setText(R.string.no_follow_actions_top);
+            ((TextView)groupPage
+                    .findViewById(R.id.no_follow_layout)
+                    .findViewById(R.id.no_follows_bottom_line)).setText(R.string.no_follow_actions);
+
             toolbar.findViewById(R.id.groups_selection_text).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.action_selection_text).setVisibility(View.VISIBLE);
+            toolbar.findViewById(R.id.groups_selection_text).setBackgroundResource(R.drawable.button_back);
+            toolbar.findViewById(R.id.action_selection_text).setBackgroundResource(R.drawable.button_back_selected);
             toolbar.findViewById(R.id.action_add_groups).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.all_groups_info_text).setVisibility(View.GONE);
+
 
             MODE = GroupType.ACTION;
 
@@ -235,6 +264,20 @@ public enum GroupManager {
             toolbar.findViewById(R.id.action_add_groups).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.all_groups_info_text).setVisibility(View.GONE);
 
+            if(((RecyclerView)groupPage
+                    .findViewById(R.id.user_groups_list)).getChildCount() > 0) {
+                groupPage.findViewById(R.id.no_follow_layout).setVisibility(View.GONE);
+            } else {
+                groupPage.findViewById(R.id.no_follow_layout).setVisibility(View.VISIBLE);
+            }
+
+            ((TextView)groupPage
+                    .findViewById(R.id.no_follow_layout)
+                    .findViewById(R.id.no_follows_top_line)).setText(R.string.no_follow_groups_top);
+            ((TextView)groupPage
+                    .findViewById(R.id.no_follow_layout)
+                    .findViewById(R.id.no_follows_bottom_line)).setText(R.string.no_follow_groups);
+
             MODE = GroupType.USER;
 
         } else if(groupType == GroupType.ALL) {
@@ -242,11 +285,15 @@ public enum GroupManager {
             groupPage.findViewById(R.id.user_groups_list).setVisibility(View.GONE);
             groupPage.findViewById(R.id.all_groups_list).setVisibility(View.VISIBLE);
 
+            groupPage.findViewById(R.id.no_follow_layout).setVisibility(View.GONE);
+
             toolbar.findViewById(R.id.primary_toolbar_back_arrow).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.all_groups_info_text).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.action_add_groups).setVisibility(View.GONE);
             toolbar.findViewById(R.id.groups_selection_text).setVisibility(View.GONE);
             toolbar.findViewById(R.id.action_selection_text).setVisibility(View.GONE);
+            toolbar.findViewById(R.id.groups_selection_text).setBackgroundResource(R.drawable.button_back_selected);
+            toolbar.findViewById(R.id.action_selection_text).setBackgroundResource(R.drawable.button_back);
 
             toolbar.findViewById(R.id.primary_toolbar_back_arrow).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -256,6 +303,17 @@ public enum GroupManager {
             });
 
             MODE = GroupType.ALL;
+        }
+    }
+
+    /**
+     * hide the no follow layout when our adapters are populated
+     *
+     * @param state
+     */
+    public void toggleNoActionGroupsLayout(boolean state) {
+        if(groupPage != null) {
+            groupPage.findViewById(R.id.no_follow_layout).setVisibility(state ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -322,21 +380,30 @@ public enum GroupManager {
 
         MODE = GroupType.USER;
 
-        Toolbar toolbar = ((VoicesMainActivity)groupPage.getContext()).getToolbar();
 
-        toolbar.findViewById(R.id.primary_toolbar_back_arrow).setVisibility(View.GONE);
-        groupPage.findViewById(R.id.action_groups_list).setVisibility(View.GONE);
-        groupPage.findViewById(R.id.user_groups_list).setVisibility(View.VISIBLE);
-        groupPage.findViewById(R.id.all_groups_list).setVisibility(View.GONE);
-        toolbar.findViewById(R.id.action_add_groups).setVisibility(View.VISIBLE);
 
-        toolbar.findViewById(R.id.all_groups_info_text).setVisibility(View.GONE);
-
-        toolbar.findViewById(R.id.groups_selection_text).setVisibility(View.VISIBLE);
-        toolbar.findViewById(R.id.action_selection_text).setVisibility(View.VISIBLE);
-
-        toolbar.findViewById(R.id.action_selection_text).setBackgroundResource(R.drawable.button_back);
-        toolbar.findViewById(R.id.groups_selection_text).setBackgroundResource(R.drawable.button_back_selected);
+        toggleGroups(GroupType.USER);
+        //Toolbar toolbar = ((VoicesMainActivity)groupPage.getContext()).getToolbar();
+//        toolbar.findViewById(R.id.primary_toolbar_back_arrow).setVisibility(View.GONE);
+//        groupPage.findViewById(R.id.action_groups_list).setVisibility(View.GONE);
+//        groupPage.findViewById(R.id.user_groups_list).setVisibility(View.VISIBLE);
+//        groupPage.findViewById(R.id.all_groups_list).setVisibility(View.GONE);
+//        toolbar.findViewById(R.id.action_add_groups).setVisibility(View.VISIBLE);
+//
+//        toolbar.findViewById(R.id.all_groups_info_text).setVisibility(View.GONE);
+//
+//        toolbar.findViewById(R.id.groups_selection_text).setVisibility(View.VISIBLE);
+//        toolbar.findViewById(R.id.action_selection_text).setVisibility(View.VISIBLE);
+//
+//        toolbar.findViewById(R.id.action_selection_text).setBackgroundResource(R.drawable.button_back);
+//        toolbar.findViewById(R.id.groups_selection_text).setBackgroundResource(R.drawable.button_back_selected);
+//
+//        if(((RecyclerView)groupPage
+//                .findViewById(R.id.user_groups_list)).getChildCount() > 0) {
+//            groupPage.findViewById(R.id.no_follow_layout).setVisibility(View.GONE);
+//        } else {
+//            groupPage.findViewById(R.id.no_follow_layout).setVisibility(View.VISIBLE);
+//        }
     }
 
     /**

@@ -312,8 +312,6 @@ public enum SessionManager {
 
     }
 
-    public static boolean allActionsFetched = false;
-
     public void fetchAllActions(final Callback<ArrayList<Action>> callback) {
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();

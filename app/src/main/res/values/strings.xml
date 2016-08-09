@@ -32,4 +32,12 @@
     <string name="sunlight_api_key">939e3373a07c468bac51ddd604ebba1f</string>
     <string name="open_states_api_key">e39ba83d7c5b4e348db144c4b4c33108</string>
 
+    <!-- Actions/groups -->
+    <string name="no_follow_actions">To receive actions from advocacy groups, tap the + button above to follow groups.</string>
+    <string name="no_follow_groups">To follow groups, tap the + button above.</string>
+
+    <string name="no_follow_actions_top">You haven\'t received any actions yet.</string>
+    <string name="no_follow_groups_top">You don\'t follow any groups yet.</string>
+
+
 </resources>

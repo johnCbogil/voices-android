@@ -165,11 +165,19 @@ public enum RepresentativesManager {
                                     .getCurrentIndicatorTag()));
 
                     if(listView != null) {
+
+                        ArrayList<Representative> representatives =
+                                currentRepsMap.get(pagerIndicator.getCurrentIndicatorTag());
+
+                        if(representatives == null) {
+                            representatives = new ArrayList<>();
+                        }
+
                         listView.setAdapter(
                                 new RepresentativesListAdapter(
                                         listView.getContext(),
                                         R.layout.representatives_list_item,
-                                        currentRepsMap.get(pagerIndicator.getCurrentIndicatorTag())));
+                                        representatives));
                     }
 
                     return false;
