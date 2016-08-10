@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mobilonix.voices.R;
@@ -90,7 +89,7 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
 
     public static class ActionListHolder extends RecyclerView.ViewHolder {
 
-        Dialog groupDialog;
+        Dialog actionDialog;
 
         ImageView actionImage;
         ImageView arrowImage;
@@ -134,33 +133,18 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
                         return;
                     }
 
-                    groupDialog = new Dialog(v.getContext());
-                    groupDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    groupDialog.setContentView(R.layout.dialog_groups);
+                    actionDialog = new Dialog(v.getContext());
+                    actionDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    actionDialog.setContentView(R.layout.dialog_policies);
 
-                    TextView groupInfoDescriptionText = (TextView)groupDialog.findViewById(R.id.group_info_description_text);
-                    TextView groupInfoPolicyText = (TextView)groupDialog.findViewById(R.id.group_info_policy_text);
-                    ImageView groupInfoImage = (ImageView)groupDialog.findViewById(R.id.group_info_image);
+                    TextView policiesTitle  = (TextView)actionDialog.findViewById(R.id.policies_title);
+                    TextView policiesDescription = (TextView)actionDialog.findViewById(R.id.policies_description);
+                    Button contactRepresentativesButton = (Button)actionDialog.findViewById(R.id.button_contact_representatives);
 
-                    groupInfoDescriptionText.setText(associatedGroup.getGroupDescription());
-                    groupInfoPolicyText.setText(associatedGroup.getGroupCategory());
+                    //policiesTitle.setText();
+                    //policiesDescription.setText();
 
-                    Picasso.with(groupInfoImage.getContext())
-                            .load(associatedGroup.getGroupImageUrl())
-                            .fit()
-                            .error(R.drawable.representatives_place_holder)
-                            .placeholder(R.drawable.placeholder_spinner)
-                            .into(groupInfoImage);
-
-                    policyArray.addAll(associatedGroup.getPolicies());
-                    PolicyListAdapter policyAdapter
-                            = new PolicyListAdapter(v.getContext(),
-                            R.layout.policy_list_item,
-                            policyArray);
-                    ListView policyListView = (ListView)groupDialog.findViewById(R.id.policy_list);
-                    policyListView.setAdapter(policyAdapter);
-
-                    groupDialog.show();
+                    actionDialog.show();
                 }
             });
 
