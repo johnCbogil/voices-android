@@ -2,17 +2,12 @@ package com.mobilonix.voices;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.location.LocationListener;
-import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -22,20 +17,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.badoo.mobile.util.WeakHandler;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.location.LocationRequestManager;
 import com.mobilonix.voices.location.model.LatLong;
 import com.mobilonix.voices.location.util.LocationUtil;
 import com.mobilonix.voices.representatives.RepresentativesManager;
-import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.splash.SplashManager;
+import com.mobilonix.voices.util.ConnectivityReceiverUtil;
 
 public class VoicesMainActivity extends AppCompatActivity implements LocationListener {
 
@@ -45,46 +38,9 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
     boolean leaveAppDialogShowing = false;
     WeakHandler handler = new WeakHandler();
 
+    ConnectivityReceiverUtil connectivityReceiverUtil;
+
     MenuItem addGroup;
-    boolean receiverRegistered = false;
-
-    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            boolean hasData = false;
-
-            Log.i("VoicesMainActivity","intent.getAction: " + intent.getAction().toString());
-
-
-            if (!intent.getAction().equals(WifiManager.NETWORK_STATE_CHANGED_ACTION) &&
-                    !intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION) &&
-                    !intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-                return;
-            }
-
-            ConnectivityManager connManager = (ConnectivityManager)
-                    context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-            NetworkInfo info = connManager.getActiveNetworkInfo();
-
-            if (info != null && info.isConnectedOrConnecting() ) {
-                hasData = true;
-
-                //CONNECTED EVENT OR NETWORK SWITCH HERE
-
-                Log.d("VoicesMainActivity",
-                        "isConnected?: " + hasData + " route: " + info.getTypeName());
-            } else {
-
-                //DISCONNECTED EVENT HERE
-
-                Log.d("VoicesMainActivity",
-                        "isConnected?: " + hasData );
-            }
-        }
-    };
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +49,8 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
 
 //        FirebaseMessaging.getInstance().subscribeToTopic("news");
 //        FirebaseMessaging.getInstance().subscribeToTopic("EFF");
+
+        connectivityReceiverUtil = new ConnectivityReceiverUtil();
 
         SessionManager.INSTANCE.signIn();
 
@@ -215,11 +173,12 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
             }
         }
 
-        if (!receiverRegistered) {
-            receiverRegistered = true;
-            registerReceiver(broadcastReceiver,
-                    new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
-        }
+        connectivityReceiverUtil.registerConnectivityReceiver(this,
+                new ConnectivityReceiverUtil.ConnectivityListener() {
+            @Override
+            public void onConnectivityStateChanged(boolean isConnected, NetworkInfo info) {
+            }
+        });
     }
 
     @Override
@@ -252,7 +211,6 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
     protected void onDestroy() {
         LocationUtil.stopLocationUpdates(this);
         FirebaseAuth.getInstance().signOut();
-
         super.onDestroy();
     }
 
@@ -263,7 +221,6 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
     @Override
     public void onLocationChanged(Location location) {
         currentLocation = new LatLong(location.getLatitude(), location.getLongitude());
-
         GeneralUtil.toast("Location Changed: " + location);
     }
 
@@ -279,11 +236,6 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
     @Override
     public void onPause() {
         super.onPause();
-        if (receiverRegistered) {
-            receiverRegistered = false;
-            unregisterReceiver(broadcastReceiver);
-        }
+        connectivityReceiverUtil.unregisterConnectivityReceiver(this);
     }
-
-
 }
