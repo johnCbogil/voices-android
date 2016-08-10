@@ -234,8 +234,6 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
     @Override
     public void onLocationChanged(Location location) {
         currentLocation = new LatLong(location.getLatitude(), location.getLongitude());
-
-        GeneralUtil.toast("Location Changed: " + location);
     }
 
     @Override

@@ -185,23 +185,27 @@ public enum RepresentativesManager {
             });
 
             /* Initialize Autocomplete fragment */
-            autoCompleteTextView =
-                    (PlaceAutocompleteFragment) activity.getFragmentManager()
-                            .findFragmentById(R.id.place_autocomplete_fragment);
+            if(autoCompleteTextView == null) {
+                autoCompleteTextView =
+                        (PlaceAutocompleteFragment) activity.getFragmentManager()
+                                .findFragmentById(R.id.place_autocomplete_fragment);
 
-            if(autoCompleteTextView != null) {
                 autoCompleteTextView.getView().setVisibility(View.VISIBLE);
                 autoCompleteTextView.setHint(activity.getString(R.string.search_text));
                 autoCompleteTextView.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-                    @Override
-                    public void onPlaceSelected(Place place) {
-                        GeneralUtil.toast("Search for place");
-                    }
+                        @Override
+                        public void onPlaceSelected(Place place) {
+                            refreshRepresentativesContent(place.getLatLng().latitude,
+                                    place.getLatLng().longitude,
+                                    activity,
+                                    pages,
+                                    representativesPager);
+                        }
 
-                    @Override
-                    public void onError(Status status) {
+                        @Override
+                        public void onError(Status status) {
 
-                    }
+                        }
                 });
             }
 
