@@ -1,14 +1,12 @@
 package com.mobilonix.voices.representatives;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.support.v4.view.ViewPager;
-
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,6 +18,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.mobilonix.voices.R;
+import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.data.api.ApiEngine;
@@ -41,7 +40,6 @@ import com.mobilonix.voices.util.ViewUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import okhttp3.Request;
@@ -230,6 +228,9 @@ public enum RepresentativesManager {
         final LinearLayout groupsTab = (LinearLayout)representativesFrame.findViewById(R.id.groups_tab);
         final LinearLayout representativesTab = (LinearLayout)representativesFrame.findViewById(R.id.representatives_tab);
 
+        final ImageView representativesTabIcon = (ImageView)representativesFrame.findViewById(R.id.representatives_tab_icon);
+        final ImageView groupsTabIcon = (ImageView)representativesFrame.findViewById(R.id.groups_tab_icon);
+
         final ViewPager representativesPager = (ViewPager)representativesFrame.findViewById(R.id.reprsentatives_pager);
         final FrameLayout groupsView = (FrameLayout)representativesFrame.findViewById(R.id.groups_view);
 
@@ -238,7 +239,8 @@ public enum RepresentativesManager {
         final TextView actionSelectionButton = (TextView)primaryToolbar.findViewById(R.id.action_selection_text);
         final TextView groupsSelectionButton = (TextView)primaryToolbar.findViewById(R.id.groups_selection_text);
 
-        ViewUtil.setViewColor(representativesTab, android.R.color.holo_blue_light);
+        final int voicesOrange = VoicesApplication.getContext().getResources().getColor(R.color.voices_orange);
+        final int grey = VoicesApplication.getContext().getResources().getColor(R.color.grey);
 
         groupsTab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -250,9 +252,8 @@ public enum RepresentativesManager {
                 RepresentativesManager.INSTANCE.toggleSearchBar(false);
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(false);
 
-
-                ViewUtil.setViewColor(groupsTab, android.R.color.holo_blue_light);
-                ViewUtil.setViewColor(representativesTab, android.R.color.darker_gray);
+                groupsTabIcon.getDrawable().setColorFilter(voicesOrange,PorterDuff.Mode.SRC_ATOP);
+                representativesTabIcon.getDrawable().setColorFilter(grey,PorterDuff.Mode.SRC_ATOP);
 
                 GroupManager.INSTANCE.toggleGroupPage(groupsView, true);
             }
@@ -264,13 +265,13 @@ public enum RepresentativesManager {
 
                 representativesPager.setVisibility(View.VISIBLE);
                 groupsView.setVisibility(View.GONE);
-                primaryToolbar.setVisibility(View.GONE);
+                primaryToolbar.setVisibility(View.INVISIBLE);
 
                 RepresentativesManager.INSTANCE.toggleSearchBar(true);
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(true);
 
-                ViewUtil.setViewColor(groupsTab, android.R.color.darker_gray);
-                ViewUtil.setViewColor(representativesTab, android.R.color.holo_blue_light);
+                representativesTabIcon.getDrawable().setColorFilter(voicesOrange, PorterDuff.Mode.SRC_ATOP);
+                groupsTabIcon.getDrawable().setColorFilter(grey,PorterDuff.Mode.SRC_ATOP);
 
                 GroupManager.INSTANCE.toggleGroupPage(groupsView, false);
             }

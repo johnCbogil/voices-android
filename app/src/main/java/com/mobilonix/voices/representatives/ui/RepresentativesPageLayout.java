@@ -25,8 +25,6 @@ public class RepresentativesPageLayout extends LinearLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        //final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-                //((VoicesMainActivity)getContext()).getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         ImageView infoIcon = (ImageView)findViewById(R.id.representatives_info_icon);
         infoIcon.setOnClickListener(new View.OnClickListener() {
             @Override

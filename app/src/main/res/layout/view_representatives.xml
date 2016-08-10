@@ -80,6 +80,7 @@
                 android:weightSum="1"
                 android:layout_weight="0.5">
                 <ImageView
+                    android:id="@+id/representatives_tab_icon"
                     android:layout_weight="0.3"
                     android:layout_gravity="center"
                     android:src="@drawable/representatives_tab_icon"
@@ -103,10 +104,11 @@
                 android:weightSum="1"
                 android:layout_weight="0.5">
                 <ImageView
+                    android:id="@+id/groups_tab_icon"
                     android:layout_gravity="center"
                     android:layout_weight="0.3"
                     android:src="@drawable/groups_tab_icon"
-                    android:tint="@android:color/darker_gray"
+                    android:tint="@color/grey"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
                 <TextView
