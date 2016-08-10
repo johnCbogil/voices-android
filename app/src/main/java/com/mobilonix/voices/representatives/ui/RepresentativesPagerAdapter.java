@@ -1,25 +1,18 @@
 package com.mobilonix.voices.representatives.ui;
 
-import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.badoo.mobile.util.WeakHandler;
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
-import com.mobilonix.voices.base.util.GeneralUtil;
-import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.representatives.model.RepresentativesPage;
-import com.mobilonix.voices.util.RESTUtil;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
