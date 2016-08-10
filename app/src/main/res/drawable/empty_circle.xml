@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle" >
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
 
-    <!-- view background color -->
     <solid
         android:color="@color/transparent" >
     </solid>
@@ -13,9 +13,7 @@
         android:color="@color/voices_orange" >
     </stroke>
 
-    <!-- The radius makes the corners rounded -->
-    <corners
-        android:radius="2dp">
-    </corners>
-
+    <size
+        android:width="10dp"
+        android:height="10dp"/>
 </shape>

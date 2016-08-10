@@ -4,11 +4,13 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.location.LocationListener;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -20,14 +22,12 @@ import android.widget.FrameLayout;
 
 import com.badoo.mobile.util.WeakHandler;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.location.LocationRequestManager;
 import com.mobilonix.voices.location.model.LatLong;
 import com.mobilonix.voices.location.util.LocationUtil;
 import com.mobilonix.voices.representatives.RepresentativesManager;
-import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.splash.SplashManager;
 import com.mobilonix.voices.util.ConnectivityReceiverUtil;
@@ -35,6 +35,8 @@ import com.mobilonix.voices.util.ConnectivityReceiverUtil;
 public class VoicesMainActivity extends AppCompatActivity implements LocationListener {
 
     LatLong currentLocation = new LatLong(0, 0);
+
+    private static final int SPLASH_FADE_TIME = 2000;
 
     public FrameLayout mainContentFrame;
     boolean leaveAppDialogShowing = false;
@@ -49,28 +51,56 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voices_main);
 
-//        FirebaseMessaging.getInstance().subscribeToTopic("news");
-//        FirebaseMessaging.getInstance().subscribeToTopic("EFF");
-
         connectivityReceiverUtil = new ConnectivityReceiverUtil();
 
         SessionManager.INSTANCE.signIn();
-
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
         currentLocation = LocationUtil.getLastLocation(this);
 
         initViews();
-
-        SplashManager.INSTANCE.toggleSplashScreen(this, true);
+        initialTransition();
 
     }
 
     private void initViews() {
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         mainContentFrame = (FrameLayout)findViewById(R.id.main_content_frame);
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.primary_toolbar));
         findViewById(R.id.primary_toolbar).setVisibility(View.GONE);
     }
+
+    /**
+     * The initial app work goes here
+     */
+    private void initialTransition() {
+
+        SplashManager.INSTANCE.toggleSplashScreen(this, true);
+        if(!SessionManager.INSTANCE.checkIfFirstRun()) {
+            SplashManager.INSTANCE.toggleOnBoardingCopy(false);
+            SplashManager.INSTANCE.toggleSplashScreen(VoicesMainActivity.this, false);
+            getHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    SplashManager.INSTANCE.toggleSplashScreen(VoicesMainActivity.this, false);
+
+                    if (LocationUtil.isGPSEnabled(VoicesMainActivity.this)) {
+                        LocationUtil.triggerLocationUpdate(VoicesMainActivity.this, null);
+                        RepresentativesManager.INSTANCE
+                                .toggleRepresentativesScreen(LocationUtil
+                                                .getLastLocation(VoicesMainActivity.this),
+                                        VoicesMainActivity.this, true);
+                    } else {
+                        LocationRequestManager.INSTANCE
+                                .toggleLocationRequestScreen(VoicesMainActivity.this, true);
+
+                    }
+
+                }
+            }, SPLASH_FADE_TIME);
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -100,28 +130,15 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
     public void onBackPressed() {
 
 
+        /* Since we aren't using fragments, we need to fabricate a back stack.
+        * This absolutely OK because it's easy to do, and we get much better
+        * control of the back flow than if we were relying on fragment/child
+        * fragment lifecycles */
         if(GroupManager.INSTANCE.isGroupPageVisible()) {
             if(GroupManager.INSTANCE.getMODE() == GroupManager.GroupType.ALL) {
                 GroupManager.INSTANCE.onBackPress();
                 return;
             }
-        }
-
-        /* Since we aren't using fragments, we need to fabricate a back stack.
-        * This absolutely OK because it's easy to do, and we get much better
-        * control of the back flow than if we were relying on fragment/child
-        * fragment lifecycles */
-        if(RepresentativesManager.INSTANCE.isRepresentativesScreenVisible()) {
-            RepresentativesManager.INSTANCE.toggleRepresentativesScreen(currentLocation, this, false);
-            LocationRequestManager.INSTANCE.toggleLocationEntryScreen(this, true);
-            findViewById(R.id.primary_toolbar).setVisibility(View.GONE);
-            return;
-        } else if(LocationRequestManager.INSTANCE.isLocationRequestScreenOn()) {
-            LocationRequestManager.INSTANCE.toggleLocationRequestScreen(this, false);
-            //SplashManager.INSTANCE.toggleSplashScreen(this, true);
-            findViewById(R.id.primary_toolbar).setVisibility(View.GONE);
-
-            return;
         }
 
         /* If we back out too far, we want to make sure the user is ok leaving the app */
@@ -163,9 +180,15 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
         super.onResume();
 
         if(LocationRequestManager.INSTANCE.isLocationRequestScreenOn()) {
-            if(LocationUtil.isGPSEnabled(this)) {
+            if (LocationUtil.isGPSEnabled(this)) {
                 LocationRequestManager.INSTANCE.toggleLocationRequestScreen(this, false);
-                LocationRequestManager.INSTANCE.toggleLocationEntryScreen(this, true);
+                LocationUtil.triggerLocationUpdate(this, null);
+                RepresentativesManager.INSTANCE
+                        .toggleRepresentativesScreen(LocationUtil.getLastLocation(this), this, true);
+            }
+        } else {
+            if(!LocationUtil.isGPSEnabled(this) && !SplashManager.INSTANCE.splashScreenVisible) {
+                LocationRequestManager.INSTANCE.showGPSNotEnabledDialog(this);
             }
         }
 
@@ -192,7 +215,10 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
         }
 
         LocationRequestManager.INSTANCE.toggleLocationRequestScreen(this, false);
-        LocationRequestManager.INSTANCE.toggleLocationEntryScreen(this, true);
+        RepresentativesManager.INSTANCE
+                .toggleRepresentativesScreen(getCurrentLocation(),
+                this,
+                true);
     }
 
     public Toolbar getToolbar() {
@@ -208,6 +234,10 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
         LocationUtil.stopLocationUpdates(this);
         FirebaseAuth.getInstance().signOut();
         super.onDestroy();
+    }
+
+    public void toggleToolbarDivider(boolean state) {
+        findViewById(R.id.divider).setVisibility(state ? View.VISIBLE : View.GONE);
     }
 
     public LatLong getCurrentLocation() {
@@ -227,11 +257,17 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
     public void onProviderEnabled(String provider) {}
 
     @Override
-    public void onProviderDisabled(String provider) {}
+    public void onProviderDisabled(String provider) {
+        LocationRequestManager.INSTANCE
+                .toggleLocationRequestScreen(VoicesMainActivity.this, false);
+    }
 
     @Override
     public void onPause() {
         super.onPause();
         connectivityReceiverUtil.unregisterConnectivityReceiver(this);
+    }
+    public void toggleProgressSpinner(boolean state) {
+        findViewById(R.id.app_progress_spinner).setVisibility(state ? View.VISIBLE : View.GONE);
     }
 }

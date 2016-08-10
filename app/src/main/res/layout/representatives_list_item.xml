@@ -37,26 +37,29 @@
             android:orientation="horizontal"
             android:weightSum="1">
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="left"
                 android:id="@+id/representatives_list_call_image"
                 android:layout_weight="0.33"
-                android:src="@drawable/phone_icon"/>
+                android:src="@drawable/phone_icon"
+                android:tint="@color/voices_orange"/>
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_weight="0.33"
                 android:id="@+id/representatives_list_email_image"
                 android:layout_gravity="left"
-                android:src="@drawable/mail_icon"/>
+                android:src="@drawable/mail_icon"
+                android:tint="@color/voices_orange"/>
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_weight="0.33"
                 android:id="@+id/representatives_list_twitter_image"
                 android:layout_gravity="left"
-                android:src="@drawable/twitter_icon"/>
+                android:src="@drawable/twitter_icon"
+                android:tint="@color/voices_orange"/>
 
         </LinearLayout>
     </LinearLayout>

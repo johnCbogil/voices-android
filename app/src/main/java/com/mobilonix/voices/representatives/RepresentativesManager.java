@@ -1,34 +1,46 @@
 package com.mobilonix.voices.representatives;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.mobilonix.voices.R;
+import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.VoicesMainActivity;
+import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.data.api.ApiEngine;
 import com.mobilonix.voices.data.api.engines.NycCouncilApi;
-import com.mobilonix.voices.data.api.engines.UsCongressSunlightApi;
-
 import com.mobilonix.voices.data.api.engines.StateOpenStatesApi;
+import com.mobilonix.voices.data.api.engines.UsCongressSunlightApi;
 import com.mobilonix.voices.data.model.Politico;
 import com.mobilonix.voices.delegates.Callback;
+import com.mobilonix.voices.delegates.Callback2;
 import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.location.model.LatLong;
 import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.representatives.model.RepresentativesPage;
+import com.mobilonix.voices.representatives.ui.PagerIndicator;
+import com.mobilonix.voices.representatives.ui.RepresentativesListAdapter;
 import com.mobilonix.voices.representatives.ui.RepresentativesPagerAdapter;
 import com.mobilonix.voices.util.RESTUtil;
 import com.mobilonix.voices.util.ViewUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 import okhttp3.Request;
 
@@ -46,6 +58,11 @@ public enum RepresentativesManager {
 
     FrameLayout representativesFrame;
 
+    PagerIndicator pagerIndicator;
+
+    PlaceAutocompleteFragment autoCompleteTextView;
+    ConcurrentHashMap<String, ArrayList<Representative>> currentRepsMap = new ConcurrentHashMap<>();
+
     /**
      * The enum value contains the URL that needs to be called to make the representatives request
      */
@@ -59,14 +76,16 @@ public enum RepresentativesManager {
     public enum RepresentativesType {
 
 
-        CONGRESS(sunlightApiEngine),
-        STATE_LEGISLATORS(openStatesApiEngine),
-        COUNCIL_MEMBERS(nycScraperApi);
+        CONGRESS(sunlightApiEngine, "Federal"),
+        STATE_LEGISLATORS(openStatesApiEngine, "State"),
+        COUNCIL_MEMBERS(nycScraperApi, "City");
 
         ApiEngine mApi;
+        String identifier;
 
-        RepresentativesType(ApiEngine a) {
+        RepresentativesType(ApiEngine a, String identifier) {
             mApi = a;
+            this.identifier = identifier;
         }
 
         //TODO have this throw an error on API failure rather than network failure
@@ -81,6 +100,7 @@ public enum RepresentativesManager {
             return a;
         }
 
+
         public ArrayList<Politico> parseJsonResponse(String response) {
 
             try {
@@ -89,6 +109,10 @@ public enum RepresentativesManager {
                 e.printStackTrace(); //TODO Handle exception with appropriate dialog or activity msg
                 return null;
             }
+        }
+
+        public String getIdentifier() {
+            return identifier;
         }
     }
 
@@ -99,15 +123,85 @@ public enum RepresentativesManager {
             representativesFrame = (FrameLayout)
                     inflater.inflate(R.layout.view_representatives, null, false);
 
+            final TextView representativesTextIndicator = (TextView)representativesFrame.findViewById(R.id.representatives_type_text);
+            representativesTextIndicator.setText(RepresentativesType.CONGRESS.getIdentifier());
+
             final ArrayList<RepresentativesPage> pages = new ArrayList<>();
             final ViewPager representativesPager = (ViewPager)representativesFrame.findViewById(R.id.reprsentatives_pager);
 
-//            GeneralUtil.toast("Finding representatives for location LAT: "
-//                    + location.getLatitude()
-//                    + ", LONG: "
-//                    + location.getLongitude());
+            /* Initialize Pager Indicator */
+            pagerIndicator = ((PagerIndicator)representativesFrame
+                    .findViewById(R.id.pager_meta_frame)
+                    .findViewById(R.id.pager_indicator));
 
+            for(RepresentativesType representativesType : RepresentativesType.values()) {
+                pagerIndicator.addIndicator(representativesType.getIdentifier());
+                pages.add(new RepresentativesPage(new ArrayList<Representative>(), representativesType));
+            }
+            representativesPager.setAdapter(new RepresentativesPagerAdapter(pages));
 
+            representativesPager.addOnPageChangeListener(pagerIndicator);
+
+            pagerIndicator.addIndicatorShiftCallback(new Callback() {
+                @Override
+                public boolean onExecuted(Object data) {
+                    int position = (Integer)data;
+
+                    ArrayList<RepresentativesType> types = new ArrayList<>();
+                    for (RepresentativesType rep : RepresentativesType.values()) {
+                        types.add(rep);
+                    }
+
+                    for (int i = 0; i < types.size(); i++) {
+                        if(i == position) {
+                            representativesTextIndicator.setText(types.get(i).getIdentifier());
+                        }
+                    }
+
+                    ListView listView = ((ListView)representativesFrame
+                            .findViewWithTag(pagerIndicator
+                                    .getCurrentIndicatorTag()));
+
+                    if(listView != null) {
+
+                        ArrayList<Representative> representatives =
+                                currentRepsMap.get(pagerIndicator.getCurrentIndicatorTag());
+
+                        if(representatives == null) {
+                            representatives = new ArrayList<>();
+                        }
+
+                        listView.setAdapter(
+                                new RepresentativesListAdapter(
+                                        listView.getContext(),
+                                        R.layout.representatives_list_item,
+                                        representatives));
+                    }
+
+                    return false;
+                }
+            });
+
+            /* Initialize Autocomplete fragment */
+            autoCompleteTextView =
+                    (PlaceAutocompleteFragment) activity.getFragmentManager()
+                            .findFragmentById(R.id.place_autocomplete_fragment);
+
+            if(autoCompleteTextView != null) {
+                autoCompleteTextView.getView().setVisibility(View.VISIBLE);
+                autoCompleteTextView.setHint(activity.getString(R.string.search_text));
+                autoCompleteTextView.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+                    @Override
+                    public void onPlaceSelected(Place place) {
+                        GeneralUtil.toast("Search for place");
+                    }
+
+                    @Override
+                    public void onError(Status status) {
+
+                    }
+                });
+            }
 
             refreshRepresentativesContent(location.getLatitude(),
                     location.getLongitude(),
@@ -119,6 +213,7 @@ public enum RepresentativesManager {
 
             activity.getMainContentFrame().addView(representativesFrame);
         } else {
+
             activity.getMainContentFrame().removeView(representativesFrame);
         }
 
@@ -133,6 +228,9 @@ public enum RepresentativesManager {
         final LinearLayout groupsTab = (LinearLayout)representativesFrame.findViewById(R.id.groups_tab);
         final LinearLayout representativesTab = (LinearLayout)representativesFrame.findViewById(R.id.representatives_tab);
 
+        final ImageView representativesTabIcon = (ImageView)representativesFrame.findViewById(R.id.representatives_tab_icon);
+        final ImageView groupsTabIcon = (ImageView)representativesFrame.findViewById(R.id.groups_tab_icon);
+
         final ViewPager representativesPager = (ViewPager)representativesFrame.findViewById(R.id.reprsentatives_pager);
         final FrameLayout groupsView = (FrameLayout)representativesFrame.findViewById(R.id.groups_view);
 
@@ -141,7 +239,8 @@ public enum RepresentativesManager {
         final TextView actionSelectionButton = (TextView)primaryToolbar.findViewById(R.id.action_selection_text);
         final TextView groupsSelectionButton = (TextView)primaryToolbar.findViewById(R.id.groups_selection_text);
 
-        ViewUtil.setViewColor(representativesTab, android.R.color.holo_blue_light);
+        final int voicesOrange = VoicesApplication.getContext().getResources().getColor(R.color.voices_orange);
+        final int grey = VoicesApplication.getContext().getResources().getColor(R.color.grey);
 
         groupsTab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,9 +249,11 @@ public enum RepresentativesManager {
                 representativesPager.setVisibility(View.GONE);
                 groupsView.setVisibility(View.VISIBLE);
                 primaryToolbar.setVisibility(View.VISIBLE);
+                RepresentativesManager.INSTANCE.toggleSearchBar(false);
+                RepresentativesManager.INSTANCE.togglePagerMetaFrame(false);
 
-                ViewUtil.setViewColor(groupsTab, android.R.color.holo_blue_light);
-                ViewUtil.setViewColor(representativesTab, android.R.color.darker_gray);
+                groupsTabIcon.getDrawable().setColorFilter(voicesOrange,PorterDuff.Mode.SRC_ATOP);
+                representativesTabIcon.getDrawable().setColorFilter(grey,PorterDuff.Mode.SRC_ATOP);
 
                 GroupManager.INSTANCE.toggleGroupPage(groupsView, true);
             }
@@ -164,10 +265,13 @@ public enum RepresentativesManager {
 
                 representativesPager.setVisibility(View.VISIBLE);
                 groupsView.setVisibility(View.GONE);
-                primaryToolbar.setVisibility(View.GONE);
+                primaryToolbar.setVisibility(View.INVISIBLE);
 
-                ViewUtil.setViewColor(groupsTab, android.R.color.darker_gray);
-                ViewUtil.setViewColor(representativesTab, android.R.color.holo_blue_light);
+                RepresentativesManager.INSTANCE.toggleSearchBar(true);
+                RepresentativesManager.INSTANCE.togglePagerMetaFrame(true);
+
+                representativesTabIcon.getDrawable().setColorFilter(voicesOrange, PorterDuff.Mode.SRC_ATOP);
+                groupsTabIcon.getDrawable().setColorFilter(grey,PorterDuff.Mode.SRC_ATOP);
 
                 GroupManager.INSTANCE.toggleGroupPage(groupsView, false);
             }
@@ -176,8 +280,13 @@ public enum RepresentativesManager {
         actionSelectionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 actionSelectionButton.setBackgroundResource(R.drawable.button_back_selected);
+                actionSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.white));
+
                 groupsSelectionButton.setBackgroundResource(R.drawable.button_back);
+                groupsSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.voices_orange));
 
                 GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ACTION);
 
@@ -187,7 +296,11 @@ public enum RepresentativesManager {
         groupsSelectionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 actionSelectionButton.setBackgroundResource(R.drawable.button_back);
+                actionSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.voices_orange));
+
+                groupsSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.white));
                 groupsSelectionButton.setBackgroundResource(R.drawable.button_back_selected);
 
                 GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.USER);
@@ -214,7 +327,7 @@ public enum RepresentativesManager {
      *
      * @param repLat
      * @param repLong
-     * @param activity
+     * @param activity;
      * @param pages
      * @param representativesPager
      */
@@ -224,35 +337,97 @@ public enum RepresentativesManager {
                                               final ArrayList<RepresentativesPage> pages,
                                               final ViewPager representativesPager) {
 
-//        Below is used to test officials for a specific lat / lon
-//        repLat = 40.730610;
-//        repLong = -73.935242;
+//      Below is used to test officials for a specific lat / lon
+//          Should return district 3 Corey Johnson
+//        repLat = 40.74493027;
+//        repLong = -73.99040485;
+
+//      Below is used to test an address that will fail
+//        repLat = 40.76404572;
+//        repLong = -73.88193512;
+
+        activity.toggleProgressSpinner(true);
 
         for (RepresentativesType type : RepresentativesType.values()) {
-            RESTUtil.makeRepresentativesRequest(repLat, repLong, type, new Callback<ArrayList<Representative>>() {
+            RESTUtil.makeRepresentativesRequest(repLat, repLong, type,
+                    new Callback2<ArrayList<Representative>, RepresentativesType>() {
                 @Override
-                public boolean onExecuted(final ArrayList<Representative> data) {
+                public boolean onExecuted(final ArrayList<Representative> data, final RepresentativesType type) {
 
                     //TODO below if statement was put in primarily to handle case when NycCouncilApi
                     //  is executed outside of NYC. Prefer an a priori way of checking city. Also,
                     //  as more cities are on-boarded, a city API selector will be implemented that
                     //  also requires a priori knowledge
 
-                    if(data != null && !data.isEmpty()) {
-                        activity.getHandler().post(new Runnable() {
+                    final ArrayList<Representative> result;
+                    if((data == null) || data.isEmpty()) {
+                        result = new ArrayList<>();
+                    } else{
+                        result = data;
+                    }
+
+                    activity.getHandler().post(new Runnable() {
                             @Override
                             public void run() {
-                                pages.add(new RepresentativesPage(data));
-                                representativesPager.setAdapter(new RepresentativesPagerAdapter(pages));
-
+                                finalizePageOrder(result, type, pages, representativesPager);
                             }
-                        });
-                    }
+                    });
 
                     return false;
                 }
             });
         }
+    }
+
+    private void finalizePageOrder(ArrayList<Representative> data,
+                                   RepresentativesType type,
+                                   ArrayList<RepresentativesPage> pages,
+                                   ViewPager representativesPager) {
+
+        currentRepsMap.put(type.getIdentifier(), data);
+
+        GeneralUtil.toast("Got new representatives for current location!" );
+
+        ListView representativesListView =
+                (ListView) representativesPager
+                        .findViewWithTag(type.getIdentifier());
+        SwipeRefreshLayout pageRefresh = (SwipeRefreshLayout)representativesPager
+                .findViewWithTag(type.getIdentifier() + "_REFRESH");
+
+        if (representativesListView != null) {
+            representativesListView.setAdapter(
+                    new RepresentativesListAdapter(representativesPager.getContext(),
+                            R.layout.representatives_list_item, data));
+        }
+
+        if(pageRefresh != null) {
+            pageRefresh.setRefreshing(false);
+        }
+
+        if(pages.size() == RepresentativesType.values().length) {
+            ((VoicesMainActivity)representativesPager.getContext()).toggleProgressSpinner(false);
+        }
+
+    }
+
+    /**
+     * Turn the search bar on and off (conditionally)
+     *
+     * @param state
+     */
+    public void toggleSearchBar(boolean state) {
+        autoCompleteTextView
+                .getView().setVisibility(state ? View.VISIBLE : View.GONE);
+    }
+
+    /**
+     * Turn the meta section on and off (conditionally)
+     *
+     * @param state
+     */
+    public void togglePagerMetaFrame(boolean state) {
+        representativesFrame.findViewById(R.id.pager_meta_frame)
+                .setVisibility(state ? View.VISIBLE : View.GONE);
     }
 
     /**
@@ -268,6 +443,5 @@ public enum RepresentativesManager {
     public boolean isRepresentativesScreenVisible() {
         return representativesScreenVisible;
     }
-
 
 }

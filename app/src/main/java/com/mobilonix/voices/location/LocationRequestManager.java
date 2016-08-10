@@ -128,7 +128,6 @@ public enum LocationRequestManager {
                 public void onClick(View v) {
 
                     LatLong location = activity.getCurrentLocation();
-                    location = new LatLong(40.7282, -74.0776);
 
                     if(!LocationUtil.isGPSEnabled(activity)) {
                         LocationRequestManager.INSTANCE.showGPSNotEnabledDialog(activity);

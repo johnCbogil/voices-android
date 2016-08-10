@@ -19,6 +19,8 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.FormBody;
 import okhttp3.Headers;
@@ -38,29 +40,21 @@ public class NycCouncilApi implements ApiEngine {
     public static final String POST_CONTENT_KEY = "Content-Type";
     public static final String POST_CONTENT_VALUE = "application/x-www-form-urlencoded";
 
-    static final String TAG = "response";
-
-    public NycCouncilApi() {
-        Log.i("response","in nyccouncil" );
-
-    }
+    static final String TAG = "NycCouncilApi";
 
     @Override
     public Request generateRequest(double latitude, double longitude) {
 
         geoUtil.init(latitude, longitude);
 
-        Log.i("nyc", "lat: " + latitude + " lon: " +longitude) ;
-
         String address = geoUtil.getAddressLine();
-
-        Log.i(TAG,"district addy:" + address);
-
-        //address = "1515 broadway";
         String borough = geoUtil.getBorough();
-        //borough = "1";
 
-        Log.i("nyc", "address: " + address + " borough: " + borough) ;
+        //uncomment below for testing
+            //address = "1515 Broadway"
+            //borough = "1";
+
+        Log.i(TAG, "address: " + address + " borough: " + borough) ;
 
         URL url;
 
@@ -98,16 +92,14 @@ public class NycCouncilApi implements ApiEngine {
 
         Politico politico = politicianFromDistrict(getDistrict(response));
 
-        politicos.add(politico);
-
-        Log.i("nyc", "address: " + politico) ;
+        if(politico != null)  politicos.add(politico);
 
         return politicos;
     }
 
     public Politico politicianFromDistrict(Integer district) {
 
-        Log.i("response","politician from disctrict: " +district);
+        Log.i(TAG,"politician from disctrict: " + district);
 
         try {
             JSONObject districts = getJsonFromResource(VoicesApplication.getContext(), R.raw.nyc_district_data);
@@ -118,7 +110,6 @@ public class NycCouncilApi implements ApiEngine {
             Log.i(TAG, "1: " + member);
             member = member.getJSONObject(district + "");
             Log.i(TAG, "2: " + member);
-
 
             String firstName = member.getString("firstName");
             String lastName = member.getString("lastName");
@@ -137,28 +128,24 @@ public class NycCouncilApi implements ApiEngine {
             return politico;
 
         } catch (JSONException e) {
-            Log.e("response","json parse: " + e);
-            //TODO handle exception
+            Log.e(TAG,"json parse: " + e);
+            return null;
         }
-
-        return null;
     }
-
 
     public int getDistrict(String response)  {
 
+        //Uses clue word "District" to find location of district #
         int breadCrumb = response.indexOf("District");
+        String subset = response.substring(breadCrumb + 9, breadCrumb + 11).trim();
 
-//TODO implement exceptions in API
-//        if(breadCrumb == -1 ) {
-//            throw new IllegalArgumentException("Cannot find district - is the LatLon in NYC?");
-//        }
+        Matcher matcher = Pattern.compile("\\d+").matcher(subset);
 
-        //Log.i("geocoder", "district #: " + response);
+        if( matcher.find() ) {
+            return Integer.valueOf(matcher.group());
+        }
 
-
-        Log.i("geocoder", "district #: " + response.substring(breadCrumb + 9, breadCrumb + 11).trim().replace("<","") );
-        return Integer.parseInt(response.substring(breadCrumb + 9, breadCrumb + 11).trim().replace("<",""));
+        return 0;
     }
 
     private JSONObject getJsonFromResource(Context context, int jsonResource)  {

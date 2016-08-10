@@ -14,12 +14,13 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:layout_marginBottom="100dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:gravity="center_horizontal"
         android:layout_gravity="center_horizontal|bottom"
+        android:id="@+id/splash_voices_intro_text"
         android:text="@string/splash_voices_intro"/>
 
     <Button
@@ -28,11 +29,10 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:padding="20dp"
-        android:text="Getting Started"
+        android:text="Get Started"
         android:layout_marginBottom="30dp"
         android:textColor="@android:color/white"
         android:background="@drawable/rounded_button"
         android:id="@+id/splash_getting_started_button"
         android:layout_gravity="center_horizontal|bottom" />
-
 </FrameLayout>

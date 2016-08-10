@@ -54,6 +54,7 @@ public enum SessionManager {
 
     private static final String FIREBASE_TOKEN_KEY = "FIREBASE_TOKEN_KEY";
     private static final String FIREBASE_NO_TOKEN = "FIREBASE_NO_TOKEN";
+    private static final String CHECK_IF_FIRST_RUN = "CHECK_IF_FIRST_RUN";
 
     private String currentNotificationToken;
 
@@ -199,20 +200,25 @@ public enum SessionManager {
 
                     HashMap<String, String> policyMap = (HashMap) group.child("policyPositions").getValue();
                     ArrayList<Policy> policies = new ArrayList<>();
-                    Iterator it = policyMap.entrySet().iterator();
-                    while (it.hasNext()) {
-                        Map.Entry pair = (Map.Entry) it.next();
-                        policies.add(new Policy((String) pair.getKey(), (String) pair.getValue(), ""));
-                        it.remove();
+                    if(policyMap != null) {
+                        Iterator it = policyMap.entrySet().iterator();
+                        while (it.hasNext()) {
+                            Map.Entry pair = (Map.Entry) it.next();
+                            policies.add(new Policy((String) pair.getKey(), (String) pair.getValue(), ""));
+                            it.remove();
+                        }
                     }
 
                     HashMap<String, String> actionMap = (HashMap) group.child("actions").getValue();
                     ArrayList<String> actions = new ArrayList<>();
-                    Iterator actionIt = actionMap.entrySet().iterator();
-                    while (actionIt.hasNext()) {
-                        Map.Entry pair = (Map.Entry) actionIt.next();
-                        actions.add((String) pair.getKey());
-                        actionIt.remove();
+                    if(actionMap != null) {
+
+                        Iterator actionIt = actionMap.entrySet().iterator();
+                        while (actionIt.hasNext()) {
+                            Map.Entry pair = (Map.Entry) actionIt.next();
+                            actions.add((String) pair.getKey());
+                            actionIt.remove();
+                        }
                     }
 
                     Group groupToAdd = new Group(name, groupTyle, description, imageUrl, "", policies, actions, groupKey);
@@ -305,8 +311,6 @@ public enum SessionManager {
         });
 
     }
-
-    public static boolean allActionsFetched = false;
 
     public void fetchAllActions(final Callback<ArrayList<Action>> callback) {
 
@@ -418,6 +422,24 @@ public enum SessionManager {
             if (i < (arr.length - 1)) str.append(':');
         }
         return str.toString();
+    }
+
+    public boolean checkIfFirstRun() {
+        SharedPreferences preferences
+                = PreferenceManager.getDefaultSharedPreferences(VoicesApplication.getContext());
+
+        if(preferences.getBoolean(CHECK_IF_FIRST_RUN, true)) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(CHECK_IF_FIRST_RUN, false);
+            editor.commit();
+
+            /* Need to always commit editor changes */
+            return true;
+        } else {
+
+            return false;
+        }
+
     }
 
 }

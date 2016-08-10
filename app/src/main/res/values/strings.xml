@@ -2,10 +2,13 @@
     <string name="app_name">Voices</string>
 
     <!-- Splash Related -->
-    <string name="splash_voices_intro">Voices is your first civic tool. It\'s the smart way to make your voice heard.</string>
+    <string name="splash_title">Get Started</string>
+    <string name="splash_voices_intro">Voices is an advocacy tool for the people who care. It\'s the smart way to make your voice heard.</string>
 
     <!-- Location Request -->
     <string name="location_request_text">Turn on location services to Voices can show you who represents your community. </string>
+
+    <string name="button_learnmore">Learn More</string>
 
     <!--Sample Response-->
     <string name="response_title">Here\'s what to say</string>
@@ -21,8 +24,20 @@
 
     <string name="firebase_endpoint">https://voices-430ae.firebaseio.com</string>
 
+    <string name="search_text">Search by address</string>
+
+    <string name="all_groups_info">Select A Group To Learn More</string>
+
     <string name="google_places_api_key">AIzaSyAT87ms7SyySJIG5OrimyKbrHAZRQ2qgcI</string>
     <string name="sunlight_api_key">939e3373a07c468bac51ddd604ebba1f</string>
     <string name="open_states_api_key">e39ba83d7c5b4e348db144c4b4c33108</string>
+
+    <!-- Actions/groups -->
+    <string name="no_follow_actions">To receive actions from advocacy groups, tap the + button above to follow groups.</string>
+    <string name="no_follow_groups">To follow groups, tap the + button above.</string>
+
+    <string name="no_follow_actions_top">You haven\'t received any actions yet.</string>
+    <string name="no_follow_groups_top">You don\'t follow any groups yet.</string>
+
 
 </resources>
