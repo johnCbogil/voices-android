@@ -6,6 +6,7 @@ import android.util.Log;
 import com.mobilonix.voices.data.api.ApiEngine;
 import com.mobilonix.voices.data.api.util.UrlGenerator;
 import com.mobilonix.voices.data.model.Politico;
+import com.mobilonix.voices.representatives.RepresentativesManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -93,5 +94,10 @@ public class UsCongressSunlightApi implements ApiEngine {
         }
 
         return politicos;
+    }
+
+    @Override
+    public RepresentativesManager.RepresentativesType getRepresentativeType() {
+        return RepresentativesManager.RepresentativesType.CONGRESS;
     }
 }

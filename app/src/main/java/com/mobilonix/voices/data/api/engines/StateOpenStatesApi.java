@@ -6,6 +6,7 @@ import android.util.Log;
 import com.mobilonix.voices.data.api.ApiEngine;
 import com.mobilonix.voices.data.api.util.UrlGenerator;
 import com.mobilonix.voices.data.model.Politico;
+import com.mobilonix.voices.representatives.RepresentativesManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,7 +54,7 @@ public class StateOpenStatesApi implements ApiEngine {
     @Override
     public ArrayList<Politico> parseData(String response){
 
-        Log.i("response",response );
+        Log.i("response", response);
 
         ArrayList<Politico> politicos = new ArrayList<>();
 
@@ -84,5 +85,10 @@ public class StateOpenStatesApi implements ApiEngine {
         }
 
         return politicos;
+    }
+
+    @Override
+    public RepresentativesManager.RepresentativesType getRepresentativeType() {
+        return RepresentativesManager.RepresentativesType.STATE_LEGISLATORS;
     }
 }
