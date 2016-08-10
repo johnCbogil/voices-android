@@ -20,12 +20,14 @@ import android.widget.FrameLayout;
 
 import com.badoo.mobile.util.WeakHandler;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.location.LocationRequestManager;
 import com.mobilonix.voices.location.model.LatLong;
 import com.mobilonix.voices.location.util.LocationUtil;
 import com.mobilonix.voices.representatives.RepresentativesManager;
+import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.splash.SplashManager;
 import com.mobilonix.voices.util.ConnectivityReceiverUtil;
@@ -70,10 +72,6 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
         findViewById(R.id.primary_toolbar).setVisibility(View.GONE);
     }
 
-    private void initBroadcastReceivers() {
-
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -81,8 +79,6 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
         inflater.inflate(R.menu.primary_menu, menu);
 
         addGroup = menu.findItem(R.id.action_add_groups);
-
-        initBroadcastReceivers();
 
         return true;
     }
