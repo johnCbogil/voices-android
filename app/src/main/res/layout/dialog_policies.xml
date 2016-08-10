@@ -4,12 +4,17 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/policies_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textSize="20dp"
+        android:textStyle="bold"
         android:padding="20dp"
         android:text="Education"
         />
     <Button
+        android:id="@+id/button_contact_representatives"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="30dp"
@@ -22,6 +27,9 @@
         android:text="Contact My Representatives"/>
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:id="@+id/policies_description"
+        android:padding="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Advocate quality public education in New York with emphasis"/>
 </LinearLayout>
