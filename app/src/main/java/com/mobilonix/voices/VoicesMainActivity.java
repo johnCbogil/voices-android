@@ -8,10 +8,12 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.location.LocationListener;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,6 +30,7 @@ import com.mobilonix.voices.location.util.LocationUtil;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.splash.SplashManager;
+import com.mobilonix.voices.util.ConnectivityReceiverUtil;
 
 public class VoicesMainActivity extends AppCompatActivity implements LocationListener {
 
@@ -39,12 +42,16 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
     boolean leaveAppDialogShowing = false;
     WeakHandler handler = new WeakHandler();
 
+    ConnectivityReceiverUtil connectivityReceiverUtil;
+
     MenuItem addGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voices_main);
+
+        connectivityReceiverUtil = new ConnectivityReceiverUtil();
 
         SessionManager.INSTANCE.signIn();
         currentLocation = LocationUtil.getLastLocation(this);
@@ -184,6 +191,13 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
                 LocationRequestManager.INSTANCE.showGPSNotEnabledDialog(this);
             }
         }
+
+        connectivityReceiverUtil.registerConnectivityReceiver(this,
+                new ConnectivityReceiverUtil.ConnectivityListener() {
+            @Override
+            public void onConnectivityStateChanged(boolean isConnected, NetworkInfo info) {
+            }
+        });
     }
 
     @Override
@@ -219,7 +233,6 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
     protected void onDestroy() {
         LocationUtil.stopLocationUpdates(this);
         FirebaseAuth.getInstance().signOut();
-
         super.onDestroy();
     }
 
@@ -234,7 +247,6 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
     @Override
     public void onLocationChanged(Location location) {
         currentLocation = new LatLong(location.getLatitude(), location.getLongitude());
-
         GeneralUtil.toast("Location Changed: " + location);
     }
 
@@ -250,8 +262,12 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
                 .toggleLocationRequestScreen(VoicesMainActivity.this, false);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        connectivityReceiverUtil.unregisterConnectivityReceiver(this);
+    }
     public void toggleProgressSpinner(boolean state) {
         findViewById(R.id.app_progress_spinner).setVisibility(state ? View.VISIBLE : View.GONE);
     }
-
 }
