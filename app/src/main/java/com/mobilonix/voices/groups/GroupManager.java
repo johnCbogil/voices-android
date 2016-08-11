@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -21,9 +20,8 @@ import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
 import com.mobilonix.voices.groups.ui.GroupPage;
-import com.mobilonix.voices.representatives.RepresentativesManager;
-import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.session.SessionManager;
+import com.mobilonix.voices.util.ViewUtil;
 
 import java.util.ArrayList;
 
@@ -377,12 +375,21 @@ public enum GroupManager {
     }
 
     public void onBackPress() {
-
         MODE = GroupType.USER;
-
-
-
         toggleGroups(GroupType.USER);
+
+        Toolbar toolbar = ((VoicesMainActivity)groupPage.getContext()).getToolbar();
+        final TextView actionSelectionButton = (TextView)toolbar.findViewById(R.id.action_selection_text);
+        final TextView groupsSelectionButton = (TextView)toolbar.findViewById(R.id.groups_selection_text);
+        actionSelectionButton.setBackgroundResource(R.drawable.button_back);
+        actionSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.voices_orange));
+
+        groupsSelectionButton.setBackgroundResource(R.drawable.button_back_selected);
+        groupsSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.white));
+
+        GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.USER);
+
+
         //Toolbar toolbar = ((VoicesMainActivity)groupPage.getContext()).getToolbar();
 //        toolbar.findViewById(R.id.primary_toolbar_back_arrow).setVisibility(View.GONE);
 //        groupPage.findViewById(R.id.action_groups_list).setVisibility(View.GONE);
