@@ -60,7 +60,11 @@ public enum LocationRequestManager {
                         LocationUtil.triggerLocationUpdate(activity, null);
 
                         toggleLocationRequestScreen(activity, false);
-                        toggleLocationEntryScreen(activity, true);
+                        RepresentativesManager.INSTANCE
+                                .toggleRepresentativesScreen(
+                                        activity.getCurrentLocation(),
+                                        activity,
+                                        true);
                     } else {
                         Intent myIntent = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                         activity.startActivity(myIntent);
@@ -76,91 +80,9 @@ public enum LocationRequestManager {
         }
     }
 
-    public void toggleLocationEntryScreen(final VoicesMainActivity activity, boolean state) {
-        if(state) {
-            activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            LayoutInflater inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            try {
-                locationEntryFrame = (FrameLayout) inflater.inflate(R.layout.view_location_entry, null, false);
-            } catch (Exception e) {}
-            Button findByLocationButton = (Button)locationEntryFrame.findViewById(R.id.find_for_current_location_button);
-            Button findByEntryButton = (Button)locationEntryFrame.findViewById(R.id.find_for_entered_location_button);
-
-            try {
-                final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-                        activity.getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-
-                autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-                    @Override
-                    public void onPlaceSelected(Place place) {
-                        Log.e(TAG, "It worked!");
-                    }
-
-                    @Override
-                    public void onError(Status status) {
-                        // TODO: Handle the error.
-                        Log.e(TAG, "An error occurred: " + status);
-
-                    }
-                });
-            } catch (Exception e) {}
-
-            findByEntryButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-
-                    if(!LocationUtil.isGPSEnabled(activity)) {
-                        LocationRequestManager.INSTANCE.showGPSNotEnabledDialog(activity);
-                    } else {}
-
-                    RepresentativesManager.INSTANCE
-                                .toggleRepresentativesScreen(
-                                        activity.getCurrentLocation(),
-                                        activity, true);
-                    toggleLocationEntryScreen(activity, false);
-
-                }
-            });
-
-            findByLocationButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    LatLong location = activity.getCurrentLocation();
-
-                    if(!LocationUtil.isGPSEnabled(activity)) {
-                        LocationRequestManager.INSTANCE.showGPSNotEnabledDialog(activity);
-                    } else {}
-
-                    RepresentativesManager.INSTANCE
-                            .toggleRepresentativesScreen(
-                                    location,
-                                    activity, true);
-                    toggleLocationEntryScreen(activity, false);
-
-                }
-            });
-
-            activity.getMainContentFrame().addView(locationEntryFrame);
-        } else {
-            activity.getMainContentFrame().removeView(locationEntryFrame);
-        }
-    }
 
     public boolean isLocationRequestScreenOn() {
         return locationRequestScreenOn;
-    }
-
-    /**
-     * This method takes in a location and returns a lat long.  The location can come from some form
-     * of user Input
-     *
-     * @param location
-     * @return
-     */
-    public LatLong getLatLongFromLocation(String location) {
-        return new LatLong(0, 0);
     }
 
     /**

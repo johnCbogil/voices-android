@@ -20,6 +20,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.mobilonix.voices.R;
+import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.data.api.ApiEngine;
@@ -51,6 +52,8 @@ public enum RepresentativesManager {
     INSTANCE;
 
     public String TAG = RepresentativesManager.class.getCanonicalName();
+
+    public String CURRENT_LOCATION = "CURRENT_LOCATION";
 
     static UsCongressSunlightApi sunlightApiEngine = new UsCongressSunlightApi();
     static StateOpenStatesApi openStatesApiEngine = new StateOpenStatesApi();
@@ -195,7 +198,9 @@ public enum RepresentativesManager {
                 autoCompleteTextView.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                         @Override
                         public void onPlaceSelected(Place place) {
-                            refreshRepresentativesContent(place.getLatLng().latitude,
+                            refreshRepresentativesContent(
+                                    place.getAddress().toString(),
+                                    place.getLatLng().latitude,
                                     place.getLatLng().longitude,
                                     activity,
                                     pages,
@@ -209,7 +214,9 @@ public enum RepresentativesManager {
                 });
             }
 
-            refreshRepresentativesContent(location.getLatitude(),
+            refreshRepresentativesContent(
+                    CURRENT_LOCATION,
+                    location.getLatitude(),
                     location.getLongitude(),
                     activity,
                     pages,
@@ -334,20 +341,12 @@ public enum RepresentativesManager {
      * @param pages
      * @param representativesPager
      */
-    public void refreshRepresentativesContent(double repLat,
+    public void refreshRepresentativesContent(final String locationString,
+                                              double repLat,
                                               double repLong,
                                               final VoicesMainActivity activity,
                                               final ArrayList<RepresentativesPage> pages,
                                               final ViewPager representativesPager) {
-
-//      Below is used to test officials for a specific lat / lon
-//          Should return district 3 Corey Johnson
-//        repLat = 40.74493027;
-//        repLong = -73.99040485;
-
-//      Below is used to test an address that will fail
-//        repLat = 40.76404572;
-//        repLong = -73.88193512;
 
         activity.toggleProgressSpinner(true);
 
@@ -373,8 +372,20 @@ public enum RepresentativesManager {
                             @Override
                             public void run() {
                                 finalizePageOrder(result, type, pages, representativesPager);
+
+                                String location = VoicesApplication.EMPTY;
+
+                                if(locationString.equals(CURRENT_LOCATION)) {
+                                    location = "current location!";
+                                } else {
+                                    location = "address: " + locationString;
+                                }
+
+                                GeneralUtil.toast("Getting representatives for " + location);
                             }
                     });
+
+
 
                     return false;
                 }
@@ -388,8 +399,6 @@ public enum RepresentativesManager {
                                    ViewPager representativesPager) {
 
         currentRepsMap.put(type.getIdentifier(), data);
-
-        GeneralUtil.toast("Got new representatives for current location!" );
 
         ListView representativesListView =
                 (ListView) representativesPager

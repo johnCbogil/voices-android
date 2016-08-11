@@ -156,9 +156,7 @@ public class LocationUtil {
             return;
         }
 
-        GeneralUtil.toast("Triggering location update");
-
-                ((LocationManager) VoicesApplication.getContext()
+        ((LocationManager) VoicesApplication.getContext()
                         .getSystemService(Context.LOCATION_SERVICE))
                 .requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
                         LOCATION_CHECK_INTERVAL, 0, listener);
