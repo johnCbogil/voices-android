@@ -34,94 +34,12 @@ public class LocationUtil {
     * we shouldn't be in a situation where we need multiple people requesting */
     private static Callback<LatLong> locationRequestCallback = null;
 
-    /**
-     * Listen for changes in the location on an update
-     */
-    private static LocationListener locationListener = new LocationListener() {
-
-        /* This is the result of a periodic poll */
-        public void onLocationChanged(Location location) {
-            lastLocation = new LatLong(location.getLatitude(), location.getLongitude());
-            if (locationRequestCallback != null) {
-                locationRequestCallback
-                        .onExecuted(new LatLong(location.getLatitude(), location.getLongitude()));
-
-                /* Reset the locationRequest callback once triggered*/
-                locationRequestCallback = null;
-
-                /* If we've set single poll mode,
-                 we make sure the GPS/Network provider doesn't keep requesting updates */
-                if (singlePoll) {
-                    if (checkLocationRequestPermissions()) {
-                        try {
-                            locationManager.removeUpdates(locationListener);
-                        } catch (SecurityException e) {
-                            Log.d(TAG, "Security Exception when attempting to determine location");
-                        }
-                    }
-                }
-            }
-        }
-
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-        }
-
-        public void onProviderEnabled(String provider) {
-            initialized = true;
-        }
-
-        public void onProviderDisabled(String provider) {
-
-            /* If both providers are off, then we need to un-initialize the location util */
-            if (!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-                    &&
-                    !locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                initialized = false;
-            }
-        }
-    };
-
-    /**
-     * Initialize the location detector
-     */
-    public static void initLocationDetection() {
-        locationManager = (LocationManager) VoicesApplication.getContext()
-                .getSystemService(Context.LOCATION_SERVICE);
-        if (checkLocationRequestPermissions()) {
-            try {
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_CHECK_INTERVAL, 0, locationListener);
-            } catch (SecurityException e) {
-                Log.d(TAG, "Security Exception when attempting to determine location");
-            }
-        } else {
-            initialized = true;
-        }
-    }
-
     private static boolean checkLocationRequestPermissions() {
         if (ActivityCompat.checkSelfPermission(VoicesApplication.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(VoicesApplication.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return false;
         } else {
             return true;
-        }
-    }
-
-    /**
-     * Poll for the latest location.  Callback is used to provider user behavior
-     *
-     * @param callback
-     */
-    public static void pollForCurrentLocation(Callback<LatLong> callback) {
-        locationRequestCallback = callback;
-        if (checkLocationRequestPermissions()) {
-            try {
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_CHECK_INTERVAL, 0, locationListener);
-            } catch (SecurityException e) {
-                Log.d(TAG, "Security Exception when attemping to determine location");
-            }
-        } else {
-            initialized = true;
         }
     }
 
@@ -241,7 +159,7 @@ public class LocationUtil {
         ((LocationManager) VoicesApplication.getContext()
                         .getSystemService(Context.LOCATION_SERVICE))
                 .requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-                        LOCATION_CHECK_INTERVAL, 0, locationListener);
+                        LOCATION_CHECK_INTERVAL, 0, listener);
 
         locationRequestCallback = callback;
     }

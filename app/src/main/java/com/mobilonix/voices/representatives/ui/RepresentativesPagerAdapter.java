@@ -50,7 +50,8 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
 
                 RepresentativesManager.INSTANCE
                         .refreshRepresentativesContent(
-                                ((VoicesMainActivity) pageRefresh.getContext()).getCurrentLocation().getLatitude(),
+                                RepresentativesManager.INSTANCE.CURRENT_LOCATION,
+                                        ((VoicesMainActivity) pageRefresh.getContext()).getCurrentLocation().getLatitude(),
                                 ((VoicesMainActivity) pageRefresh.getContext()).getCurrentLocation().getLongitude(),
                                 ((VoicesMainActivity) pageRefresh.getContext()),
                                 representatives,

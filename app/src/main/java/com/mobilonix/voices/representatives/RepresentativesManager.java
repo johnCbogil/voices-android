@@ -50,6 +50,8 @@ public enum RepresentativesManager {
 
     public String TAG = RepresentativesManager.class.getCanonicalName();
 
+    public String CURRENT_LOCATION = "CURRENT_LOCATION";
+
     static UsCongressSunlightApi sunlightApiEngine = new UsCongressSunlightApi();
     static StateOpenStatesApi openStatesApiEngine = new StateOpenStatesApi();
     static NycCouncilApi nycScraperApi = new NycCouncilApi();
@@ -183,27 +185,35 @@ public enum RepresentativesManager {
             });
 
             /* Initialize Autocomplete fragment */
-            autoCompleteTextView =
-                    (PlaceAutocompleteFragment) activity.getFragmentManager()
-                            .findFragmentById(R.id.place_autocomplete_fragment);
+            if(autoCompleteTextView == null) {
+                autoCompleteTextView =
+                        (PlaceAutocompleteFragment) activity.getFragmentManager()
+                                .findFragmentById(R.id.place_autocomplete_fragment);
 
-            if(autoCompleteTextView != null) {
                 autoCompleteTextView.getView().setVisibility(View.VISIBLE);
                 autoCompleteTextView.setHint(activity.getString(R.string.search_text));
                 autoCompleteTextView.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-                    @Override
-                    public void onPlaceSelected(Place place) {
-                        GeneralUtil.toast("Search for place");
-                    }
+                        @Override
+                        public void onPlaceSelected(Place place) {
+                            refreshRepresentativesContent(
+                                    place.getAddress().toString(),
+                                    place.getLatLng().latitude,
+                                    place.getLatLng().longitude,
+                                    activity,
+                                    pages,
+                                    representativesPager);
+                        }
 
-                    @Override
-                    public void onError(Status status) {
+                        @Override
+                        public void onError(Status status) {
 
-                    }
+                        }
                 });
             }
 
-            refreshRepresentativesContent(location.getLatitude(),
+            refreshRepresentativesContent(
+                    CURRENT_LOCATION,
+                    location.getLatitude(),
                     location.getLongitude(),
                     activity,
                     pages,
@@ -331,20 +341,12 @@ public enum RepresentativesManager {
      * @param pages
      * @param representativesPager
      */
-    public void refreshRepresentativesContent(double repLat,
+    public void refreshRepresentativesContent(final String locationString,
+                                              double repLat,
                                               double repLong,
                                               final VoicesMainActivity activity,
                                               final ArrayList<RepresentativesPage> pages,
                                               final ViewPager representativesPager) {
-
-//      Below is used to test officials for a specific lat / lon
-//          Should return district 3 Corey Johnson
-//        repLat = 40.74493027;
-//        repLong = -73.99040485;
-
-//      Below is used to test an address that will fail
-//        repLat = 40.76404572;
-//        repLong = -73.88193512;
 
         activity.toggleProgressSpinner(true);
 
@@ -370,8 +372,20 @@ public enum RepresentativesManager {
                             @Override
                             public void run() {
                                 finalizePageOrder(result, type, pages, representativesPager);
+
+                                String location = VoicesApplication.EMPTY;
+
+                                if(locationString.equals(CURRENT_LOCATION)) {
+                                    location = "current location!";
+                                } else {
+                                    location = "address: " + locationString;
+                                }
+
+                                GeneralUtil.toast("Getting representatives for " + location);
                             }
                     });
+
+
 
                     return false;
                 }
@@ -385,8 +399,6 @@ public enum RepresentativesManager {
                                    ViewPager representativesPager) {
 
         currentRepsMap.put(type.getIdentifier(), data);
-
-        GeneralUtil.toast("Got new representatives for current location!" );
 
         ListView representativesListView =
                 (ListView) representativesPager
