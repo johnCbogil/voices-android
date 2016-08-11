@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:layout_gravity="center_horizontal"
-        android:id="@+id/follow_button"
+        android:id="@+id/groups_follow_button"
         android:background="@drawable/rounded_button"
         android:textColor="#FFF"
         android:text="Follow This Group"/>
@@ -39,7 +39,7 @@
         android:textColor="#000"
         android:text="Policy Positions"/>
     <ListView
-        android:id="@+id/policy_list"
+        android:id="@+id/groups_policy_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </ListView>

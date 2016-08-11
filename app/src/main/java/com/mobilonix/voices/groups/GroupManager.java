@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
 import com.mobilonix.voices.groups.ui.GroupPage;
+import com.mobilonix.voices.groups.ui.PolicyListAdapter;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.session.SessionManager;
@@ -324,18 +326,31 @@ public enum GroupManager {
      * @param group
      */
     public void toggleSubscribeToGroupDialog(Context context, final Group group) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("DEBUG ONLY: Subscribe to '" + group.getGroupName() + "'");
-        builder.setMessage("This is a debug action to test subscription " +
-                "to a group until the real subscription flow is added.");
-        builder.setPositiveButton("Subscribe", new DialogInterface.OnClickListener() {
+
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog_groups);
+        TextView groupsInfoDescriptionText = (TextView)dialog
+                .findViewById(R.id.group_info_description_text);
+        TextView groupsInfoPolicyText = (TextView)dialog
+                .findViewById(R.id.group_info_description_text);
+        Button groupsFollowGroupsButton =
+                (Button)dialog.findViewById(R.id.groups_follow_button);
+        ListView policyList = (ListView)dialog.findViewById(R.id.groups_policy_list);
+
+        groupsInfoDescriptionText.setText(group.getGroupDescription());
+        groupsInfoPolicyText.setText(group.getGroupCategory());
+
+        groupsFollowGroupsButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
                 subscribeToGroup(group, true);
             }
         });
-        Dialog dialog = builder.create();
+
+        policyList.setAdapter(new PolicyListAdapter(context,R.layout.policy_list_item,group.getPolicies()));
+
         dialog.show();
+
     }
 
     boolean subscriptionCompleted = false;
