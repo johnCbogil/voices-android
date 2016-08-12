@@ -30,9 +30,6 @@ public class GroupListRecylerAdapter extends RecyclerView.Adapter<GroupListRecyl
         this.groups = groups;
         this.groupType = groupType;
 
-        if((groups.size() > 0) && (groupType == GroupManager.GroupType.USER)) {
-            GroupManager.INSTANCE.toggleNoActionGroupsLayout(false);
-        }
     }
 
     @Override
@@ -79,7 +76,7 @@ public class GroupListRecylerAdapter extends RecyclerView.Adapter<GroupListRecyl
         }
 
             /* For now we add debug behavior for group subscription */
-        if(groupType == GroupManager.GroupType.ALL) {
+        if((groupType == GroupManager.GroupType.ALL) || (groupType == GroupManager.GroupType.USER)) {
             holder.groupView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

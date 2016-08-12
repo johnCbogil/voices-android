@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -199,9 +200,11 @@ public enum GroupManager {
             public boolean onExecuted(ArrayList<Group> data) {
 
                 groupPage.setUserGroups(data);
-                if((data.size() > 0) && (GroupManager.INSTANCE.getMODE() == GroupType.USER)) {
-                    GeneralUtil.toast("Got more than one group. hiding no follow layout");
+
+                if((data != null) && (data.size() > 0)) {
                     GroupManager.INSTANCE.toggleNoActionGroupsLayout(false);
+                } else {
+                    GroupManager.INSTANCE.toggleNoActionGroupsLayout(true);
                 }
 
                 SessionManager.INSTANCE.fetchAllActions(new Callback<ArrayList<Action>>() {
@@ -212,10 +215,6 @@ public enum GroupManager {
                         isRefreshing = false;
                         ((VoicesMainActivity)groupPage.getContext())
                                 .toggleProgressSpinner(isRefreshing);
-
-                        if((data.size() > 0) && (GroupManager.INSTANCE.getMODE() == GroupType.ACTION)) {
-                            GroupManager.INSTANCE.toggleNoActionGroupsLayout(false);
-                        }
 
                         return false;
                     }
@@ -243,12 +242,22 @@ public enum GroupManager {
                 groupPage.findViewById(R.id.no_follow_layout).setVisibility(View.VISIBLE);
             }
 
-            ((TextView)groupPage
-                    .findViewById(R.id.no_follow_layout)
-                    .findViewById(R.id.no_follows_top_line)).setText(R.string.no_follow_actions_top);
-            ((TextView)groupPage
-                    .findViewById(R.id.no_follow_layout)
-                    .findViewById(R.id.no_follows_bottom_line)).setText(R.string.no_follow_actions);
+            LinearLayout noFollowLayout = (LinearLayout) groupPage.findViewById(R.id.no_follow_layout);
+
+            ArrayList<Action> actions = groupPage.getActions();
+            if((actions != null) && (actions.size() > 0)) {
+                noFollowLayout.setVisibility(View.GONE);
+            } else {
+                noFollowLayout.setVisibility(View.VISIBLE);
+            }
+
+            ((TextView) groupPage
+                        .findViewById(R.id.no_follow_layout)
+                        .findViewById(R.id.no_follows_top_line)).setText(R.string.no_follow_actions_top);
+            ((TextView) groupPage
+                        .findViewById(R.id.no_follow_layout)
+                        .findViewById(R.id.no_follows_bottom_line)).setText(R.string.no_follow_actions);
+
 
             toolbar.findViewById(R.id.groups_selection_text).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.action_selection_text).setVisibility(View.VISIBLE);
@@ -270,8 +279,8 @@ public enum GroupManager {
             toolbar.findViewById(R.id.action_add_groups).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.all_groups_info_text).setVisibility(View.GONE);
 
-            if(((RecyclerView)groupPage
-                    .findViewById(R.id.user_groups_list)).getChildCount() > 0) {
+            ArrayList<Group> groups = groupPage.getUserGroups();
+            if((groups != null) && (groups.size() > 0)) {
                 groupPage.findViewById(R.id.no_follow_layout).setVisibility(View.GONE);
             } else {
                 groupPage.findViewById(R.id.no_follow_layout).setVisibility(View.VISIBLE);
@@ -412,9 +421,9 @@ public enum GroupManager {
             @Override
             public boolean onExecuted(Boolean data) {
 
-                if(!subscriptionCompleted) {
+                if (!subscriptionCompleted) {
                     GeneralUtil.toast("Groups subscription updated");
-                    if(refresh) {
+                    if (refresh) {
                         GroupManager.INSTANCE.refreshGroupsAndActionList();
                     }
                     subscriptionCompleted = true;
@@ -439,7 +448,7 @@ public enum GroupManager {
             @Override
             public boolean onExecuted(Boolean data) {
 
-                if(refresh) {
+                if (refresh) {
                     GroupManager.INSTANCE.refreshGroupsAndActionList();
                     callback.onExecuted(data);
                 }
