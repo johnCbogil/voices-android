@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,9 +24,8 @@ import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
 import com.mobilonix.voices.groups.ui.GroupPage;
 import com.mobilonix.voices.groups.ui.PolicyListAdapter;
-import com.mobilonix.voices.representatives.RepresentativesManager;
-import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.session.SessionManager;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -127,6 +127,8 @@ public enum GroupManager {
     }
 
     public void toggleGroupPage(ViewGroup pageRoot, boolean state) {
+
+        GeneralUtil.toast("User token: " + SessionManager.INSTANCE.getCurrentUserToken());
 
         if(isRefreshing) {
             ((VoicesMainActivity)pageRoot.getContext()).toggleProgressSpinner(true);
@@ -327,22 +329,47 @@ public enum GroupManager {
      */
     public void toggleSubscribeToGroupDialog(Context context, final Group group) {
 
-        Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_groups);
+
+        ImageView groupsImage = (ImageView)dialog.findViewById(R.id.group_info_image);
+
+        Picasso.with(context)
+                .load(group.getGroupImageUrl())
+                .placeholder(R.drawable.placeholder_spinner)
+                .error(R.drawable.representatives_place_holder)
+                .fit()
+                .into(groupsImage);
+
         TextView groupsInfoDescriptionText = (TextView)dialog
                 .findViewById(R.id.group_info_description_text);
         TextView groupsInfoPolicyText = (TextView)dialog
-                .findViewById(R.id.group_info_description_text);
-        Button groupsFollowGroupsButton =
+                .findViewById(R.id.group_info_policy_text);
+        final Button groupsFollowGroupsButton =
                 (Button)dialog.findViewById(R.id.groups_follow_button);
         ListView policyList = (ListView)dialog.findViewById(R.id.groups_policy_list);
 
         groupsInfoDescriptionText.setText(group.getGroupDescription());
         groupsInfoPolicyText.setText(group.getGroupCategory());
 
+        for (Group g : groupPage.getUserGroups()) {
+            if(g.getGroupKey().equals(group.getGroupKey())) {
+                groupsFollowGroupsButton.setText("Unfollow This Group");
+            }
+        }
+
         groupsFollowGroupsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                /* check if we're already subscribed to the group */
+                for (Group g : groupPage.getUserGroups()) {
+                    if(g.getGroupKey().equals(group.getGroupKey())) {
+                        groupsFollowGroupsButton.setText("Follow This Group");
+                        unSubscribeFromGroup(group, true);
+                    }
+                }
+
                 subscribeToGroup(group, true);
             }
         });
@@ -391,34 +418,34 @@ public enum GroupManager {
         });
     }
 
+    public void unSubscribeFromGroup(Group group, final boolean refresh) {
+
+        try {
+            FirebaseMessaging.getInstance()
+                    .subscribeToTopic(group.getGroupKey().replaceAll("\\s+", ""));
+        } catch (Exception e) {
+            Log.e(TAG, "Error subscribing to firebase notifications");
+        }
+
+        SessionManager.INSTANCE.removeGroupForCurrentUser(group, new Callback<Boolean>() {
+            @Override
+            public boolean onExecuted(Boolean data) {
+
+                if(refresh) {
+                    GroupManager.INSTANCE.refreshGroupsAndActionList();
+                }
+                return false;
+            }
+        });
+
+    }
+
+
     public void onBackPress() {
 
         MODE = GroupType.USER;
-
-
-
         toggleGroups(GroupType.USER);
-        //Toolbar toolbar = ((VoicesMainActivity)groupPage.getContext()).getToolbar();
-//        toolbar.findViewById(R.id.primary_toolbar_back_arrow).setVisibility(View.GONE);
-//        groupPage.findViewById(R.id.action_groups_list).setVisibility(View.GONE);
-//        groupPage.findViewById(R.id.user_groups_list).setVisibility(View.VISIBLE);
-//        groupPage.findViewById(R.id.all_groups_list).setVisibility(View.GONE);
-//        toolbar.findViewById(R.id.action_add_groups).setVisibility(View.VISIBLE);
-//
-//        toolbar.findViewById(R.id.all_groups_info_text).setVisibility(View.GONE);
-//
-//        toolbar.findViewById(R.id.groups_selection_text).setVisibility(View.VISIBLE);
-//        toolbar.findViewById(R.id.action_selection_text).setVisibility(View.VISIBLE);
-//
-//        toolbar.findViewById(R.id.action_selection_text).setBackgroundResource(R.drawable.button_back);
-//        toolbar.findViewById(R.id.groups_selection_text).setBackgroundResource(R.drawable.button_back_selected);
-//
-//        if(((RecyclerView)groupPage
-//                .findViewById(R.id.user_groups_list)).getChildCount() > 0) {
-//            groupPage.findViewById(R.id.no_follow_layout).setVisibility(View.GONE);
-//        } else {
-//            groupPage.findViewById(R.id.no_follow_layout).setVisibility(View.VISIBLE);
-//        }
+
     }
 
     /**
@@ -435,6 +462,10 @@ public enum GroupManager {
         }
 
         return null;
+    }
+
+    public ArrayList<Group> getAllGroupsData() {
+        return groupPage.getAllGroups();
     }
 
     public GroupType getMODE() {
