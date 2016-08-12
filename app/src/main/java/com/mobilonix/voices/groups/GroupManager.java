@@ -29,6 +29,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import okhttp3.Call;
+
 public enum GroupManager {
 
     INSTANCE;
@@ -365,8 +367,14 @@ public enum GroupManager {
                 /* check if we're already subscribed to the group */
                 for (Group g : groupPage.getUserGroups()) {
                     if(g.getGroupKey().equals(group.getGroupKey())) {
-                        groupsFollowGroupsButton.setText("Follow This Group");
-                        unSubscribeFromGroup(group, true);
+
+                        unSubscribeFromGroup(group, true, new Callback<Boolean>() {
+                            @Override
+                            public boolean onExecuted(Boolean data) {
+                                groupsFollowGroupsButton.setText("Follow This Group");
+                                return false;
+                            }
+                        });
                     }
                 }
 
@@ -418,7 +426,7 @@ public enum GroupManager {
         });
     }
 
-    public void unSubscribeFromGroup(Group group, final boolean refresh) {
+    public void unSubscribeFromGroup(Group group, final boolean refresh, final Callback<Boolean> callback) {
 
         try {
             FirebaseMessaging.getInstance()
@@ -433,6 +441,7 @@ public enum GroupManager {
 
                 if(refresh) {
                     GroupManager.INSTANCE.refreshGroupsAndActionList();
+                    callback.onExecuted(data);
                 }
                 return false;
             }
