@@ -1,10 +1,7 @@
 package com.mobilonix.voices.groups;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,8 +26,6 @@ import com.mobilonix.voices.session.SessionManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-
-import okhttp3.Call;
 
 public enum GroupManager {
 

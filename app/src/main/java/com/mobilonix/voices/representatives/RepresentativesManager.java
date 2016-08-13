@@ -251,6 +251,7 @@ public enum RepresentativesManager {
 
         final TextView actionSelectionButton = (TextView)primaryToolbar.findViewById(R.id.action_selection_text);
         final TextView groupsSelectionButton = (TextView)primaryToolbar.findViewById(R.id.groups_selection_text);
+        final ImageView infoIcon = (ImageView)primaryToolbar.findViewById(R.id.representatives_info_icon);
 
         final int voicesOrange = VoicesApplication.getContext().getResources().getColor(R.color.voices_orange);
         final int grey = VoicesApplication.getContext().getResources().getColor(R.color.grey);
@@ -263,6 +264,9 @@ public enum RepresentativesManager {
                 representativesPager.setVisibility(View.GONE);
                 groupsView.setVisibility(View.VISIBLE);
                 primaryToolbar.setVisibility(View.VISIBLE);
+                infoIcon.setVisibility(View.GONE);
+                actionSelectionButton.setVisibility(View.VISIBLE);
+                groupsSelectionButton.setVisibility(View.VISIBLE);
                 RepresentativesManager.INSTANCE.toggleSearchBar(false);
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(false);
 
@@ -284,6 +288,9 @@ public enum RepresentativesManager {
                 representativesPager.setVisibility(View.VISIBLE);
                 groupsView.setVisibility(View.GONE);
                 primaryToolbar.setVisibility(View.VISIBLE);
+                infoIcon.setVisibility(View.VISIBLE);
+                actionSelectionButton.setVisibility(View.GONE);
+                groupsSelectionButton.setVisibility(View.GONE);
 
                 RepresentativesManager.INSTANCE.toggleSearchBar(true);
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(true);
