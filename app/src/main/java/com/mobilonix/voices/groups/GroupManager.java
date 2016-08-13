@@ -341,7 +341,7 @@ public enum GroupManager {
         TextView groupsInfoPolicyText = (TextView)dialog
                 .findViewById(R.id.group_info_policy_text);
         final Button groupsFollowGroupsButton =
-                (Button)dialog.findViewById(R.id.groups_follow_button);
+                (Button)dialog.findViewById(R.id.follow_groups_button);
         ListView policyList = (ListView)dialog.findViewById(R.id.groups_policy_list);
 
         groupsInfoDescriptionText.setText(group.getGroupDescription());
@@ -349,7 +349,7 @@ public enum GroupManager {
 
         for (Group g : groupPage.getUserGroups()) {
             if(g.getGroupKey().equals(group.getGroupKey())) {
-                groupsFollowGroupsButton.setText("Unfollow This Group");
+                groupsFollowGroupsButton.setText(R.string.unfollow_groups_text);
             }
         }
 
@@ -364,7 +364,7 @@ public enum GroupManager {
                         unSubscribeFromGroup(group, true, new Callback<Boolean>() {
                             @Override
                             public boolean onExecuted(Boolean data) {
-                                groupsFollowGroupsButton.setText("Follow This Group");
+                                groupsFollowGroupsButton.setText(R.string.follow_groups_text);
                                 return false;
                             }
                         });

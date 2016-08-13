@@ -10,6 +10,7 @@
         android:layout_height="25dp"
         android:id="@+id/arrow_image"
         android:src="@drawable/right_carat"
+        android:tint="@color/voices_orange"
         android:visibility="visible" />
 
     <LinearLayout
