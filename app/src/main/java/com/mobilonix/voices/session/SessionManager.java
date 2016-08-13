@@ -322,9 +322,6 @@ public enum SessionManager {
 
                     String dummyToken = "";
 
-                    //Uncomment this if you want to test if the group adding functionality works
-                    //dummyToken = "EG5DNLSonjNCtpPqgUzZRDmih1L2";
-
                     if (currentUserToken.equals(user.getKey()) || user.getKey().equals(dummyToken)) {
 
                         if (user.child("groups").exists()) {

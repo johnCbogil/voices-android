@@ -203,8 +203,6 @@ public enum GroupManager {
 
                 if((data != null) && (data.size() > 0)) {
                     GroupManager.INSTANCE.toggleNoActionGroupsLayout(false);
-                } else {
-                    GroupManager.INSTANCE.toggleNoActionGroupsLayout(true);
                 }
 
                 SessionManager.INSTANCE.fetchAllActions(new Callback<ArrayList<Action>>() {
@@ -234,13 +232,6 @@ public enum GroupManager {
             groupPage.findViewById(R.id.action_groups_list).setVisibility(View.VISIBLE);
             groupPage.findViewById(R.id.user_groups_list).setVisibility(View.GONE);
             groupPage.findViewById(R.id.all_groups_list).setVisibility(View.GONE);
-
-            if(((RecyclerView)groupPage
-                    .findViewById(R.id.action_groups_list)).getChildCount() > 0) {
-                groupPage.findViewById(R.id.no_follow_layout).setVisibility(View.GONE);
-            } else {
-                groupPage.findViewById(R.id.no_follow_layout).setVisibility(View.VISIBLE);
-            }
 
             LinearLayout noFollowLayout = (LinearLayout) groupPage.findViewById(R.id.no_follow_layout);
 
