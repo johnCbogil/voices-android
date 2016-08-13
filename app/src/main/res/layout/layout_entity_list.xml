@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mobilonix.voices.groups.ui.EntitiyContainer
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:maxWidth="250dp"
+            android:text="@string/abc_action_bar_up_description"
+            android:id="@+id/entity_no_follows_bottom_line"/>
+        <ImageView
+            android:id="@+id/entity_no_follows_image"
+            android:adjustViewBounds="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/entity_no_follows_bottom_line"
+            android:src="@drawable/no_follows"/>
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:text="@string/abc_action_bar_up_description"
+        android:id="@+id/entity_no_follows_top_line"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/entity_list"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
+
+</com.mobilonix.voices.groups.ui.EntitiyContainer>

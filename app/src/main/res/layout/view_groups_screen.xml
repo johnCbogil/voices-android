@@ -3,62 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
+    <include layout="@layout/layout_entity_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/actions_container">
+    </include>
+
+    <include layout="@layout/layout_entity_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:visibility="gone"
-        android:id="@+id/no_follow_layout"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text="You don't follow any groups yet."
-            android:id="@+id/no_follows_top_line"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:maxWidth="250dp"
-            android:text="To follow groups, tap the + button above."
-            android:id="@+id/no_follows_bottom_line"/>
-        <ImageView
-            android:id="@+id/no_follows_image"
-            android:adjustViewBounds="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/no_follows"/>
-    </LinearLayout>
+        android:id="@+id/user_groups_container">
+    </include>
 
-
-    <!-- List views for now, recycler view's later!-->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/action_groups_list"
+    <include layout="@layout/layout_entity_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:id="@+id/all_groups_container">
+    </include>
 
-    </android.support.v7.widget.RecyclerView>
-
-    <!-- List of the users groups -->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/user_groups_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
-
-    </android.support.v7.widget.RecyclerView>
-
-    <!-- List of the users groups -->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/all_groups_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
-
-    </android.support.v7.widget.RecyclerView>
-
-
-    
 </com.mobilonix.voices.groups.ui.GroupPage>

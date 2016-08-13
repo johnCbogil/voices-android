@@ -90,6 +90,11 @@ public class GroupListRecylerAdapter extends RecyclerView.Adapter<GroupListRecyl
     }
 
     @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+    }
+
+    @Override
     public int getItemCount() {
         return groups.size();
     }
