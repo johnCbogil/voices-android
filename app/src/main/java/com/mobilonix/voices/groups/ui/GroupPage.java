@@ -1,15 +1,10 @@
 package com.mobilonix.voices.groups.ui;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
-import android.widget.ListView;
 
 import com.mobilonix.voices.R;
-import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
@@ -33,7 +28,7 @@ public class GroupPage extends FrameLayout {
 
         this.actions = actions;
 
-        EntitiyContainer actionsContainer = (EntitiyContainer)findViewById(R.id.actions_container);
+        EntityContainer actionsContainer = (EntityContainer)findViewById(R.id.actions_container);
         actionsContainer.addItems(selectUserActions(actions, userGroups),
                 GroupManager.GroupType.ACTION);
 
@@ -48,7 +43,7 @@ public class GroupPage extends FrameLayout {
     public void setUserGroups(ArrayList<Group> userGroups) {
         this.userGroups = userGroups;
 
-        EntitiyContainer userGroupsContainer = (EntitiyContainer)findViewById(R.id.user_groups_container);
+        EntityContainer userGroupsContainer = (EntityContainer)findViewById(R.id.user_groups_container);
         userGroupsContainer.addItems(userGroups,
                 GroupManager.GroupType.USER);
 
@@ -58,7 +53,7 @@ public class GroupPage extends FrameLayout {
     public void setAllGroups(ArrayList<Group> allGroups) {
         this.allGroups = allGroups;
 
-        EntitiyContainer userGroupsContainer = (EntitiyContainer)findViewById(R.id.all_groups_container);
+        EntityContainer userGroupsContainer = (EntityContainer)findViewById(R.id.all_groups_container);
         userGroupsContainer.addItems(allGroups,
                 GroupManager.GroupType.USER);
 

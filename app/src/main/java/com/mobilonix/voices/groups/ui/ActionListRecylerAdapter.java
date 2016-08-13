@@ -58,11 +58,9 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
 
         holder.setPosition(position);
 
-        Log.wtf(TAG, "Adapter GET VIEW: " + actions.get(position).getTitle());
-
-        holder.actionName.setText(actions.get(position).getTitle());
+        holder.actionName.setText(actions.get(position).getGroupName());
         holder.actionCategory.setText(actions.get(position).getSubject());
-        holder.actionDescription.setText(actions.get(position).getBody());
+        holder.actionDescription.setText(actions.get(position).getTitle());
 
         Picasso.with(holder.actionImage.getContext())
                 .load(actions.get(position).getImageUrl())
@@ -83,8 +81,6 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
     }
 
     public static class ActionListHolder extends RecyclerView.ViewHolder {
-
-        Dialog actionDialog;
 
         ImageView actionImage;
         ImageView arrowImage;
@@ -112,37 +108,7 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
             learnMoreButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArrayList<Policy> policyArray = new ArrayList<>();
-
-                    GeneralUtil.toast("Finding policies for action: "
-                            + actions.get(position).getTitle()
-                            + " and groupkey: "
-                            + actions.get(position).getGroupKey()
-                            + "and policies "
-                            +  GroupManager.INSTANCE.findGroupWithKey(actions.get(position).getGroupKey()));
-
-                    Group associatedGroup = GroupManager.INSTANCE
-                            .findGroupWithKey(actions.get(position).getGroupKey());
-
-
-                    policyArray = associatedGroup.getPolicies();
-
-                    if(associatedGroup == null) {
-                        return;
-                    }
-
-                    actionDialog = new Dialog(v.getContext());
-                    actionDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    actionDialog.setContentView(R.layout.dialog_policies);
-
-                    TextView policiesTitle  = (TextView)actionDialog.findViewById(R.id.policies_title);
-                    TextView policiesDescription = (TextView)actionDialog.findViewById(R.id.policies_description);
-                    Button contactRepresentativesButton = (Button)actionDialog.findViewById(R.id.button_contact_representatives);
-
-                    //policiesTitle.setText();
-                    //policiesDescription.setText();
-
-                    actionDialog.show();
+                    GroupManager.INSTANCE.toggleActionDialog(v.getContext(), actions.get(position));
                 }
             });
 
