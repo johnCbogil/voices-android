@@ -265,7 +265,7 @@ public enum RepresentativesManager {
 
                 representativesPager.setVisibility(View.VISIBLE);
                 groupsView.setVisibility(View.GONE);
-                primaryToolbar.setVisibility(View.INVISIBLE);
+                primaryToolbar.setVisibility(View.VISIBLE);
 
                 RepresentativesManager.INSTANCE.toggleSearchBar(true);
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(true);

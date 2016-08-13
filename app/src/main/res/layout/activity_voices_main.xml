@@ -23,7 +23,14 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/primary_toolbar_back_arrow"
                         android:src="@drawable/ic_action_previous_item"
+                        android:tint="@color/voices_orange"
                         android:visibility="gone"/>
+                    <ImageView
+                        android:id="@+id/representatives_info_icon"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="0.1"
+                        android:src="@android:drawable/ic_menu_info_details"/>
                     <LinearLayout
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"

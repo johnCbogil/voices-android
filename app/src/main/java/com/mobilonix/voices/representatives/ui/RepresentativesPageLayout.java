@@ -3,6 +3,7 @@ package com.mobilonix.voices.representatives.ui;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.Window;
@@ -12,9 +13,12 @@ import android.widget.LinearLayout;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
+import com.mobilonix.voices.representatives.model.RepresentativesPage;
 
 public class RepresentativesPageLayout extends LinearLayout {
     public String TAG = RepresentativesPageLayout.class.getCanonicalName();
+    RepresentativesPage representativesPage;
+
     Dialog responseDialog;
 
     public RepresentativesPageLayout(Context context, AttributeSet attrs) {
@@ -25,7 +29,10 @@ public class RepresentativesPageLayout extends LinearLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        ImageView infoIcon = (ImageView)findViewById(R.id.representatives_info_icon);
+        Toolbar toolbar = ((VoicesMainActivity)getContext()).getToolbar();
+
+        ImageView infoIcon = (ImageView)toolbar.findViewById(R.id.representatives_info_icon);
+
         infoIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

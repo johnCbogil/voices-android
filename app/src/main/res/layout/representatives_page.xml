@@ -39,11 +39,5 @@
 
             android:id="@+id/representatives_list"/>
     </android.support.v4.widget.SwipeRefreshLayout>
-    <ImageView
-            android:id="@+id/representatives_info_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_weight="0.1"
-            android:src="@android:drawable/ic_menu_info_details"/>
 
 </com.mobilonix.voices.representatives.ui.RepresentativesPageLayout>
