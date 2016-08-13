@@ -133,6 +133,56 @@ public enum SessionManager {
 
     }
 
+    public void removeGroupForCurrentUser(final Group group, final Callback<Boolean> callback) {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        database.getReference("users")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(final DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.child(currentUserToken).child("groups").exists()) {
+
+                            final HashMap<String, Integer> groups =
+                                    (HashMap) dataSnapshot
+                                            .child(currentUserToken)
+                                            .child("groups")
+                                            .getValue();
+
+                            groups.remove(group.getGroupKey());
+
+                            GeneralUtil.toast("Total groups before removal: " + groups);
+
+                            database.getReference("users")
+                                              .child(currentUserToken)
+                                              .child("groups")
+                                              .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(Task<Void> task) {
+                                    database.getReference("users")
+                                            .child(currentUserToken)
+                                            .child("groups")
+                                            .setValue(groups);
+
+                                    GeneralUtil.toast("Total groups after removal: " + dataSnapshot
+                                            .child(currentUserToken)
+                                            .child("groups")
+                                            .getValue());
+                                }
+                            });
+
+
+                        }
+
+                        callback.onExecuted(true);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        callback.onExecuted(true);
+                    }
+                });
+    }
+
     public void addGroupForCurrentUser(final Group group, final Callback<Boolean> callback) {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -271,9 +321,6 @@ public enum SessionManager {
                 for (DataSnapshot user : dataSnapshot.getChildren()) {
 
                     String dummyToken = "";
-
-                    //Uncomment this if you want to test if the group adding functionality works
-                    //dummyToken = "EG5DNLSonjNCtpPqgUzZRDmih1L2";
 
                     if (currentUserToken.equals(user.getKey()) || user.getKey().equals(dummyToken)) {
 
@@ -442,4 +489,7 @@ public enum SessionManager {
 
     }
 
+    public String getCurrentUserToken() {
+        return currentUserToken;
+    }
 }

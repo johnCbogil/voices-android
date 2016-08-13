@@ -17,6 +17,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:id="@+id/primary_toolbar_basic_controls"
                 android:layout_marginRight="10dp">
                     <ImageView
                         android:layout_width="wrap_content"

@@ -7,6 +7,8 @@ public class VoicesApplication extends Application {
 
     private static Context context;
 
+    public final static String EMPTY = "";
+
     @Override
     public void onCreate() {
         super.onCreate();

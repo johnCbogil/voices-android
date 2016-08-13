@@ -50,6 +50,8 @@ public enum RepresentativesManager {
 
     public String TAG = RepresentativesManager.class.getCanonicalName();
 
+    public String CURRENT_LOCATION = "CURRENT_LOCATION";
+
     static UsCongressSunlightApi sunlightApiEngine = new UsCongressSunlightApi();
     static StateOpenStatesApi openStatesApiEngine = new StateOpenStatesApi();
     static NycCouncilApi nycScraperApi = new NycCouncilApi();
@@ -152,25 +154,22 @@ public enum RepresentativesManager {
                         types.add(rep);
                     }
 
-                    for (int i = 0; i < types.size(); i++) {
-                        if(i == position) {
-                            representativesTextIndicator.setText(types.get(i).getIdentifier());
-                        }
-                    }
-
                     ListView listView = ((ListView)representativesFrame
                             .findViewWithTag(pagerIndicator
                                     .getCurrentIndicatorTag()));
 
+                    ArrayList<Representative> representatives =
+                            currentRepsMap.get(pagerIndicator.getCurrentIndicatorTag());
+
+                    if(representatives == null) {
+                        representatives = new ArrayList<>();
+                    }
+
+                    if((representatives.size() == 0)) {
+                        toggleErrorDisplay(pagerIndicator.getCurrentIndicatorTag(), true);
+                    }
+
                     if(listView != null) {
-
-                        ArrayList<Representative> representatives =
-                                currentRepsMap.get(pagerIndicator.getCurrentIndicatorTag());
-
-                        if(representatives == null) {
-                            representatives = new ArrayList<>();
-                        }
-
                         listView.setAdapter(
                                 new RepresentativesListAdapter(
                                         listView.getContext(),
@@ -178,32 +177,46 @@ public enum RepresentativesManager {
                                         representatives));
                     }
 
+                    for (int i = 0; i < types.size(); i++) {
+                        if(i == position) {
+                            representativesTextIndicator.setText(types.get(i).getIdentifier());
+                        }
+                    }
+
                     return false;
                 }
             });
 
             /* Initialize Autocomplete fragment */
-            autoCompleteTextView =
-                    (PlaceAutocompleteFragment) activity.getFragmentManager()
-                            .findFragmentById(R.id.place_autocomplete_fragment);
+            if(autoCompleteTextView == null) {
+                autoCompleteTextView =
+                        (PlaceAutocompleteFragment) activity.getFragmentManager()
+                                .findFragmentById(R.id.place_autocomplete_fragment);
 
-            if(autoCompleteTextView != null) {
                 autoCompleteTextView.getView().setVisibility(View.VISIBLE);
                 autoCompleteTextView.setHint(activity.getString(R.string.search_text));
                 autoCompleteTextView.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-                    @Override
-                    public void onPlaceSelected(Place place) {
-                        GeneralUtil.toast("Search for place");
-                    }
+                        @Override
+                        public void onPlaceSelected(Place place) {
+                            refreshRepresentativesContent(
+                                    place.getAddress().toString(),
+                                    place.getLatLng().latitude,
+                                    place.getLatLng().longitude,
+                                    activity,
+                                    pages,
+                                    representativesPager);
+                        }
 
-                    @Override
-                    public void onError(Status status) {
+                        @Override
+                        public void onError(Status status) {
 
-                    }
+                        }
                 });
             }
 
-            refreshRepresentativesContent(location.getLatitude(),
+            refreshRepresentativesContent(
+                    CURRENT_LOCATION,
+                    location.getLatitude(),
                     location.getLongitude(),
                     activity,
                     pages,
@@ -246,6 +259,7 @@ public enum RepresentativesManager {
             @Override
             public void onClick(View v) {
 
+
                 representativesPager.setVisibility(View.GONE);
                 groupsView.setVisibility(View.VISIBLE);
                 primaryToolbar.setVisibility(View.VISIBLE);
@@ -262,6 +276,10 @@ public enum RepresentativesManager {
         representativesTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                /* Always set the page back to the federal reps when selevting the groups tav*/
+                RepresentativesManager.INSTANCE.setPageByIndex(0);
+
 
                 representativesPager.setVisibility(View.VISIBLE);
                 groupsView.setVisibility(View.GONE);
@@ -331,24 +349,20 @@ public enum RepresentativesManager {
      * @param pages
      * @param representativesPager
      */
-    public void refreshRepresentativesContent(double repLat,
+    public void refreshRepresentativesContent(final String locationString,
+                                              double repLat,
                                               double repLong,
                                               final VoicesMainActivity activity,
                                               final ArrayList<RepresentativesPage> pages,
                                               final ViewPager representativesPager) {
 
-//      Below is used to test officials for a specific lat / lon
-//          Should return district 3 Corey Johnson
-//        repLat = 40.74493027;
-//        repLong = -73.99040485;
-
-//      Below is used to test an address that will fail
-//        repLat = 40.76404572;
-//        repLong = -73.88193512;
-
         activity.toggleProgressSpinner(true);
 
         for (RepresentativesType type : RepresentativesType.values()) {
+
+            /* reset the error state */
+            toggleErrorDisplay(type, false);
+
             RESTUtil.makeRepresentativesRequest(repLat, repLong, type,
                     new Callback2<ArrayList<Representative>, RepresentativesType>() {
                 @Override
@@ -370,6 +384,24 @@ public enum RepresentativesManager {
                             @Override
                             public void run() {
                                 finalizePageOrder(result, type, pages, representativesPager);
+
+                                String location = VoicesApplication.EMPTY;
+
+                                if((result != null) && (result.size() > 0)) {
+                                    if (locationString.equals(CURRENT_LOCATION)) {
+                                        location = "current location!";
+                                    } else {
+                                        location = "address: " + locationString;
+                                    }
+
+                                    GeneralUtil.toast("Getting representatives for " + location);
+                                } else {
+
+                                    GeneralUtil.toast("There was an error fetching reps for "
+                                            + type.getIdentifier());
+
+                                    toggleErrorDisplay(type, true);
+                                }
                             }
                     });
 
@@ -385,8 +417,6 @@ public enum RepresentativesManager {
                                    ViewPager representativesPager) {
 
         currentRepsMap.put(type.getIdentifier(), data);
-
-        GeneralUtil.toast("Got new representatives for current location!" );
 
         ListView representativesListView =
                 (ListView) representativesPager
@@ -416,8 +446,17 @@ public enum RepresentativesManager {
      * @param state
      */
     public void toggleSearchBar(boolean state) {
-        autoCompleteTextView
-                .getView().setVisibility(state ? View.VISIBLE : View.GONE);
+        if(autoCompleteTextView != null) {
+            autoCompleteTextView
+                    .getView().setVisibility(state ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    public void setPageByIndex(int index) {
+        if((pagerIndicator != null) && (representativesFrame != null)) {
+            ((ViewPager) representativesFrame.findViewById(R.id.reprsentatives_pager)).setCurrentItem(0);
+            pagerIndicator.onPageSelected(0);
+        }
     }
 
     /**
@@ -428,6 +467,22 @@ public enum RepresentativesManager {
     public void togglePagerMetaFrame(boolean state) {
         representativesFrame.findViewById(R.id.pager_meta_frame)
                 .setVisibility(state ? View.VISIBLE : View.GONE);
+    }
+
+    private void toggleErrorDisplay(String identifier, boolean state) {
+        ViewPager pager = (ViewPager) representativesFrame
+                .findViewById(R.id.reprsentatives_pager);
+
+        LinearLayout errorLayout = (LinearLayout)
+                pager.findViewWithTag(identifier + "_ERROR");
+
+        if(errorLayout != null) {
+            errorLayout.setVisibility(state ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    public void toggleErrorDisplay(RepresentativesType type, boolean state) {
+        toggleErrorDisplay(type.getIdentifier(), state);
     }
 
     /**

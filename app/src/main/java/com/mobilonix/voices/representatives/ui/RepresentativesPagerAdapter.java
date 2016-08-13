@@ -6,10 +6,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
+import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.representatives.model.RepresentativesPage;
@@ -35,9 +37,11 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
 
         final ListView representativesList = (ListView)layout.findViewById(R.id.representatives_list);
         final SwipeRefreshLayout pageRefresh = (SwipeRefreshLayout)layout.findViewById(R.id.swipe_refresh_layout);
+        final LinearLayout errorLayout = (LinearLayout)layout.findViewById(R.id.layout_error_page);
 
         representativesList.setTag(representatives.get(position).getType().getIdentifier());
         pageRefresh.setTag(representatives.get(position).getType().getIdentifier() + "_REFRESH");
+        errorLayout.setTag(representatives.get(position).getType().getIdentifier() + "_ERROR");
 
         pageRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -50,7 +54,8 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
 
                 RepresentativesManager.INSTANCE
                         .refreshRepresentativesContent(
-                                ((VoicesMainActivity) pageRefresh.getContext()).getCurrentLocation().getLatitude(),
+                                RepresentativesManager.INSTANCE.CURRENT_LOCATION,
+                                        ((VoicesMainActivity) pageRefresh.getContext()).getCurrentLocation().getLatitude(),
                                 ((VoicesMainActivity) pageRefresh.getContext()).getCurrentLocation().getLongitude(),
                                 ((VoicesMainActivity) pageRefresh.getContext()),
                                 representatives,

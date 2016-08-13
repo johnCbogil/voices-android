@@ -18,7 +18,6 @@ import android.widget.FrameLayout;
 
 import com.badoo.mobile.util.WeakHandler;
 import com.google.firebase.auth.FirebaseAuth;
-import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.location.LocationRequestManager;
 import com.mobilonix.voices.location.model.LatLong;
@@ -232,8 +231,6 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
     @Override
     public void onLocationChanged(Location location) {
         currentLocation = new LatLong(location.getLatitude(), location.getLongitude());
-
-        GeneralUtil.toast("Location Changed: " + location);
     }
 
     @Override
