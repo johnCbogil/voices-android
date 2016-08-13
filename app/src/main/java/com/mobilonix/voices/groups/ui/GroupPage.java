@@ -33,11 +33,9 @@ public class GroupPage extends FrameLayout {
 
         this.actions = actions;
 
-        RecyclerView actionsRecycler = ((RecyclerView) findViewById(R.id.action_groups_list));
-        actionsRecycler.setLayoutManager(new LinearLayoutManager(actionsRecycler.getContext()));
-        actionsRecycler.setAdapter(new
-                ActionListRecylerAdapter(actionsRecycler.getContext(),
-                selectUserActions(actions, userGroups)));
+        EntitiyContainer actionsContainer = (EntitiyContainer)findViewById(R.id.actions_container);
+        actionsContainer.addItems(selectUserActions(actions, userGroups),
+                GroupManager.GroupType.ACTION);
 
         actionsSet = true;
     }
@@ -50,11 +48,9 @@ public class GroupPage extends FrameLayout {
     public void setUserGroups(ArrayList<Group> userGroups) {
         this.userGroups = userGroups;
 
-        RecyclerView userGroupsRecycler = ((RecyclerView) findViewById(R.id.user_groups_list));
-        userGroupsRecycler.setLayoutManager(new LinearLayoutManager(userGroupsRecycler.getContext()));
-        userGroupsRecycler.setAdapter(new GroupListRecylerAdapter(getContext(),
-                userGroups,
-                GroupManager.GroupType.USER));
+        EntitiyContainer userGroupsContainer = (EntitiyContainer)findViewById(R.id.user_groups_container);
+        userGroupsContainer.addItems(userGroups,
+                GroupManager.GroupType.USER);
 
         userGroupsSet = true;
     }
@@ -62,11 +58,9 @@ public class GroupPage extends FrameLayout {
     public void setAllGroups(ArrayList<Group> allGroups) {
         this.allGroups = allGroups;
 
-        RecyclerView allGroupsRecycler = ((RecyclerView) findViewById(R.id.all_groups_list));
-        allGroupsRecycler.setLayoutManager(new LinearLayoutManager(allGroupsRecycler.getContext()));
-        allGroupsRecycler.setAdapter(new GroupListRecylerAdapter(getContext(),
-                allGroups,
-                GroupManager.GroupType.ALL));
+        EntitiyContainer userGroupsContainer = (EntitiyContainer)findViewById(R.id.all_groups_container);
+        userGroupsContainer.addItems(allGroups,
+                GroupManager.GroupType.USER);
 
     }
 

@@ -20,6 +20,7 @@ import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
+import com.mobilonix.voices.groups.ui.EntitiyContainer;
 import com.mobilonix.voices.groups.ui.GroupPage;
 import com.mobilonix.voices.groups.ui.PolicyListAdapter;
 import com.mobilonix.voices.session.SessionManager;
@@ -196,10 +197,6 @@ public enum GroupManager {
 
                 groupPage.setUserGroups(data);
 
-                if((data != null) && (data.size() > 0)) {
-                    GroupManager.INSTANCE.toggleNoActionGroupsLayout(false);
-                }
-
                 SessionManager.INSTANCE.fetchAllActions(new Callback<ArrayList<Action>>() {
                     @Override
                     public boolean onExecuted(ArrayList<Action> data) {
@@ -224,26 +221,11 @@ public enum GroupManager {
 
         if(groupType == GroupType.ACTION) {
 
-            groupPage.findViewById(R.id.action_groups_list).setVisibility(View.VISIBLE);
-            groupPage.findViewById(R.id.user_groups_list).setVisibility(View.GONE);
-            groupPage.findViewById(R.id.all_groups_list).setVisibility(View.GONE);
+            groupPage.findViewById(R.id.actions_container).setVisibility(View.VISIBLE);
+            groupPage.findViewById(R.id.user_groups_container).setVisibility(View.GONE);
+            groupPage.findViewById(R.id.all_groups_container).setVisibility(View.GONE);
 
-            LinearLayout noFollowLayout = (LinearLayout) groupPage.findViewById(R.id.no_follow_layout);
-
-            ArrayList<Action> actions = groupPage.getActions();
-            if((actions != null) && (actions.size() > 0)) {
-                noFollowLayout.setVisibility(View.GONE);
-            } else {
-                noFollowLayout.setVisibility(View.VISIBLE);
-            }
-
-            ((TextView) groupPage
-                        .findViewById(R.id.no_follow_layout)
-                        .findViewById(R.id.no_follows_top_line)).setText(R.string.no_follow_actions_top);
-            ((TextView) groupPage
-                        .findViewById(R.id.no_follow_layout)
-                        .findViewById(R.id.no_follows_bottom_line)).setText(R.string.no_follow_actions);
-
+            ((EntitiyContainer)groupPage.findViewById(R.id.actions_container)).setType(groupType);
 
             toolbar.findViewById(R.id.groups_selection_text).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.action_selection_text).setVisibility(View.VISIBLE);
@@ -256,37 +238,27 @@ public enum GroupManager {
             MODE = GroupType.ACTION;
 
         } else if(groupType == GroupType.USER) {
-            groupPage.findViewById(R.id.action_groups_list).setVisibility(View.GONE);
-            groupPage.findViewById(R.id.user_groups_list).setVisibility(View.VISIBLE);
-            groupPage.findViewById(R.id.all_groups_list).setVisibility(View.GONE);
+
+            groupPage.findViewById(R.id.actions_container).setVisibility(View.GONE);
+            groupPage.findViewById(R.id.user_groups_container).setVisibility(View.VISIBLE);
+            groupPage.findViewById(R.id.all_groups_container).setVisibility(View.GONE);
+
+            ((EntitiyContainer)groupPage.findViewById(R.id.user_groups_container)).setType(groupType);
 
             toolbar.findViewById(R.id.groups_selection_text).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.action_selection_text).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.action_add_groups).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.all_groups_info_text).setVisibility(View.GONE);
 
-            ArrayList<Group> groups = groupPage.getUserGroups();
-            if((groups != null) && (groups.size() > 0)) {
-                groupPage.findViewById(R.id.no_follow_layout).setVisibility(View.GONE);
-            } else {
-                groupPage.findViewById(R.id.no_follow_layout).setVisibility(View.VISIBLE);
-            }
-
-            ((TextView)groupPage
-                    .findViewById(R.id.no_follow_layout)
-                    .findViewById(R.id.no_follows_top_line)).setText(R.string.no_follow_groups_top);
-            ((TextView)groupPage
-                    .findViewById(R.id.no_follow_layout)
-                    .findViewById(R.id.no_follows_bottom_line)).setText(R.string.no_follow_groups);
-
             MODE = GroupType.USER;
 
         } else if(groupType == GroupType.ALL) {
-            groupPage.findViewById(R.id.action_groups_list).setVisibility(View.GONE);
-            groupPage.findViewById(R.id.user_groups_list).setVisibility(View.GONE);
-            groupPage.findViewById(R.id.all_groups_list).setVisibility(View.VISIBLE);
 
-            groupPage.findViewById(R.id.no_follow_layout).setVisibility(View.GONE);
+            groupPage.findViewById(R.id.actions_container).setVisibility(View.GONE);
+            groupPage.findViewById(R.id.user_groups_container).setVisibility(View.GONE);
+            groupPage.findViewById(R.id.all_groups_container).setVisibility(View.VISIBLE);
+
+            ((EntitiyContainer)groupPage.findViewById(R.id.all_groups_container)).setType(groupType);
 
             toolbar.findViewById(R.id.primary_toolbar_back_arrow).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.all_groups_info_text).setVisibility(View.VISIBLE);
@@ -304,17 +276,6 @@ public enum GroupManager {
             });
 
             MODE = GroupType.ALL;
-        }
-    }
-
-    /**
-     * hide the no follow layout when our adapters are populated
-     *
-     * @param state
-     */
-    public void toggleNoActionGroupsLayout(boolean state) {
-        if(groupPage != null) {
-            groupPage.findViewById(R.id.no_follow_layout).setVisibility(state ? View.VISIBLE : View.GONE);
         }
     }
 
