@@ -58,7 +58,7 @@ public class GroupListRecylerAdapter extends RecyclerView.Adapter<GroupListRecyl
                 .fit()
                 .placeholder(R.drawable.placeholder_spinner)
                 .error(R.drawable.representatives_place_holder)
-                .transform(new RoundedTransformation(50, 4))
+                .transform(new RoundedTransformation(10, 4))
                 .into(holder.groupImage);
 
         holder.arrowImage.setVisibility(View.GONE);
