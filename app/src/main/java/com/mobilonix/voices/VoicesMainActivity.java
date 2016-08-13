@@ -220,10 +220,6 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
         super.onDestroy();
     }
 
-    public void toggleToolbarDivider(boolean state) {
-        findViewById(R.id.divider).setVisibility(state ? View.VISIBLE : View.GONE);
-    }
-
     public LatLong getCurrentLocation() {
         return currentLocation;
     }

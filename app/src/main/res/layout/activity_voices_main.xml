@@ -31,6 +31,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="25dp"
+                        android:textColor="@color/voices_orange"
                         android:layout_gravity="center"/>
                     <ImageView
                         android:id="@+id/representatives_info_icon"
@@ -89,8 +90,8 @@
             android:background="@color/grey"
             android:layout_marginRight="-10dp"
             android:layout_marginLeft="-10dp"
-            android:visibility="gone"
-            android:layout_gravity="bottom">
+            android:layout_gravity="bottom"
+            android:visibility="gone">
         </View>
         <FrameLayout
             android:id="@+id/main_content_frame"
