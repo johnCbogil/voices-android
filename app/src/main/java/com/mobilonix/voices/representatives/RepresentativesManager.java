@@ -61,8 +61,9 @@ public enum RepresentativesManager {
     FrameLayout representativesFrame;
 
     View primaryToolbar;
-
     View divider;
+    LinearLayout groupsTab;
+    LinearLayout representativesTab;
 
     PagerIndicator pagerIndicator;
 
@@ -254,8 +255,8 @@ public enum RepresentativesManager {
      */
     private void initTabView() {
 
-        final LinearLayout groupsTab = (LinearLayout)representativesFrame.findViewById(R.id.groups_tab);
-        final LinearLayout representativesTab = (LinearLayout)representativesFrame.findViewById(R.id.representatives_tab);
+        groupsTab = (LinearLayout)representativesFrame.findViewById(R.id.groups_tab);
+        representativesTab = (LinearLayout)representativesFrame.findViewById(R.id.representatives_tab);
 
         final ImageView representativesTabIcon = (ImageView)representativesFrame.findViewById(R.id.representatives_tab_icon);
         final ImageView groupsTabIcon = (ImageView)representativesFrame.findViewById(R.id.groups_tab_icon);
@@ -376,6 +377,11 @@ public enum RepresentativesManager {
                 });
 
     }
+
+    public void selectRepresentativesTab() {
+        representativesTab.callOnClick();
+    }
+
 
     /**
      *
