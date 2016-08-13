@@ -60,6 +60,8 @@ public enum RepresentativesManager {
 
     FrameLayout representativesFrame;
 
+    View primaryToolbar;
+
     PagerIndicator pagerIndicator;
 
     PlaceAutocompleteFragment autoCompleteTextView;
@@ -125,11 +127,12 @@ public enum RepresentativesManager {
             representativesFrame = (FrameLayout)
                     inflater.inflate(R.layout.view_representatives, null, false);
 
-            final TextView representativesTextIndicator = (TextView)representativesFrame.findViewById(R.id.representatives_type_text);
+            primaryToolbar = activity.getToolbar();
+            final TextView representativesTextIndicator = (TextView)primaryToolbar.findViewById(R.id.representatives_type_text);
             representativesTextIndicator.setText(RepresentativesType.CONGRESS.getIdentifier());
 
             final ArrayList<RepresentativesPage> pages = new ArrayList<>();
-            final ViewPager representativesPager = (ViewPager)representativesFrame.findViewById(R.id.reprsentatives_pager);
+            final ViewPager representativesPager = (ViewPager)representativesFrame.findViewById(R.id.representatives_pager);
 
             /* Initialize Pager Indicator */
             pagerIndicator = ((PagerIndicator)representativesFrame
@@ -244,14 +247,16 @@ public enum RepresentativesManager {
         final ImageView representativesTabIcon = (ImageView)representativesFrame.findViewById(R.id.representatives_tab_icon);
         final ImageView groupsTabIcon = (ImageView)representativesFrame.findViewById(R.id.groups_tab_icon);
 
-        final ViewPager representativesPager = (ViewPager)representativesFrame.findViewById(R.id.reprsentatives_pager);
+        final ViewPager representativesPager = (ViewPager)representativesFrame.findViewById(R.id.representatives_pager);
         final FrameLayout groupsView = (FrameLayout)representativesFrame.findViewById(R.id.groups_view);
-
-        final View primaryToolbar = ((VoicesMainActivity)groupsTab.getContext()).findViewById(R.id.primary_toolbar);
 
         final TextView actionSelectionButton = (TextView)primaryToolbar.findViewById(R.id.action_selection_text);
         final TextView groupsSelectionButton = (TextView)primaryToolbar.findViewById(R.id.groups_selection_text);
-
+        final ImageView infoIcon = (ImageView)primaryToolbar.findViewById(R.id.representatives_info_icon);
+        final ImageView backArrow = (ImageView)primaryToolbar.findViewById(R.id.primary_toolbar_back_arrow);
+        final TextView groupsInfoText = (TextView)primaryToolbar.findViewById(R.id.all_groups_info_text);
+        final TextView representativesTypeText = (TextView)primaryToolbar.findViewById(R.id.representatives_type_text);
+        final MenuItem addGroupButton = ((VoicesMainActivity)primaryToolbar.getContext()).getAddGroup();
         final int voicesOrange = VoicesApplication.getContext().getResources().getColor(R.color.voices_orange);
         final int grey = VoicesApplication.getContext().getResources().getColor(R.color.grey);
 
@@ -263,6 +268,13 @@ public enum RepresentativesManager {
                 representativesPager.setVisibility(View.GONE);
                 groupsView.setVisibility(View.VISIBLE);
                 primaryToolbar.setVisibility(View.VISIBLE);
+                infoIcon.setVisibility(View.GONE);
+                backArrow.setVisibility(View.GONE);
+                actionSelectionButton.setVisibility(View.VISIBLE);
+                groupsSelectionButton.setVisibility(View.VISIBLE);
+                groupsInfoText.setVisibility(View.GONE);
+                representativesTypeText.setVisibility(View.GONE);
+                addGroupButton.setVisible(true);
                 RepresentativesManager.INSTANCE.toggleSearchBar(false);
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(false);
 
@@ -283,7 +295,14 @@ public enum RepresentativesManager {
 
                 representativesPager.setVisibility(View.VISIBLE);
                 groupsView.setVisibility(View.GONE);
-                primaryToolbar.setVisibility(View.INVISIBLE);
+                primaryToolbar.setVisibility(View.VISIBLE);
+                infoIcon.setVisibility(View.VISIBLE);
+                actionSelectionButton.setVisibility(View.GONE);
+                groupsSelectionButton.setVisibility(View.GONE);
+                groupsInfoText.setVisibility(View.GONE);
+                backArrow.setVisibility(View.GONE);
+                representativesTypeText.setVisibility(View.VISIBLE);
+                addGroupButton.setVisible(false);
 
                 RepresentativesManager.INSTANCE.toggleSearchBar(true);
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(true);
@@ -454,7 +473,7 @@ public enum RepresentativesManager {
 
     public void setPageByIndex(int index) {
         if((pagerIndicator != null) && (representativesFrame != null)) {
-            ((ViewPager) representativesFrame.findViewById(R.id.reprsentatives_pager)).setCurrentItem(0);
+            ((ViewPager) representativesFrame.findViewById(R.id.representatives_pager)).setCurrentItem(0);
             pagerIndicator.onPageSelected(0);
         }
     }
@@ -471,7 +490,7 @@ public enum RepresentativesManager {
 
     private void toggleErrorDisplay(String identifier, boolean state) {
         ViewPager pager = (ViewPager) representativesFrame
-                .findViewById(R.id.reprsentatives_pager);
+                .findViewById(R.id.representatives_pager);
 
         LinearLayout errorLayout = (LinearLayout)
                 pager.findViewWithTag(identifier + "_ERROR");

@@ -1,10 +1,7 @@
 package com.mobilonix.voices.groups;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,8 +26,6 @@ import com.mobilonix.voices.session.SessionManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-
-import okhttp3.Call;
 
 public enum GroupManager {
 
@@ -449,14 +444,38 @@ public enum GroupManager {
 
     }
 
-
     public void onBackPress() {
-
         MODE = GroupType.USER;
         toggleGroups(GroupType.USER);
+        Toolbar toolbar = ((VoicesMainActivity) groupPage.getContext()).getToolbar();
+        toolbar.findViewById(R.id.primary_toolbar_back_arrow).setVisibility(View.GONE);
+        //final TextView actionSelectionButton = (TextView)toolbar.findViewById(R.id.action_selection_text);
+        //final TextView groupsSelectionButton = (TextView)toolbar.findViewById(R.id.groups_selection_text);
 
+        //actionSelectionButton.setBackgroundResource(R.drawable.button_back);
+        //actionSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.voices_orange));
+        //groupsSelectionButton.setBackgroundResource(R.drawable.button_back_selected);
+        //groupsSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.white));
+//        groupPage.findViewById(R.id.action_groups_list).setVisibility(View.GONE);
+//        groupPage.findViewById(R.id.user_groups_list).setVisibility(View.VISIBLE);
+//        groupPage.findViewById(R.id.all_groups_list).setVisibility(View.GONE);
+//        toolbar.findViewById(R.id.action_add_groups).setVisibility(View.VISIBLE);
+//
+//        toolbar.findViewById(R.id.all_groups_info_text).setVisibility(View.GONE);
+//
+//        toolbar.findViewById(R.id.groups_selection_text).setVisibility(View.VISIBLE);
+//        toolbar.findViewById(R.id.action_selection_text).setVisibility(View.VISIBLE);
+//
+//        toolbar.findViewById(R.id.action_selection_text).setBackgroundResource(R.drawable.button_back);
+//        toolbar.findViewById(R.id.groups_selection_text).setBackgroundResource(R.drawable.button_back_selected);
+//
+//        if(((RecyclerView)groupPage
+//                .findViewById(R.id.user_groups_list)).getChildCount() > 0) {
+//            groupPage.findViewById(R.id.no_follow_layout).setVisibility(View.GONE);
+//        } else {
+//            groupPage.findViewById(R.id.no_follow_layout).setVisibility(View.VISIBLE);
+//        }
     }
-
     /**
      * Find the group for a specific key
      *

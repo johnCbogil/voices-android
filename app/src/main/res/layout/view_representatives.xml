@@ -23,13 +23,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Representatives"
-                android:id="@+id/representatives_type_text"/>
-
             <com.mobilonix.voices.representatives.ui.PagerIndicator
                 android:id="@+id/pager_indicator"
                 android:orientation="horizontal"
@@ -46,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.7"
-            android:id="@+id/reprsentatives_pager">
+            android:id="@+id/representatives_pager">
         </android.support.v4.view.ViewPager>
 
         <!-- The primary view for the groups view -->
@@ -81,14 +74,14 @@
                 android:layout_weight="0.5">
                 <ImageView
                     android:id="@+id/representatives_tab_icon"
-                    android:layout_weight="0.3"
+                    android:layout_weight="0.5"
                     android:layout_gravity="center"
                     android:src="@drawable/representatives_tab_icon"
                     android:tint="@color/voices_orange"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"/>
                 <TextView
-                    android:layout_weight="0.7"
+                    android:layout_weight="0.5"
                     android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -106,13 +99,13 @@
                 <ImageView
                     android:id="@+id/groups_tab_icon"
                     android:layout_gravity="center"
-                    android:layout_weight="0.3"
+                    android:layout_weight="0.5"
                     android:src="@drawable/groups_tab_icon"
                     android:tint="@color/grey"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
                 <TextView
-                    android:layout_weight="0.7"
+                    android:layout_weight="0.5"
                     android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

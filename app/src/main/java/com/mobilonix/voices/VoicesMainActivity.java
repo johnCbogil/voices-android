@@ -4,12 +4,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -20,7 +18,6 @@ import android.widget.FrameLayout;
 
 import com.badoo.mobile.util.WeakHandler;
 import com.google.firebase.auth.FirebaseAuth;
-import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.location.LocationRequestManager;
 import com.mobilonix.voices.location.model.LatLong;
@@ -60,7 +57,7 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
 
         mainContentFrame = (FrameLayout)findViewById(R.id.main_content_frame);
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.primary_toolbar));
-        findViewById(R.id.primary_toolbar).setVisibility(View.GONE);
+        findViewById(R.id.primary_toolbar).setVisibility(View.INVISIBLE);
     }
 
     /**

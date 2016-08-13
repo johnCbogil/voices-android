@@ -11,7 +11,6 @@ import android.widget.ListView;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
-import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.representatives.model.RepresentativesPage;
@@ -60,7 +59,7 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
                                 ((VoicesMainActivity) pageRefresh.getContext()),
                                 representatives,
                                 (ViewPager) RepresentativesManager.INSTANCE.getRepresentativesFrame()
-                                        .findViewById(R.id.reprsentatives_pager));
+                                        .findViewById(R.id.representatives_pager));
             }
         });
 

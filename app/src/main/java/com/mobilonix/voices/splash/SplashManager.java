@@ -3,7 +3,6 @@ package com.mobilonix.voices.splash;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -11,9 +10,7 @@ import android.widget.FrameLayout;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
-import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.location.LocationRequestManager;
-
 import com.mobilonix.voices.location.util.LocationUtil;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 
@@ -59,7 +56,6 @@ public enum  SplashManager {
                     }
                 }
             });
-
 
             splashScreenVisible = true;
             activity.getMainContentFrame().addView(splashContentFrame);
