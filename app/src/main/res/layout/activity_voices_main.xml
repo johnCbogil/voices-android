@@ -30,14 +30,14 @@
                         android:id="@+id/representatives_type_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="25dp"
+                        android:textSize="30dp"
                         android:textColor="@color/voices_orange"
                         android:layout_gravity="center"/>
                     <ImageView
                         android:id="@+id/representatives_info_icon"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_gravity="right|end"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="right|center"
                         android:src="@android:drawable/ic_menu_info_details"/>
                 <LinearLayout
                         android:layout_marginTop="10dp"

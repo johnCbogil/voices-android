@@ -10,6 +10,7 @@
         android:layout_height="25dp"
         android:id="@+id/arrow_image"
         android:src="@drawable/right_carat"
+        android:tint="@color/voices_orange"
         android:visibility="visible" />
 
     <LinearLayout
@@ -18,15 +19,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
-
         <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:id="@+id/cell_group_image"
             android:src="@drawable/representatives_place_holder"/>
-
-
 
         <LinearLayout
             android:orientation="vertical"
@@ -37,22 +34,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Name of the Group"
                 android:id="@+id/cell_group_name" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Category"
                 android:id="@+id/cell_group_category" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Description"
                 android:id="@+id/cell_group_description" />
+
             <FrameLayout
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
@@ -65,6 +60,7 @@
                     android:text="@string/button_learnmore"
                     android:background="@drawable/rounded_button"
                     android:textColor="#FFF"
+                    android:textSize="17dp"
                     android:id="@+id/cell_group_learn_more_button" />
             </FrameLayout>
 
