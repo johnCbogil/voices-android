@@ -130,8 +130,16 @@ public enum RepresentativesManager {
                     inflater.inflate(R.layout.view_representatives, null, false);
 
             primaryToolbar = activity.getToolbar();
-
             divider = activity.findViewById(R.id.divider);
+            final TextView actionSelectionButton = (TextView)primaryToolbar.findViewById(R.id.action_selection_text);
+            final TextView groupsSelectionButton = (TextView)primaryToolbar.findViewById(R.id.groups_selection_text);
+            final MenuItem addGroupButton = ((VoicesMainActivity)primaryToolbar.getContext()).getAddGroup();
+
+            primaryToolbar.setVisibility(View.VISIBLE);
+            divider.setVisibility(View.VISIBLE);
+            actionSelectionButton.setVisibility(View.GONE);
+            groupsSelectionButton.setVisibility(View.GONE);
+            addGroupButton.setVisible(false);
 
             final TextView representativesTextIndicator = (TextView)primaryToolbar.findViewById(R.id.representatives_type_text);
             representativesTextIndicator.setText(RepresentativesType.CONGRESS.getIdentifier());
