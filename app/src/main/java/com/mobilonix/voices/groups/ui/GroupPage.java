@@ -97,4 +97,15 @@ public class GroupPage extends FrameLayout {
         return userActions;
     }
 
+    public ArrayList<Action> getActions() {
+        return actions;
+    }
+
+    public ArrayList<Group> getAllGroups() {
+        return allGroups;
+    }
+
+    public ArrayList<Group> getUserGroups() {
+        return userGroups;
+    }
 }

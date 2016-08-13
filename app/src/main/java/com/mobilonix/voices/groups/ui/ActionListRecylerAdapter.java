@@ -41,11 +41,6 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
 
         this.actions = modifiedActionsList;
 
-
-        if((actions.size() > 0)) {
-            GroupManager.INSTANCE.toggleNoActionGroupsLayout(false);
-        }
-
     }
 
     @Override
@@ -128,6 +123,9 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
 
                     Group associatedGroup = GroupManager.INSTANCE
                             .findGroupWithKey(actions.get(position).getGroupKey());
+
+
+                    policyArray = associatedGroup.getPolicies();
 
                     if(associatedGroup == null) {
                         return;
