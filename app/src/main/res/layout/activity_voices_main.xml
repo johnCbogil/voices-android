@@ -26,13 +26,19 @@
                         android:src="@drawable/ic_action_previous_item"
                         android:tint="@color/voices_orange"
                         android:visibility="gone"/>
+                    <TextView
+                        android:id="@+id/representatives_type_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="25dp"
+                        android:layout_gravity="center"/>
                     <ImageView
                         android:id="@+id/representatives_info_icon"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:layout_weight="0.1"
+                        android:layout_gravity="right|end"
                         android:src="@android:drawable/ic_menu_info_details"/>
-                    <LinearLayout
+                <LinearLayout
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         android:orientation="horizontal"
@@ -42,12 +48,13 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="20sp"
+                                android:textSize="18sp"
                                 android:id="@+id/all_groups_info_text"
                                 android:text="@string/all_groups_info"
                                 android:visibility="gone"
+                                android:layout_marginLeft="20dp"
                                 android:layout_marginRight="10dp"
-                                android:layout_gravity="center|right"/>
+                                android:layout_gravity="right"/>
                                 <LinearLayout
                                     android:orientation="horizontal"
                                     android:layout_gravity="center"
