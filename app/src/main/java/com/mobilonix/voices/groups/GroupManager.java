@@ -24,6 +24,7 @@ import com.mobilonix.voices.groups.ui.EntitiyContainer;
 import com.mobilonix.voices.groups.ui.GroupPage;
 import com.mobilonix.voices.groups.ui.PolicyListAdapter;
 import com.mobilonix.voices.session.SessionManager;
+import com.mobilonix.voices.util.ViewUtil;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -143,7 +144,6 @@ public enum GroupManager {
                 groupPage = (GroupPage)inflater.inflate(R.layout.view_groups_screen, null, false);
             }
 
-            ((VoicesMainActivity)pageRoot.getContext()).toggleToolbarDivider(true);
 
             /* Add the groups view to the main page*/
             if(groupPage.getParent()!=null)
@@ -164,8 +164,6 @@ public enum GroupManager {
             groupPageVisible = true;
         } else {
             if(groupPage != null) {
-
-                ((VoicesMainActivity)pageRoot.getContext()).toggleToolbarDivider(false);
 
                 ((VoicesMainActivity)pageRoot.getContext()).toggleProgressSpinner(false);
                 pageRoot.removeView(groupPage);
@@ -410,13 +408,13 @@ public enum GroupManager {
         toggleGroups(GroupType.USER);
         Toolbar toolbar = ((VoicesMainActivity) groupPage.getContext()).getToolbar();
         toolbar.findViewById(R.id.primary_toolbar_back_arrow).setVisibility(View.GONE);
-        //final TextView actionSelectionButton = (TextView)toolbar.findViewById(R.id.action_selection_text);
-        //final TextView groupsSelectionButton = (TextView)toolbar.findViewById(R.id.groups_selection_text);
+        final TextView actionSelectionButton = (TextView)toolbar.findViewById(R.id.action_selection_text);
+        final TextView groupsSelectionButton = (TextView)toolbar.findViewById(R.id.groups_selection_text);
 
-        //actionSelectionButton.setBackgroundResource(R.drawable.button_back);
-        //actionSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.voices_orange));
-        //groupsSelectionButton.setBackgroundResource(R.drawable.button_back_selected);
-        //groupsSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.white));
+        actionSelectionButton.setBackgroundResource(R.drawable.button_back);
+        actionSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.voices_orange));
+        groupsSelectionButton.setBackgroundResource(R.drawable.button_back_selected);
+        groupsSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.white));
 //        groupPage.findViewById(R.id.action_groups_list).setVisibility(View.GONE);
 //        groupPage.findViewById(R.id.user_groups_list).setVisibility(View.VISIBLE);
 //        groupPage.findViewById(R.id.all_groups_list).setVisibility(View.GONE);

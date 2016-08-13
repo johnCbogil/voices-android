@@ -62,6 +62,8 @@ public enum RepresentativesManager {
 
     View primaryToolbar;
 
+    View divider;
+
     PagerIndicator pagerIndicator;
 
     PlaceAutocompleteFragment autoCompleteTextView;
@@ -128,6 +130,17 @@ public enum RepresentativesManager {
                     inflater.inflate(R.layout.view_representatives, null, false);
 
             primaryToolbar = activity.getToolbar();
+            divider = activity.findViewById(R.id.divider);
+            final TextView actionSelectionButton = (TextView)primaryToolbar.findViewById(R.id.action_selection_text);
+            final TextView groupsSelectionButton = (TextView)primaryToolbar.findViewById(R.id.groups_selection_text);
+            final MenuItem addGroupButton = ((VoicesMainActivity)primaryToolbar.getContext()).getAddGroup();
+
+            primaryToolbar.setVisibility(View.VISIBLE);
+            divider.setVisibility(View.VISIBLE);
+            actionSelectionButton.setVisibility(View.GONE);
+            groupsSelectionButton.setVisibility(View.GONE);
+            addGroupButton.setVisible(false);
+
             final TextView representativesTextIndicator = (TextView)primaryToolbar.findViewById(R.id.representatives_type_text);
             representativesTextIndicator.setText(RepresentativesType.CONGRESS.getIdentifier());
 
@@ -271,9 +284,12 @@ public enum RepresentativesManager {
                 infoIcon.setVisibility(View.GONE);
                 backArrow.setVisibility(View.GONE);
                 actionSelectionButton.setVisibility(View.VISIBLE);
+                actionSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.white));
                 groupsSelectionButton.setVisibility(View.VISIBLE);
+                groupsSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.voices_orange));
                 groupsInfoText.setVisibility(View.GONE);
                 representativesTypeText.setVisibility(View.GONE);
+                divider.setVisibility(View.VISIBLE);
                 addGroupButton.setVisible(true);
                 RepresentativesManager.INSTANCE.toggleSearchBar(false);
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(false);
@@ -301,7 +317,9 @@ public enum RepresentativesManager {
                 groupsSelectionButton.setVisibility(View.GONE);
                 groupsInfoText.setVisibility(View.GONE);
                 backArrow.setVisibility(View.GONE);
+                divider.setVisibility(View.VISIBLE);
                 representativesTypeText.setVisibility(View.VISIBLE);
+
                 addGroupButton.setVisible(false);
 
                 RepresentativesManager.INSTANCE.toggleSearchBar(true);
