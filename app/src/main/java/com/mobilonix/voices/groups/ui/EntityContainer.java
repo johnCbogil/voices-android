@@ -10,8 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobilonix.voices.R;
+import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.groups.GroupManager;
-import com.mobilonix.voices.groups.model.Group;
 
 import java.util.ArrayList;
 
@@ -52,6 +52,10 @@ public class EntityContainer extends FrameLayout
         } else if(type == GroupManager.GroupType.USER) {
             entityListTopText.setText(R.string.no_follow_groups_top);
             entityListBottomText.setText(R.string.no_follow_groups);
+        } else if(type == GroupManager.GroupType.ALL) {
+            entityListTopText.setText(VoicesApplication.EMPTY);
+            entityListBottomText.setText("Server Error! Could not fetch groups!  Please try again");
+            noFollowImage.setImageResource(R.drawable.voices_error);
         }
     }
 
@@ -88,14 +92,10 @@ public class EntityContainer extends FrameLayout
         } else {
             entityList.setVisibility(View.GONE);
 
+            entityListTopText.setVisibility(View.VISIBLE);
             entityListBottomText.setVisibility(View.VISIBLE);
 
             noFollowImage.setVisibility(View.VISIBLE);
-            if(type == GroupManager.GroupType.ALL) {
-                noFollowImage.setImageResource(R.drawable.voices_error);
-            } else {
-                entityListTopText.setVisibility(View.VISIBLE);
-            }
         }
     }
 

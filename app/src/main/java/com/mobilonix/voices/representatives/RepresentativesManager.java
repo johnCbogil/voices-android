@@ -1,7 +1,9 @@
 package com.mobilonix.voices.representatives;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -61,8 +63,9 @@ public enum RepresentativesManager {
     FrameLayout representativesFrame;
 
     View primaryToolbar;
-
     View divider;
+    LinearLayout groupsTab;
+    LinearLayout representativesTab;
 
     PagerIndicator pagerIndicator;
 
@@ -254,8 +257,8 @@ public enum RepresentativesManager {
      */
     private void initTabView() {
 
-        final LinearLayout groupsTab = (LinearLayout)representativesFrame.findViewById(R.id.groups_tab);
-        final LinearLayout representativesTab = (LinearLayout)representativesFrame.findViewById(R.id.representatives_tab);
+        groupsTab = (LinearLayout)representativesFrame.findViewById(R.id.groups_tab);
+        representativesTab = (LinearLayout)representativesFrame.findViewById(R.id.representatives_tab);
 
         final ImageView representativesTabIcon = (ImageView)representativesFrame.findViewById(R.id.representatives_tab_icon);
         final ImageView groupsTabIcon = (ImageView)representativesFrame.findViewById(R.id.groups_tab_icon);
@@ -376,6 +379,12 @@ public enum RepresentativesManager {
                 });
 
     }
+
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
+    public void selectRepresentativesTab() {
+        representativesTab.callOnClick();
+    }
+
 
     /**
      *

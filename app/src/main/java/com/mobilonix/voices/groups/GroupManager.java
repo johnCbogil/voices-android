@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -19,9 +20,12 @@ import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
+
+import com.mobilonix.voices.groups.model.Policy;
 import com.mobilonix.voices.groups.ui.EntityContainer;
 import com.mobilonix.voices.groups.ui.GroupPage;
 import com.mobilonix.voices.groups.ui.PolicyListAdapter;
+import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.util.ViewUtil;
 import com.squareup.picasso.Picasso;
@@ -286,6 +290,7 @@ public enum GroupManager {
 
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_groups);
+        dialog.setTitle(group.getGroupName());
 
         ImageView groupsImage = (ImageView)dialog.findViewById(R.id.group_info_image);
 
@@ -335,7 +340,10 @@ public enum GroupManager {
             }
         });
 
-        policyList.setAdapter(new PolicyListAdapter(context,R.layout.policy_list_item,group.getPolicies()));
+        policyList.setAdapter(new PolicyListAdapter(context,
+                R.layout.policy_list_item,
+                group.getPolicies(),
+                dialog));
 
         dialog.show();
 
@@ -414,25 +422,6 @@ public enum GroupManager {
         actionSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.voices_orange));
         groupsSelectionButton.setBackgroundResource(R.drawable.button_back_selected);
         groupsSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.white));
-//        groupPage.findViewById(R.id.action_groups_list).setVisibility(View.GONE);
-//        groupPage.findViewById(R.id.user_groups_list).setVisibility(View.VISIBLE);
-//        groupPage.findViewById(R.id.all_groups_list).setVisibility(View.GONE);
-//        toolbar.findViewById(R.id.action_add_groups).setVisibility(View.VISIBLE);
-//
-//        toolbar.findViewById(R.id.all_groups_info_text).setVisibility(View.GONE);
-//
-//        toolbar.findViewById(R.id.groups_selection_text).setVisibility(View.VISIBLE);
-//        toolbar.findViewById(R.id.action_selection_text).setVisibility(View.VISIBLE);
-//
-//        toolbar.findViewById(R.id.action_selection_text).setBackgroundResource(R.drawable.button_back);
-//        toolbar.findViewById(R.id.groups_selection_text).setBackgroundResource(R.drawable.button_back_selected);
-//
-//        if(((RecyclerView)groupPage
-//                .findViewById(R.id.user_groups_list)).getChildCount() > 0) {
-//            groupPage.findViewById(R.id.no_follow_layout).setVisibility(View.GONE);
-//        } else {
-//            groupPage.findViewById(R.id.no_follow_layout).setVisibility(View.VISIBLE);
-//        }
     }
     /**
      * Find the group for a specific key
@@ -460,5 +449,77 @@ public enum GroupManager {
 
     public boolean isGroupPageVisible() {
         return groupPageVisible;
+    }
+
+    public void toggleActionDialog(Context context, Action action) {
+        final Dialog actionDialog = new Dialog(context);
+        actionDialog.setTitle("Take Action");
+        actionDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        actionDialog.setContentView(R.layout.dialog_actions);
+
+        TextView actionTitle  = (TextView)actionDialog.findViewById(R.id.actions_title);
+        TextView actionSubject  = (TextView)actionDialog.findViewById(R.id.actions_subject);
+        TextView actionDescription = (TextView)actionDialog.findViewById(R.id.actions_description);
+        ImageView actionImage = (ImageView)actionDialog.findViewById(R.id.actions_image);
+
+        Button contactRepresentativesButton = (Button)actionDialog.findViewById(R.id.actions_button_contact_representatives);
+
+        actionTitle.setText(action.getGroupName());
+        actionSubject.setText(action.getSubject());
+        actionDescription.setText(action.getBody());
+
+        Picasso.with(context)
+                .load(action.getImageUrl())
+                .placeholder(R.drawable.placeholder_spinner)
+                .error(R.drawable.representatives_place_holder)
+                .fit()
+                .into(actionImage);
+
+        contactRepresentativesButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                actionDialog.dismiss();
+                RepresentativesManager.INSTANCE.selectRepresentativesTab();
+            }
+        });
+
+
+        actionDialog.show();
+    }
+
+    public void togglePolicyDialog(Context context, Policy policy, Action action, final Dialog parentDialog) {
+
+        final Dialog actionDialog;
+
+        actionDialog = new Dialog(context);
+        actionDialog.setTitle("Take Action");
+        actionDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        actionDialog.setContentView(R.layout.dialog_policies);
+
+        TextView policiesTitle  = (TextView)actionDialog.findViewById(R.id.policies_title);
+        TextView policiesDescription = (TextView)actionDialog.findViewById(R.id.policies_description);
+        Button contactRepresentativesButton = (Button)actionDialog.findViewById(R.id.button_contact_representatives);
+
+        if(policy != null) {
+            policiesTitle.setText(policy.getPolicyName());
+            policiesDescription.setText(policy.getPolicyDescription());
+        }
+
+        contactRepresentativesButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                if(parentDialog != null) {
+                    parentDialog.dismiss();
+                }
+
+                actionDialog.dismiss();
+                RepresentativesManager.INSTANCE.selectRepresentativesTab();
+            }
+        });
+
+        actionDialog.show();
     }
 }
