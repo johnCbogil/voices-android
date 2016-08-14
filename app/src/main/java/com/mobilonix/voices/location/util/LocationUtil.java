@@ -164,11 +164,11 @@ public class LocationUtil {
         locationRequestCallback = callback;
     }
 
-    public static Callback<LatLong> getLocationRequestCallback() {
-        return locationRequestCallback;
+    public static void setLocationRequestCallback(Callback callback) {
+        locationRequestCallback = callback;
     }
 
-    public static void clearLocationRequestCallback() {
-        locationRequestCallback = null;
+    public static Callback<LatLong> getLocationRequestCallback() {
+        return locationRequestCallback;
     }
 }

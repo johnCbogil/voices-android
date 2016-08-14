@@ -44,4 +44,16 @@
     <string name="follow_groups_text">Follow This Group</string>
     <string name="unfollow_groups_text">Unfollow This Group</string>
     <string name="policy_positions_text">Policy Positions</string>
+
+    <!-- Errors-->
+    <string name="groups_fetch_error">"Server/Network Error! Attempting to fetch groups again..."</string>
+    <string name="council_not_yet_error">City Council members not available yet.  Coming soon!</string>
+
+    <string name="reps_fetch_error">
+        Could not fetch any [identifier] officials!
+        Please try again (swipe and drag your finger down
+        to get officials for your current location
+        OR use the search bar to search a specific address)
+    </string>
+
 </resources>

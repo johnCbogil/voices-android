@@ -78,9 +78,9 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                 public void onClick(View v) {
                     Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                             "mailto",representatives.get(position).getEmailAddress(), null));
-                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
-                    emailIntent.putExtra(Intent.EXTRA_TEXT, "Body");
-
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your attention requested "
+                            + representatives.get(position).getName());
+                    emailIntent.putExtra(Intent.EXTRA_TEXT, "<Enter what you'd like to write to your representatives>");
                     ArrayList<String> addresses = new ArrayList<>();
                     addresses.add(representatives.get(position).getEmailAddress());
                     emailIntent.putExtra(Intent.EXTRA_EMAIL, addresses);

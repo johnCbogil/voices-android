@@ -19,6 +19,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.mobilonix.voices.BuildConfig;
 import com.mobilonix.voices.R;
 
 import com.mobilonix.voices.VoicesApplication;
@@ -102,6 +104,11 @@ public enum SessionManager {
                 }
             }
         });
+
+        if(BuildConfig.DEBUG) {
+            GeneralUtil.toast("This is a debug build. Don't submit this to the store.  Subscribing to test topic");
+            FirebaseMessaging.getInstance().subscribeToTopic("TEST");
+        }
     }
 
     public void addUserToDatabase(final String userId) {
@@ -113,13 +120,13 @@ public enum SessionManager {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    GeneralUtil.toast("User " + userId + " already exists in the database!");
+
                 } else {
                     database.getReference("users").child(userId).child("userId").setValue(userId)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(Task<Void> task) {
-                                    GeneralUtil.toast("Added user successfully");
+
                                 }
                             });
                 }
@@ -150,8 +157,6 @@ public enum SessionManager {
 
                             groups.remove(group.getGroupKey());
 
-                            GeneralUtil.toast("Total groups before removal: " + groups);
-
                             database.getReference("users")
                                               .child(currentUserToken)
                                               .child("groups")
@@ -163,10 +168,6 @@ public enum SessionManager {
                                             .child("groups")
                                             .setValue(groups);
 
-                                    GeneralUtil.toast("Total groups after removal: " + dataSnapshot
-                                            .child(currentUserToken)
-                                            .child("groups")
-                                            .getValue());
                                 }
                             });
 
@@ -337,15 +338,13 @@ public enum SessionManager {
                                 for (Group group : allGroups) {
                                     if (pair.getKey().equals(group.getGroupKey())) {
                                         userGroups.add(group);
-                                        GroupManager.INSTANCE.subscribeToGroup(group, false);
+                                        GroupManager.INSTANCE.subscribeToGroup(group, false, null);
                                     }
                                 }
                                 it.remove();
                             }
 
-                        } else {
-                            GeneralUtil.toast("User " + currentUserToken + " has no groups!");
-                        }
+                        } else {}
                     }
 
                 }
