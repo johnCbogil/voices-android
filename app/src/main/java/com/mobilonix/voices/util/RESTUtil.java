@@ -50,6 +50,7 @@ public class RESTUtil {
                 String responseString = response.body().string();
                 ArrayList<String> suggestions = parseSuggestionList(responseString);
                 autoCompleteCallback.onExecuted(suggestions);
+                response.body().close();
             }
         });
 
@@ -95,6 +96,7 @@ public class RESTUtil {
                     String responseString = response.body().string();
                     ArrayList<Representative> representatives = parseRepresentativesList(responseString, type);
                     representativesCallback.onExecuted(representatives, type);
+                    response.body().close();
                 }
             });
         } catch (IOException e) {
