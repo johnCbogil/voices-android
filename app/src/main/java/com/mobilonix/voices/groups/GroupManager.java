@@ -52,82 +52,7 @@ public enum GroupManager {
 
     boolean groupPageVisible = false;
 
-    ArrayList<Group> USER_GROUPS_DUMMY_DATA = new ArrayList<>();
-    ArrayList<Group> ALL_GROUPS_DUMMY_DATA = new ArrayList<>();
-    ArrayList<Action> ACTIONS_DUMMY_DATA = new ArrayList<>();
-
-    ArrayList<Group> userGroupsData = new ArrayList<>();
     ArrayList<Group> allGroupsData = new ArrayList<>();
-    ArrayList<Action> actionsData = new ArrayList<>();
-
-    /* Instance initialization for all you noobs :) */
-    {
-
-        ArrayList<String> actions = new ArrayList<>();
-        actions.add("001");
-        actions.add("002");
-
-        /* Sub for user specific groups that should be pulled remotely from user account */
-        USER_GROUPS_DUMMY_DATA.add(
-                new Group("Electronic Frontier Foundation",
-                        "Digital Rights",
-                        "",
-                        "https://www.eff.org/files/2015/03/02/eff-og-3.png", "",
-                        null,
-                        actions,
-                        "BUM"));
-
-        /* Sub for actions that should be pulled remotely from user account */
-        ACTIONS_DUMMY_DATA.add(
-                new Action("001",
-                        "Tell the FBI Not to abuse its massive biometric database.",
-                        "EFF",
-                        "Electronic Frontier Foundation",
-                        "https://www.eff.org/files/2015/03/02/eff-og-3.png",
-                        "Digital Rights",
-                        "13123434534",
-                        "Join EFA allies in NYC on Thursday 6/30"));
-        ACTIONS_DUMMY_DATA.add(
-                new Action("001",
-                        "Tell the FBI Not to abuse its massive biometric database.",
-                        "EFF",
-                        "Electronic Frontier Foundation",
-                        "https://www.eff.org/files/2015/03/02/eff-og-3.png",
-                        "Digital Rights",
-                        "13123434534",
-                        "Join EFA allies in NYC on Thursday 6/30"));
-
-        /* Sub for all groups that should be pulled remotely from user account */
-        ALL_GROUPS_DUMMY_DATA.add(
-                new Group("Electronic Frontier Foundation",
-                        "Digital Rights",
-                        "",
-                        "https://www.eff.org/files/2015/03/02/eff-og-3.png", "", null, actions, "BUM"));
-         /* Sub for all groups that should be pulled remotely from user account */
-        ALL_GROUPS_DUMMY_DATA.add(
-                new Group("League of Women Voters",
-                        "Women's Healthcare",
-                        "",
-                        "http://www.lwvbn.org/images/LWV_OpenLogo.jpg", "", null, actions, "BUM"));
-
-         /* Sub for all groups that should be pulled remotely from user account */
-        ALL_GROUPS_DUMMY_DATA.add(
-                new Group("Planned Parenthood",
-                        "Civic Engagement",
-                        "",
-                        "https://c2.staticflickr.com/6/5295/5553094952_711984489f.jpg", "", null, actions, "BUM"));
-
-         /* Sub for all groups that should be pulled remotely from user account */
-        ALL_GROUPS_DUMMY_DATA.add(
-                new Group("American Civil Liberties Union",
-                        "Civil Liberties",
-                        "",
-                        "http://humanrightsconnected.org/s/assets/images/blank_200_200_smediaremotehttps_pbs.twimg.comprofile_images705877503504568320irplaegC_200_200.png_0_0_100___multiply_c1.png", "", null, actions, "BUM"));
-
-
-        userGroupsData.addAll(USER_GROUPS_DUMMY_DATA);
-        actionsData.addAll(ACTIONS_DUMMY_DATA);
-    }
 
     public void toggleGroupPage(ViewGroup pageRoot, boolean state) {
 
@@ -136,8 +61,6 @@ public enum GroupManager {
         } else {
             ((VoicesMainActivity)pageRoot.getContext()).toggleProgressSpinner(false);
         }
-
-        //String groupName, String groupCategory, String groupDescription, String groupImageUrl, ArrayList< Policy > policies
 
         if(state) {
             if(groupPage == null) {
@@ -155,9 +78,6 @@ public enum GroupManager {
             /* TODO: Make a request here via asynchronous callback to load the actual group data*/
             /* TODO: We wanto retrieve this from cache first, otherwise if not present, re-request it from backend */
             refreshGroupsAndActionList();
-
-            //groupPage.setActions(actionsData);
-            //groupPage.setUserGroups(userGroupsData);
 
             toggleGroups(GroupType.ACTION);
 
@@ -450,10 +370,6 @@ public enum GroupManager {
         }
 
         return null;
-    }
-
-    public ArrayList<Group> getAllGroupsData() {
-        return groupPage.getAllGroups();
     }
 
     public GroupType getMODE() {

@@ -455,6 +455,9 @@ public enum RepresentativesManager {
                     activity.getHandler().post(new Runnable() {
                             @Override
                             public void run() {
+
+                                toggleErrorDisplay(type, false);
+
                                 finalizePageOrder(result, type, pages, representativesPager);
 
                                 String location = VoicesApplication.EMPTY;
