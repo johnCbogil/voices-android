@@ -9,6 +9,7 @@ import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.data.api.ApiEngine;
 import com.mobilonix.voices.data.api.util.NycCouncilGeoUtil;
 import com.mobilonix.voices.data.model.Politico;
+import com.mobilonix.voices.representatives.RepresentativesManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -185,5 +186,10 @@ public class NycCouncilApi implements ApiEngine {
             //TODO handle exception
         }
         return outputStream.toString();
+    }
+
+    @Override
+    public RepresentativesManager.RepresentativesType getRepresentativeType() {
+        return RepresentativesManager.RepresentativesType.COUNCIL_MEMBERS;
     }
 }
