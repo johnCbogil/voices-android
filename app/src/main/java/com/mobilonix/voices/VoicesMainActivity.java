@@ -2,6 +2,7 @@ package com.mobilonix.voices;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -18,6 +19,8 @@ import android.widget.FrameLayout;
 
 import com.badoo.mobile.util.WeakHandler;
 import com.google.firebase.auth.FirebaseAuth;
+import com.mobilonix.voices.base.util.GeneralUtil;
+import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.location.LocationRequestManager;
 import com.mobilonix.voices.location.model.LatLong;
@@ -77,8 +80,7 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
                     if (LocationUtil.isGPSEnabled(VoicesMainActivity.this)) {
                         LocationUtil.triggerLocationUpdate(VoicesMainActivity.this, null);
                         RepresentativesManager.INSTANCE
-                                .toggleRepresentativesScreen(LocationUtil
-                                                .getLastLocation(VoicesMainActivity.this),
+                                .toggleRepresentativesScreen(currentLocation,
                                         VoicesMainActivity.this, true);
                     } else {
                         LocationRequestManager.INSTANCE
@@ -172,9 +174,23 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
         if(LocationRequestManager.INSTANCE.isLocationRequestScreenOn()) {
             if (LocationUtil.isGPSEnabled(this)) {
                 LocationRequestManager.INSTANCE.toggleLocationRequestScreen(this, false);
-                LocationUtil.triggerLocationUpdate(this, null);
-                RepresentativesManager.INSTANCE
-                        .toggleRepresentativesScreen(LocationUtil.getLastLocation(this), this, true);
+                final ProgressDialog progress = ProgressDialog.show(this, "Finding Location",
+                        "Awaiting to resolve location. One moment...", true);
+
+                progress.setCancelable(false);
+                progress.setCanceledOnTouchOutside(false);
+
+                LocationUtil.triggerLocationUpdate(this, new Callback<LatLong>() {
+                    @Override
+                    public boolean onExecuted(LatLong data) {
+                        progress.dismiss();
+                        GeneralUtil.toast("Got current location");
+
+                        RepresentativesManager.INSTANCE
+                                .toggleRepresentativesScreen(currentLocation, VoicesMainActivity.this, true);
+                        return false;
+                    }
+                });
             }
         } else {
             if(!LocationUtil.isGPSEnabled(this) && !SplashManager.INSTANCE.splashScreenVisible) {
@@ -192,7 +208,19 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
          */
         if(LocationUtil.isGPSEnabled(this) || LocationUtil.isNetworkLocationEnabled(this) ) {
             LocationRequestManager.INSTANCE.showGPSEnabledDialog(this);
-            LocationUtil.triggerLocationUpdate(this, null);
+            LocationUtil.triggerLocationUpdate(this, new Callback<LatLong>() {
+                @Override
+                public boolean onExecuted(LatLong data) {
+
+                    GeneralUtil.toast("Activity result called.  Loading rep page");
+
+                    RepresentativesManager.INSTANCE
+                            .toggleRepresentativesScreen(data,
+                                    VoicesMainActivity.this,
+                                    true);
+                    return false;
+                }
+            });
         } else {
             LocationRequestManager.INSTANCE.showGPSNotEnabledDialog(this);
         }
@@ -227,6 +255,14 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
     @Override
     public void onLocationChanged(Location location) {
         currentLocation = new LatLong(location.getLatitude(), location.getLongitude());
+
+        Callback<LatLong> callback = LocationUtil.getLocationRequestCallback();
+
+        /* Currently we only want this to execute once and then nullify it */
+        if(callback != null) {
+            callback.onExecuted(currentLocation);
+            LocationUtil.setLocationRequestCallback(null);
+        }
     }
 
     @Override

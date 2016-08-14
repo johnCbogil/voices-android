@@ -63,5 +63,8 @@ public class Action {
     public String getTitle() {
         return title;
     }
-
+    
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }

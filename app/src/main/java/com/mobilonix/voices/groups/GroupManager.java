@@ -131,8 +131,6 @@ public enum GroupManager {
 
     public void toggleGroupPage(ViewGroup pageRoot, boolean state) {
 
-        GeneralUtil.toast("User token: " + SessionManager.INSTANCE.getCurrentUserToken());
-
         if(isRefreshing) {
             ((VoicesMainActivity)pageRoot.getContext()).toggleProgressSpinner(true);
         } else {
@@ -312,9 +310,12 @@ public enum GroupManager {
         groupsInfoDescriptionText.setText(group.getGroupDescription());
         groupsInfoPolicyText.setText(group.getGroupCategory());
 
-        for (Group g : groupPage.getUserGroups()) {
-            if(g.getGroupKey().equals(group.getGroupKey())) {
-                groupsFollowGroupsButton.setText(R.string.unfollow_groups_text);
+        final ArrayList<Group> userGroups = groupPage.getUserGroups();
+        if(userGroups != null) {
+            for (Group g : groupPage.getUserGroups()) {
+                if (g.getGroupKey().equals(group.getGroupKey())) {
+                    groupsFollowGroupsButton.setText(R.string.unfollow_groups_text);
+                }
             }
         }
 
@@ -323,20 +324,30 @@ public enum GroupManager {
             public void onClick(View v) {
 
                 /* check if we're already subscribed to the group */
-                for (Group g : groupPage.getUserGroups()) {
-                    if(g.getGroupKey().equals(group.getGroupKey())) {
+                if(userGroups != null) {
+                    for (Group g : groupPage.getUserGroups()) {
+                        if (g.getGroupKey().equals(group.getGroupKey())) {
 
-                        unSubscribeFromGroup(group, true, new Callback<Boolean>() {
-                            @Override
-                            public boolean onExecuted(Boolean data) {
-                                groupsFollowGroupsButton.setText(R.string.follow_groups_text);
-                                return false;
-                            }
-                        });
+                            unSubscribeFromGroup(group, true, new Callback<Boolean>() {
+                                @Override
+                                public boolean onExecuted(Boolean data) {
+                                    groupsFollowGroupsButton.setText(R.string.follow_groups_text);
+                                    return false;
+                                }
+                            });
+
+                            return;
+                        }
                     }
                 }
 
-                subscribeToGroup(group, true);
+                subscribeToGroup(group, true, new Callback<Boolean>() {
+                    @Override
+                    public boolean onExecuted(Boolean data) {
+                        groupsFollowGroupsButton.setText(R.string.unfollow_groups_text);
+                        return false;
+                    }
+                });
             }
         });
 
@@ -357,7 +368,7 @@ public enum GroupManager {
      *
      * @param group
      */
-    public void subscribeToGroup(Group group, final boolean refresh) {
+    public void subscribeToGroup(Group group, final boolean refresh, final Callback<Boolean> callback) {
 
         subscriptionCompleted = false;
 
@@ -374,9 +385,11 @@ public enum GroupManager {
             public boolean onExecuted(Boolean data) {
 
                 if (!subscriptionCompleted) {
-                    GeneralUtil.toast("Groups subscription updated");
                     if (refresh) {
                         GroupManager.INSTANCE.refreshGroupsAndActionList();
+                        if(callback != null) {
+                            callback.onExecuted(true);
+                        }
                     }
                     subscriptionCompleted = true;
                 } else {
@@ -391,7 +404,7 @@ public enum GroupManager {
 
         try {
             FirebaseMessaging.getInstance()
-                    .subscribeToTopic(group.getGroupKey().replaceAll("\\s+", ""));
+                    .unsubscribeFromTopic(group.getGroupKey().replaceAll("\\s+", ""));
         } catch (Exception e) {
             Log.e(TAG, "Error subscribing to firebase notifications");
         }

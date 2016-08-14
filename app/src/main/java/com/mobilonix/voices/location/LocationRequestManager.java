@@ -76,6 +76,7 @@ public enum LocationRequestManager {
         } else {
 
             locationRequestScreenOn = false;
+            locationRequestFrame.setVisibility(View.GONE);
             activity.getMainContentFrame().removeView(locationRequestFrame);
         }
     }
