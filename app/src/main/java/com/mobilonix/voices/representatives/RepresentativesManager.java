@@ -300,6 +300,7 @@ public enum RepresentativesManager {
                 representativesTypeText.setVisibility(View.GONE);
                 divider.setVisibility(View.VISIBLE);
                 addGroupButton.setVisible(true);
+
                 RepresentativesManager.INSTANCE.toggleSearchBar(false);
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(false);
 
@@ -464,8 +465,11 @@ public enum RepresentativesManager {
                                     } else {
                                         location = "address: " + locationString;
                                     }
-
-                                    GeneralUtil.toast("Getting representatives for " + location);
+                                    if(pagerIndicator.getCurrentIndicatorTag()
+                                            .equals(type.getIdentifier())) {
+                                        GeneralUtil.toast("Found "
+                                                + type.getIdentifier() + " representatives for " + location);
+                                    }
                                 } else {
                                     toggleErrorDisplay(type, true);
                                 }
@@ -512,14 +516,16 @@ public enum RepresentativesManager {
      * @param state
      */
     public void toggleSearchBar(boolean state) {
-        if(autoCompleteTextView != null) {
-            try {
-                autoCompleteTextView
-                        .getView().setVisibility(state ? View.VISIBLE : View.GONE);
-            } catch (Exception e) {
-                Log.e(TAG, "Auto complete fragment null");
-            }
-        }
+        representativesFrame.findViewById(R.id.auto_complete_holder)
+                .setVisibility(state ? View.VISIBLE : View.GONE);
+//        if(autoCompleteTextView != null) {
+//            try {
+//                autoCompleteTextView
+//                        .getView().setVisibility(state ? View.VISIBLE : View.GONE);
+//            } catch (Exception e) {
+//                Log.e(TAG, "Auto complete fragment null");
+//            }
+//        }
     }
 
     public void setPageByIndex(int index) {
@@ -555,6 +561,12 @@ public enum RepresentativesManager {
 
             /* TODO: When we get the local officials available, we'll need to amend this logic */
             if(!identifier.equals(RepresentativesType.COUNCIL_MEMBERS.getIdentifier())) {
+                errorMessageText
+                        .setText(Html.fromHtml(VoicesApplication.getContext()
+                        .getResources()
+                        .getString(R.string.reps_fetch_error)
+                        .replace("[identifier]","<b>" + identifier + "</b>")));
+
                 errorHintText.setText(Html.fromHtml("<b>Hint:</b> "
                         + errorHintText.getText().toString().replace("Hint:", "")));
             } else {
