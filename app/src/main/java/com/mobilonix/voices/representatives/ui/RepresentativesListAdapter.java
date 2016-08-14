@@ -77,7 +77,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                 @Override
                 public void onClick(View v) {
                     Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                            "mailto","", null));
+                            "mailto",representatives.get(position).getEmailAddress(), null));
                     emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
                     emailIntent.putExtra(Intent.EXTRA_TEXT, "Body");
 
