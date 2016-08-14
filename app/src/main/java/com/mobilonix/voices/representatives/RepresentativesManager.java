@@ -1,7 +1,9 @@
 package com.mobilonix.voices.representatives;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -85,7 +87,7 @@ public enum RepresentativesManager {
 
         CONGRESS(sunlightApiEngine, "Federal"),
         STATE_LEGISLATORS(openStatesApiEngine, "State"),
-        COUNCIL_MEMBERS(nycScraperApi, "City");
+        COUNCIL_MEMBERS(nycScraperApi, "Local");
 
         ApiEngine mApi;
         String identifier;
@@ -378,6 +380,7 @@ public enum RepresentativesManager {
 
     }
 
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
     public void selectRepresentativesTab() {
         representativesTab.callOnClick();
     }

@@ -39,20 +39,11 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
 
             ImageView listImage = (ImageView)convertView.findViewById(R.id.representatives_list_image);
             TextView representativesNameText = (TextView)convertView.findViewById(R.id.representatives_list_name_text);
-            TextView representativesLocationText = (TextView)convertView.findViewById(R.id.representatives_list_location_text);
-
-            //Bitmap placeHolder = BitmapFactory.decodeResource(VoicesApplication.getContext().getResources(),
-                    //R.drawable.representatives_place_holder);
-            //RoundedTransformation roundedTransformation = new RoundedTransformation(50,4);
-            //Bitmap transformedPlaceHolder = roundedTransformation.transform(placeHolder);
-            //Drawable placeHolderDrawable = new BitmapDrawable(VoicesApplication.getContext().getResources(), transformedPlaceHolder);
-
             representativesNameText.setText(representatives.get(position).getName());
-            representativesLocationText.setText(representatives.get(position).getLocation());
 
             Picasso.with(listImage.getContext())
                     .load(representatives.get(position).getRepresentativeImageUrl())
-                    .resize(450,550)
+                    .resize(400,500)
                     .placeholder(R.drawable.placeholder_spinner)
                     .error(R.drawable.representatives_place_holder)
                     .transform(new RoundedTransformation(50, 4))
