@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,7 +19,7 @@ import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
-import com.mobilonix.voices.groups.ui.EntitiyContainer;
+import com.mobilonix.voices.groups.ui.EntityContainer;
 import com.mobilonix.voices.groups.ui.GroupPage;
 import com.mobilonix.voices.groups.ui.PolicyListAdapter;
 import com.mobilonix.voices.session.SessionManager;
@@ -223,7 +222,7 @@ public enum GroupManager {
             groupPage.findViewById(R.id.user_groups_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.all_groups_container).setVisibility(View.GONE);
 
-            ((EntitiyContainer)groupPage.findViewById(R.id.actions_container)).setType(groupType);
+            ((EntityContainer)groupPage.findViewById(R.id.actions_container)).setType(groupType);
 
             toolbar.findViewById(R.id.groups_selection_text).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.action_selection_text).setVisibility(View.VISIBLE);
@@ -241,7 +240,7 @@ public enum GroupManager {
             groupPage.findViewById(R.id.user_groups_container).setVisibility(View.VISIBLE);
             groupPage.findViewById(R.id.all_groups_container).setVisibility(View.GONE);
 
-            ((EntitiyContainer)groupPage.findViewById(R.id.user_groups_container)).setType(groupType);
+            ((EntityContainer)groupPage.findViewById(R.id.user_groups_container)).setType(groupType);
 
             toolbar.findViewById(R.id.groups_selection_text).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.action_selection_text).setVisibility(View.VISIBLE);
@@ -256,7 +255,7 @@ public enum GroupManager {
             groupPage.findViewById(R.id.user_groups_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.all_groups_container).setVisibility(View.VISIBLE);
 
-            ((EntitiyContainer)groupPage.findViewById(R.id.all_groups_container)).setType(groupType);
+            ((EntityContainer)groupPage.findViewById(R.id.all_groups_container)).setType(groupType);
 
             toolbar.findViewById(R.id.primary_toolbar_back_arrow).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.all_groups_info_text).setVisibility(View.VISIBLE);

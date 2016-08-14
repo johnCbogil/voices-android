@@ -84,7 +84,7 @@ public enum RepresentativesManager {
 
         CONGRESS(sunlightApiEngine, "Federal"),
         STATE_LEGISLATORS(openStatesApiEngine, "State"),
-        COUNCIL_MEMBERS(nycScraperApi, "City");
+        COUNCIL_MEMBERS(nycScraperApi, "Local");
 
         ApiEngine mApi;
         String identifier;

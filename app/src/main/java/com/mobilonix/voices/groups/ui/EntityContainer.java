@@ -15,7 +15,7 @@ import com.mobilonix.voices.groups.model.Group;
 
 import java.util.ArrayList;
 
-public class EntitiyContainer extends FrameLayout
+public class EntityContainer extends FrameLayout
 {
     RecyclerView entityList;
 
@@ -26,7 +26,7 @@ public class EntitiyContainer extends FrameLayout
 
     ImageView noFollowImage;
 
-    public EntitiyContainer(Context context, AttributeSet attrs) {
+    public EntityContainer(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
