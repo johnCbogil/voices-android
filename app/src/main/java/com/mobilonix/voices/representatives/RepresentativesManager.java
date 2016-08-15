@@ -1,17 +1,18 @@
 package com.mobilonix.voices.representatives;
 
 import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,12 +37,12 @@ import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.delegates.Callback2;
 import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.location.model.LatLong;
-import com.mobilonix.voices.location.util.LocationUtil;
 import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.representatives.model.RepresentativesPage;
 import com.mobilonix.voices.representatives.ui.PagerIndicator;
 import com.mobilonix.voices.representatives.ui.RepresentativesListAdapter;
 import com.mobilonix.voices.representatives.ui.RepresentativesPagerAdapter;
+import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.util.RESTUtil;
 import com.mobilonix.voices.util.ViewUtil;
 
@@ -283,6 +284,13 @@ public enum RepresentativesManager {
         final int voicesOrange = VoicesApplication.getContext().getResources().getColor(R.color.voices_orange);
         final int grey = VoicesApplication.getContext().getResources().getColor(R.color.grey);
 
+        helpIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleHelpDialog();
+            }
+        });
+
         groupsTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -388,6 +396,28 @@ public enum RepresentativesManager {
                     }
                 });
 
+        if(SessionManager.INSTANCE.checkIfFirstRun(true)) {
+           toggleHelpDialog();
+        }
+
+    }
+
+    public void toggleHelpDialog() {
+
+        final Dialog helpDialog;
+
+        helpDialog = new Dialog(representativesTab.getContext());
+        helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        helpDialog.setContentView(R.layout.dialog_instructions);
+        helpDialog.setTitle(R.string.instructions_title);
+        Button gotItButton = (Button)helpDialog.findViewById(R.id.got_it_button);
+        gotItButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                helpDialog.dismiss();
+            }
+        });
+        helpDialog.show();
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)

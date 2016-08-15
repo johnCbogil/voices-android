@@ -1,7 +1,6 @@
 package com.mobilonix.voices.session;
 
 
-import android.app.Application;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -11,7 +10,6 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -21,8 +19,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mobilonix.voices.BuildConfig;
-import com.mobilonix.voices.R;
-
 import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.delegates.Callback;
@@ -30,7 +26,6 @@ import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
 import com.mobilonix.voices.groups.model.Policy;
-import com.mobilonix.voices.notifications.NotificationManager;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -43,7 +38,6 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.Map;
 
 public enum SessionManager {
@@ -470,22 +464,22 @@ public enum SessionManager {
         return str.toString();
     }
 
-    public boolean checkIfFirstRun() {
+    public boolean checkIfFirstRun(boolean reset) {
         SharedPreferences preferences
                 = PreferenceManager.getDefaultSharedPreferences(VoicesApplication.getContext());
-
         if(preferences.getBoolean(CHECK_IF_FIRST_RUN, true)) {
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(CHECK_IF_FIRST_RUN, false);
-            editor.commit();
+
+            if(reset) {
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putBoolean(CHECK_IF_FIRST_RUN, false);
+                editor.commit();
+            }
 
             /* Need to always commit editor changes */
             return true;
         } else {
-
             return false;
         }
-
     }
 
     public String getCurrentUserToken() {
