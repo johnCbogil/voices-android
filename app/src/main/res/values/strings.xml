@@ -8,7 +8,11 @@
     <!-- Location Request -->
     <string name="location_request_text">Turn on location services to Voices can show you who represents your community. </string>
 
-    <string name="button_learnmore">Learn More</string>
+    <!--Instructions Dialog-->
+    <string name="instructions_title">To View Your Representatives</string>
+    <string name="instructions_text_1">Use the search bar to find representatives by address or swipe down to fetch representatives at your current location.</string>
+    <string name="instructions_text_2">After representatives have loaded, swipe right to see state and local representatives.</string>
+    <string name="got_it_button_text">Got It!</string>
 
     <!--Info Dialog-->
     <string name="response_title">Here\'s what to say</string>
@@ -26,12 +30,14 @@
 
     <!--Search Bar-->
     <string name="search_text">Search by address</string>
-
     <string name="all_groups_info">Select A Group To Learn More</string>
 
     <string name="google_places_api_key">AIzaSyAT87ms7SyySJIG5OrimyKbrHAZRQ2qgcI</string>
     <string name="sunlight_api_key">939e3373a07c468bac51ddd604ebba1f</string>
     <string name="open_states_api_key">e39ba83d7c5b4e348db144c4b4c33108</string>
+
+    <!--Representatives Tab-->
+    <string name="representatives_error_message">Officials are not available in your area yet.</string>
 
     <!--Actions/Groups Tabs-->
     <string name="no_follow_actions">To receive actions from advocacy groups, tap the + button above to follow groups.</string>
@@ -41,6 +47,7 @@
     <string name="no_follow_groups_top">You don\'t follow any groups yet.</string>
 
     <!--Groups Dialog-->
+    <string name="button_learnmore">Learn More</string>
     <string name="follow_groups_text">Follow This Group</string>
     <string name="unfollow_groups_text">Unfollow This Group</string>
     <string name="policy_positions_text">Policy Positions</string>

@@ -269,6 +269,7 @@ public enum RepresentativesManager {
         final TextView actionSelectionButton = (TextView)primaryToolbar.findViewById(R.id.action_selection_text);
         final TextView groupsSelectionButton = (TextView)primaryToolbar.findViewById(R.id.groups_selection_text);
         final ImageView infoIcon = (ImageView)primaryToolbar.findViewById(R.id.representatives_info_icon);
+        final ImageView helpIcon = (ImageView)primaryToolbar.findViewById(R.id.representatives_help_icon);
         final ImageView backArrow = (ImageView)primaryToolbar.findViewById(R.id.primary_toolbar_back_arrow);
         final TextView groupsInfoText = (TextView)primaryToolbar.findViewById(R.id.all_groups_info_text);
         final TextView representativesTypeText = (TextView)primaryToolbar.findViewById(R.id.representatives_type_text);
@@ -285,6 +286,7 @@ public enum RepresentativesManager {
                 groupsView.setVisibility(View.VISIBLE);
                 primaryToolbar.setVisibility(View.VISIBLE);
                 infoIcon.setVisibility(View.GONE);
+                helpIcon.setVisibility(View.GONE);
                 backArrow.setVisibility(View.GONE);
                 actionSelectionButton.setVisibility(View.VISIBLE);
                 actionSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.white));
@@ -316,6 +318,7 @@ public enum RepresentativesManager {
                 groupsView.setVisibility(View.GONE);
                 primaryToolbar.setVisibility(View.VISIBLE);
                 infoIcon.setVisibility(View.VISIBLE);
+                helpIcon.setVisibility(View.VISIBLE);
                 actionSelectionButton.setVisibility(View.GONE);
                 groupsSelectionButton.setVisibility(View.GONE);
                 groupsInfoText.setVisibility(View.GONE);
