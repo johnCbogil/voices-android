@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -20,6 +21,7 @@ public class RepresentativesPageLayout extends LinearLayout {
     RepresentativesPage representativesPage;
 
     Dialog responseDialog;
+    Dialog helpDialog;
 
     public RepresentativesPageLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -32,6 +34,7 @@ public class RepresentativesPageLayout extends LinearLayout {
         Toolbar toolbar = ((VoicesMainActivity)getContext()).getToolbar();
 
         ImageView infoIcon = (ImageView)toolbar.findViewById(R.id.representatives_info_icon);
+        ImageView helpIcon = (ImageView)toolbar.findViewById(R.id.representatives_help_icon);
 
         infoIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,8 +43,25 @@ public class RepresentativesPageLayout extends LinearLayout {
                 responseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 responseDialog.setContentView(R.layout.dialog_info);
                 responseDialog.setTitle(R.string.response_title);
-
                 responseDialog.show();
+            }
+        });
+
+        helpIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                helpDialog = new Dialog(getContext());
+                helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                helpDialog.setContentView(R.layout.dialog_instructions);
+                helpDialog.setTitle(R.string.instructions_title);
+                helpDialog.show();
+                Button gotItButton = (Button)helpDialog.findViewById(R.id.got_it_button);
+                gotItButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        helpDialog.dismiss();
+                    }
+                });
             }
         });
 

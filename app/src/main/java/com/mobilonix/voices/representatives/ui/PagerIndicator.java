@@ -27,8 +27,8 @@ public class PagerIndicator extends LinearLayout implements ViewPager.OnPageChan
 
     public void addIndicator(String indicatorTag) {
         ImageView circle = new ImageView(getContext());
-        circle.setMaxHeight(10);
-        circle.setMaxWidth(10);
+        circle.setMaxHeight(15);
+        circle.setMaxWidth(15);
         circle.setImageResource(R.drawable.empty_circle);
         circle.setPadding(5, 0, 5, 0);
         indicators.add(circle);

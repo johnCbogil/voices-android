@@ -35,10 +35,16 @@
                         android:layout_gravity="center"/>
                     <ImageView
                         android:id="@+id/representatives_info_icon"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_gravity="right|center"
                         android:src="@drawable/info_icon"/>
+                    <ImageView
+                        android:id="@+id/representatives_help_icon"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="left|center"
+                        android:src="@drawable/help_icon"/>
                 <LinearLayout
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
