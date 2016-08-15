@@ -28,6 +28,7 @@ import com.mobilonix.voices.groups.ui.PolicyListAdapter;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.util.ViewUtil;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -214,6 +215,7 @@ public enum GroupManager {
 
         Picasso.with(context)
                 .load(group.getGroupImageUrl())
+                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .placeholder(R.drawable.placeholder_spinner)
                 .error(R.drawable.representatives_place_holder)
                 .fit()
@@ -307,7 +309,7 @@ public enum GroupManager {
                 if (!subscriptionCompleted) {
                     if (refresh) {
                         GroupManager.INSTANCE.refreshGroupsAndActionList();
-                        if(callback != null) {
+                        if (callback != null) {
                             callback.onExecuted(true);
                         }
                     }
