@@ -53,8 +53,8 @@ public class GroupPage extends FrameLayout {
     public void setAllGroups(ArrayList<Group> allGroups) {
         this.allGroups = allGroups;
 
-        EntityContainer userGroupsContainer = (EntityContainer)findViewById(R.id.all_groups_container);
-        userGroupsContainer.addItems(allGroups,
+        EntityContainer allGroupsContainer = (EntityContainer)findViewById(R.id.all_groups_container);
+        allGroupsContainer.addItems(allGroups,
                 GroupManager.GroupType.USER);
 
     }
@@ -77,6 +77,7 @@ public class GroupPage extends FrameLayout {
             for (String actionString : groupActions) {
                 for(Action action : allActions) {
                     if(action.getActionKey().equals(actionString)) {
+                        action.setImageUrl(group.getGroupImageUrl());
                         userActions.add(action);
                     }
                 }

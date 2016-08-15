@@ -6,6 +6,9 @@ import android.graphics.PorterDuff;
 import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.Html;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.common.api.Status;
@@ -32,6 +36,7 @@ import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.delegates.Callback2;
 import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.location.model.LatLong;
+import com.mobilonix.voices.location.util.LocationUtil;
 import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.representatives.model.RepresentativesPage;
 import com.mobilonix.voices.representatives.ui.PagerIndicator;
@@ -134,6 +139,7 @@ public enum RepresentativesManager {
 
             primaryToolbar = activity.getToolbar();
             divider = activity.findViewById(R.id.divider);
+
             final TextView actionSelectionButton = (TextView)primaryToolbar.findViewById(R.id.action_selection_text);
             final TextView groupsSelectionButton = (TextView)primaryToolbar.findViewById(R.id.groups_selection_text);
             final MenuItem addGroupButton = ((VoicesMainActivity)primaryToolbar.getContext()).getAddGroup();
@@ -296,6 +302,7 @@ public enum RepresentativesManager {
                 representativesTypeText.setVisibility(View.GONE);
                 divider.setVisibility(View.VISIBLE);
                 addGroupButton.setVisible(true);
+
                 RepresentativesManager.INSTANCE.toggleSearchBar(false);
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(false);
 
@@ -405,12 +412,18 @@ public enum RepresentativesManager {
                                               final ArrayList<RepresentativesPage> pages,
                                               final ViewPager representativesPager) {
 
-        activity.toggleProgressSpinner(true);
-
         for (RepresentativesType type : RepresentativesType.values()) {
 
             /* reset the error state */
             toggleErrorDisplay(type, false);
+
+            ProgressBar progressSpinner = (ProgressBar)representativesPager
+                    .findViewWithTag(type.getIdentifier() + "_PROGRESS");
+
+            if(progressSpinner != null) {
+                progressSpinner.setVisibility(View.VISIBLE);
+            }
+
 
             RESTUtil.makeRepresentativesRequest(repLat, repLong, type,
                     new Callback2<ArrayList<Representative>, RepresentativesType>() {
@@ -422,6 +435,19 @@ public enum RepresentativesManager {
                     //  as more cities are on-boarded, a city API selector will be implemented that
                     //  also requires a priori knowledge
 
+                    activity.getHandler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            ProgressBar progressSpinner = (ProgressBar)representativesPager
+                                    .findViewWithTag(type.getIdentifier() + "_PROGRESS");
+
+                            if(progressSpinner != null) {
+                                progressSpinner.setVisibility(View.GONE);
+                            }
+
+                        }
+                    });
+
                     final ArrayList<Representative> result;
                     if((data == null) || data.isEmpty()) {
                         result = new ArrayList<>();
@@ -432,6 +458,9 @@ public enum RepresentativesManager {
                     activity.getHandler().post(new Runnable() {
                             @Override
                             public void run() {
+
+                                toggleErrorDisplay(type, false);
+
                                 finalizePageOrder(result, type, pages, representativesPager);
 
                                 String location = VoicesApplication.EMPTY;
@@ -442,15 +471,15 @@ public enum RepresentativesManager {
                                     } else {
                                         location = "address: " + locationString;
                                     }
-
-                                    GeneralUtil.toast("Getting representatives for " + location);
+                                    if(pagerIndicator.getCurrentIndicatorTag()
+                                            .equals(type.getIdentifier())) {
+                                        GeneralUtil.toast("Found "
+                                                + type.getIdentifier() + " representatives for " + location);
+                                    }
                                 } else {
-
-                                    GeneralUtil.toast("There was an error fetching reps for "
-                                            + type.getIdentifier());
-
                                     toggleErrorDisplay(type, true);
                                 }
+
                             }
                     });
 
@@ -473,6 +502,7 @@ public enum RepresentativesManager {
         SwipeRefreshLayout pageRefresh = (SwipeRefreshLayout)representativesPager
                 .findViewWithTag(type.getIdentifier() + "_REFRESH");
 
+
         if (representativesListView != null) {
             representativesListView.setAdapter(
                     new RepresentativesListAdapter(representativesPager.getContext(),
@@ -483,9 +513,6 @@ public enum RepresentativesManager {
             pageRefresh.setRefreshing(false);
         }
 
-        if(pages.size() == RepresentativesType.values().length) {
-            ((VoicesMainActivity)representativesPager.getContext()).toggleProgressSpinner(false);
-        }
 
     }
 
@@ -495,10 +522,16 @@ public enum RepresentativesManager {
      * @param state
      */
     public void toggleSearchBar(boolean state) {
-        if(autoCompleteTextView != null) {
-            autoCompleteTextView
-                    .getView().setVisibility(state ? View.VISIBLE : View.GONE);
-        }
+        representativesFrame.findViewById(R.id.auto_complete_holder)
+                .setVisibility(state ? View.VISIBLE : View.GONE);
+//        if(autoCompleteTextView != null) {
+//            try {
+//                autoCompleteTextView
+//                        .getView().setVisibility(state ? View.VISIBLE : View.GONE);
+//            } catch (Exception e) {
+//                Log.e(TAG, "Auto complete fragment null");
+//            }
+//        }
     }
 
     public void setPageByIndex(int index) {
@@ -519,6 +552,7 @@ public enum RepresentativesManager {
     }
 
     private void toggleErrorDisplay(String identifier, boolean state) {
+
         ViewPager pager = (ViewPager) representativesFrame
                 .findViewById(R.id.representatives_pager);
 
@@ -527,6 +561,24 @@ public enum RepresentativesManager {
 
         if(errorLayout != null) {
             errorLayout.setVisibility(state ? View.VISIBLE : View.GONE);
+
+            TextView errorHintText = (TextView)errorLayout.findViewById(R.id.reps_page_error_hint);
+            TextView errorMessageText = (TextView)errorLayout.findViewById(R.id.representatives_error_message);
+
+            /* TODO: When we get the local officials available, we'll need to amend this logic */
+            if(!identifier.equals(RepresentativesType.COUNCIL_MEMBERS.getIdentifier())) {
+                errorMessageText
+                        .setText(Html.fromHtml(VoicesApplication.getContext()
+                        .getResources()
+                        .getString(R.string.reps_fetch_error)
+                        .replace("[identifier]","<b>" + identifier + "</b>")));
+
+                errorHintText.setText(Html.fromHtml("<b>Hint:</b> "
+                        + errorHintText.getText().toString().replace("Hint:", "")));
+            } else {
+                errorMessageText.setText(R.string.council_not_yet_error);
+                errorHintText.setText(VoicesApplication.EMPTY);
+            }
         }
     }
 

@@ -20,6 +20,7 @@
         <ImageView
             android:id="@+id/entity_no_follows_image"
             android:adjustViewBounds="true"
+            android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/entity_no_follows_bottom_line"

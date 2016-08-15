@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
@@ -37,10 +38,12 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
         final ListView representativesList = (ListView)layout.findViewById(R.id.representatives_list);
         final SwipeRefreshLayout pageRefresh = (SwipeRefreshLayout)layout.findViewById(R.id.swipe_refresh_layout);
         final LinearLayout errorLayout = (LinearLayout)layout.findViewById(R.id.layout_error_page);
+        final ProgressBar progressSpinner = (ProgressBar)layout.findViewById(R.id.reps_progress_spinner);
 
         representativesList.setTag(representatives.get(position).getType().getIdentifier());
         pageRefresh.setTag(representatives.get(position).getType().getIdentifier() + "_REFRESH");
         errorLayout.setTag(representatives.get(position).getType().getIdentifier() + "_ERROR");
+        progressSpinner.setTag(representatives.get(position).getType().getIdentifier() + "_PROGRESS");
 
         pageRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

@@ -45,6 +45,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
         android:text="Advocate quality public education in New York with emphasis"/>
 
     <ScrollView
