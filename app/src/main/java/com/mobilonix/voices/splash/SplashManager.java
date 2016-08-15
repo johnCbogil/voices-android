@@ -86,7 +86,7 @@ public enum  SplashManager {
         }
     }
 
-    public void toggleOnBoardingCopy(boolean status) {
+    public boolean toggleOnBoardingCopy(boolean status) {
         if(!status) {
             splashContentFrame.findViewById(R.id.splash_getting_started_button).setVisibility(View.GONE);
             splashContentFrame.findViewById(R.id.splash_voices_intro_text).setVisibility(View.GONE);
@@ -96,5 +96,6 @@ public enum  SplashManager {
             params.setMargins(0, 0, 0, 0);
             splashContentFrame.findViewById(R.id.splash_voices_image).setLayoutParams(params);
         }
+        return status;
     }
 }

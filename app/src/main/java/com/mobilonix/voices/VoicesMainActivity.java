@@ -19,7 +19,6 @@ import android.widget.FrameLayout;
 
 import com.badoo.mobile.util.WeakHandler;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.crash.FirebaseCrash;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.groups.GroupManager;
@@ -70,7 +69,7 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
     private void initialTransition() {
 
         SplashManager.INSTANCE.toggleSplashScreen(this, true);
-        if(!SessionManager.INSTANCE.checkIfFirstRun()) {
+        if(!SessionManager.INSTANCE.checkIfFirstRun(false)) {
             SplashManager.INSTANCE.toggleOnBoardingCopy(false);
             SplashManager.INSTANCE.toggleSplashScreen(VoicesMainActivity.this, false);
             getHandler().postDelayed(new Runnable() {
