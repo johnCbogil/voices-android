@@ -6,20 +6,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
-import com.mobilonix.voices.base.util.GeneralUtil;
-import com.mobilonix.voices.location.model.LatLong;
 import com.mobilonix.voices.location.util.LocationUtil;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 
@@ -94,7 +87,7 @@ public enum LocationRequestManager {
     public void showGPSNotEnabledDialog(VoicesMainActivity activity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle("Location Not Enabled!");
-        builder.setMessage("Location is not enabled.  You won't be able get accurate location requests until this is done.  Please goto your device settings and enable 'Location");
+        builder.setMessage("Location is not enabled.  You won't be able to get accurate location requests until this is done.  Please go to your device settings and enable 'Location");
         builder.setPositiveButton("Alright", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -114,7 +107,7 @@ public enum LocationRequestManager {
     public void showGPSEnabledDialog(VoicesMainActivity activity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle("Location Enabled!");
-        builder.setMessage("Your device's Location detection is now enabled!  You'll be able to get representatives from your current location");
+        builder.setMessage("Your device's location detection is now enabled!  You'll be able to get representatives from your current location.");
         builder.setPositiveButton("Great!", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
