@@ -18,6 +18,7 @@ import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
 import com.mobilonix.voices.groups.model.Policy;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -64,6 +65,7 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
 
         Picasso.with(holder.actionImage.getContext())
                 .load(actions.get(position).getImageUrl())
+                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .placeholder(R.drawable.placeholder_spinner)
                 .error(R.drawable.representatives_place_holder)
                 .fit()

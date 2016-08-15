@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.representatives.model.Representative;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
 
             Picasso.with(listImage.getContext())
                     .load(representatives.get(position).getRepresentativeImageUrl())
-                    .resize(400,500)
+                    .resize(400, 500)
                     .placeholder(R.drawable.placeholder_spinner)
                     .error(R.drawable.representatives_place_holder)
                     .transform(new RoundedTransformation(50, 4))
