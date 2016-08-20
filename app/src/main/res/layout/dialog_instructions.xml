@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <com.mobilonix.voices.util.AvenirTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
@@ -15,7 +15,7 @@
         android:id="@+id/instructions_title"
         android:text="@string/instructions_title"/>
 
-    <TextView
+    <com.mobilonix.voices.util.AvenirTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15sp"
@@ -36,7 +36,7 @@
         android:adjustViewBounds="true"
         android:src="@drawable/swipe_down"/>
 
-    <TextView
+    <com.mobilonix.voices.util.AvenirTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15sp"
@@ -48,7 +48,7 @@
         android:id="@+id/instructions_text_2"
         android:text="@string/instructions_text_2"/>
 
-    <Button
+    <com.mobilonix.voices.util.AvenirButton
         android:id="@+id/got_it_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -57,7 +57,6 @@
         android:layout_marginBottom="10dp"
         android:padding="5dp"
         android:textSize="15sp"
-        android:background="@drawable/rounded_button"
         android:textColor="#FFF"
         android:text="@string/got_it_button_text"/>
 </LinearLayout>

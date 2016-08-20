@@ -4,6 +4,7 @@
     <item
         android:id="@+id/action_add_groups"
         android:icon="@drawable/add_groups_icon"
+        android:layout_gravity="right|center"
         app:showAsAction="always"
         android:title="Settings">
     </item>

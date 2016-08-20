@@ -133,7 +133,7 @@ public enum RepresentativesManager {
 
     public void toggleRepresentativesScreen(LatLong location, final VoicesMainActivity activity, boolean state) {
 
-        if(state) {
+        if (state) {
             LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             representativesFrame = (FrameLayout)
                     inflater.inflate(R.layout.view_representatives, null, false);
@@ -141,9 +141,9 @@ public enum RepresentativesManager {
             primaryToolbar = activity.getToolbar();
             divider = activity.findViewById(R.id.divider);
 
-            final TextView actionSelectionButton = (TextView)primaryToolbar.findViewById(R.id.action_selection_text);
-            final TextView groupsSelectionButton = (TextView)primaryToolbar.findViewById(R.id.groups_selection_text);
-            final MenuItem addGroupButton = ((VoicesMainActivity)primaryToolbar.getContext()).getAddGroup();
+            final TextView actionSelectionButton = (TextView) primaryToolbar.findViewById(R.id.action_selection_text);
+            final TextView groupsSelectionButton = (TextView) primaryToolbar.findViewById(R.id.groups_selection_text);
+            final MenuItem addGroupButton = ((VoicesMainActivity) primaryToolbar.getContext()).getAddGroup();
 
             primaryToolbar.setVisibility(View.VISIBLE);
             divider.setVisibility(View.VISIBLE);
@@ -151,18 +151,18 @@ public enum RepresentativesManager {
             groupsSelectionButton.setVisibility(View.GONE);
             addGroupButton.setVisible(false);
 
-            final TextView representativesTextIndicator = (TextView)primaryToolbar.findViewById(R.id.representatives_type_text);
+            final TextView representativesTextIndicator = (TextView) primaryToolbar.findViewById(R.id.representatives_type_text);
             representativesTextIndicator.setText(RepresentativesType.CONGRESS.getIdentifier());
 
             final ArrayList<RepresentativesPage> pages = new ArrayList<>();
-            final ViewPager representativesPager = (ViewPager)representativesFrame.findViewById(R.id.representatives_pager);
+            final ViewPager representativesPager = (ViewPager) representativesFrame.findViewById(R.id.representatives_pager);
 
             /* Initialize Pager Indicator */
-            pagerIndicator = ((PagerIndicator)representativesFrame
+            pagerIndicator = ((PagerIndicator) representativesFrame
                     .findViewById(R.id.pager_meta_frame)
                     .findViewById(R.id.pager_indicator));
 
-            for(RepresentativesType representativesType : RepresentativesType.values()) {
+            for (RepresentativesType representativesType : RepresentativesType.values()) {
                 pagerIndicator.addIndicator(representativesType.getIdentifier());
                 pages.add(new RepresentativesPage(new ArrayList<Representative>(), representativesType));
             }
@@ -173,29 +173,29 @@ public enum RepresentativesManager {
             pagerIndicator.addIndicatorShiftCallback(new Callback() {
                 @Override
                 public boolean onExecuted(Object data) {
-                    int position = (Integer)data;
+                    int position = (Integer) data;
 
                     ArrayList<RepresentativesType> types = new ArrayList<>();
                     for (RepresentativesType rep : RepresentativesType.values()) {
                         types.add(rep);
                     }
 
-                    ListView listView = ((ListView)representativesFrame
+                    ListView listView = ((ListView) representativesFrame
                             .findViewWithTag(pagerIndicator
                                     .getCurrentIndicatorTag()));
 
                     ArrayList<Representative> representatives =
                             currentRepsMap.get(pagerIndicator.getCurrentIndicatorTag());
 
-                    if(representatives == null) {
+                    if (representatives == null) {
                         representatives = new ArrayList<>();
                     }
 
-                    if((representatives.size() == 0)) {
+                    if ((representatives.size() == 0)) {
                         toggleErrorDisplay(pagerIndicator.getCurrentIndicatorTag(), true);
                     }
 
-                    if(listView != null) {
+                    if (listView != null) {
                         listView.setAdapter(
                                 new RepresentativesListAdapter(
                                         listView.getContext(),
@@ -204,7 +204,7 @@ public enum RepresentativesManager {
                     }
 
                     for (int i = 0; i < types.size(); i++) {
-                        if(i == position) {
+                        if (i == position) {
                             representativesTextIndicator.setText(types.get(i).getIdentifier());
                         }
                     }
@@ -214,7 +214,7 @@ public enum RepresentativesManager {
             });
 
             /* Initialize Autocomplete fragment */
-            if(autoCompleteTextView == null) {
+            if (autoCompleteTextView == null) {
                 autoCompleteTextView =
                         (PlaceAutocompleteFragment) activity.getFragmentManager()
                                 .findFragmentById(R.id.place_autocomplete_fragment);
@@ -222,41 +222,40 @@ public enum RepresentativesManager {
                 autoCompleteTextView.getView().setVisibility(View.VISIBLE);
                 autoCompleteTextView.setHint(activity.getString(R.string.search_text));
                 autoCompleteTextView.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-                        @Override
-                        public void onPlaceSelected(Place place) {
-                            refreshRepresentativesContent(
-                                    place.getAddress().toString(),
-                                    place.getLatLng().latitude,
-                                    place.getLatLng().longitude,
-                                    activity,
-                                    pages,
-                                    representativesPager);
-                        }
+                    @Override
+                    public void onPlaceSelected(Place place) {
+                        refreshRepresentativesContent(
+                                place.getAddress().toString(),
+                                place.getLatLng().latitude,
+                                place.getLatLng().longitude,
+                                activity,
+                                pages,
+                                representativesPager);
+                    }
+                    @Override
+                    public void onError(Status status) {
 
-                        @Override
-                        public void onError(Status status) {
-
-                        }
+                    }
                 });
+
+                refreshRepresentativesContent(
+                        CURRENT_LOCATION,
+                        location.getLatitude(),
+                        location.getLongitude(),
+                        activity,
+                        pages,
+                        representativesPager);
+
+                initTabView();
+
+                activity.getMainContentFrame().addView(representativesFrame);
+            } else {
+
+                activity.getMainContentFrame().removeView(representativesFrame);
             }
 
-            refreshRepresentativesContent(
-                    CURRENT_LOCATION,
-                    location.getLatitude(),
-                    location.getLongitude(),
-                    activity,
-                    pages,
-                    representativesPager);
-
-            initTabView();
-
-            activity.getMainContentFrame().addView(representativesFrame);
-        } else {
-
-            activity.getMainContentFrame().removeView(representativesFrame);
+            representativesScreenVisible = state;
         }
-
-        representativesScreenVisible = state;
     }
 
     /**

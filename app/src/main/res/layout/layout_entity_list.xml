@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center">
-        <TextView
+        <com.mobilonix.voices.util.AvenirTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -26,7 +26,7 @@
             android:layout_below="@id/entity_no_follows_bottom_line"
             android:src="@drawable/no_follows"/>
     </RelativeLayout>
-    <TextView
+    <com.mobilonix.voices.util.AvenirTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top|center_horizontal"
