@@ -10,7 +10,7 @@
         android:orientation="vertical"
         android:weightSum="1">
 
-        <TextView
+        <com.mobilonix.voices.util.AvenirTextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textSize="25sp"
@@ -30,14 +30,13 @@
                 android:adjustViewBounds="true"
                 android:src="@drawable/location_request_image"/>
 
-        <Button
+        <com.mobilonix.voices.util.AvenirButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-100dp"
                 android:layout_marginLeft="25dp"
                 android:layout_marginRight="25dp"
-                android:background="@android:color/holo_orange_dark"
-                android:textColor="@android:color/white"
+                android:textColor="#FFF"
                 android:text="Turn On Location Services"
                 android:id="@+id/location_request_button"/>
 

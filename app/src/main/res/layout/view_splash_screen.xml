@@ -11,7 +11,7 @@
         android:src="@drawable/voices_icon"
         android:layout_gravity="center" />
 
-    <TextView
+    <com.mobilonix.voices.util.AvenirTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
@@ -23,7 +23,7 @@
         android:id="@+id/splash_voices_intro_text"
         android:text="@string/splash_voices_intro"/>
 
-    <Button
+    <com.mobilonix.voices.util.AvenirButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
@@ -32,7 +32,6 @@
         android:text="Get Started"
         android:layout_marginBottom="30dp"
         android:textColor="@android:color/white"
-        android:background="@drawable/rounded_button"
         android:id="@+id/splash_getting_started_button"
         android:layout_gravity="center_horizontal|bottom" />
 </FrameLayout>

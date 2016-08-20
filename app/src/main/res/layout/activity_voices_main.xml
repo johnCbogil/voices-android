@@ -26,7 +26,7 @@
                         android:src="@drawable/ic_action_previous_item"
                         android:tint="@color/voices_orange"
                         android:visibility="gone"/>
-                    <TextView
+                    <com.mobilonix.voices.util.AvenirTextView
                         android:id="@+id/representatives_type_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
                         android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent">
-                            <TextView
+                            <com.mobilonix.voices.util.AvenirTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="18sp"
@@ -67,7 +67,7 @@
                                     android:layout_gravity="center"
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent">
-                                    <TextView
+                                    <com.mobilonix.voices.util.AvenirTextView
                                         android:layout_width="@dimen/toolbar_option_width"
                                         android:layout_height="match_parent"
                                         android:gravity="center"
@@ -76,7 +76,7 @@
                                         android:background="@drawable/button_back_selected"
                                         android:text="Actions"
                                         android:textColor="#FFF"/>
-                                    <TextView
+                                    <com.mobilonix.voices.util.AvenirTextView
                                         android:layout_width="@dimen/toolbar_option_width"
                                         android:layout_height="match_parent"
                                         android:gravity="center"

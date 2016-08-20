@@ -30,19 +30,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
+            <com.mobilonix.voices.util.AvenirTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:id="@+id/cell_group_name" />
 
-            <TextView
+            <com.mobilonix.voices.util.AvenirTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:id="@+id/cell_group_category" />
 
-            <TextView
+            <com.mobilonix.voices.util.AvenirTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
@@ -52,13 +52,12 @@
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <Button
+                <com.mobilonix.voices.util.AvenirButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:padding="10dp"
                     android:text="@string/button_learnmore"
-                    android:background="@drawable/rounded_button"
                     android:textColor="#FFF"
                     android:textSize="17sp"
                     android:id="@+id/cell_group_learn_more_button"

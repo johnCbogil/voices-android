@@ -16,11 +16,9 @@ import android.widget.TextView;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
-import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
-
 import com.mobilonix.voices.groups.model.Policy;
 import com.mobilonix.voices.groups.ui.EntityContainer;
 import com.mobilonix.voices.groups.ui.GroupPage;

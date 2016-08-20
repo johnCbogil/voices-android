@@ -15,7 +15,7 @@
             android:layout_height="100dp"
             android:id="@+id/actions_image"
             android:src="@drawable/representatives_place_holder"/>
-        <TextView
+        <com.mobilonix.voices.util.AvenirTextView
             android:id="@+id/actions_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
             />
     </LinearLayout>
 
-    <Button
+    <com.mobilonix.voices.util.AvenirButton
         android:id="@+id/actions_button_contact_representatives"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,11 +35,10 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:layout_gravity="center"
-        android:background="@drawable/rounded_button"
         android:textColor="#FFF"
         android:text="Contact My Representatives"/>
 
-    <TextView
+    <com.mobilonix.voices.util.AvenirTextView
         android:id="@+id/actions_subject"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,7 +51,7 @@
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-        <TextView
+        <com.mobilonix.voices.util.AvenirTextView
             android:id="@+id/actions_description"
             android:padding="20dp"
             android:layout_width="wrap_content"

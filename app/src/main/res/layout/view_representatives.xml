@@ -54,7 +54,7 @@
             android:layout_weight="0.9"
             android:id="@+id/groups_view"
             android:visibility="gone">
-            <TextView
+            <com.mobilonix.voices.util.AvenirTextView
                 android:layout_gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -85,7 +85,7 @@
                     android:tint="@color/voices_orange"
                     android:layout_width="25sp"
                     android:layout_height="wrap_content"/>
-                <TextView
+                <com.mobilonix.voices.util.AvenirTextView
                     android:layout_weight="0.5"
                     android:gravity="center"
                     android:layout_width="match_parent"
@@ -109,7 +109,7 @@
                     android:tint="@color/grey"
                     android:layout_width="25sp"
                     android:layout_height="wrap_content"/>
-                <TextView
+                <com.mobilonix.voices.util.AvenirTextView
                     android:layout_weight="0.5"
                     android:gravity="center"
                     android:layout_width="match_parent"

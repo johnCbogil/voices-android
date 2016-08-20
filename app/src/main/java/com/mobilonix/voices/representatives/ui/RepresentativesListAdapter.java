@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.representatives.model.Representative;
-import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -79,14 +78,13 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                 public void onClick(View v) {
                     Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                             "mailto",representatives.get(position).getEmailAddress(), null));
-                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your attention requested "
-                            + representatives.get(position).getName());
-                    emailIntent.putExtra(Intent.EXTRA_TEXT, "<Enter what you'd like to write to your representatives>");
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
+                    emailIntent.putExtra(Intent.EXTRA_TEXT, "");
                     ArrayList<String> addresses = new ArrayList<>();
                     addresses.add(representatives.get(position).getEmailAddress());
                     emailIntent.putExtra(Intent.EXTRA_EMAIL, addresses);
 
-                    v.getContext().startActivity(Intent.createChooser(emailIntent, "Send email..."));
+                    v.getContext().startActivity(Intent.createChooser(emailIntent, "Send Email"));
                 }
             });
 

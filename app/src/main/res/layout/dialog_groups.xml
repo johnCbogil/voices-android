@@ -16,7 +16,7 @@
             android:layout_height="100dp"
             android:src="@drawable/voices_icon"
             android:id="@+id/group_info_image" />
-        <TextView
+        <com.mobilonix.voices.util.AvenirTextView
             android:layout_marginLeft="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -32,7 +32,7 @@
         android:background="@color/voices_orange">
     </View>
 
-    <TextView
+    <com.mobilonix.voices.util.AvenirTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/group_info_policy_text"
@@ -42,17 +42,17 @@
         android:layout_marginLeft="10dp"
         android:text="Digital Rights"/>
 
-    <Button
+    <com.mobilonix.voices.util.AvenirButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:layout_marginBottom="10dp"
         android:layout_gravity="center_horizontal"
         android:id="@+id/follow_groups_button"
-        android:background="@drawable/rounded_button"
         android:textColor="#FFF"
         android:text="@string/follow_groups_text"/>
-    <TextView
+
+    <com.mobilonix.voices.util.AvenirTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
