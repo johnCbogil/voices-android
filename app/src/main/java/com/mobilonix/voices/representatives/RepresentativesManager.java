@@ -591,7 +591,6 @@ public enum RepresentativesManager {
         if(errorLayout != null) {
             errorLayout.setVisibility(state ? View.VISIBLE : View.GONE);
 
-            TextView errorHintText = (TextView)errorLayout.findViewById(R.id.reps_page_error_hint);
             TextView errorMessageText = (TextView)errorLayout.findViewById(R.id.representatives_error_message);
 
             /* TODO: When we get the local officials available, we'll need to amend this logic */
@@ -601,12 +600,8 @@ public enum RepresentativesManager {
                         .getResources()
                         .getString(R.string.reps_fetch_error)
                         .replace("[identifier]","<b>" + identifier + "</b>")));
-
-                errorHintText.setText(Html.fromHtml("<b>Hint:</b> "
-                        + errorHintText.getText().toString().replace("Hint:", "")));
             } else {
                 errorMessageText.setText(R.string.council_not_yet_error);
-                errorHintText.setText(VoicesApplication.EMPTY);
             }
         }
     }
