@@ -75,12 +75,13 @@ public class UsCongressSunlightApi implements ApiEngine {
 
                 String firstName = jsonPolitico.getString("first_name");
                 String lastName = jsonPolitico.getString("last_name");
+                //String gender = jsonPolitico.getString("gender");
                 String phoneNumber = jsonPolitico.getString("phone");
                 String twitter = jsonPolitico.getString("twitter_id");
                 String bioguide_id = jsonPolitico.getString("bioguide_id");
                 String email = jsonPolitico.getString("oc_email");
-
                 Politico politico = new Politico.Builder()
+                        //.setGender(gender)
                         .setEmailAddy(email)
                         .setPhoneNumber(phoneNumber)
                         .setPicUrl(IMAGE_BASE_URL + bioguide_id + IMAGE_FILE_EXTENSION)

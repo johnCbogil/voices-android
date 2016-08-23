@@ -11,9 +11,6 @@ import android.location.LocationListener;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -38,8 +35,6 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
     public FrameLayout mainContentFrame;
     boolean leaveAppDialogShowing = false;
     WeakHandler handler = new WeakHandler();
-
-    MenuItem addGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,18 +85,6 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
                 }
             }, SPLASH_FADE_TIME);
         }
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.primary_menu, menu);
-
-        addGroup = menu.findItem(R.id.action_add_groups);
-
-        return true;
     }
 
     public FrameLayout getMainContentFrame() {
@@ -233,10 +216,6 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
 
     public Toolbar getToolbar() {
         return (Toolbar)findViewById(R.id.primary_toolbar);
-    }
-
-    public MenuItem getAddGroup() {
-        return addGroup;
     }
 
     @Override

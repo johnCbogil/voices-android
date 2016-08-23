@@ -8,6 +8,7 @@ import android.util.Log;
 public class Politico {
 
     String mFullName;
+    //String mGender;
     String mDistrict;
     String mPhoneNumber;
     String mElectionDate;
@@ -18,6 +19,7 @@ public class Politico {
     private Politico(String fullName, String district,  String electionDate, String phoneNumber,
                      String emailAddy, String twitterHandle, String picUrl) {
         mFullName = fullName;
+        //mGender = gender;
         mDistrict = district;
         mPhoneNumber = phoneNumber;
         mElectionDate = electionDate;
@@ -29,6 +31,8 @@ public class Politico {
     public String getDistrict() { return mDistrict; }
 
     public String getFullName() {return mFullName;}
+
+    //public String getGender() {return mGender;}
 
     public String getPhoneNumber() { return mPhoneNumber; }
 
@@ -52,12 +56,15 @@ public class Politico {
     public static class Builder {
 
         String fullName;
+        //String gender;
         String district;
         String electionDate;
         String phoneNumber;
         String emailAddy;
         String twitterHandle;
         String picUrl;
+
+        //public Builder setGender(String gender) { this.gender = gender; return this; }
 
         public Builder setDistrict(String district) { this.district = district; return this; }
 

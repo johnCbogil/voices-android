@@ -23,7 +23,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:id="@+id/cell_group_image"
-            android:src="@drawable/representatives_place_holder"/>
+            android:src="@drawable/representatives_place_holder_male"/>
 
         <LinearLayout
             android:orientation="vertical"
