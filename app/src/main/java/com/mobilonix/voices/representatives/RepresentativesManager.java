@@ -9,7 +9,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -143,13 +142,13 @@ public enum RepresentativesManager {
 
             final TextView actionSelectionButton = (TextView) primaryToolbar.findViewById(R.id.action_selection_text);
             final TextView groupsSelectionButton = (TextView) primaryToolbar.findViewById(R.id.groups_selection_text);
-            final MenuItem addGroupButton = ((VoicesMainActivity) primaryToolbar.getContext()).getAddGroup();
+            final ImageView addGroupIcon = (ImageView)primaryToolbar.findViewById(R.id.action_add_groups);
 
             primaryToolbar.setVisibility(View.VISIBLE);
             divider.setVisibility(View.VISIBLE);
             actionSelectionButton.setVisibility(View.GONE);
             groupsSelectionButton.setVisibility(View.GONE);
-            addGroupButton.setVisible(false);
+            addGroupIcon.setVisibility(View.GONE);
 
             final TextView representativesTextIndicator = (TextView) primaryToolbar.findViewById(R.id.representatives_type_text);
             representativesTextIndicator.setText(RepresentativesType.CONGRESS.getIdentifier());
@@ -279,7 +278,7 @@ public enum RepresentativesManager {
         final ImageView backArrow = (ImageView)primaryToolbar.findViewById(R.id.primary_toolbar_back_arrow);
         final TextView groupsInfoText = (TextView)primaryToolbar.findViewById(R.id.all_groups_info_text);
         final TextView representativesTypeText = (TextView)primaryToolbar.findViewById(R.id.representatives_type_text);
-        final MenuItem addGroupButton = ((VoicesMainActivity)primaryToolbar.getContext()).getAddGroup();
+        final ImageView addGroupIcon = (ImageView)primaryToolbar.findViewById(R.id.action_add_groups);
         final int voicesOrange = VoicesApplication.getContext().getResources().getColor(R.color.voices_orange);
         final int grey = VoicesApplication.getContext().getResources().getColor(R.color.grey);
 
@@ -308,7 +307,7 @@ public enum RepresentativesManager {
                 groupsInfoText.setVisibility(View.GONE);
                 representativesTypeText.setVisibility(View.GONE);
                 divider.setVisibility(View.VISIBLE);
-                addGroupButton.setVisible(true);
+                addGroupIcon.setVisibility(View.VISIBLE);
 
                 RepresentativesManager.INSTANCE.toggleSearchBar(false);
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(false);
@@ -340,7 +339,7 @@ public enum RepresentativesManager {
                 divider.setVisibility(View.VISIBLE);
                 representativesTypeText.setVisibility(View.VISIBLE);
 
-                addGroupButton.setVisible(false);
+                addGroupIcon.setVisibility(View.GONE);
 
                 RepresentativesManager.INSTANCE.toggleSearchBar(true);
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(true);
@@ -384,21 +383,16 @@ public enum RepresentativesManager {
         });
 
         /* Show all the groups */
-        ((VoicesMainActivity)groupsTab.getContext()).getAddGroup()
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-
-                        GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ALL);
-
-                        return false;
-                    }
-                });
+        addGroupIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ALL);
+            }
+        });
 
         if(SessionManager.INSTANCE.checkIfFirstRun(true)) {
-           toggleHelpDialog();
+            toggleHelpDialog();
         }
-
     }
 
     public void toggleHelpDialog() {
