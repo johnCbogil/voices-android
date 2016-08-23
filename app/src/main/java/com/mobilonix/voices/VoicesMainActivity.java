@@ -51,7 +51,6 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
 
         initViews();
         initialTransition();
-
     }
 
     private void initViews() {

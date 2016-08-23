@@ -1,12 +1,12 @@
 package com.mobilonix.voices.data.api.engines;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.data.api.ApiEngine;
+import com.mobilonix.voices.data.api.util.NycCouncilFilter;
 import com.mobilonix.voices.data.api.util.NycCouncilGeoUtil;
 import com.mobilonix.voices.data.model.Politico;
 import com.mobilonix.voices.representatives.RepresentativesManager;
@@ -43,8 +43,15 @@ public class NycCouncilApi implements ApiEngine {
 
     static final String TAG = "NycCouncilApi";
 
+    double mLatitude, mLongitude;
+
     @Override
     public Request generateRequest(double latitude, double longitude) {
+
+        mLatitude = latitude;
+        mLongitude = longitude;
+
+        Log.i("huh","lat: " + latitude + " lon: " + longitude);
 
         geoUtil.init(latitude, longitude);
 
@@ -100,12 +107,17 @@ public class NycCouncilApi implements ApiEngine {
 
     public Politico politicianFromDistrict(Integer district) {
 
-        Log.i(TAG,"politician from disctrict: " + district);
+        Log.i(TAG, "politician from disctrict: " + district);
+
+        if (!(district >= 1 && district <= 51)) {
+            district = NycCouncilFilter.filterDistrict(VoicesApplication.getContext(), mLatitude, mLongitude);
+            Log.i("nycapi", "in here district: " + district);
+        }
 
         try {
             JSONObject districts = getJsonFromResource(VoicesApplication.getContext(), R.raw.nyc_district_data);
 
-            Log.i(TAG,"0: " + districts.toString());
+            Log.i(TAG, "0: " + districts.toString());
 
             JSONObject member = districts.getJSONObject("districts");
             Log.i(TAG, "1: " + member);
@@ -124,12 +136,13 @@ public class NycCouncilApi implements ApiEngine {
                     .setPhoneNumber(phoneNumbers)
                     .setPicUrl(photos)
                     .setTwitterHandle(twitter)
-                    .build(firstName,lastName);
+                    .build(firstName, lastName);
 
             return politico;
 
         } catch (JSONException e) {
-            Log.e(TAG,"json parse: " + e);
+            Log.e(TAG, "json parse: " + e);
+
             return null;
         }
     }
@@ -149,7 +162,7 @@ public class NycCouncilApi implements ApiEngine {
         return 0;
     }
 
-    private JSONObject getJsonFromResource(Context context, int jsonResource)  {
+    public static JSONObject getJsonFromResource(Context context, int jsonResource)  {
 
         InputStream inputStream = context.getResources().openRawResource(jsonResource); // getting XML
 
@@ -169,7 +182,7 @@ public class NycCouncilApi implements ApiEngine {
         return null;
     }
 
-    private String convertStreamToString(InputStream inputStream) {
+    private static String convertStreamToString(InputStream inputStream) {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
