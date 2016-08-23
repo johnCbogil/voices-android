@@ -215,7 +215,7 @@ public enum GroupManager {
                 .load(group.getGroupImageUrl())
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .placeholder(R.drawable.placeholder_spinner)
-                .error(R.drawable.representatives_place_holder)
+                .error(R.drawable.representatives_place_holder_male)
                 .fit()
                 .into(groupsImage);
 
@@ -400,7 +400,7 @@ public enum GroupManager {
         Picasso.with(context)
                 .load(action.getImageUrl())
                 .placeholder(R.drawable.placeholder_spinner)
-                .error(R.drawable.representatives_place_holder)
+                .error(R.drawable.representatives_place_holder_male)
                 .fit()
                 .into(actionImage);
 

@@ -1,23 +1,17 @@
 package com.mobilonix.voices.groups.ui;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobilonix.voices.R;
-import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.groups.model.Action;
-import com.mobilonix.voices.groups.model.Group;
-import com.mobilonix.voices.groups.model.Policy;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -67,7 +61,7 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
                 .load(actions.get(position).getImageUrl())
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .placeholder(R.drawable.placeholder_spinner)
-                .error(R.drawable.representatives_place_holder)
+                .error(R.drawable.representatives_place_holder_male)
                 .fit()
                 .into(holder.actionImage);
 

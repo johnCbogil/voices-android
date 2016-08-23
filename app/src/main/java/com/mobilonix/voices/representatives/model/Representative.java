@@ -5,6 +5,7 @@ package com.mobilonix.voices.representatives.model;
  */
 public class Representative {
 
+    //private String gender;
     private String phoneNumber;
     private String twitterHandle;
     private String emailAddress;
@@ -12,6 +13,8 @@ public class Representative {
     private String title;
     private String name;
     private String location;
+
+    //public String getGender() { return gender; }
 
     public String getEmailAddress() {
         return emailAddress;
@@ -52,6 +55,7 @@ public class Representative {
         this.title = title;
         this.name = name;
         this.location = location;
+        //this.gender = gender;
         this.phoneNumber = phoneNumber;
         this.twitterHandle = twitterHandle;
         this.emailAddress = emailAddress;

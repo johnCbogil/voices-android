@@ -45,7 +45,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                     .load(representatives.get(position).getRepresentativeImageUrl())
                     .resize(400, 500)
                     .placeholder(R.drawable.placeholder_spinner)
-                    .error(R.drawable.representatives_place_holder)
+                    .error(R.drawable.representatives_place_holder_male)
                     .transform(new RoundedTransformation(50, 4))
                     .into(listImage);
 
