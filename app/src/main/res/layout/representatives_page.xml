@@ -16,22 +16,20 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:id="@+id/layout_error_page"
             android:orientation="vertical"
-            android:visibility="gone"
-            android:gravity="center">
+            android:visibility="gone">
             <ImageView
                 android:layout_width="300dp"
                 android:layout_height="200dp"
-                android:src="@drawable/zero_state"
-                android:gravity="center"/>
+                android:src="@drawable/zero_state" />
             <com.mobilonix.voices.util.AvenirTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/representatives_error_message"
                 android:id="@+id/representatives_error_message"
+                android:gravity="center|bottom"
                 android:maxWidth="300dp"/>
         </LinearLayout>
         <LinearLayout

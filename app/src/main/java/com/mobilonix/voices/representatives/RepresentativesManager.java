@@ -28,7 +28,7 @@ import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.data.api.ApiEngine;
-import com.mobilonix.voices.data.api.engines.NycCouncilApi;
+import com.mobilonix.voices.data.api.engines.NycLocalOfficialsApi;
 import com.mobilonix.voices.data.api.engines.StateOpenStatesApi;
 import com.mobilonix.voices.data.api.engines.UsCongressSunlightApi;
 import com.mobilonix.voices.data.model.Politico;
@@ -61,7 +61,7 @@ public enum RepresentativesManager {
 
     static UsCongressSunlightApi sunlightApiEngine = new UsCongressSunlightApi();
     static StateOpenStatesApi openStatesApiEngine = new StateOpenStatesApi();
-    static NycCouncilApi nycScraperApi = new NycCouncilApi();
+    static NycLocalOfficialsApi nycScraperApi = new NycLocalOfficialsApi();
 
     boolean representativesScreenVisible = false;
 
@@ -453,7 +453,7 @@ public enum RepresentativesManager {
                 @Override
                 public boolean onExecuted(final ArrayList<Representative> data, final RepresentativesType type) {
 
-                    //TODO below if statement was put in primarily to handle case when NycCouncilApi
+                    //TODO below if statement was put in primarily to handle case when NycLocalOfficialsApi
                     //  is executed outside of NYC. Prefer an a priori way of checking city. Also,
                     //  as more cities are on-boarded, a city API selector will be implemented that
                     //  also requires a priori knowledge
