@@ -1,7 +1,6 @@
 package com.mobilonix.voices.data.api.engines;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.mobilonix.voices.R;
@@ -28,7 +27,7 @@ import okhttp3.Headers;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-public class NycCouncilApi implements ApiEngine {
+public class NycLocalOfficialsApi implements ApiEngine {
 
     //FIXME this is a temporary way to convert from lat/lon to address
 
@@ -41,7 +40,7 @@ public class NycCouncilApi implements ApiEngine {
     public static final String POST_CONTENT_KEY = "Content-Type";
     public static final String POST_CONTENT_VALUE = "application/x-www-form-urlencoded";
 
-    static final String TAG = "NycCouncilApi";
+    static final String TAG = "NycLocalOfficialsApi";
 
     @Override
     public Request generateRequest(double latitude, double longitude) {
@@ -92,9 +91,12 @@ public class NycCouncilApi implements ApiEngine {
         ArrayList<Politico> politicos = new ArrayList<>();
 
         Politico politico = politicianFromDistrict(getDistrict(response));
+        Politico mayor = getMayor();
 
-        if(politico != null)  politicos.add(politico);
-
+        if(politico != null) {
+            politicos.add(politico);
+            politicos.add(mayor);
+        }
         return politicos;
     }
 
@@ -147,6 +149,32 @@ public class NycCouncilApi implements ApiEngine {
         }
 
         return 0;
+    }
+
+    public Politico getMayor () {
+        try {
+            JSONObject mayor = getJsonFromResource(VoicesApplication.getContext(), R.raw.bill_de_blasio);
+
+            String firstName = mayor.getString("firstName");
+            String lastName = mayor.getString("lastName");
+            String phoneNumbers = mayor.getString("phoneNumber");
+            String photos = mayor.getString("photoURLPath");
+            String twitter = mayor.getString("twitter");
+            String email = mayor.getString("email");
+
+            Politico politico = new Politico.Builder()
+                    .setEmailAddy(email)
+                    .setPhoneNumber(phoneNumbers)
+                    .setPicUrl(photos)
+                    .setTwitterHandle(twitter)
+                    .build(firstName,lastName);
+
+            return politico;
+
+        } catch (JSONException e) {
+            Log.e(TAG,"json parse: " + e);
+            return null;
+        }
     }
 
     private JSONObject getJsonFromResource(Context context, int jsonResource)  {
