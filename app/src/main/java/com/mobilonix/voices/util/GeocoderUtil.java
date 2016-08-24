@@ -4,13 +4,11 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 
-import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.data.api.ApiEngine;
-import com.mobilonix.voices.data.api.engines.NycCouncilApi;
+import com.mobilonix.voices.data.api.engines.NycLocalOfficialsApi;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
 /**
  *
@@ -50,7 +48,7 @@ public class GeocoderUtil {
 
             for (Address addy : addresses ) {
                 if (addy.getLocality().toLowerCase() == "new york")
-                    return new NycCouncilApi();
+                    return new NycLocalOfficialsApi();
             }
 
         } catch (IOException e) {
