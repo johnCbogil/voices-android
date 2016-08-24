@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.mobilonix.voices.R;
-import com.mobilonix.voices.data.api.engines.NycCouncilApi;
+import com.mobilonix.voices.data.api.engines.NycLocalOfficialsApi;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,7 +13,7 @@ import org.json.JSONObject;
 public class NycCouncilFilter {
 
     public static int filterDistrict(Context context, double lat, double lon) {
-        JSONObject jObj = NycCouncilApi.getJsonFromResource(context,R.raw.json_proper);
+        JSONObject jObj = NycLocalOfficialsApi.getJsonFromResource(context,R.raw.json_proper);
 
         int district=-1;
 
