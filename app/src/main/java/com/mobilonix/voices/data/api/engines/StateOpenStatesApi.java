@@ -66,9 +66,16 @@ public class StateOpenStatesApi implements ApiEngine {
 
                 JSONObject jsonPolitico = rawJsonArray.getJSONObject(i);
 
-                String fullName = jsonPolitico.getString("full_name");
+                String phoneNumber = "";
+
+                        String fullName = jsonPolitico.getString("full_name");
                 String email = jsonPolitico.getString("email");
-                String phoneNumber = jsonPolitico.getJSONArray("offices").getJSONObject(0).getString("phone");
+                if(jsonPolitico.getJSONArray("offices").getJSONObject(0).has("phone")) {
+                    phoneNumber = jsonPolitico.getJSONArray("offices").getJSONObject(0).getString("phone");
+                } else if(jsonPolitico.getJSONArray("offices").getJSONObject(1).has("phone")) {
+                    phoneNumber = jsonPolitico.getJSONArray("offices").getJSONObject(1).getString("phone");
+                }
+
                 String picUrl = jsonPolitico.getString("photo_url");
 
                 Politico politico = new Politico.Builder()
