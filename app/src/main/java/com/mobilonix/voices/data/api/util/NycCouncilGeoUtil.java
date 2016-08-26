@@ -30,7 +30,6 @@ public class NycCouncilGeoUtil {
     public static final int NUMBER_OF_LISTINGS = 5;
 
     public NycCouncilGeoUtil(Context context) {
-
         mGeocoder = new Geocoder(context);
     }
 
@@ -53,6 +52,7 @@ public class NycCouncilGeoUtil {
     //TODO switch to regex match in order to take advantage of matches() method for multiple terms
     private void parseBorough() {
         String allAddys = null;
+        mBorough = 0;
 
         try {
             allAddys = mAddresses.toString().toLowerCase();
@@ -61,7 +61,7 @@ public class NycCouncilGeoUtil {
             Log.e("NycCouncilGeoUtil","Problem parsing boroughs");
         }
 
-        if (allAddys != null) {
+        if (allAddys != null && allAddys.contains(", ny")) {
             if (allAddys.contains("staten island")) {
                 mBorough = 5;
             } else if (allAddys.contains("bronx")) {
@@ -71,7 +71,7 @@ public class NycCouncilGeoUtil {
             } else if (allAddys.contains("queens")
                     || allAddys.contains("long island city")) {
                 mBorough = 4;
-            } else if (allAddys.toString().contains("manhattan")) {
+            } else if (allAddys.contains("manhattan")) {
                 mBorough = 1;
             }
         }
@@ -98,6 +98,6 @@ public class NycCouncilGeoUtil {
     }
     
     public boolean isNyc() {
-        return mBorough == 0;
+        return mBorough != 0;
     }
 }
