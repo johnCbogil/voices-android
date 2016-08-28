@@ -1,5 +1,6 @@
 package com.mobilonix.voices.data.api.engines;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -12,6 +13,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import okhttp3.Request;
@@ -79,12 +83,74 @@ public class StateOpenStatesApi implements ApiEngine {
 
                 politicos.add(politico);
             }
+
+//            JSONObject districts = getJsonFromResource(VoicesApplication.getContext(), R.raw.nyc_district_data);
+//            Log.i(TAG, "0: " + districts.toString());
+//
+//            JSONObject member = districts.getJSONObject("districts");
+//            Log.i(TAG, "1: " + member);
+//            member = member.getJSONObject(district + "");
+//            Log.i(TAG, "2: " + member);
+//
+//            String firstName = member.getString("firstName");
+//            String lastName = member.getString("lastName");
+//            String phoneNumbers = member.getString("phoneNumber");
+//            String photos = member.getString("photoURLPath");
+//            String twitter = member.getString("twitter");
+//            String email = member.getString("email");
+//
+//            Politico politico = new Politico.Builder()
+//                    .setEmailAddy(email)
+//                    .setPhoneNumber(phoneNumbers)
+//                    .setPicUrl(photos)
+//                    .setTwitterHandle(twitter)
+//                    .build(firstName, lastName);
+//
+//            return politico;
         } catch (JSONException e) {
 
             e.printStackTrace(); //TODO handle exception
         }
 
         return politicos;
+    }
+
+    public static JSONObject getJsonFromResource(Context context, int jsonResource)  {
+        InputStream inputStream = context.getResources().openRawResource(jsonResource); // getting XML
+
+        if(jsonResource > 0){
+
+            try {
+                JSONObject jsonObject = new JSONObject(convertStreamToString(inputStream));
+
+                Log.d("TAG", jsonObject.toString());
+                return jsonObject;
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+    private static String convertStreamToString(InputStream inputStream) {
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        byte buf[] = new byte[1024];
+        int len;
+        try {
+            while ((len = inputStream.read(buf)) != -1) {
+                outputStream.write(buf, 0, len);
+            }
+            outputStream.close();
+            inputStream.close();
+        } catch (IOException e) {
+
+            //TODO handle exception
+        }
+        return outputStream.toString();
     }
 
     @Override

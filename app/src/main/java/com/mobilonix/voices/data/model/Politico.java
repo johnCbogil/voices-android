@@ -76,9 +76,9 @@ public class Politico {
 
         public Builder setPicUrl(String picUrl) { this.picUrl = picUrl; return this;}
 
-        public Politico build(String firstName, String lastName) {
+        public Politico build(String title, String firstName, String lastName) {
 
-            fullName = firstName + " " + lastName;
+            fullName = title + " " + firstName + " " + lastName;
 
             Politico a = new Politico(fullName, district, electionDate,
                     phoneNumber, emailAddy,twitterHandle, picUrl);
