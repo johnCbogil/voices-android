@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -96,14 +97,12 @@ public class NycLocalOfficialsApi implements ApiEngine {
     @Override
     public ArrayList<Politico> parseData(String response) throws IOException {
 
-        ArrayList<Politico> politicos = new ArrayList<>();
+        ArrayList<Politico> politicos = getOtherReps();
 
         Politico politico = politicianFromDistrict(getDistrict(response));
-        Politico mayor = getMayor();
 
         if(politico != null) {
             politicos.add(politico);
-            politicos.add(mayor);
         }
         return politicos;
     }
@@ -120,15 +119,16 @@ public class NycLocalOfficialsApi implements ApiEngine {
         try {
             JSONObject districts = getJsonFromResource(VoicesApplication.getContext(), R.raw.nyc_district_data);
 
-            Log.i(TAG, "0: " + districts.toString());
+            Log.e(TAG, "0: " + districts.toString());
 
             JSONObject member = districts.getJSONObject("districts");
-            Log.i(TAG, "1: " + member);
+            Log.e(TAG, "1: " + member);
             member = member.getJSONObject(district + "");
-            Log.i(TAG, "2: " + member);
+            Log.e(TAG, "2: " + member);
 
             String firstName = member.getString("firstName");
             String lastName = member.getString("lastName");
+            String title = "Councilperson";
             String phoneNumbers = member.getString("phoneNumber");
             String photos = member.getString("photoURLPath");
             String twitter = member.getString("twitter");
@@ -139,7 +139,7 @@ public class NycLocalOfficialsApi implements ApiEngine {
                     .setPhoneNumber(phoneNumbers)
                     .setPicUrl(photos)
                     .setTwitterHandle(twitter)
-                    .build(firstName, lastName);
+                    .build(title, firstName, lastName);
 
             return politico;
 
@@ -165,30 +165,36 @@ public class NycLocalOfficialsApi implements ApiEngine {
         return 0;
     }
 
-    public Politico getMayor () {
+    public ArrayList<Politico> getOtherReps () {
+        ArrayList<Politico> politicos;
+        politicos = new ArrayList<Politico>();
         try {
-            JSONObject mayor = getJsonFromResource(VoicesApplication.getContext(), R.raw.bill_de_blasio);
+            JSONObject reps = getJsonFromResource(VoicesApplication.getContext(), R.raw.nyc_reps).getJSONObject("reps");
+            Iterator<?> keys = reps.keys();
 
-            String firstName = mayor.getString("firstName");
-            String lastName = mayor.getString("lastName");
-            String phoneNumbers = mayor.getString("phoneNumber");
-            String photos = mayor.getString("photoURLPath");
-            String twitter = mayor.getString("twitter");
-            String email = mayor.getString("email");
-
-            Politico politico = new Politico.Builder()
-                    .setEmailAddy(email)
-                    .setPhoneNumber(phoneNumbers)
-                    .setPicUrl(photos)
-                    .setTwitterHandle(twitter)
-                    .build(firstName,lastName);
-
-            return politico;
-
+            while (keys.hasNext()) {
+                String key = (String) keys.next();
+                JSONObject rep = reps.getJSONObject(key);
+                String firstName = rep.getString("firstName");
+                String lastName = rep.getString("lastName");
+                String title = rep.getString("title");
+                String phoneNumbers = rep.getString("phoneNumber");
+                String photos = rep.getString("photoURLPath");
+                String twitter = rep.getString("twitter");
+                String email = rep.getString("email");
+                Politico politico = new Politico.Builder()
+                        .setEmailAddy(email)
+                        .setPhoneNumber(phoneNumbers)
+                        .setPicUrl(photos)
+                        .setTwitterHandle(twitter)
+                        .build(title, firstName, lastName);
+                politicos.add(politico);
+            }
         } catch (JSONException e) {
-            Log.e(TAG,"json parse: " + e);
-            return null;
+            Log.e(TAG, "json parse: " + e);
+            return politicos;
         }
+        return politicos;
     }
 
     public static JSONObject getJsonFromResource(Context context, int jsonResource)  {

@@ -47,7 +47,7 @@
     <string name="no_follow_groups_top">You don\'t follow any groups yet.</string>
 
     <!--Groups Dialog-->
-    <string name="button_learnmore">Learn More</string>
+    <string name="button_learnmore">Take Action</string>
     <string name="follow_groups_text">Follow This Group</string>
     <string name="unfollow_groups_text">Unfollow This Group</string>
     <string name="policy_positions_text">Policy Positions</string>
@@ -58,9 +58,8 @@
 
     <string name="reps_fetch_error">
         Could not fetch any [identifier] officials!
-        Please try again (swipe and drag your finger down
-        to get officials for your current location
-        OR use the search bar to search a specific address)
+        Please try again (use the search bar above
+        or swipe down to use current location).
     </string>
 
 </resources>
