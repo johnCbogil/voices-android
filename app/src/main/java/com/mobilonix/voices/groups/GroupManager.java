@@ -219,15 +219,14 @@ public enum GroupManager {
                 .fit()
                 .into(groupsImage);
 
-        TextView groupsInfoDescriptionText = (TextView)dialog
-                .findViewById(R.id.group_info_description_text);
+        TextView groupsInfoDescription = (TextView) dialog.findViewById(R.id.group_info_description);
         TextView groupsInfoPolicyText = (TextView)dialog
                 .findViewById(R.id.group_info_policy_text);
         final Button groupsFollowGroupsButton =
                 (Button)dialog.findViewById(R.id.follow_groups_button);
         ListView policyList = (ListView)dialog.findViewById(R.id.groups_policy_list);
 
-        groupsInfoDescriptionText.setText(group.getGroupDescription());
+        groupsInfoDescription.setText(group.getGroupDescription());
         groupsInfoPolicyText.setText(group.getGroupCategory());
 
         final ArrayList<Group> userGroups = groupPage.getUserGroups();
