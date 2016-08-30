@@ -49,9 +49,24 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                     .transform(new RoundedTransformation(50, 4))
                     .into(listImage);
 
-            ImageView twitterImage = (ImageView)convertView.findViewById(R.id.representatives_list_twitter_image);
+            final ImageView twitterImage = (ImageView)convertView.findViewById(R.id.representatives_list_twitter_image);
             final ImageView callImage = (ImageView)convertView.findViewById(R.id.representatives_list_call_image);
             final ImageView emailImage = (ImageView)convertView.findViewById(R.id.representatives_list_email_image);
+
+            String check = representatives.get(position).getPhoneNumber();
+            if(check == null || check.equals("")){
+                callImage.setVisibility(View.INVISIBLE);
+            }
+
+            check = representatives.get(position).getEmailAddress();
+            if(check == null || check.equals("")){
+                emailImage.setVisibility(View.INVISIBLE);
+            }
+
+            check = representatives.get(position).getTwitterHandle();
+            if(check == null || check.equals("")){
+                twitterImage.setVisibility(View.INVISIBLE);
+            }
 
             twitterImage.setOnClickListener(new View.OnClickListener() {
                 @Override
