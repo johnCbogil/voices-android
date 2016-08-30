@@ -128,7 +128,7 @@ public class NycLocalOfficialsApi implements ApiEngine {
 
             String firstName = member.getString("firstName");
             String lastName = member.getString("lastName");
-            String title = "Councilperson";
+            String title = "Council Member";
             String phoneNumbers = member.getString("phoneNumber");
             String photos = member.getString("photoURLPath");
             String twitter = member.getString("twitter");
