@@ -70,7 +70,9 @@ public class StateOpenStatesApi implements ApiEngine {
 
                 JSONObject jsonPolitico = rawJsonArray.getJSONObject(i);
 
-                String fullName = jsonPolitico.getString("full_name");
+                String chamber = jsonPolitico.getString("chamber");
+                String title = setTitle(chamber);
+                String fullName = title + jsonPolitico.getString("full_name");
                 String email = jsonPolitico.getString("email");
                 String phoneNumber = jsonPolitico.getJSONArray("offices").getJSONObject(0).getString("phone");
                 String picUrl = jsonPolitico.getString("photo_url");
@@ -151,6 +153,16 @@ public class StateOpenStatesApi implements ApiEngine {
             //TODO handle exception
         }
         return outputStream.toString();
+    }
+
+    public String setTitle(String chamber){
+        if (chamber.equals("upper")) {
+            return "Sen ";
+        } else if (chamber.equals("lower")){
+            return "Rep ";
+        } else{
+            return "";
+        }
     }
 
     @Override
