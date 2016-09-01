@@ -57,8 +57,7 @@
             <com.mobilonix.voices.util.AvenirTextView
                 android:layout_gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text=""/>
+                android:layout_height="match_parent" />
         </FrameLayout>
 
         <!-- Tabs View to switch between above views -->
@@ -90,7 +89,7 @@
                     android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Reps"/>
+                    android:text="@string/reps"/>
             </LinearLayout>
 
             <LinearLayout
@@ -114,7 +113,7 @@
                     android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Groups"/>
+                    android:text="@string/groups"/>
             </LinearLayout>
 
 

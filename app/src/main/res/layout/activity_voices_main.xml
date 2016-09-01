@@ -68,7 +68,7 @@
                             android:id="@+id/action_selection_text"
                             android:layout_gravity="center"
                             android:background="@drawable/button_back_selected"
-                            android:text="Actions"
+                            android:text="@string/actions"
                             android:textColor="#FFF"/>
                         <com.mobilonix.voices.util.AvenirTextView
                             android:layout_width="@dimen/toolbar_option_width"
@@ -77,7 +77,7 @@
                             android:id="@+id/groups_selection_text"
                             android:background="@drawable/button_back"
                             android:layout_gravity="center"
-                            android:text="My Groups"
+                            android:text="@string/my_groups"
                             android:textColor="@color/voices_orange"/>
                     </LinearLayout>
                 </FrameLayout>

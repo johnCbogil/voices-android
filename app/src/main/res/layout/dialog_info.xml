@@ -73,10 +73,4 @@
         android:padding="10dp"
         android:text="@string/response_7"
         android:textColor="#000000"/>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:padding="10dp"
-        android:layout_height="wrap_content">
-    </LinearLayout>
 </LinearLayout>
