@@ -52,6 +52,11 @@
     <string name="unfollow_groups_text">Unfollow This Group</string>
     <string name="policy_positions_text">Policy Positions</string>
 
+    <!--No Contact Info Dialog-->
+    <string name="no_info_title">Oops</string>
+    <string name="no_info_text_1">This legislator hasn\'t given us this contact information.</string>
+    <string name="no_info_text_2">Orange buttons indicate available contact information.</string>
+    <string name="no_info_text_3">Gray buttons indicate unavailable contact information.</string>
     <!-- Errors-->
     <string name="groups_fetch_error">"Server/Network Error! Attempting to fetch groups again..."</string>
     <string name="council_not_yet_error">City Council members not available yet.  Coming soon!</string>
