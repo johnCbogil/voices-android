@@ -1,10 +1,11 @@
 package com.mobilonix.voices.representatives.ui;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.delegates.Callback;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 
 public class PagerIndicator extends LinearLayout implements ViewPager.OnPageChangeListener{
 
-    ArrayList<ImageView> indicators = new ArrayList<>();
+    ArrayList<TextView> indicators = new ArrayList<>();
 
     ArrayList<String> indicatorTags = new ArrayList<>();
 
@@ -25,24 +26,23 @@ public class PagerIndicator extends LinearLayout implements ViewPager.OnPageChan
         super(context, attrs);
     }
 
-    public void addIndicator(String indicatorTag) {
-        ImageView circle = new ImageView(getContext());
-        circle.setMaxHeight(15);
-        circle.setMaxWidth(15);
-        circle.setImageResource(R.drawable.empty_circle);
-        circle.setPadding(5, 0, 5, 0);
-        indicators.add(circle);
-        addView(circle);
-
+    public void addIndicator(String level, String indicatorTag) {
+        TextView repsLevel = new TextView(getContext());
+        repsLevel.setText(level);
+        Typeface avenir = Typeface.createFromAsset(getContext().getAssets(), "fonts/AvenirNext-Regular.ttf");
+        repsLevel.setTypeface(avenir);
+        repsLevel.setTextColor(getResources().getColor(R.color.grey));
+        repsLevel.setTextSize(25);
+        repsLevel.setPadding(15,0,15,0);
+        //formatting of the TextView goes here
+        indicators.add(repsLevel);
+        addView(repsLevel);
         indicatorTags.add(indicatorTag);
 
-        /* First indicator will always be selected */
-        if(indicators.size() == 1) {
-            indicators.get(0).setImageResource(R.drawable.filled_circle);
+        //set style on first indicator
+        indicators.get(0).setTextColor(getResources().getColor(R.color.indicator_blue));
 
             currentIndicatorTag = indicatorTags.get(0);
-        }
-
     }
 
     public String getCurrentIndicatorTag() {
@@ -62,9 +62,9 @@ public class PagerIndicator extends LinearLayout implements ViewPager.OnPageChan
     public void onPageSelected(int position) {
         for (int i = 0; i < indicators.size(); i++) {
             if(i == position) {
-                indicators.get(i).setImageResource(R.drawable.filled_circle);
+                indicators.get(i).setTextColor(getResources().getColor(R.color.indicator_blue));
             } else{
-                indicators.get(i).setImageResource(R.drawable.empty_circle);
+                indicators.get(i).setTextColor(getResources().getColor(R.color.grey));
             }
         }
 
