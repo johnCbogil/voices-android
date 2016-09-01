@@ -4,9 +4,10 @@
     <!-- Splash -->
     <string name="splash_title">Get Started</string>
     <string name="splash_voices_intro">Voices is an advocacy tool for the people who care. It\'s the smart way to make your voice heard.</string>
-
+    <string name="splash_button">Get Started</string>
     <!-- Location Request -->
     <string name="location_request_text">Turn on location services to Voices can show you who represents your community. </string>
+    <string name="location_request_button">Turn On Location Services</string>
 
     <!--Instructions Dialog-->
     <string name="instructions_title">To View Your Representatives</string>
@@ -38,13 +39,17 @@
 
     <!--Representatives Tab-->
     <string name="representatives_error_message">Officials are not available in your area yet.</string>
+    <string name="reps">Reps</string>
+    <string name="groups">Groups</string>
 
     <!--Actions/Groups Tabs-->
     <string name="no_follow_actions">To receive actions from advocacy groups, tap the + button above to follow groups.</string>
     <string name="no_follow_groups">To follow groups, tap the + button above.</string>
-
+    <string name="actions">Actions</string>
+    <string name="my_groups">My Groups</string>
     <string name="no_follow_actions_top">You haven\'t received any actions yet.</string>
     <string name="no_follow_groups_top">You don\'t follow any groups yet.</string>
+    <string name="contact_representatives">Contact My Representatives</string>
 
     <!--Groups Dialog-->
     <string name="button_learnmore">Take Action</string>
@@ -57,6 +62,7 @@
     <string name="no_info_text_1">This legislator hasn\'t given us this contact information.</string>
     <string name="no_info_text_2">Orange buttons indicate available contact information.</string>
     <string name="no_info_text_3">Gray buttons indicate unavailable contact information.</string>
+
     <!-- Errors-->
     <string name="groups_fetch_error">"Server/Network Error! Attempting to fetch groups again..."</string>
     <string name="council_not_yet_error">City Council members not available yet.  Coming soon!</string>

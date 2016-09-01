@@ -37,7 +37,7 @@
                 android:layout_marginLeft="25dp"
                 android:layout_marginRight="25dp"
                 android:textColor="#FFF"
-                android:text="Turn On Location Services"
+                android:text="@string/location_request_button"
                 android:id="@+id/location_request_button"/>
 
     </LinearLayout>
