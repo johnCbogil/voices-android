@@ -15,4 +15,5 @@
     <color name="indicator_blue">#1A8CFF</color>
     <color name="white">#ffffff</color>
     <color name="grey">#333333</color>
+    <color name="light_grey">#d2d0d0</color>
 </resources>

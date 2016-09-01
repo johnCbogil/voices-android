@@ -1,12 +1,15 @@
 package com.mobilonix.voices.representatives.ui;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -55,56 +58,89 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
 
             String check = representatives.get(position).getPhoneNumber();
             if(check == null || check.equals("")){
-                callImage.setVisibility(View.INVISIBLE);
+                callImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
+                callImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        toggleNoContactInfoDialog();
+                    }
+                });
+            } else {
+                callImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Intent.ACTION_DIAL);
+                        intent.setData(Uri.parse("tel:" + representatives.get(position).getPhoneNumber()));
+                        v.getContext().startActivity(intent);
+                    }
+                });
             }
 
             check = representatives.get(position).getEmailAddress();
             if(check == null || check.equals("")){
-                emailImage.setVisibility(View.INVISIBLE);
+                emailImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
+                emailImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        toggleNoContactInfoDialog();
+                    }
+                });
+            } else {
+                emailImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                                "mailto",representatives.get(position).getEmailAddress(), null));
+                        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
+                        emailIntent.putExtra(Intent.EXTRA_TEXT, "");
+                        ArrayList<String> addresses = new ArrayList<>();
+                        addresses.add(representatives.get(position).getEmailAddress());
+                        emailIntent.putExtra(Intent.EXTRA_EMAIL, addresses);
+
+                        v.getContext().startActivity(Intent.createChooser(emailIntent, "Send Email"));
+                    }
+                });
             }
 
             check = representatives.get(position).getTwitterHandle();
             if(check == null || check.equals("")){
-                twitterImage.setVisibility(View.INVISIBLE);
+                twitterImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
+                twitterImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        toggleNoContactInfoDialog();
+                    }
+                });
+            } else {
+                twitterImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String url = "https://twitter.com/intent/tweet?text="
+                                + "@" + representatives.get(position).getTwitterHandle();
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(url));
+                        v.getContext().startActivity(i);
+                    }
+                });
             }
-
-            twitterImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String url = "https://twitter.com/intent/tweet?text="
-                            + "@" + representatives.get(position).getTwitterHandle();
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse(url));
-                    v.getContext().startActivity(i);
-                }
-            });
-
-            callImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(Intent.ACTION_DIAL);
-                    intent.setData(Uri.parse("tel:" + representatives.get(position).getPhoneNumber()));
-                    v.getContext().startActivity(intent);
-                }
-            });
-
-            emailImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                            "mailto",representatives.get(position).getEmailAddress(), null));
-                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
-                    emailIntent.putExtra(Intent.EXTRA_TEXT, "");
-                    ArrayList<String> addresses = new ArrayList<>();
-                    addresses.add(representatives.get(position).getEmailAddress());
-                    emailIntent.putExtra(Intent.EXTRA_EMAIL, addresses);
-
-                    v.getContext().startActivity(Intent.createChooser(emailIntent, "Send Email"));
-                }
-            });
-
         }
 
         return convertView;
+    }
+    public void toggleNoContactInfoDialog() {
+
+        final Dialog noContactInfoDialog;
+
+        noContactInfoDialog = new Dialog(getContext());
+        noContactInfoDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        noContactInfoDialog.setContentView(R.layout.dialog_nocontactinfo);
+        Button gotItButton = (Button)noContactInfoDialog.findViewById(R.id.got_it_button_2);
+        gotItButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                noContactInfoDialog.dismiss();
+            }
+        });
+        noContactInfoDialog.show();
     }
 }
