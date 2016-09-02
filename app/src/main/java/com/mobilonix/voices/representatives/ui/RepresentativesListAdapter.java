@@ -62,7 +62,8 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                 callImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        toggleNoContactInfoDialog();
+                        String emailInstead = getContext().getResources().getString(R.string.email_instead);
+                        toggleNoContactInfoDialog(emailInstead);
                     }
                 });
             } else {
@@ -82,7 +83,8 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                 emailImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        toggleNoContactInfoDialog();
+                        String callInstead = getContext().getResources().getString(R.string.call_instead);
+                        toggleNoContactInfoDialog(callInstead);
                     }
                 });
             } else {
@@ -108,7 +110,8 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                 twitterImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        toggleNoContactInfoDialog();
+                        String callInstead = getContext().getResources().getString(R.string.call_instead);
+                        toggleNoContactInfoDialog(callInstead);
                     }
                 });
             } else {
@@ -127,13 +130,15 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
 
         return convertView;
     }
-    public void toggleNoContactInfoDialog() {
+    public void toggleNoContactInfoDialog(String text) {
 
         final Dialog noContactInfoDialog;
 
         noContactInfoDialog = new Dialog(getContext());
         noContactInfoDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         noContactInfoDialog.setContentView(R.layout.dialog_nocontactinfo);
+        TextView considerText = (TextView)noContactInfoDialog.findViewById(R.id.consider_text);
+        considerText.setText(text);
         Button gotItButton = (Button)noContactInfoDialog.findViewById(R.id.got_it_button_2);
         gotItButton.setOnClickListener(new View.OnClickListener() {
             @Override
