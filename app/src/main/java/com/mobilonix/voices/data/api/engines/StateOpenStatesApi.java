@@ -1,5 +1,6 @@
 package com.mobilonix.voices.data.api.engines;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -12,6 +13,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import okhttp3.Request;
@@ -67,15 +71,40 @@ public class StateOpenStatesApi implements ApiEngine {
                 JSONObject jsonPolitico = rawJsonArray.getJSONObject(i);
 
                 String phoneNumber = "";
+                String chamber = "";
+                String fullName = "";
+                String email = "";
 
-                        String fullName = jsonPolitico.getString("full_name");
-                String email = jsonPolitico.getString("email");
-                if(jsonPolitico.getJSONArray("offices").getJSONObject(0).has("phone")) {
-                    phoneNumber = jsonPolitico.getJSONArray("offices").getJSONObject(0).getString("phone");
-                } else if(jsonPolitico.getJSONArray("offices").getJSONObject(1).has("phone")) {
-                    phoneNumber = jsonPolitico.getJSONArray("offices").getJSONObject(1).getString("phone");
+                try {
+
+                    chamber = jsonPolitico.getString("chamber");
+                } catch(JSONException e) {
+                    e.printStackTrace(); //TODO handle exception
+
+                }
+                String title = setTitle(chamber);
+
+                try {
+                    fullName = title + jsonPolitico.getString("full_name");
+                } catch(JSONException e) {
+                    e.printStackTrace(); //TODO handle exception
                 }
 
+                try {
+                    email = jsonPolitico.getString("email");
+                } catch(JSONException e) {
+                    e.printStackTrace(); //TODO handle exception
+                }
+
+                try {
+                    if (jsonPolitico.getJSONArray("offices").getJSONObject(0).has("phone")) {
+                        phoneNumber = jsonPolitico.getJSONArray("offices").getJSONObject(0).getString("phone");
+                    } else if (jsonPolitico.getJSONArray("offices").getJSONObject(1).has("phone")) {
+                        phoneNumber = jsonPolitico.getJSONArray("offices").getJSONObject(1).getString("phone");
+                    }
+                } catch(JSONException e) {
+                    e.printStackTrace(); //TODO handle exception
+                }
                 String picUrl = jsonPolitico.getString("photo_url");
 
                 Politico politico = new Politico.Builder()
@@ -86,12 +115,81 @@ public class StateOpenStatesApi implements ApiEngine {
 
                 politicos.add(politico);
             }
-        } catch (JSONException e) {
 
+//            JSONObject districts = getJsonFromResource(VoicesApplication.getContext(), R.raw.nyc_district_data);
+//            Log.i(TAG, "0: " + districts.toString());
+//
+//            JSONObject member = districts.getJSONObject("districts");
+//            Log.i(TAG, "1: " + member);
+//            member = member.getJSONObject(district + "");
+//            Log.i(TAG, "2: " + member);
+//
+//            String firstName = member.getString("firstName");
+//            String lastName = member.getString("lastName");
+//            String phoneNumbers = member.getString("phoneNumber");
+//            String photos = member.getString("photoURLPath");
+//            String twitter = member.getString("twitter");
+//            String email = member.getString("email");
+//
+//            Politico politico = new Politico.Builder()
+//                    .setEmailAddy(email)
+//                    .setPhoneNumber(phoneNumbers)
+//                    .setPicUrl(photos)
+//                    .setTwitterHandle(twitter)
+//                    .build(firstName, lastName);
+//
+//            return politico;
+        } catch (JSONException e) {
             e.printStackTrace(); //TODO handle exception
         }
 
         return politicos;
+    }
+
+    public static JSONObject getJsonFromResource(Context context, int jsonResource)  {
+        InputStream inputStream = context.getResources().openRawResource(jsonResource); // getting XML
+
+        if(jsonResource > 0){
+
+            try {
+                JSONObject jsonObject = new JSONObject(convertStreamToString(inputStream));
+                Log.d("TAG", jsonObject.toString());
+                return jsonObject;
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+    private static String convertStreamToString(InputStream inputStream) {
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        byte buf[] = new byte[1024];
+        int len;
+        try {
+            while ((len = inputStream.read(buf)) != -1) {
+                outputStream.write(buf, 0, len);
+            }
+            outputStream.close();
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace(); //TODO handle exception
+        }
+        return outputStream.toString();
+    }
+
+    public String setTitle(String chamber){
+        if (chamber.equals("upper")) {
+            return "Sen ";
+        } else if (chamber.equals("lower")){
+            return "Rep ";
+        } else{
+            return "";
+        }
     }
 
     @Override

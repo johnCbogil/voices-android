@@ -83,7 +83,6 @@ public class GroupPage extends FrameLayout {
                 }
             }
         }
-
         return userActions;
     }
 

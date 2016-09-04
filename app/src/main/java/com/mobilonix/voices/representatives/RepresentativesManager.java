@@ -150,9 +150,6 @@ public enum RepresentativesManager {
             groupsSelectionButton.setVisibility(View.GONE);
             addGroupIcon.setVisibility(View.GONE);
 
-            final TextView representativesTextIndicator = (TextView) primaryToolbar.findViewById(R.id.representatives_type_text);
-            representativesTextIndicator.setText(RepresentativesType.CONGRESS.getIdentifier());
-
             final ArrayList<RepresentativesPage> pages = new ArrayList<>();
             final ViewPager representativesPager = (ViewPager) representativesFrame.findViewById(R.id.representatives_pager);
 
@@ -162,7 +159,7 @@ public enum RepresentativesManager {
                     .findViewById(R.id.pager_indicator));
 
             for (RepresentativesType representativesType : RepresentativesType.values()) {
-                pagerIndicator.addIndicator(representativesType.getIdentifier());
+                pagerIndicator.addIndicator(representativesType.getIdentifier(), representativesType.getIdentifier());
                 pages.add(new RepresentativesPage(new ArrayList<Representative>(), representativesType));
             }
             representativesPager.setAdapter(new RepresentativesPagerAdapter(pages));
@@ -200,12 +197,6 @@ public enum RepresentativesManager {
                                         listView.getContext(),
                                         R.layout.representatives_list_item,
                                         representatives));
-                    }
-
-                    for (int i = 0; i < types.size(); i++) {
-                        if (i == position) {
-                            representativesTextIndicator.setText(types.get(i).getIdentifier());
-                        }
                     }
 
                     return false;
@@ -277,7 +268,6 @@ public enum RepresentativesManager {
         final ImageView helpIcon = (ImageView)primaryToolbar.findViewById(R.id.representatives_help_icon);
         final ImageView backArrow = (ImageView)primaryToolbar.findViewById(R.id.primary_toolbar_back_arrow);
         final TextView groupsInfoText = (TextView)primaryToolbar.findViewById(R.id.all_groups_info_text);
-        final TextView representativesTypeText = (TextView)primaryToolbar.findViewById(R.id.representatives_type_text);
         final ImageView addGroupIcon = (ImageView)primaryToolbar.findViewById(R.id.action_add_groups);
         final int voicesOrange = VoicesApplication.getContext().getResources().getColor(R.color.voices_orange);
         final int grey = VoicesApplication.getContext().getResources().getColor(R.color.grey);
@@ -305,7 +295,6 @@ public enum RepresentativesManager {
                 groupsSelectionButton.setVisibility(View.VISIBLE);
                 groupsSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.voices_orange));
                 groupsInfoText.setVisibility(View.GONE);
-                representativesTypeText.setVisibility(View.GONE);
                 divider.setVisibility(View.VISIBLE);
                 addGroupIcon.setVisibility(View.VISIBLE);
 
@@ -337,7 +326,6 @@ public enum RepresentativesManager {
                 groupsInfoText.setVisibility(View.GONE);
                 backArrow.setVisibility(View.GONE);
                 divider.setVisibility(View.VISIBLE);
-                representativesTypeText.setVisibility(View.VISIBLE);
 
                 addGroupIcon.setVisibility(View.GONE);
 

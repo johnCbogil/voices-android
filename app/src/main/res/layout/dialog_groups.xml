@@ -16,11 +16,15 @@
             android:layout_height="100dp"
             android:src="@drawable/voices_icon"
             android:id="@+id/group_info_image" />
-        <com.mobilonix.voices.util.AvenirTextView
-            android:layout_marginLeft="10dp"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/group_info_description_text" />
+            android:layout_height="match_parent">
+            <com.mobilonix.voices.util.AvenirTextView
+                android:layout_marginLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/group_info_description" />
+        </ScrollView>
     </LinearLayout>
 
     <View
@@ -39,8 +43,7 @@
         android:textStyle="bold"
         android:textSize="20sp"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:text="Digital Rights"/>
+        android:layout_marginLeft="10dp" />
 
     <com.mobilonix.voices.util.AvenirButton
         android:layout_width="wrap_content"
