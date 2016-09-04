@@ -16,6 +16,7 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRecylerAdapter.ActionListHolder> {
 
@@ -34,6 +35,7 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
             }
         }
 
+        Collections.reverse(modifiedActionsList);
         this.actions = modifiedActionsList;
 
     }
