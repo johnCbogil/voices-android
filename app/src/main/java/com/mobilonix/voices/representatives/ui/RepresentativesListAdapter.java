@@ -52,6 +52,13 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                     .transform(new RoundedTransformation(50, 4))
                     .into(listImage);
 
+            listImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
             final ImageView twitterImage = (ImageView)convertView.findViewById(R.id.representatives_list_twitter_image);
             final ImageView callImage = (ImageView)convertView.findViewById(R.id.representatives_list_call_image);
             final ImageView emailImage = (ImageView)convertView.findViewById(R.id.representatives_list_email_image);
