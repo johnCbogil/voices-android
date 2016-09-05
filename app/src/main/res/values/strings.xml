@@ -13,6 +13,7 @@
     <string name="instructions_title">To View Your Representatives</string>
     <string name="instructions_text_1">Use the search bar to find representatives by address or swipe down to fetch representatives at your current location.</string>
     <string name="instructions_text_2">After representatives have loaded, swipe right to see state and local representatives.</string>
+    <string name="instructions_text_3">Click a representative\'s image for more information on them.</string>
     <string name="got_it_button_text">Got It!</string>
 
     <!--Info Dialog-->
@@ -64,6 +65,16 @@
     <string name="no_info_text_3">Gray buttons indicate unavailable contact information.</string>
     <string name="call_instead">Please consider calling them instead.</string>
     <string name="email_instead">Please consider emailing them instead.</string>
+
+    <!--Reps Details Dialog-->
+    <string name="details_title">More Info</string>
+    <string name="nyc_election_date">November 7, 2017</string>
+    <string name="nyc_title">Council Member</string>
+    <string name="party">Party:&#160;</string>
+    <string name="district">District:&#160;</string>
+    <string name="next_election">Next Election:&#160;</string>
+    <string name="not_available">N/A</string>
+
     <!-- Errors-->
     <string name="groups_fetch_error">"Server/Network Error! Attempting to fetch groups again..."</string>
     <string name="council_not_yet_error">City Council members not available yet.  Coming soon!</string>

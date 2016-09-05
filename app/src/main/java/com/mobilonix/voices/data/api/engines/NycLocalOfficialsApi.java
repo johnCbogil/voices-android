@@ -126,17 +126,25 @@ public class NycLocalOfficialsApi implements ApiEngine {
             member = member.getJSONObject(district + "");
             Log.e(TAG, "2: " + member);
 
-            String firstName = member.getString("firstName");
-            String lastName = member.getString("lastName");
-            String title = "Council Member";
-            String phoneNumbers = member.getString("phoneNumber");
-            String photos = member.getString("photoURLPath");
-            String twitter = member.getString("twitter");
-            String email = member.getString("email");
+            String firstName = member.optString("firstName");
+            String lastName = member.optString("lastName");
+            String gender = "";
+            String party = member.optString("party");
+            String repDistrict = member.optString("district");
+            String electionDate = VoicesApplication.getContext().getResources().getString(R.string.nyc_election_date);
+            String title = VoicesApplication.getContext().getResources().getString(R.string.nyc_title);
+            String phoneNumbers = member.optString("phoneNumber");
+            String photos = member.optString("photoURLPath");
+            String twitter = member.optString("twitter");
+            String email = member.optString("email");
 
             Politico politico = new Politico.Builder()
-                    .setEmailAddy(email)
+                    .setGender(gender)
+                    .setParty(party)
+                    .setDistrict(repDistrict)
+                    .setElectionDate(electionDate)
                     .setPhoneNumber(phoneNumbers)
+                    .setEmailAddy(email)
                     .setPicUrl(photos)
                     .setTwitterHandle(twitter)
                     .build(title, firstName, lastName);
@@ -175,17 +183,25 @@ public class NycLocalOfficialsApi implements ApiEngine {
             while (keys.hasNext()) {
                 String key = (String) keys.next();
                 JSONObject rep = reps.getJSONObject(key);
-                String firstName = rep.getString("firstName");
-                String lastName = rep.getString("lastName");
-                String title = rep.getString("title");
-                String phoneNumbers = rep.getString("phoneNumber");
-                String photos = rep.getString("photoURLPath");
-                String twitter = rep.getString("twitter");
-                String email = rep.getString("email");
+                String firstName = rep.optString("firstName");
+                String lastName = rep.optString("lastName");
+                String title = rep.optString("title");
+                String gender = rep.optString("gender");
+                String party = rep.optString("party");
+                String district = "";
+                String electionDate = rep.optString("nextElection");
+                String phoneNumber = rep.optString("phoneNumber");
+                String photo = rep.optString("photoURLPath");
+                String twitter = rep.optString("twitter");
+                String email = rep.optString("email");
                 Politico politico = new Politico.Builder()
+                        .setGender(gender)
+                        .setParty(party)
+                        .setDistrict(district)
+                        .setElectionDate(electionDate)
                         .setEmailAddy(email)
-                        .setPhoneNumber(phoneNumbers)
-                        .setPicUrl(photos)
+                        .setPhoneNumber(phoneNumber)
+                        .setPicUrl(photo)
                         .setTwitterHandle(twitter)
                         .build(title, firstName, lastName);
                 politicos.add(politico);
