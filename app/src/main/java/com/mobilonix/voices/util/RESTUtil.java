@@ -139,8 +139,11 @@ public class RESTUtil {
                     new Representative(
                             "TITLE",
                             poli.getFullName(),
-                            //poli.getGender(),
+                            "LOCATION",
+                            poli.getGender(),
+                            poli.getParty(),
                             poli.getDistrict(),
+                            poli.getElectionDate(),
                             poli.getPhoneNumber(),
                             poli.getTwitterHandle(),
                             poli.getEmailAddy(),

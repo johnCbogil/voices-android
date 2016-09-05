@@ -70,44 +70,32 @@ public class StateOpenStatesApi implements ApiEngine {
 
                 JSONObject jsonPolitico = rawJsonArray.getJSONObject(i);
 
-                String phoneNumber = "";
-                String chamber = "";
-                String fullName = "";
-                String email = "";
+                String chamber = jsonPolitico.optString("chamber");
 
-                try {
-
-                    chamber = jsonPolitico.getString("chamber");
-                } catch(JSONException e) {
-                    e.printStackTrace(); //TODO handle exception
-
-                }
                 String title = setTitle(chamber);
+                String fullName = title + jsonPolitico.getString("full_name");
 
-                try {
-                    fullName = title + jsonPolitico.getString("full_name");
-                } catch(JSONException e) {
-                    e.printStackTrace(); //TODO handle exception
-                }
+                String email = jsonPolitico.optString("email");
+                String district = jsonPolitico.optString("district");
+                String picUrl = jsonPolitico.optString("photo_url");
 
-                try {
-                    email = jsonPolitico.getString("email");
-                } catch(JSONException e) {
-                    e.printStackTrace(); //TODO handle exception
-                }
+                String party = jsonPolitico.optString("party");
 
-                try {
-                    if (jsonPolitico.getJSONArray("offices").getJSONObject(0).has("phone")) {
-                        phoneNumber = jsonPolitico.getJSONArray("offices").getJSONObject(0).getString("phone");
-                    } else if (jsonPolitico.getJSONArray("offices").getJSONObject(1).has("phone")) {
-                        phoneNumber = jsonPolitico.getJSONArray("offices").getJSONObject(1).getString("phone");
-                    }
-                } catch(JSONException e) {
-                    e.printStackTrace(); //TODO handle exception
+                String gender = "";
+                String electionDate = "";
+                String phoneNumber = "";
+
+                if (jsonPolitico.optJSONArray("offices").optJSONObject(0).has("phone")) {
+                    phoneNumber = jsonPolitico.optJSONArray("offices").optJSONObject(0).getString("phone");
+                } else if (jsonPolitico.getJSONArray("offices").optJSONObject(1).has("phone")) {
+                    phoneNumber = jsonPolitico.optJSONArray("offices").optJSONObject(1).getString("phone");
                 }
-                String picUrl = jsonPolitico.getString("photo_url");
 
                 Politico politico = new Politico.Builder()
+                        .setGender(gender)
+                        .setParty(party)
+                        .setDistrict(district)
+                        .setElectionDate(electionDate)
                         .setEmailAddy(email)
                         .setPhoneNumber(phoneNumber)
                         .setPicUrl(picUrl)
@@ -135,7 +123,7 @@ public class StateOpenStatesApi implements ApiEngine {
 //                    .setEmailAddy(email)
 //                    .setPhoneNumber(phoneNumbers)
 //                    .setPicUrl(photos)
-//                    .setTwitterHandle(twitter)
+//                    .setTwitterHandginle(twitter)
 //                    .build(firstName, lastName);
 //
 //            return politico;

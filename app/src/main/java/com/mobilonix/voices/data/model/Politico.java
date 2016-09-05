@@ -8,7 +8,8 @@ import android.util.Log;
 public class Politico {
 
     String mFullName;
-    //String mGender;
+    String mGender;
+    String mParty;
     String mDistrict;
     String mPhoneNumber;
     String mElectionDate;
@@ -16,27 +17,30 @@ public class Politico {
     String mTwitterHandle;
     String mPicUrl;
 
-    private Politico(String fullName, String district,  String electionDate, String phoneNumber,
+    private Politico(String fullName, String gender, String party, String district,  String electionDate, String phoneNumber,
                      String emailAddy, String twitterHandle, String picUrl) {
         mFullName = fullName;
-        //mGender = gender;
+        mGender = gender;
+        mParty = party;
         mDistrict = district;
-        mPhoneNumber = phoneNumber;
         mElectionDate = electionDate;
+        mPhoneNumber = phoneNumber;
         mEmailAddy = emailAddy;
         mTwitterHandle = twitterHandle;
         mPicUrl = picUrl;
     }
 
-    public String getDistrict() { return mDistrict; }
-
     public String getFullName() {return mFullName;}
 
-    //public String getGender() {return mGender;}
+    public String getGender() {return mGender;}
 
-    public String getPhoneNumber() { return mPhoneNumber; }
+    public String getParty() { return mParty; }
+
+    public String getDistrict() { return mDistrict; }
 
     public String getElectionDate() { return mElectionDate; }
+
+    public String getPhoneNumber() { return mPhoneNumber; }
 
     public String getEmailAddy() { return mEmailAddy; }
 
@@ -56,7 +60,8 @@ public class Politico {
     public static class Builder {
 
         String fullName;
-        //String gender;
+        String gender;
+        String party;
         String district;
         String electionDate;
         String phoneNumber;
@@ -64,9 +69,23 @@ public class Politico {
         String twitterHandle;
         String picUrl;
 
-        //public Builder setGender(String gender) { this.gender = gender; return this; }
+        public Politico build(String title, String firstName, String lastName) {
+
+            fullName = title + " " + firstName + " " + lastName;
+
+            Politico a = new Politico(fullName, gender, party, district, electionDate,
+                    phoneNumber, emailAddy,twitterHandle, picUrl);
+            Log.i("API",a.toString());
+            return a ;
+        }
+
+        public Builder setGender(String gender) { this.gender = gender; return this; }
+
+        public Builder setParty(String party) { this.party = party; return this; }
 
         public Builder setDistrict(String district) { this.district = district; return this; }
+
+        public Builder setElectionDate(String electionDate) { this.electionDate = electionDate; return this; }
 
         public Builder setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; return this; }
 
@@ -76,19 +95,9 @@ public class Politico {
 
         public Builder setPicUrl(String picUrl) { this.picUrl = picUrl; return this;}
 
-        public Politico build(String title, String firstName, String lastName) {
-
-            fullName = title + " " + firstName + " " + lastName;
-
-            Politico a = new Politico(fullName, district, electionDate,
-                    phoneNumber, emailAddy,twitterHandle, picUrl);
-            Log.i("API",a.toString());
-            return a ;
-        }
-
         public Politico build(String fullName) {
 
-            Politico a = new Politico(fullName, district, electionDate,
+            Politico a = new Politico(fullName, gender, party, district, electionDate,
                     phoneNumber, emailAddy,twitterHandle, picUrl);
             Log.i("API",a.toString());
             return a ;
