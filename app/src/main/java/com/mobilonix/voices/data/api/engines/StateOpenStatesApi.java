@@ -71,15 +71,25 @@ public class StateOpenStatesApi implements ApiEngine {
                 JSONObject jsonPolitico = rawJsonArray.getJSONObject(i);
 
                 String chamber = jsonPolitico.optString("chamber");
+
                 String title = setTitle(chamber);
-                String fullName = title + jsonPolitico.optString("full_name");
-                String gender = "";
-                String party = jsonPolitico.optString("party");
-                String district = jsonPolitico.optString("district");
-                String electionDate = "";
+                String fullName = title + jsonPolitico.getString("full_name");
+
                 String email = jsonPolitico.optString("email");
-                String phoneNumber = jsonPolitico.getJSONArray("offices").getJSONObject(0).optString("phone");
+                String district = jsonPolitico.optString("district");
                 String picUrl = jsonPolitico.optString("photo_url");
+
+                String party = jsonPolitico.optString("party");
+
+                String gender = "";
+                String electionDate = "";
+                String phoneNumber = "";
+
+                if (jsonPolitico.optJSONArray("offices").optJSONObject(0).has("phone")) {
+                    phoneNumber = jsonPolitico.optJSONArray("offices").optJSONObject(0).getString("phone");
+                } else if (jsonPolitico.getJSONArray("offices").optJSONObject(1).has("phone")) {
+                    phoneNumber = jsonPolitico.optJSONArray("offices").optJSONObject(1).getString("phone");
+                }
 
                 Politico politico = new Politico.Builder()
                         .setGender(gender)
@@ -113,12 +123,11 @@ public class StateOpenStatesApi implements ApiEngine {
 //                    .setEmailAddy(email)
 //                    .setPhoneNumber(phoneNumbers)
 //                    .setPicUrl(photos)
-//                    .setTwitterHandle(twitter)
+//                    .setTwitterHandginle(twitter)
 //                    .build(firstName, lastName);
 //
 //            return politico;
         } catch (JSONException e) {
-
             e.printStackTrace(); //TODO handle exception
         }
 
@@ -132,7 +141,6 @@ public class StateOpenStatesApi implements ApiEngine {
 
             try {
                 JSONObject jsonObject = new JSONObject(convertStreamToString(inputStream));
-
                 Log.d("TAG", jsonObject.toString());
                 return jsonObject;
 
@@ -157,8 +165,7 @@ public class StateOpenStatesApi implements ApiEngine {
             outputStream.close();
             inputStream.close();
         } catch (IOException e) {
-
-            //TODO handle exception
+            e.printStackTrace(); //TODO handle exception
         }
         return outputStream.toString();
     }
