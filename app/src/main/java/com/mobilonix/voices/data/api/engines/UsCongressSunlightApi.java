@@ -73,26 +73,38 @@ public class UsCongressSunlightApi implements ApiEngine {
 
                 JSONObject jsonPolitico = (JSONObject) p.get(i);
 
-                String firstName = jsonPolitico.getString("first_name");
-                String lastName = jsonPolitico.getString("last_name");
-                String title = jsonPolitico.getString("title");
-                //String gender = jsonPolitico.getString("gender");
-                String phoneNumber = jsonPolitico.getString("phone");
-                String twitter = jsonPolitico.getString("twitter_id");
-                String bioguide_id = jsonPolitico.getString("bioguide_id");
-                String email = jsonPolitico.getString("oc_email");
+                String firstName = jsonPolitico.optString("first_name");
+                String lastName = jsonPolitico.optString("last_name");
+                String title = jsonPolitico.optString("title");
+                String gender = jsonPolitico.optString("gender");
+                String party = jsonPolitico.optString("party");
+                String district;
+                if(jsonPolitico.optString("district").equals("null")){
+                    district = "";
+                } else {
+                    district = jsonPolitico.optString("district");
+                }
+                String electionDate = "";
+                String phoneNumber = jsonPolitico.optString("phone");
+                String twitter = jsonPolitico.optString("twitter_id");
+                String bioguide_id = jsonPolitico.optString("bioguide_id");
+                String email = jsonPolitico.optString("oc_email");
                 Politico politico = new Politico.Builder()
-                        //.setGender(gender)
+                        .setGender(gender)
+                        .setParty(party)
+                        .setDistrict(district)
+                        .setElectionDate(electionDate)
                         .setEmailAddy(email)
                         .setPhoneNumber(phoneNumber)
-                        .setPicUrl(IMAGE_BASE_URL + bioguide_id + IMAGE_FILE_EXTENSION)
                         .setTwitterHandle(twitter)
+                        .setPicUrl(IMAGE_BASE_URL + bioguide_id + IMAGE_FILE_EXTENSION)
                         .build(title, firstName, lastName);
 
                 politicos.add(politico);
             }
         } catch (JSONException e) {
-            e.printStackTrace(); //TODO handle exception
+            e.printStackTrace();
+            Log.e("TAG",e.getMessage());//TODO handle exception
         }
 
         return politicos;

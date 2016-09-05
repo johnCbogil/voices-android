@@ -5,16 +5,29 @@ package com.mobilonix.voices.representatives.model;
  */
 public class Representative {
 
-    //private String gender;
+    private String gender;
+    private String party;
+    private String district;
+    private String electionDate;
     private String phoneNumber;
-    private String twitterHandle;
     private String emailAddress;
+    private String twitterHandle;
     private String representativeImageUrl;
     private String title;
     private String name;
     private String location;
 
-    //public String getGender() { return gender; }
+    public String getGender() { return gender; }
+
+    public String getParty() { return party; }
+
+    public String getDistrict() { return district; }
+
+    public String getElectionDate() { return electionDate; }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
     public String getEmailAddress() {
         return emailAddress;
@@ -22,10 +35,6 @@ public class Representative {
 
     public String getTwitterHandle() {
         return twitterHandle;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
     }
 
     public String getRepresentativeImageUrl() {
@@ -47,6 +56,10 @@ public class Representative {
     public Representative(String title,
                           String name,
                           String location,
+                          String gender,
+                          String party,
+                          String district,
+                          String electionDate,
                           String phoneNumber,
                           String twitterHandle,
                           String emailAddress,
@@ -55,7 +68,10 @@ public class Representative {
         this.title = title;
         this.name = name;
         this.location = location;
-        //this.gender = gender;
+        this.gender = gender;
+        this.party = party;
+        this.district = district;
+        this.electionDate = electionDate;
         this.phoneNumber = phoneNumber;
         this.twitterHandle = twitterHandle;
         this.emailAddress = emailAddress;

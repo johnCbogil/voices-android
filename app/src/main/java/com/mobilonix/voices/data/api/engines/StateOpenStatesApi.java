@@ -70,14 +70,22 @@ public class StateOpenStatesApi implements ApiEngine {
 
                 JSONObject jsonPolitico = rawJsonArray.getJSONObject(i);
 
-                String chamber = jsonPolitico.getString("chamber");
+                String chamber = jsonPolitico.optString("chamber");
                 String title = setTitle(chamber);
-                String fullName = title + jsonPolitico.getString("full_name");
-                String email = jsonPolitico.getString("email");
-                String phoneNumber = jsonPolitico.getJSONArray("offices").getJSONObject(0).getString("phone");
-                String picUrl = jsonPolitico.getString("photo_url");
+                String fullName = title + jsonPolitico.optString("full_name");
+                String gender = "";
+                String party = jsonPolitico.optString("party");
+                String district = jsonPolitico.optString("district");
+                String electionDate = "";
+                String email = jsonPolitico.optString("email");
+                String phoneNumber = jsonPolitico.getJSONArray("offices").getJSONObject(0).optString("phone");
+                String picUrl = jsonPolitico.optString("photo_url");
 
                 Politico politico = new Politico.Builder()
+                        .setGender(gender)
+                        .setParty(party)
+                        .setDistrict(district)
+                        .setElectionDate(electionDate)
                         .setEmailAddy(email)
                         .setPhoneNumber(phoneNumber)
                         .setPicUrl(picUrl)
