@@ -153,7 +153,6 @@ public class NycLocalOfficialsApi implements ApiEngine {
 
         } catch (JSONException e) {
             Log.e(TAG, "json parse: " + e);
-
             return null;
         }
     }
