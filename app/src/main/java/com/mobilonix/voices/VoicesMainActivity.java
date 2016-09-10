@@ -8,17 +8,27 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.location.LocationListener;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import com.badoo.mobile.util.WeakHandler;
+import com.google.android.gms.appinvite.AppInvite;
+import com.google.android.gms.appinvite.AppInviteInvitationResult;
+import com.google.android.gms.appinvite.AppInviteReferral;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.groups.GroupManager;
+import com.mobilonix.voices.groups.model.Group;
 import com.mobilonix.voices.location.LocationRequestManager;
 import com.mobilonix.voices.location.model.LatLong;
 import com.mobilonix.voices.location.util.LocationUtil;
@@ -32,16 +42,26 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
 
     private static final int SPLASH_FADE_TIME = 2000;
 
+    public final static String TAG = VoicesMainActivity.class.getCanonicalName();
+
     public FrameLayout mainContentFrame;
     boolean leaveAppDialogShowing = false;
     WeakHandler handler = new WeakHandler();
+
+    GoogleApiClient googleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voices_main);
 
-        SessionManager.INSTANCE.signIn();
+        SessionManager.INSTANCE.signIn(new Callback<Boolean>() {
+            @Override
+            public boolean onExecuted(Boolean data) {
+                handleDeeplink(getIntent());
+                return false;
+            }
+        });
         currentLocation = LocationUtil.getLastLocation(this);
 
         initViews();
@@ -55,6 +75,13 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
         mainContentFrame = (FrameLayout)findViewById(R.id.main_content_frame);
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.primary_toolbar));
         findViewById(R.id.primary_toolbar).setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        handleDeeplink(intent);
     }
 
     /**
@@ -85,6 +112,66 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
                 }
             }, SPLASH_FADE_TIME);
         }
+    }
+
+    /**
+     * This method will handle any incoming deeplinkins
+     *
+     * @param intent
+     */
+    public void handleDeeplink(Intent intent) {
+
+        if(googleApiClient == null) {
+           googleApiClient = new GoogleApiClient.Builder(this)
+                   .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
+                       @Override
+                       public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                           GeneralUtil.toast("Could not connect to google api! ");
+                           Log.e(TAG, "Could not retrieve deeplink!");
+                       }
+                   })
+                   .addApi(AppInvite.API)
+                   .build();
+       }
+
+
+        boolean autoLaunchDeepLink = false;
+        try {
+            String action = intent.getAction();
+            Uri data = intent.getData();
+            if(data != null) {
+
+                String groupKey =  data.getPath().toUpperCase().replace("/", "");
+                GeneralUtil.toast("We got a deeplink! Group key: " + groupKey);
+                GroupManager.INSTANCE.setDefferredGroupKey(groupKey);
+                autoLaunchDeepLink = true;
+            } else {
+                GeneralUtil.toast("We didn't intercept a deeplink!");
+            }
+        } catch (Exception e) {
+            GeneralUtil.toast("We didn't intercept a deeplink!");
+        }
+
+        AppInvite.AppInviteApi.getInvitation(googleApiClient, this, autoLaunchDeepLink)
+                .setResultCallback(
+                        new ResultCallback<AppInviteInvitationResult>() {
+                            @Override
+                            public void onResult(@NonNull AppInviteInvitationResult result) {
+                                if (result.getStatus().isSuccess()) {
+                                    // Extract deep link from Intent
+                                    Intent intent = result.getInvitationIntent();
+                                    String deepLink = AppInviteReferral.getDeepLink(intent);
+
+                                    GeneralUtil.toast("Deeplink is: " + deepLink);
+
+                                } else {
+
+                                    GeneralUtil.toast("Deeplink is: " + "No deeplink found!");
+
+                                    Log.e(TAG, "getInvitation: no deep link found.");
+                                }
+                            }
+                        });
     }
 
     public FrameLayout getMainContentFrame() {

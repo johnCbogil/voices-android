@@ -53,6 +53,8 @@ public enum GroupManager {
 
     ArrayList<Group> allGroupsData = new ArrayList<>();
 
+    String defferredGroupKey = null;
+
     public void toggleGroupPage(ViewGroup pageRoot, boolean state) {
 
         if(isRefreshing) {
@@ -127,6 +129,11 @@ public enum GroupManager {
                         return false;
                     }
                 });
+
+                if(defferredGroupKey != null) {
+                    subscribeToGroup(findGroupWithKey(defferredGroupKey), true, null);
+                    defferredGroupKey = null;
+                }
 
                 return false;
             }
@@ -449,5 +456,9 @@ public enum GroupManager {
         });
 
         actionDialog.show();
+    }
+
+    public void setDefferredGroupKey(String defferredGroupKey) {
+        this.defferredGroupKey = defferredGroupKey;
     }
 }

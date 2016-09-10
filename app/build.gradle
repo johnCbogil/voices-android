@@ -12,12 +12,16 @@ android {
     def base = 100000000;
     def date = new SimpleDateFormat("yyyyMMdd").format(new Date());;
 
+    dexOptions {
+        javaMaxHeapSize "4g" //specify the heap size for the dex process
+    }
     defaultConfig {
         applicationId "com.johnbogil.mobilonix.voices"
         minSdkVersion 14
         targetSdkVersion 22
         versionCode Integer.parseInt(date + 1) + base //temporary version code to make sure we're above the 3.0 version
         versionName major + "." + minor + "." + patch
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -31,22 +35,69 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
 
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.android.support:appcompat-v7:22.+'
-    compile 'com.squareup.okhttp3:okhttp:3.3.1'
-    compile 'com.badoo.mobile:android-weak-handler:1.1'
+    compile ('com.squareup.picasso:picasso:2.5.2'){
+        exclude group: 'com.android.support'
+        transitive = true;
+    }
+    compile ('com.squareup.okhttp3:okhttp:3.3.1'){
+        exclude group: 'com.android.support'
+        transitive = true;
+    }
+    compile ('com.badoo.mobile:android-weak-handler:1.1'){
+        exclude group: 'com.android.support'
+        transitive = true;
+    }
+    compile ('com.android.support:appcompat-v7:22.+'){
+        exclude group: 'com.android.support'
+        transitive = true;
+    }
+    compile ('com.android.support:recyclerview-v7:+'){
+        exclude group: 'com.android.support'
+        transitive = true;
+    }
 
-    compile 'com.google.firebase:firebase-messaging:9.0.2'
-    compile 'com.google.firebase:firebase-core:9.0.2'
-    compile 'com.google.firebase:firebase-auth:9.0.2'
-    compile 'com.google.firebase:firebase-database:9.0.2'
-    compile 'com.google.firebase:firebase-crash:9.0.2'
+    compile ('com.android.support:multidex:1.0.1'){
+        exclude group: 'com.android.support'
+        transitive = true;
+    }
 
-    compile ('com.android.support:recyclerview-v7:+')
+    compile('com.google.firebase:firebase-invites:9.4.0') {
+        exclude group: 'com.android.support'
+        transitive = true;
+    }
+    compile ('com.google.firebase:firebase-messaging:9.4.0'){
+        exclude group: 'com.android.support'
+        transitive = true;
+    }
+    compile ('com.google.firebase:firebase-core:9.4.0'){
+        exclude group: 'com.android.support'
+        transitive = true;
+    }
+    compile ('com.google.firebase:firebase-auth:9.4.0'){
+        exclude group: 'com.android.support'
+        transitive = true;
+    }
+    compile ('com.google.firebase:firebase-database:9.4.0'){
+        exclude group: 'com.android.support'
+        transitive = true;
+    }
+    compile ('com.google.firebase:firebase-crash:9.4.0'){
+        exclude group: 'com.android.support'
+        transitive = true;
+    }
+    compile ('com.google.android.gms:play-services-base:9.4.0'){
+        exclude group: 'com.android.support'
+        transitive = true;
+    }
+    compile ('com.google.android.gms:play-services-places:9.4.0'){
+        exclude group: 'com.android.support'
+        transitive = true;
+    }
+    compile ('com.google.android.gms:play-services-location:9.4.0'){
+        exclude group: 'com.android.support'
+        transitive = true;
+    }
 
-    compile 'com.google.android.gms:play-services-location:9.0.2'
-
-    compile 'com.android.support:multidex:1.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
