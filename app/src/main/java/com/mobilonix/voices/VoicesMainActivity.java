@@ -35,6 +35,7 @@ import com.mobilonix.voices.location.util.LocationUtil;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.splash.SplashManager;
+import com.mobilonix.voices.util.DeeplinkUtil;
 
 public class VoicesMainActivity extends AppCompatActivity implements LocationListener {
 
@@ -49,6 +50,8 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
     WeakHandler handler = new WeakHandler();
 
     GoogleApiClient googleApiClient;
+
+    Boolean autoLaunchDeepLink = new Boolean(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,22 +138,15 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
        }
 
 
-        boolean autoLaunchDeepLink = false;
-        try {
-            String action = intent.getAction();
-            Uri data = intent.getData();
-            if(data != null) {
-
-                String groupKey =  data.getPath().toUpperCase().replace("/", "");
-                GeneralUtil.toast("We got a deeplink! Group key: " + groupKey);
-                GroupManager.INSTANCE.setDefferredGroupKey(groupKey);
-                autoLaunchDeepLink = true;
-            } else {
-                GeneralUtil.toast("We didn't intercept a deeplink!");
-            }
-        } catch (Exception e) {
-            GeneralUtil.toast("We didn't intercept a deeplink!");
-        }
+//        DeeplinkUtil.parseDeeplink(intent, new Callback<String>() {
+//            @Override
+//            public boolean onExecuted(String groupKey) {
+//                GeneralUtil.toast("We got a deeplink! Group key: " + groupKey);
+//                GroupManager.INSTANCE.setDefferredGroupKey(groupKey);
+//                autoLaunchDeepLink = true;
+//                return false;
+//            }
+//        });
 
         AppInvite.AppInviteApi.getInvitation(googleApiClient, this, autoLaunchDeepLink)
                 .setResultCallback(
@@ -161,13 +157,13 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
                                     // Extract deep link from Intent
                                     Intent intent = result.getInvitationIntent();
                                     String deepLink = AppInviteReferral.getDeepLink(intent);
-
-                                    GeneralUtil.toast("Deeplink is: " + deepLink);
-
+                                    if(deepLink != null) {
+                                        deepLink = deepLink.replace("http://tryvoices.com/","");
+                                    }
+                                    GroupManager.INSTANCE.setDefferredGroupKey(deepLink);
+                                    GeneralUtil.toast("Persistent Deeplink is: " + deepLink);
                                 } else {
-
                                     GeneralUtil.toast("Deeplink is: " + "No deeplink found!");
-
                                     Log.e(TAG, "getInvitation: no deep link found.");
                                 }
                             }
