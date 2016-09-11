@@ -138,16 +138,16 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
        }
 
 
-//        DeeplinkUtil.parseDeeplink(intent, new Callback<String>() {
-//            @Override
-//            public boolean onExecuted(String groupKey) {
-//                GeneralUtil.toast("We got a deeplink! Group key: " + groupKey);
-//                GroupManager.INSTANCE.setDefferredGroupKey(groupKey);
-//                autoLaunchDeepLink = true;
-//                return false;
-//            }
-//        });
+        DeeplinkUtil.parseDeeplink(intent, new Callback<String>() {
+            @Override
+            public boolean onExecuted(String groupKey) {
+                GroupManager.INSTANCE.setDefferredGroupKey(groupKey.toUpperCase());
+                autoLaunchDeepLink = true;
+                return false;
+            }
+        });
 
+        autoLaunchDeepLink = true;
         AppInvite.AppInviteApi.getInvitation(googleApiClient, this, autoLaunchDeepLink)
                 .setResultCallback(
                         new ResultCallback<AppInviteInvitationResult>() {
@@ -160,10 +160,8 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
                                     if(deepLink != null) {
                                         deepLink = deepLink.replace("http://tryvoices.com/","");
                                     }
-                                    GroupManager.INSTANCE.setDefferredGroupKey(deepLink);
-                                    GeneralUtil.toast("Persistent Deeplink is: " + deepLink);
+                                    GroupManager.INSTANCE.setDefferredGroupKey(deepLink.toUpperCase());
                                 } else {
-                                    GeneralUtil.toast("Deeplink is: " + "No deeplink found!");
                                     Log.e(TAG, "getInvitation: no deep link found.");
                                 }
                             }

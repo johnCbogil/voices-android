@@ -303,6 +303,7 @@ public enum GroupManager {
                     .subscribeToTopic(group.getGroupKey().replaceAll("\\s+", ""));
         } catch (Exception e) {
             Log.e(TAG, "Error subscribing to firebase notifications");
+            return;
         }
 
         /* Add the group to the remote database and refresh all relavent lists */
