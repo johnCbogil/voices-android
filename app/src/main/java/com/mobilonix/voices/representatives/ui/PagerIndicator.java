@@ -30,10 +30,10 @@ public class PagerIndicator extends LinearLayout implements ViewPager.OnPageChan
         TextView repsLevel = new TextView(getContext());
         repsLevel.setText(level);
         Typeface avenir = Typeface.createFromAsset(getContext().getAssets(), "fonts/AvenirNext-Regular.ttf");
-        repsLevel.setTypeface(avenir);
-        repsLevel.setTextColor(getResources().getColor(R.color.grey));
+        repsLevel.setTypeface(avenir, Typeface.BOLD);
+        repsLevel.setTextColor(getResources().getColor(R.color.light_grey));
         repsLevel.setTextSize(25);
-        repsLevel.setPadding(15,0,15,0);
+        repsLevel.setPadding(30,0,30,0);
         //formatting of the TextView goes here
         indicators.add(repsLevel);
         addView(repsLevel);
@@ -64,7 +64,7 @@ public class PagerIndicator extends LinearLayout implements ViewPager.OnPageChan
             if(i == position) {
                 indicators.get(i).setTextColor(getResources().getColor(R.color.indicator_blue));
             } else{
-                indicators.get(i).setTextColor(getResources().getColor(R.color.grey));
+                indicators.get(i).setTextColor(getResources().getColor(R.color.light_grey));
             }
         }
 
