@@ -1,10 +1,10 @@
 {
-  "reps" : {
+	"reps" : {
 		"1" : {
 			"title": "Mayor",
 			"firstName": "Bill",
 			"lastName": "De Blasio",
-			"phoneNumber": "212-587-3159",
+			"phoneNumber": "311",
 			"email": "",
 			"party": "D",
 			"photoURLPath": "http://www.mygovnyc.org/img/photos/otherofficials/deblasio.png",
@@ -30,8 +30,8 @@
 			"title": "Public Advocate",
 			"firstName": "Letitia",
 			"lastName": "James",
-			"phoneNumber": "212-669-7200",
-			"email": "GetHelp@pubadvocate.nyc.gov",
+			"phoneNumber": "212-669-7250",
+			"email": "gethelp@pubadvocate.nyc.gov",
 			"party": "D",
 			"photoURLPath": "http://www.mygovnyc.org/img/photos/otherofficials/letitiajames.jpg",
 			"twitter": "NYCPA",
