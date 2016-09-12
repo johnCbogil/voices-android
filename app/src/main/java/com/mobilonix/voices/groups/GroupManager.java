@@ -53,6 +53,8 @@ public enum GroupManager {
 
     ArrayList<Group> allGroupsData = new ArrayList<>();
 
+    String defferredGroupKey = null;
+
     public void toggleGroupPage(ViewGroup pageRoot, boolean state) {
 
         if(isRefreshing) {
@@ -127,6 +129,11 @@ public enum GroupManager {
                         return false;
                     }
                 });
+
+                if(defferredGroupKey != null) {
+                    subscribeToGroup(findGroupWithKey(defferredGroupKey), true, null);
+                    defferredGroupKey = null;
+                }
 
                 return false;
             }
@@ -296,6 +303,7 @@ public enum GroupManager {
                     .subscribeToTopic(group.getGroupKey().replaceAll("\\s+", ""));
         } catch (Exception e) {
             Log.e(TAG, "Error subscribing to firebase notifications");
+            return;
         }
 
         /* Add the group to the remote database and refresh all relavent lists */
@@ -449,5 +457,9 @@ public enum GroupManager {
         });
 
         actionDialog.show();
+    }
+
+    public void setDefferredGroupKey(String defferredGroupKey) {
+        this.defferredGroupKey = defferredGroupKey;
     }
 }

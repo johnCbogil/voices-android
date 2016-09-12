@@ -62,7 +62,7 @@ public enum SessionManager {
         return currentNotificationToken;
     }
 
-    public void signIn() {
+    public void signIn(final Callback<Boolean> callback) {
 
         final FirebaseAuth firebase = FirebaseAuth.getInstance();
 
@@ -96,6 +96,8 @@ public enum SessionManager {
                     Log.e("SESSION ERROR: ", task.getException().getMessage());
 
                 }
+
+                callback.onExecuted(true);
             }
         });
 
@@ -485,4 +487,5 @@ public enum SessionManager {
     public String getCurrentUserToken() {
         return currentUserToken;
     }
+
 }
