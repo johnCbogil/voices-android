@@ -50,6 +50,7 @@
                         android:textSize="18sp"
                         android:id="@+id/all_groups_info_text"
                         android:text="@string/all_groups_info"
+                        android:textColor="#000"
                         android:visibility="gone"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="10dp"

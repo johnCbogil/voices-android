@@ -59,7 +59,7 @@ public class GroupListRecylerAdapter extends RecyclerView.Adapter<GroupListRecyl
                 .fit()
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .placeholder(R.drawable.placeholder_spinner)
-                .error(R.drawable.representatives_place_holder_male)
+                .error(R.drawable.voices_icon)
                 .transform(new RoundedTransformation(10, 4))
                 .into(holder.groupImage);
 

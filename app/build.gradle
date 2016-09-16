@@ -7,7 +7,7 @@ android {
     buildToolsVersion "23.0.3"
 
     def major = 1;
-    def minor = 2;
+    def minor = 3;
     def patch = 0;
 
     def base = 100000000;

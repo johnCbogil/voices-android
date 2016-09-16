@@ -221,8 +221,8 @@ public enum GroupManager {
         Picasso.with(context)
                 .load(group.getGroupImageUrl())
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .placeholder(R.drawable.placeholder_spinner)
-                .error(R.drawable.representatives_place_holder_male)
+                .placeholder(R.drawable.voices_icon)
+                .error(R.drawable.voices_icon)
                 .fit()
                 .into(groupsImage);
 
