@@ -4,19 +4,21 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mobilonix.voices.R;
+import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.delegates.Callback;
 
 import java.util.ArrayList;
 
 public class PagerIndicator extends LinearLayout implements ViewPager.OnPageChangeListener{
 
-    ArrayList<TextView> indicators = new ArrayList<>();
+    ArrayList<TextView> indicators = new ArrayList<TextView>();
 
-    ArrayList<String> indicatorTags = new ArrayList<>();
+    ArrayList<String> indicatorTags = new ArrayList<String>();
 
     String currentIndicatorTag;
 
@@ -26,23 +28,40 @@ public class PagerIndicator extends LinearLayout implements ViewPager.OnPageChan
         super(context, attrs);
     }
 
-    public void addIndicator(String level, String indicatorTag) {
-        TextView repsLevel = new TextView(getContext());
+    public void addIndicator(String level, final String indicatorTag) {
+        final TextView repsLevel = new TextView(getContext());
         repsLevel.setText(level);
         Typeface avenir = Typeface.createFromAsset(getContext().getAssets(), "fonts/AvenirNext-Regular.ttf");
         repsLevel.setTypeface(avenir);
         repsLevel.setTextColor(getResources().getColor(R.color.grey));
         repsLevel.setTextSize(25);
         repsLevel.setPadding(15,0,15,0);
-        //formatting of the TextView goes here
         indicators.add(repsLevel);
+        final int position = indicators.size() - 1;
+        repsLevel.setTag(position + indicatorTag);
         addView(repsLevel);
         indicatorTags.add(indicatorTag);
+        repsLevel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GeneralUtil.toast("Tabs pressed");
 
+                if(callback != null) {
+
+                    for (int i = 0; i < indicators.size(); i++) {
+                        if(indicators.get(i).getTag().equals(i + indicatorTag)) {
+                            indicators.get(i).setTextColor(getResources().getColor(R.color.indicator_blue));
+                            callback.onExecuted(i);
+                        } else{
+                            indicators.get(i).setTextColor(getResources().getColor(R.color.grey));
+                        }
+                    }
+                }
+            }
+        });
         //set style on first indicator
         indicators.get(0).setTextColor(getResources().getColor(R.color.indicator_blue));
-
-            currentIndicatorTag = indicatorTags.get(0);
+        currentIndicatorTag = indicatorTags.get(0);
     }
 
     public String getCurrentIndicatorTag() {
@@ -71,7 +90,7 @@ public class PagerIndicator extends LinearLayout implements ViewPager.OnPageChan
         currentIndicatorTag = indicatorTags.get(position);
 
         if(callback != null) {
-            callback.onExecuted(position);
+            callback.onExecuted(null);
         }
     }
 

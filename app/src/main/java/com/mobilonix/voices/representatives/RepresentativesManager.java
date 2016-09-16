@@ -169,7 +169,19 @@ public enum RepresentativesManager {
             pagerIndicator.addIndicatorShiftCallback(new Callback() {
                 @Override
                 public boolean onExecuted(Object data) {
-                    int position = (Integer) data;
+
+                    String tag = "";
+
+                    if(data == null) {
+                        tag = pagerIndicator
+                                .getCurrentIndicatorTag();
+                    } else if (data instanceof String){
+                        tag = (String)data;
+                    } else if (data instanceof Integer) {
+                        representativesPager.setCurrentItem((Integer)data);
+                        return true;
+                    }
+
 
                     ArrayList<RepresentativesType> types = new ArrayList<>();
                     for (RepresentativesType rep : RepresentativesType.values()) {
@@ -177,18 +189,17 @@ public enum RepresentativesManager {
                     }
 
                     ListView listView = ((ListView) representativesFrame
-                            .findViewWithTag(pagerIndicator
-                                    .getCurrentIndicatorTag()));
+                            .findViewWithTag(tag));
 
                     ArrayList<Representative> representatives =
-                            currentRepsMap.get(pagerIndicator.getCurrentIndicatorTag());
+                            currentRepsMap.get(tag);
 
                     if (representatives == null) {
                         representatives = new ArrayList<>();
                     }
 
                     if ((representatives.size() == 0)) {
-                        toggleErrorDisplay(pagerIndicator.getCurrentIndicatorTag(), true);
+                        toggleErrorDisplay(tag, true);
                     }
 
                     if (listView != null) {
