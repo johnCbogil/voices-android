@@ -19,7 +19,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import okhttp3.Request;
 
@@ -107,7 +106,8 @@ public class StateOpenStatesApi implements ApiEngine {
 
                 politicos.add(politico);
             }
-
+            //Politico gov = getGov(state);
+            //politicos.add(gov);
         } catch (JSONException e) {
             e.printStackTrace(); //TODO handle exception
         }
@@ -115,44 +115,38 @@ public class StateOpenStatesApi implements ApiEngine {
         return politicos;
     }
 
-    public ArrayList<Politico> getGovs () {
-        ArrayList<Politico> politicos;
-        politicos = new ArrayList<Politico>();
+    public Politico getGov (String state) {
+        Politico politico;
         try {
             JSONObject govs = getJsonFromResource(VoicesApplication.getContext(), R.raw.state_governors).getJSONObject("govs");
-            Iterator<?> keys = govs.keys();
-
-            while (keys.hasNext()) {
-                String key = (String) keys.next();
-                JSONObject gov = govs.getJSONObject(key);
-                String firstName = gov.optString("first_name");
-                String lastName = gov.optString("last_name");
-                String title = VoicesApplication.getContext().getResources().getString(R.string.gov_title);
-                String gender = gov.optString("gender");
-                String party = gov.optString("party");
-                String district = gov.optString("state");
-                String electionDate = gov.optString("next_election_date");
-                String phoneNumber = gov.optString("phone");
-                String email = gov.optString("email");
-                String twitter = gov.optString("twitter");
-                String photo = gov.optString("photo_url");
-                Politico politico = new Politico.Builder()
-                        .setGender(gender)
-                        .setParty(party)
-                        .setDistrict(district)
-                        .setElectionDate(electionDate)
-                        .setEmailAddy(email)
-                        .setPhoneNumber(phoneNumber)
-                        .setPicUrl(photo)
-                        .setTwitterHandle(twitter)
-                        .build(title, firstName, lastName);
-                politicos.add(politico);
-            }
+            JSONObject gov = govs.getJSONObject(state);
+            String firstName = gov.optString("first_name");
+            String lastName = gov.optString("last_name");
+            String title = VoicesApplication.getContext().getResources().getString(R.string.gov_title);
+            String gender = gov.optString("gender");
+            String party = gov.optString("party");
+            String district = gov.optString("state");
+            String electionDate = gov.optString("next_election_date");
+            String phoneNumber = gov.optString("phone");
+            String email = gov.optString("email");
+            String twitter = gov.optString("twitter");
+            String photo = gov.optString("photo_url");
+            politico = new Politico.Builder()
+                .setGender(gender)
+                .setParty(party)
+                .setDistrict(district)
+                .setElectionDate(electionDate)
+                .setEmailAddy(email)
+                .setPhoneNumber(phoneNumber)
+                .setPicUrl(photo)
+                .setTwitterHandle(twitter)
+                .build(title, firstName, lastName);
         } catch (JSONException e) {
             Log.e(TAG, "json parse: " + e);
-            return politicos;
+            politico = new Politico();
+            return politico;
         }
-        return politicos;
+        return politico;
     }
 
     public static JSONObject getJsonFromResource(Context context, int jsonResource)  {

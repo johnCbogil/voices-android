@@ -1,6 +1,6 @@
 {
   "govs": {
-    "1": {
+    "AL": {
       "full_name": "Robert Bentley",
       "state": "AL",
       "state_full": "Alabama",
@@ -14,7 +14,7 @@
       "last_name": "Bentley",
       "gender": "M"
     },
-    "2": {
+    "AK": {
       "full_name": "Bill Walker",
       "state": "AK",
       "state_full": "Alaska",
@@ -28,7 +28,7 @@
       "last_name": "Walker",
       "gender": "M"
     },
-    "3": {
+    "AZ": {
       "full_name": "Doug Ducey",
       "state": "AZ",
       "state_full": "Arizona",
@@ -42,7 +42,7 @@
       "last_name": "Ducey",
       "gender": "M"
     },
-    "4": {
+    "AR": {
       "full_name": "Asa Hutchinson",
       "state": "AR",
       "state_full": "Arkansas",
@@ -56,7 +56,7 @@
       "last_name": "Hutchinson",
       "gender": "M"
     },
-    "5": {
+    "CA": {
       "full_name": "Jerry Brown",
       "state": "CA",
       "state_full": "California",
@@ -70,7 +70,7 @@
       "last_name": "Brown",
       "gender": "M"
     },
-    "6": {
+    "CO": {
       "full_name": "John Hickenlooper",
       "state": "CO",
       "state_full": "Colorado",
@@ -84,7 +84,7 @@
       "last_name": "Hickenlooper",
       "gender": "M"
     },
-    "7": {
+    "CT": {
       "full_name": "Daniel Malloy",
       "state": "CT",
       "state_full": "Connecticut",
@@ -98,7 +98,7 @@
       "last_name": "Malloy",
       "gender": "M"
     },
-    "8": {
+    "DE": {
       "full_name": "Jack Markell",
       "state": "DE",
       "state_full": "Delaware",
@@ -112,7 +112,7 @@
       "last_name": "Markell",
       "gender": "M"
     },
-    "9": {
+    "FL": {
       "full_name": "Rick Scott",
       "state": "FL",
       "state_full": "Florida",
@@ -126,7 +126,7 @@
       "last_name": "Scott",
       "gender": "M"
     },
-    "10": {
+    "GA": {
       "full_name": "Nathan Deal",
       "state": "GA",
       "state_full": "Georgia",
@@ -140,7 +140,7 @@
       "last_name": "Deal",
       "gender": "M"
     },
-    "11": {
+    "HI": {
       "full_name": "David Ige",
       "state": "HI",
       "state_full": "Hawaii",
@@ -154,7 +154,7 @@
       "last_name": "Ige",
       "gender": "M"
     },
-    "12": {
+    "ID": {
       "full_name": "Butch Otter",
       "state": "ID",
       "state_full": "Idaho",
@@ -168,7 +168,7 @@
       "last_name": "Otter",
       "gender": "M"
     },
-    "13": {
+    "IL": {
       "full_name": "Bruce Rauner",
       "state": "IL",
       "state_full": "Illinois",
@@ -182,7 +182,7 @@
       "last_name": "Rauner",
       "gender": "M"
     },
-    "14": {
+    "IN": {
       "full_name": "Mike Pence",
       "state": "IN",
       "state_full": "Indiana",
@@ -196,7 +196,7 @@
       "last_name": "Pence",
       "gender": "M"
     },
-    "15": {
+    "IA": {
       "full_name": "Terry Branstad",
       "state": "IA",
       "state_full": "Iowa",
@@ -210,7 +210,7 @@
       "last_name": "Branstad",
       "gender": "M"
     },
-    "16": {
+    "KS": {
       "full_name": "Sam Brownback",
       "state": "KS",
       "state_full": "Kansas",
@@ -224,7 +224,7 @@
       "last_name": "Brownback",
       "gender": "M"
     },
-    "17": {
+    "KY": {
       "full_name": "Matt Bevin",
       "state": "KY",
       "state_full": "Kentucky",
@@ -238,7 +238,7 @@
       "last_name": "Bevin",
       "gender": "M"
     },
-    "18": {
+    "LA": {
       "full_name": "John Bel Edwards",
       "state": "LA",
       "state_full": "Louisiana",
@@ -252,7 +252,7 @@
       "last_name": "Bel Edwards",
       "gender": "M"
     },
-    "19": {
+    "ME": {
       "full_name": "Paul LePage",
       "state": "ME",
       "state_full": "Maine",
@@ -266,7 +266,7 @@
       "last_name": "LePage",
       "gender": "M"
     },
-    "20": {
+    "MD": {
       "full_name": "Larry Hogan",
       "state": "MD",
       "state_full": "Maryland",
@@ -280,7 +280,7 @@
       "last_name": "Hogan",
       "gender": "M"
     },
-    "21": {
+    "MA": {
       "full_name": "Charlie Baker",
       "state": "MA",
       "state_full": "Massachusetts",
@@ -294,7 +294,7 @@
       "last_name": "Baker",
       "gender": "M"
     },
-    "22": {
+    "MI": {
       "full_name": "Rick Snyder",
       "state": "MI",
       "state_full": "Michigan",
@@ -308,7 +308,7 @@
       "last_name": "Snyder",
       "gender": "M"
     },
-    "23": {
+    "MN": {
       "full_name": "Mark Dayton",
       "state": "MN",
       "state_full": "Minnesota",
@@ -322,7 +322,7 @@
       "last_name": "Dayton",
       "gender": "M"
     },
-    "24": {
+    "MS": {
       "full_name": "Phil Bryant",
       "state": "MS",
       "state_full": "Mississippi",
@@ -336,7 +336,7 @@
       "last_name": "Bryant",
       "gender": "M"
     },
-    "25": {
+    "MO": {
       "full_name": "Jay Nixon",
       "state": "MO",
       "state_full": "Missouri",
@@ -350,7 +350,7 @@
       "last_name": "Nixon",
       "gender": "M"
     },
-    "26": {
+    "MT": {
       "full_name": "Steve Bullock",
       "state": "MT",
       "state_full": "Montana",
@@ -364,7 +364,7 @@
       "last_name": "Bullock",
       "gender": "M"
     },
-    "27": {
+    "NE": {
       "full_name": "Pete Ricketts",
       "state": "NE",
       "state_full": "Nebraska",
@@ -378,7 +378,7 @@
       "last_name": "Ricketts",
       "gender": "M"
     },
-    "28": {
+    "NV": {
       "full_name": "Brian Sandoval",
       "state": "NV",
       "state_full": "Nevada",
@@ -392,7 +392,7 @@
       "last_name": "Sandoval",
       "gender": "M"
     },
-    "29": {
+    "NH": {
       "full_name": "Maggie Hassan",
       "state": "NH",
       "state_full": "New Hampshire",
@@ -406,7 +406,7 @@
       "last_name": "Hassan",
       "gender": "F"
     },
-    "30": {
+    "NJ": {
       "full_name": "Chris Christie",
       "state": "NJ",
       "state_full": "New Jersey",
@@ -420,7 +420,7 @@
       "last_name": "Christie",
       "gender": "M"
     },
-    "31": {
+    "NM": {
       "full_name": "Susana Martinez",
       "state": "NM",
       "state_full": "New Mexico",
@@ -434,7 +434,7 @@
       "last_name": "Martinez",
       "gender": "F"
     },
-    "32": {
+    "NY": {
       "full_name": "Andrew Cuomo",
       "state": "NY",
       "state_full": "New York",
@@ -448,7 +448,7 @@
       "last_name": "Cuomo",
       "gender": "M"
     },
-    "33": {
+    "NC": {
       "full_name": "Pat McCrory",
       "state": "NC",
       "state_full": "North Carolina",
@@ -462,7 +462,7 @@
       "last_name": "McCrory",
       "gender": "M"
     },
-    "34": {
+    "ND": {
       "full_name": "Jack Dalrymple",
       "state": "ND",
       "state_full": "North Dakota",
@@ -476,7 +476,7 @@
       "last_name": "Dalrymple",
       "gender": "M"
     },
-    "35": {
+    "OH": {
       "full_name": "John Kasich",
       "state": "OH",
       "state_full": "Ohio",
@@ -490,7 +490,7 @@
       "last_name": "Kasich",
       "gender": "M"
     },
-    "36": {
+    "OK": {
       "full_name": "Mary Fallin",
       "state": "OK",
       "state_full": "Oklahoma",
@@ -504,7 +504,7 @@
       "last_name": "Fallin",
       "gender": "F"
     },
-    "37": {
+    "OR": {
       "full_name": "Kate Brown",
       "state": "OR",
       "state_full": "Oregon",
@@ -518,7 +518,7 @@
       "last_name": "Brown",
       "gender": "F"
     },
-    "38": {
+    "PA": {
       "full_name": "Tom Wolf",
       "state": "PA",
       "state_full": "Pennsylvania",
@@ -532,7 +532,7 @@
       "last_name": "Wolf",
       "gender": "M"
     },
-    "39": {
+    "RI": {
       "full_name": "Gina Raimondo",
       "state": "RI",
       "state_full": "Rhode Island",
@@ -546,7 +546,7 @@
       "last_name": "Raimondo",
       "gender": "F"
     },
-    "40": {
+    "SC": {
       "full_name": "Nikki Haley",
       "state": "SC",
       "state_full": "South Carolina",
@@ -560,7 +560,7 @@
       "last_name": "Haley",
       "gender": "F"
     },
-    "41": {
+    "SD": {
       "full_name": "Dennis Daugaard",
       "state": "SD",
       "state_full": "South Dakota",
@@ -574,7 +574,7 @@
       "last_name": "Daugaard",
       "gender": "M"
     },
-    "42": {
+    "TN": {
       "full_name": "Bill Haslam",
       "state": "TN",
       "state_full": "Tennessee",
@@ -588,7 +588,7 @@
       "last_name": "Haslam",
       "gender": "M"
     },
-    "43": {
+    "TX": {
       "full_name": "Greg Abbott",
       "state": "TX",
       "state_full": "Texas",
@@ -602,7 +602,7 @@
       "last_name": "Abbott",
       "gender": "M"
     },
-    "44": {
+    "UT": {
       "full_name": "Gary Herbert",
       "state": "UT",
       "state_full": "Utah",
@@ -615,7 +615,7 @@
       "first_name": "Gary",
       "last_name": "Herbert"
     },
-    "45": {
+    "VT": {
       "full_name": "Peter Shumlin",
       "state": "VT",
       "state_full": "Vermont",
@@ -629,7 +629,7 @@
       "last_name": "Shumlin",
       "gender": "M"
     },
-    "46": {
+    "VA": {
       "full_name": "Terry McAuliffe",
       "state": "VA",
       "state_full": "Virginia",
@@ -643,7 +643,7 @@
       "last_name": "McAuliffe",
       "gender": "M"
     },
-    "47": {
+    "WA": {
       "full_name": "Jay Inslee",
       "state": "WA",
       "state_full": "Washington",
@@ -657,7 +657,7 @@
       "last_name": "Inslee",
       "gender": "M"
     },
-    "48": {
+    "WV": {
       "full_name": "Earl Ray Tomblin",
       "state": "WV",
       "state_full": "West Virginia",
@@ -671,7 +671,7 @@
       "last_name": "Tomblin",
       "gender": "M"
     },
-    "49": {
+    "WI": {
       "full_name": "Scott Walker",
       "state": "WI",
       "state_full": "Wisconsin",
@@ -685,7 +685,7 @@
       "last_name": "Walker",
       "gender": "M"
     },
-    "50": {
+    "WY": {
       "full_name": "Matt Mead",
       "state": "WY",
       "state_full": "Wyoming",

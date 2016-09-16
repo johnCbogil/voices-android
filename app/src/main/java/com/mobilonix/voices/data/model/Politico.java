@@ -17,6 +17,9 @@ public class Politico {
     String mTwitterHandle;
     String mPicUrl;
 
+    public Politico(){
+
+    }
     private Politico(String fullName, String gender, String party, String district,  String electionDate, String phoneNumber,
                      String emailAddy, String twitterHandle, String picUrl) {
         mFullName = fullName;
