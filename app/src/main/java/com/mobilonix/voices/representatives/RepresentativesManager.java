@@ -78,7 +78,9 @@ public enum RepresentativesManager {
     ConcurrentHashMap<String, ArrayList<Representative>> currentRepsMap = new ConcurrentHashMap<>();
 
     /**
+     *
      * The enum value contains the URL that needs to be called to make the representatives request
+     *
      */
 
     /* Fixme The old enum structure assumed that only an Api URL was necessary to pull data     */
@@ -466,7 +468,6 @@ public enum RepresentativesManager {
                             if(progressSpinner != null) {
                                 progressSpinner.setVisibility(View.GONE);
                             }
-
                         }
                     });
 

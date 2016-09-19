@@ -1,62 +1,38 @@
 package com.mobilonix.voices.data.api.util;
 
-import android.content.Context;
 import android.location.Address;
-import android.location.Geocoder;
 import android.util.Log;
 
-import com.mobilonix.voices.base.util.GeneralUtil;
+import com.mobilonix.voices.R;
+import com.mobilonix.voices.util.JsonUtil;
 
-import java.io.IOException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
-import java.util.Locale;
 
 /**
- * Converts NYC lat / lon to physical address String and provides address String and mBorough
  *
+ * Converts NYC lat / lon to physical address String and provides address String and mBorough*
  *
- *
- * TODO Designed to work with {@link .api.engines.NycCouncilApi} but could be generalized or
- * TODO    substituted
- * TODO this entire thing needs to be refactored
  */
 
-public class NycCouncilGeoUtil {
+public class NycCouncilGeoUtil extends VoicesGeoUtil{
 
-    Geocoder mGeocoder;
     int mBorough;
-    String mAddressLine;
-    List<Address> mAddresses = null;
 
-    public static final int NUMBER_OF_LISTINGS = 5;
-
-    public NycCouncilGeoUtil(Context context) {
-        mGeocoder = new Geocoder(context);
-    }
-
-    public void init(double lat, double lon){
-
-        try {
-            mAddresses = mGeocoder.getFromLocation(lat, lon, NUMBER_OF_LISTINGS);
-
-        } catch (IOException ioException) {
-            Log.e("mGeocoder", ioException.toString());
-
-        } catch (IllegalArgumentException illegalArgumentException) {
-            Log.e("mGeocoder", illegalArgumentException.toString());
-        }
-
-        parseAddressLine();
-        parseBorough();
+    public NycCouncilGeoUtil(double lat, double lon) {
+        List<Address> addresses = super.resetLocation(lat,lon);
+        parseBorough(addresses);
     }
 
     //TODO switch to regex match in order to take advantage of matches() method for multiple terms
-    private void parseBorough() {
+    private void parseBorough(List<Address> addresses) {
         String allAddys = null;
-        mBorough = 0;
 
         try {
-            allAddys = mAddresses.toString().toLowerCase();
+            allAddys = addresses.toString().toLowerCase();
         } catch (Exception e) {
             //FIXME add proper exception handling
             Log.e("NycCouncilGeoUtil","Problem parsing boroughs");
@@ -78,17 +54,39 @@ public class NycCouncilGeoUtil {
         }
     }
 
-    private void parseAddressLine() {
+    public int filterDistrict(double lat, double lon) {
+        JSONObject jObj = JsonUtil.getJsonFromResource(R.raw.district_sampling);
 
-        Log.i("maddresses", "" + mAddresses);
+        int district=-1;
 
-        if(mAddresses != null) {
+        try {
+            JSONArray map = jObj.getJSONArray("map");
 
-            for (int i = 0; i < mAddresses.size(); i++) {
-                if (mAddressLine == null) mAddressLine = mAddresses.get(i).getAddressLine(0);
+            double shortestDistance = Double.MAX_VALUE;
+
+            for(int i = 0; i < map.length(); i++) {
+
+                double shapeLat = ((JSONObject) map.get(i)).getDouble("lat");
+                double shapeLon = ((JSONObject) map.get(i)).getDouble("lon");
+
+                double distance = distanceCalc(shapeLat, shapeLon, lat, lon);
+                Log.i("json","distance: " + distance + "sLat: " +shapeLat + "sLon: " + shapeLon + "lat: " +lat + "lon: " + lon);
+
+                if(distance < shortestDistance) {
+                    shortestDistance = distance;
+                    district = ((JSONObject) map.get(i)).getInt("dist");
+                    Log.i("json","district:"  + district + "shortest dist: " + shortestDistance);
+                }
             }
-            Log.d("TAG", "address: " + mAddressLine);
+
+        } catch(JSONException e) {
+            e.printStackTrace();
         }
+        return district+1;
+    }
+
+    private static double distanceCalc(double x1, double y1, double x2, double y2) {
+        return Math.sqrt( (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
     }
 
     public String getAddressLine() {
