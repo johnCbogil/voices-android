@@ -1,22 +1,19 @@
 package com.mobilonix.voices.data.api.engines;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.data.api.ApiEngine;
-import com.mobilonix.voices.data.api.util.NycCouncilFilter;
 import com.mobilonix.voices.data.api.util.NycCouncilGeoUtil;
 import com.mobilonix.voices.data.model.Politico;
 import com.mobilonix.voices.representatives.RepresentativesManager;
+import com.mobilonix.voices.util.JsonUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -33,7 +30,7 @@ public class NycLocalOfficialsApi implements ApiEngine {
 
     //FIXME this is a temporary way to convert from lat/lon to address
 
-    static  NycCouncilGeoUtil geoUtil = new NycCouncilGeoUtil(VoicesApplication.getContext());
+    public NycCouncilGeoUtil geoUtil;
 
     public static final String BASE_URL = "http://legistar.council.nyc.gov/redirect.aspx";
     public static final String ADDRESS_KEY = "lookup_address";
@@ -52,9 +49,7 @@ public class NycLocalOfficialsApi implements ApiEngine {
         mLatitude = latitude;
         mLongitude = longitude;
 
-        Log.i("huh","lat: " + latitude + " lon: " + longitude);
-
-        geoUtil.init(latitude, longitude);
+        geoUtil = new NycCouncilGeoUtil(latitude,longitude);
 
         String address = geoUtil.getAddressLine();
         String borough = geoUtil.getBorough();
@@ -112,12 +107,12 @@ public class NycLocalOfficialsApi implements ApiEngine {
         Log.i(TAG, "politician from disctrict: " + district);
 
         if (!(district >= 1 && district <= 51)) {
-            district = NycCouncilFilter.filterDistrict(VoicesApplication.getContext(), mLatitude, mLongitude);
+            district = geoUtil.filterDistrict(mLatitude, mLongitude);
             Log.i("nycapi", "in here district: " + district);
         }
 
         try {
-            JSONObject districts = getJsonFromResource(VoicesApplication.getContext(), R.raw.nyc_district_data);
+            JSONObject districts = JsonUtil.getJsonFromResource(R.raw.nyc_district_data);
 
             Log.e(TAG, "0: " + districts.toString());
 
@@ -176,7 +171,7 @@ public class NycLocalOfficialsApi implements ApiEngine {
         ArrayList<Politico> politicos;
         politicos = new ArrayList<Politico>();
         try {
-            JSONObject reps = getJsonFromResource(VoicesApplication.getContext(), R.raw.nyc_reps).getJSONObject("reps");
+            JSONObject reps = JsonUtil.getJsonFromResource(R.raw.nyc_reps).getJSONObject("reps");
             Iterator<?> keys = reps.keys();
 
             while (keys.hasNext()) {
@@ -210,44 +205,6 @@ public class NycLocalOfficialsApi implements ApiEngine {
             return politicos;
         }
         return politicos;
-    }
-
-    public static JSONObject getJsonFromResource(Context context, int jsonResource)  {
-        InputStream inputStream = context.getResources().openRawResource(jsonResource); // getting XML
-
-        if(jsonResource > 0){
-
-            try {
-                JSONObject jsonObject = new JSONObject(convertStreamToString(inputStream));
-
-                Log.d("TAG", jsonObject.toString());
-                return jsonObject;
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return null;
-    }
-
-    private static String convertStreamToString(InputStream inputStream) {
-
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-        byte buf[] = new byte[1024];
-        int len;
-        try {
-            while ((len = inputStream.read(buf)) != -1) {
-                outputStream.write(buf, 0, len);
-            }
-            outputStream.close();
-            inputStream.close();
-        } catch (IOException e) {
-
-            //TODO handle exception
-        }
-        return outputStream.toString();
     }
 
     @Override
