@@ -13,7 +13,7 @@
     <string name="instructions_title">To View Your Representatives</string>
     <string name="instructions_text_1">Use the search bar to find representatives by address or swipe down to fetch representatives at your current location.</string>
     <string name="instructions_text_2">After representatives have loaded, swipe right to see state and local representatives.</string>
-    <string name="instructions_text_3">Click a representative\'s image for more information on them.</string>
+    <string name="instructions_text_3">Click a representative\'s image for more information about them.</string>
     <string name="got_it_button_text">Got It!</string>
 
     <!--Info Dialog-->
@@ -40,6 +40,7 @@
 
     <!--Representatives Tab-->
     <string name="representatives_error_message">Officials are not available in your area yet.</string>
+    <string name="click_image">Click image for more</string>
     <string name="reps">Reps</string>
     <string name="groups">Groups</string>
 
@@ -74,7 +75,7 @@
     <string name="district">District:&#160;</string>
     <string name="next_election">Next Election:&#160;</string>
     <string name="not_available">N/A</string>
-    <string name="gov_title">Gov</string>
+    <string name="gov_title">Gov.</string>
     <!-- Errors-->
     <string name="groups_fetch_error">"Server/Network Error! Attempting to fetch groups again..."</string>
     <string name="council_not_yet_error">City Council members not available yet.  Coming soon!</string>

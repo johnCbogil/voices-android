@@ -75,7 +75,7 @@ public class UsCongressSunlightApi implements ApiEngine {
 
                 String firstName = jsonPolitico.optString("first_name");
                 String lastName = jsonPolitico.optString("last_name");
-                String title = jsonPolitico.optString("title");
+                String title = jsonPolitico.optString("title" + ".");
                 String gender = jsonPolitico.optString("gender");
                 String party = jsonPolitico.optString("party");
                 String district;
@@ -84,7 +84,7 @@ public class UsCongressSunlightApi implements ApiEngine {
                 } else {
                     district = jsonPolitico.optString("district");
                 }
-                String electionDate = "";
+                String electionDate = setElectionDate(jsonPolitico.optString("term_end"));
                 String phoneNumber = jsonPolitico.optString("phone");
                 String twitter = jsonPolitico.optString("twitter_id");
                 String bioguide_id = jsonPolitico.optString("bioguide_id");
@@ -110,6 +110,21 @@ public class UsCongressSunlightApi implements ApiEngine {
         return politicos;
     }
 
+    public String setElectionDate(String termEnd) {
+        if (termEnd.contains("2017")) {
+            return "November 8, 2016";
+        } else if (termEnd.contains("2018")) {
+            return "November 7, 2017";
+        } else if (termEnd.contains("2019")) {
+            return "November 6, 2018";
+        } else if (termEnd.contains("2020")) {
+            return "November 5, 2019";
+        } else if (termEnd.contains("2021")){
+            return "November 3, 2020";
+        } else {
+            return "";
+        }
+    }
     @Override
     public RepresentativesManager.RepresentativesType getRepresentativeType() {
         return RepresentativesManager.RepresentativesType.CONGRESS;
