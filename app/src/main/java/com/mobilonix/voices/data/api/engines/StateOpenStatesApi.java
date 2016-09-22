@@ -82,7 +82,7 @@ public class StateOpenStatesApi implements ApiEngine {
                 String gender = "";
                 String party = jsonPolitico.optString("party");
                 String district = jsonPolitico.optString("district");
-                String electionDate = "";
+                String electionDate = setElectionDate(jsonPolitico.optJSONArray("roles").optJSONObject(i).optString("end_date"));
 
                 String phoneNumber = "";
                 if (jsonPolitico.optJSONArray("offices").optJSONObject(0).has("phone")) {
@@ -188,10 +188,26 @@ public class StateOpenStatesApi implements ApiEngine {
 
     public String setTitle(String chamber){
         if (chamber.equals("upper")) {
-            return "Sen ";
+            return "Sen. ";
         } else if (chamber.equals("lower")){
-            return "Rep ";
+            return "Rep. ";
         } else{
+            return "";
+        }
+    }
+
+    public String setElectionDate(String termEnd) {
+        if (termEnd.contains("2017")) {
+            return "November 8, 2016";
+        } else if (termEnd.contains("2018")) {
+            return "November 7, 2017";
+        } else if (termEnd.contains("2019")) {
+            return "November 6, 2018";
+        } else if (termEnd.contains("2020")) {
+            return "November 5, 2019";
+        } else if (termEnd.contains("2021")){
+            return "November 3, 2020";
+        } else {
             return "";
         }
     }
