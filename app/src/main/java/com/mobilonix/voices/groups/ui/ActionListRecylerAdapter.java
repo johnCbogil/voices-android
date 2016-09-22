@@ -35,9 +35,13 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
             }
         }
 
-        Collections.reverse(modifiedActionsList);
+        for(int i=0; i<actions.size(); i++){
+            if(actions.get(i).getTimeStamp() > System.currentTimeMillis()){
+                actions.remove(i);
+            }
+        }
+        Collections.sort(modifiedActionsList);
         this.actions = modifiedActionsList;
-
     }
 
     @Override
@@ -86,7 +90,6 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
         TextView actionDescription;
         TextView actionName;
         TextView actionCategory;
-
         Button learnMoreButton;
 
         int position;

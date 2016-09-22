@@ -1,7 +1,6 @@
 package com.mobilonix.voices.groups.model;
 
-public class Action {
-
+public class Action implements Comparable<Action> {
 
     String actionKey;
     String body;
@@ -9,7 +8,7 @@ public class Action {
     String groupName;
     String imageUrl;
     String subject;
-    String timeStamp;
+    long timeStamp;
     String title;
 
     public Action(String actionKey,
@@ -18,7 +17,7 @@ public class Action {
                   String groupName,
                   String imageUrl,
                   String subject,
-                  String timeStamp,
+                  long timeStamp,
                   String title) {
 
         this.actionKey = actionKey;
@@ -56,7 +55,7 @@ public class Action {
         return subject;
     }
 
-    public String getTimeStamp() {
+    public long getTimeStamp() {
         return timeStamp;
     }
 
@@ -66,5 +65,12 @@ public class Action {
     
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    @Override
+    public int compareTo(Action compareAction) {
+        long originalTimestamp = this.getTimeStamp();
+        long compareTimestamp= compareAction.getTimeStamp();
+        return (int)(compareTimestamp - originalTimestamp);
     }
 }

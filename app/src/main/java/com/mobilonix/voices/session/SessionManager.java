@@ -371,7 +371,7 @@ public enum SessionManager {
                     String groupName = (String) action.child("groupName").getValue();
                     String imageUrl = (String) action.child("imageURL").getValue();
                     String subject = (String) action.child("subject").getValue();
-                    String timestamp = action.child("timestamp").toString();
+                    long timestamp = (long)action.child("timestamp").getValue();
                     String title = (String) action.child("title").getValue();
 
                     allActions.add(new Action(action.getKey(),
@@ -380,7 +380,7 @@ public enum SessionManager {
                             (String) action.child("groupName").getValue(),
                             (String) action.child("imageUrl").getValue(),
                             (String) action.child("subject").getValue(),
-                            action.child("timestamp").toString(),
+                            (long)action.child("timestamp").getValue(),
                             (String) action.child("title").getValue()));
 
                     Action actionToAdd =
