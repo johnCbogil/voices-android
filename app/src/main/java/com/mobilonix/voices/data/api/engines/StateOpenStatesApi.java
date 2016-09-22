@@ -82,7 +82,7 @@ public class StateOpenStatesApi implements ApiEngine {
                 String gender = "";
                 String party = jsonPolitico.optString("party");
                 String district = jsonPolitico.optString("district");
-                String electionDate = setElectionDate(jsonPolitico.optJSONArray("roles").optJSONObject(i).optString("end_date"));
+                String electionDate =  setElectionDate(jsonPolitico.optJSONArray("roles").optJSONObject(i).optString("end_date"));
 
                 String phoneNumber = "";
                 if (jsonPolitico.optJSONArray("offices").optJSONObject(0).has("phone")) {

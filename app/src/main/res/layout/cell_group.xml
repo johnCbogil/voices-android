@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/cell_group_category"
                 android:textSize="17sp"
-                android:textColor="@color/light_grey"/>
+                android:textColor="@color/medium_grey"/>
 
             <com.mobilonix.voices.util.AvenirTextView
                 android:layout_width="wrap_content"

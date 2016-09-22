@@ -35,9 +35,8 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
             }
         }
 
-        Collections.reverse(modifiedActionsList);
+        Collections.sort(modifiedActionsList);
         this.actions = modifiedActionsList;
-
     }
 
     @Override
@@ -86,7 +85,6 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
         TextView actionDescription;
         TextView actionName;
         TextView actionCategory;
-
         Button learnMoreButton;
 
         int position;

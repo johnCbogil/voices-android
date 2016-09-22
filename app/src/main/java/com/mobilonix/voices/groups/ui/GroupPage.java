@@ -24,9 +24,14 @@ public class GroupPage extends FrameLayout {
         super(context, attrs);
     }
 
-    public void setActions(ArrayList<Action> actions) {
+    public void setActions(ArrayList<Action> fetchedActions) {
+        actions = new ArrayList<Action>();
 
-        this.actions = actions;
+        for(Action action : fetchedActions){
+            if(action.getTimeStamp() <= System.currentTimeMillis()/1000){
+                actions.add(action);
+            }
+        }
 
         EntityContainer actionsContainer = (EntityContainer)findViewById(R.id.actions_container);
         actionsContainer.addItems(selectUserActions(actions, userGroups),
