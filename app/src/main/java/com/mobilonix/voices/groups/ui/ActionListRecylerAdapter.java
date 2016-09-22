@@ -35,11 +35,6 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
             }
         }
 
-        for(int i=0; i<actions.size(); i++){
-            if(actions.get(i).getTimeStamp() > System.currentTimeMillis()){
-                actions.remove(i);
-            }
-        }
         Collections.sort(modifiedActionsList);
         this.actions = modifiedActionsList;
     }

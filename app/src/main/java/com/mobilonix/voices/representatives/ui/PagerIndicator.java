@@ -31,11 +31,11 @@ public class PagerIndicator extends LinearLayout implements ViewPager.OnPageChan
     public void addIndicator(String level, final String indicatorTag) {
         final TextView repsLevel = new TextView(getContext());
         repsLevel.setText(level);
-        Typeface avenir = Typeface.createFromAsset(getContext().getAssets(), "fonts/AvenirNext-Regular.ttf");
-        repsLevel.setTypeface(avenir, Typeface.BOLD);
+        Typeface avenirBold = Typeface.createFromAsset(getContext().getAssets(), "fonts/avenir-next-bold.ttf");
+        repsLevel.setTypeface(avenirBold);
         repsLevel.setTextColor(getResources().getColor(R.color.light_grey));
         repsLevel.setTextSize(25);
-        repsLevel.setPadding(30,0,30,0);
+        repsLevel.setPadding(20,0,20,0);
         //formatting of the TextView goes here
         indicators.add(repsLevel);
         final int position = indicators.size() - 1;
