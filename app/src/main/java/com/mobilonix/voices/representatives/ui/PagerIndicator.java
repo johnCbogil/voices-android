@@ -54,7 +54,7 @@ public class PagerIndicator extends LinearLayout implements ViewPager.OnPageChan
                             indicators.get(i).setTextColor(getResources().getColor(R.color.indicator_blue));
                             callback.onExecuted(i);
                         } else{
-                            indicators.get(i).setTextColor(getResources().getColor(R.color.grey));
+                            indicators.get(i).setTextColor(getResources().getColor(R.color.light_grey));
                         }
                     }
                 }

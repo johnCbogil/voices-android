@@ -11,6 +11,7 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mobilonix.voices.R;
@@ -42,6 +43,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
 
             convertView = inflater.inflate(resource, parent, false);
 
+            final LinearLayout representativesLinearLayout = (LinearLayout)convertView.findViewById(R.id.representatives_linear_layout);
             final ImageView listImage = (ImageView)convertView.findViewById(R.id.representatives_list_image);
             TextView representativesNameText = (TextView)convertView.findViewById(R.id.representatives_list_name_text);
             representativesNameText.setText(representatives.get(position).getName());
@@ -54,13 +56,12 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                     .transform(new RoundedTransformation(50, 4))
                     .into(listImage);
 
-            listImage.setOnClickListener(new View.OnClickListener() {
+            representativesLinearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     detailsDialog = new Dialog(getContext());
                     detailsDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     detailsDialog.setContentView(R.layout.dialog_repsdetails);
-                    detailsDialog.setTitle(R.string.response_title);
                     ImageView repsImage = (ImageView)detailsDialog.findViewById(R.id.reps_image);
                     TextView repsName = (TextView)detailsDialog.findViewById(R.id.reps_name);
                     TextView repsParty = (TextView)detailsDialog.findViewById(R.id.reps_party);
