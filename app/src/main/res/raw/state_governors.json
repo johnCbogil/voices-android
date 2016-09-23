@@ -1,8 +1,8 @@
 {
   "govs": {
-    "AL": {
+    "al": {
       "full_name": "Robert Bentley",
-      "state": "AL",
+      "state": "al",
       "state_full": "Alabama",
       "party": "Republican",
       "phone": "334.242.7100",
@@ -14,9 +14,9 @@
       "last_name": "Bentley",
       "gender": "M"
     },
-    "AK": {
+    "ak": {
       "full_name": "Bill Walker",
-      "state": "AK",
+      "state": "ak",
       "state_full": "Alaska",
       "party": "Independant",
       "phone": "(907) 465-3500",
@@ -28,9 +28,9 @@
       "last_name": "Walker",
       "gender": "M"
     },
-    "AZ": {
+    "az": {
       "full_name": "Doug Ducey",
-      "state": "AZ",
+      "state": "az",
       "state_full": "Arizona",
       "party": "Republican",
       "phone": "602.542.4331",
@@ -42,9 +42,9 @@
       "last_name": "Ducey",
       "gender": "M"
     },
-    "AR": {
+    "ar": {
       "full_name": "Asa Hutchinson",
-      "state": "AR",
+      "state": "ar",
       "state_full": "Arkansas",
       "party": "Republican",
       "phone": "(501) 682-2345",
@@ -56,9 +56,9 @@
       "last_name": "Hutchinson",
       "gender": "M"
     },
-    "CA": {
+    "ca": {
       "full_name": "Jerry Brown",
-      "state": "CA",
+      "state": "ca",
       "state_full": "California",
       "party": "Democrat",
       "phone": "(916) 445-2841",
@@ -70,9 +70,9 @@
       "last_name": "Brown",
       "gender": "M"
     },
-    "CO": {
+    "co": {
       "full_name": "John Hickenlooper",
-      "state": "CO",
+      "state": "co",
       "state_full": "Colorado",
       "party": "Democrat",
       "phone": "(303) 866-2471",
@@ -84,9 +84,9 @@
       "last_name": "Hickenlooper",
       "gender": "M"
     },
-    "CT": {
+    "ct": {
       "full_name": "Daniel Malloy",
-      "state": "CT",
+      "state": "ct",
       "state_full": "Connecticut",
       "party": "Democrat",
       "phone": "860-566-4840",
@@ -98,9 +98,9 @@
       "last_name": "Malloy",
       "gender": "M"
     },
-    "DE": {
+    "de": {
       "full_name": "Jack Markell",
-      "state": "DE",
+      "state": "de",
       "state_full": "Delaware",
       "party": "Democrat",
       "phone": "(302) 744-4101",
@@ -112,9 +112,9 @@
       "last_name": "Markell",
       "gender": "M"
     },
-    "FL": {
+    "fl": {
       "full_name": "Rick Scott",
-      "state": "FL",
+      "state": "fl",
       "state_full": "Florida",
       "party": "Republican",
       "phone": "(850) 488-7146",
@@ -126,9 +126,9 @@
       "last_name": "Scott",
       "gender": "M"
     },
-    "GA": {
+    "ga": {
       "full_name": "Nathan Deal",
-      "state": "GA",
+      "state": "ga",
       "state_full": "Georgia",
       "party": "Republican",
       "phone": "404-656-1776",
@@ -140,9 +140,9 @@
       "last_name": "Deal",
       "gender": "M"
     },
-    "HI": {
+    "hi": {
       "full_name": "David Ige",
-      "state": "HI",
+      "state": "hi",
       "state_full": "Hawaii",
       "party": "Democrat",
       "phone": "(808) 586-0034",
@@ -154,9 +154,9 @@
       "last_name": "Ige",
       "gender": "M"
     },
-    "ID": {
+    "id": {
       "full_name": "Butch Otter",
-      "state": "ID",
+      "state": "id",
       "state_full": "Idaho",
       "party": "Republican",
       "phone": "(208) 334-2100",
@@ -168,9 +168,9 @@
       "last_name": "Otter",
       "gender": "M"
     },
-    "IL": {
+    "il": {
       "full_name": "Bruce Rauner",
-      "state": "IL",
+      "state": "il",
       "state_full": "Illinois",
       "party": "Republican",
       "phone": "217-782-0244",
@@ -182,9 +182,9 @@
       "last_name": "Rauner",
       "gender": "M"
     },
-    "IN": {
+    "in": {
       "full_name": "Mike Pence",
-      "state": "IN",
+      "state": "in",
       "state_full": "Indiana",
       "party": "Republican",
       "phone": "1-317-232-4567",
@@ -196,9 +196,9 @@
       "last_name": "Pence",
       "gender": "M"
     },
-    "IA": {
+    "ia": {
       "full_name": "Terry Branstad",
-      "state": "IA",
+      "state": "ia",
       "state_full": "Iowa",
       "party": "Republican",
       "phone": "515-281-5211",
@@ -210,9 +210,9 @@
       "last_name": "Branstad",
       "gender": "M"
     },
-    "KS": {
+    "ks": {
       "full_name": "Sam Brownback",
-      "state": "KS",
+      "state": "ks",
       "state_full": "Kansas",
       "party": "Republican",
       "phone": "785-296-3232",
@@ -224,9 +224,9 @@
       "last_name": "Brownback",
       "gender": "M"
     },
-    "KY": {
+    "ky": {
       "full_name": "Matt Bevin",
-      "state": "KY",
+      "state": "ky",
       "state_full": "Kentucky",
       "party": "Republican",
       "phone": "(502) 564-2611",
@@ -238,9 +238,9 @@
       "last_name": "Bevin",
       "gender": "M"
     },
-    "LA": {
+    "la": {
       "full_name": "John Bel Edwards",
-      "state": "LA",
+      "state": "la",
       "state_full": "Louisiana",
       "party": "Democrat",
       "phone": "225-435-9808",
@@ -252,9 +252,9 @@
       "last_name": "Bel Edwards",
       "gender": "M"
     },
-    "ME": {
+    "me": {
       "full_name": "Paul LePage",
-      "state": "ME",
+      "state": "me",
       "state_full": "Maine",
       "party": "Republican",
       "phone": "207-287-3531",
@@ -266,9 +266,9 @@
       "last_name": "LePage",
       "gender": "M"
     },
-    "MD": {
+    "md": {
       "full_name": "Larry Hogan",
-      "state": "MD",
+      "state": "md",
       "state_full": "Maryland",
       "party": "Republican",
       "phone": "(410) 974-3901",
@@ -280,9 +280,9 @@
       "last_name": "Hogan",
       "gender": "M"
     },
-    "MA": {
+    "ma": {
       "full_name": "Charlie Baker",
-      "state": "MA",
+      "state": "ma",
       "state_full": "Massachusetts",
       "party": "Republican",
       "phone": "617.725.4005",
@@ -294,9 +294,9 @@
       "last_name": "Baker",
       "gender": "M"
     },
-    "MI": {
+    "mi": {
       "full_name": "Rick Snyder",
-      "state": "MI",
+      "state": "mi",
       "state_full": "Michigan",
       "party": "Republican",
       "phone": "517-373-3400",
@@ -308,9 +308,9 @@
       "last_name": "Snyder",
       "gender": "M"
     },
-    "MN": {
+    "mn": {
       "full_name": "Mark Dayton",
-      "state": "MN",
+      "state": "mn",
       "state_full": "Minnesota",
       "party": "Democratic-Farmer-Labor-Party",
       "phone": "651-201-3400",
@@ -322,9 +322,9 @@
       "last_name": "Dayton",
       "gender": "M"
     },
-    "MS": {
+    "ms": {
       "full_name": "Phil Bryant",
-      "state": "MS",
+      "state": "ms",
       "state_full": "Mississippi",
       "party": "Republican",
       "phone": "601.359.3150",
@@ -336,9 +336,9 @@
       "last_name": "Bryant",
       "gender": "M"
     },
-    "MO": {
+    "mo": {
       "full_name": "Jay Nixon",
-      "state": "MO",
+      "state": "mo",
       "state_full": "Missouri",
       "party": "Democrat",
       "phone": "(573) 751-3222",
@@ -350,9 +350,9 @@
       "last_name": "Nixon",
       "gender": "M"
     },
-    "MT": {
+    "mt": {
       "full_name": "Steve Bullock",
-      "state": "MT",
+      "state": "mt",
       "state_full": "Montana",
       "party": "Democrat",
       "phone": "406-444-3111",
@@ -364,9 +364,9 @@
       "last_name": "Bullock",
       "gender": "M"
     },
-    "NE": {
+    "ne": {
       "full_name": "Pete Ricketts",
-      "state": "NE",
+      "state": "ne",
       "state_full": "Nebraska",
       "party": "Republican",
       "phone": "402-471-2244",
@@ -378,9 +378,9 @@
       "last_name": "Ricketts",
       "gender": "M"
     },
-    "NV": {
+    "nv": {
       "full_name": "Brian Sandoval",
-      "state": "NV",
+      "state": "nv",
       "state_full": "Nevada",
       "party": "Republican",
       "phone": "(775) 684-5670",
@@ -392,9 +392,9 @@
       "last_name": "Sandoval",
       "gender": "M"
     },
-    "NH": {
+    "nh": {
       "full_name": "Maggie Hassan",
-      "state": "NH",
+      "state": "nh",
       "state_full": "New Hampshire",
       "party": "Democrat",
       "phone": "(603)271-2121",
@@ -406,9 +406,9 @@
       "last_name": "Hassan",
       "gender": "F"
     },
-    "NJ": {
+    "nj": {
       "full_name": "Chris Christie",
-      "state": "NJ",
+      "state": "nj",
       "state_full": "New Jersey",
       "party": "Republican",
       "phone": "609-292-6000",
@@ -420,9 +420,9 @@
       "last_name": "Christie",
       "gender": "M"
     },
-    "NM": {
+    "nm": {
       "full_name": "Susana Martinez",
-      "state": "NM",
+      "state": "nm",
       "state_full": "New Mexico",
       "party": "Republican",
       "phone": "505-476-2200",
@@ -434,9 +434,9 @@
       "last_name": "Martinez",
       "gender": "F"
     },
-    "NY": {
+    "ny": {
       "full_name": "Andrew Cuomo",
-      "state": "NY",
+      "state": "ny",
       "state_full": "New York",
       "party": "Democrat",
       "phone": "1-518-474-8390",
@@ -448,9 +448,9 @@
       "last_name": "Cuomo",
       "gender": "M"
     },
-    "NC": {
+    "nc": {
       "full_name": "Pat McCrory",
-      "state": "NC",
+      "state": "nc",
       "state_full": "North Carolina",
       "party": "Republican",
       "phone": "(919) 814-2000",
@@ -462,9 +462,9 @@
       "last_name": "McCrory",
       "gender": "M"
     },
-    "ND": {
+    "nd": {
       "full_name": "Jack Dalrymple",
-      "state": "ND",
+      "state": "nd",
       "state_full": "North Dakota",
       "party": "Republican",
       "phone": "701.328.2200",
@@ -476,9 +476,9 @@
       "last_name": "Dalrymple",
       "gender": "M"
     },
-    "OH": {
+    "oh": {
       "full_name": "John Kasich",
-      "state": "OH",
+      "state": "oh",
       "state_full": "Ohio",
       "party": "Republican",
       "phone": "(614) 466-3555",
@@ -490,9 +490,9 @@
       "last_name": "Kasich",
       "gender": "M"
     },
-    "OK": {
+    "ok": {
       "full_name": "Mary Fallin",
-      "state": "OK",
+      "state": "ok",
       "state_full": "Oklahoma",
       "party": "Republican",
       "phone": "(405) 521-2342",
@@ -504,9 +504,9 @@
       "last_name": "Fallin",
       "gender": "F"
     },
-    "OR": {
+    "or": {
       "full_name": "Kate Brown",
-      "state": "OR",
+      "state": "or",
       "state_full": "Oregon",
       "party": "Democrat",
       "phone": "503-378-4582",
@@ -518,9 +518,9 @@
       "last_name": "Brown",
       "gender": "F"
     },
-    "PA": {
+    "pa": {
       "full_name": "Tom Wolf",
-      "state": "PA",
+      "state": "pa",
       "state_full": "Pennsylvania",
       "party": "Democrat",
       "phone": "717-787-2500",
@@ -532,9 +532,9 @@
       "last_name": "Wolf",
       "gender": "M"
     },
-    "RI": {
+    "ri": {
       "full_name": "Gina Raimondo",
-      "state": "RI",
+      "state": "ri",
       "state_full": "Rhode Island",
       "party": "Democrat",
       "phone": "(401) 222-2080",
@@ -546,9 +546,9 @@
       "last_name": "Raimondo",
       "gender": "F"
     },
-    "SC": {
+    "sc": {
       "full_name": "Nikki Haley",
-      "state": "SC",
+      "state": "sc",
       "state_full": "South Carolina",
       "party": "Republican",
       "phone": "803-734-2100",
@@ -560,9 +560,9 @@
       "last_name": "Haley",
       "gender": "F"
     },
-    "SD": {
+    "sd": {
       "full_name": "Dennis Daugaard",
-      "state": "SD",
+      "state": "sd",
       "state_full": "South Dakota",
       "party": "Republican",
       "phone": "605.773.3212",
@@ -574,9 +574,9 @@
       "last_name": "Daugaard",
       "gender": "M"
     },
-    "TN": {
+    "tn": {
       "full_name": "Bill Haslam",
-      "state": "TN",
+      "state": "tn",
       "state_full": "Tennessee",
       "party": "Republican",
       "phone": "(615) 741-2001",
@@ -588,9 +588,9 @@
       "last_name": "Haslam",
       "gender": "M"
     },
-    "TX": {
+    "tx": {
       "full_name": "Greg Abbott",
-      "state": "TX",
+      "state": "tx",
       "state_full": "Texas",
       "party": "Republican",
       "phone": "(512) 463-1782",
@@ -602,9 +602,9 @@
       "last_name": "Abbott",
       "gender": "M"
     },
-    "UT": {
+    "ut": {
       "full_name": "Gary Herbert",
-      "state": "UT",
+      "state": "ut",
       "state_full": "Utah",
       "party": "Republican",
       "phone": "801-538-1000",
@@ -615,9 +615,9 @@
       "first_name": "Gary",
       "last_name": "Herbert"
     },
-    "VT": {
+    "vt": {
       "full_name": "Peter Shumlin",
-      "state": "VT",
+      "state": "vt",
       "state_full": "Vermont",
       "party": "Democrat",
       "phone": "802 828-3333",
@@ -629,9 +629,9 @@
       "last_name": "Shumlin",
       "gender": "M"
     },
-    "VA": {
+    "va": {
       "full_name": "Terry McAuliffe",
-      "state": "VA",
+      "state": "va",
       "state_full": "Virginia",
       "party": "Democrat",
       "phone": "804-786-2211",
@@ -643,9 +643,9 @@
       "last_name": "McAuliffe",
       "gender": "M"
     },
-    "WA": {
+    "wa": {
       "full_name": "Jay Inslee",
-      "state": "WA",
+      "state": "wa",
       "state_full": "Washington",
       "party": "Democrat",
       "phone": "360-902-4111",
@@ -657,9 +657,9 @@
       "last_name": "Inslee",
       "gender": "M"
     },
-    "WV": {
+    "wv": {
       "full_name": "Earl Ray Tomblin",
-      "state": "WV",
+      "state": "wv",
       "state_full": "West Virginia",
       "party": "Democrat",
       "phone": "304.558.2000",
@@ -671,9 +671,9 @@
       "last_name": "Tomblin",
       "gender": "M"
     },
-    "WI": {
+    "wi": {
       "full_name": "Scott Walker",
-      "state": "WI",
+      "state": "wi",
       "state_full": "Wisconsin",
       "party": "Republican",
       "phone": "(608) 266-1212",
@@ -685,9 +685,9 @@
       "last_name": "Walker",
       "gender": "M"
     },
-    "WY": {
+    "wy": {
       "full_name": "Matt Mead",
-      "state": "WY",
+      "state": "wy",
       "state_full": "Wyoming",
       "party": "Republican",
       "phone": "307.777.7434",

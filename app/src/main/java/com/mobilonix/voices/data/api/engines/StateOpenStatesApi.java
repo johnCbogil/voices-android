@@ -31,6 +31,7 @@ public class StateOpenStatesApi implements ApiEngine {
     public static final String LATITUDE_KEY = "lat";
     public static final String LONGITUDE_KEY = "long";
     public static final String API_KEY = "apikey";
+    String state;
 
     public static final String API_VALUE = "e39ba83d7c5b4e348db144c4b4c33108";
 
@@ -75,6 +76,8 @@ public class StateOpenStatesApi implements ApiEngine {
 
                 JSONObject jsonPolitico = rawJsonArray.getJSONObject(i);
 
+                state = jsonPolitico.optString("state");
+
                 String chamber = jsonPolitico.optString("chamber");
                 String title = setTitle(chamber);
                 String fullName = title + jsonPolitico.getString("full_name");
@@ -82,7 +85,20 @@ public class StateOpenStatesApi implements ApiEngine {
                 String gender = "";
                 String party = jsonPolitico.optString("party");
                 String district = jsonPolitico.optString("district");
-                String electionDate =  setElectionDate(jsonPolitico.optJSONArray("roles").optJSONObject(i).optString("end_date"));
+
+                JSONObject rolesObject;
+                String electionDate;
+                JSONArray rolesArray = jsonPolitico.optJSONArray("roles");
+                if(rolesArray!=null) {
+                    rolesObject = rolesArray.optJSONObject(i);
+                    if(rolesObject!=null) {
+                        electionDate = setElectionDate(rolesObject.optString("end_date"));
+                    } else {
+                        electionDate = "";
+                    }
+                } else {
+                    electionDate = "";
+                }
 
                 String phoneNumber = "";
                 if (jsonPolitico.optJSONArray("offices").optJSONObject(0).has("phone")) {
@@ -107,8 +123,8 @@ public class StateOpenStatesApi implements ApiEngine {
 
                 politicos.add(politico);
             }
-            //Politico gov = getGov(state);
-            //politicos.add(gov);
+            Politico gov = getGov(state);
+            politicos.add(gov);
         } catch (JSONException e) {
             e.printStackTrace(); //TODO handle exception
         }
