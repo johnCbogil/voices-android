@@ -245,7 +245,19 @@ public enum SessionManager {
                     String name = group.child("name").getValue().toString();
                     String groupTyle = group.child("groupType").getValue().toString();
 
-                    HashMap<String, String> policyMap = (HashMap) group.child("policyPositions").getValue();
+                    String debug = "false";
+                    if(group.child("debug").exists()) {
+                        debug = group.child("debug").getValue().toString();
+                    }
+
+                    HashMap<String, String> policyMap = new HashMap<>();
+                    try {
+                        policyMap = (HashMap) group.child("policyPositions").getValue();
+                    } catch (Exception e) {
+                        policyMap = new HashMap<>();
+                        Log.e(TAG, "Could not fetch action map from firebase");
+                    }
+
                     ArrayList<Policy> policies = new ArrayList<>();
                     if(policyMap != null) {
                         Iterator it = policyMap.entrySet().iterator();
@@ -256,7 +268,14 @@ public enum SessionManager {
                         }
                     }
 
-                    HashMap<String, String> actionMap = (HashMap) group.child("actions").getValue();
+                    HashMap<String, String> actionMap = new HashMap<>();
+                    try {
+                        actionMap = (HashMap) group.child("actions").getValue();
+                    } catch (Exception e) {
+                        actionMap = new HashMap<>();
+                        Log.e(TAG, "Could not fetch policy map from firebase");
+                    }
+
                     ArrayList<String> actions = new ArrayList<>();
                     if(actionMap != null) {
 
@@ -269,6 +288,13 @@ public enum SessionManager {
                     }
 
                     Group groupToAdd = new Group(name, groupTyle, description, imageUrl, "", policies, actions, groupKey);
+
+                    try {
+                        groupToAdd.setDebug(Boolean.parseBoolean(debug));
+                    } catch (Exception e) {
+                        Log.e(TAG, "Couldn't read the debug flag");
+                    }
+
                     allGroups.add(groupToAdd);
                 }
 
