@@ -13,6 +13,7 @@ public class Group {
     String extendedDescription;
     String groupImageUrl;
     String groupKey;
+    boolean debug = false;
 
     ArrayList<Policy> policies;
     ArrayList<String> actions;
@@ -61,6 +62,14 @@ public class Group {
 
     public String getGroupKey() {
         return groupKey;
+    }
+
+    public void setDebug(boolean debug) {
+        this.debug = debug;
+    }
+
+    public boolean isDebug() {
+        return debug;
     }
 
     /**

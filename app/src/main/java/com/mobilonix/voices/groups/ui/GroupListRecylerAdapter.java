@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mobilonix.voices.BuildConfig;
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.representatives.ui.RoundedTransformation;
 import com.mobilonix.voices.groups.GroupManager;
@@ -19,6 +20,7 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class GroupListRecylerAdapter extends RecyclerView.Adapter<GroupListRecylerAdapter.GroupListHolder> {
 
@@ -30,6 +32,14 @@ public class GroupListRecylerAdapter extends RecyclerView.Adapter<GroupListRecyl
     public GroupListRecylerAdapter(Context context, ArrayList<Group> groups, GroupManager.GroupType groupType) {
         this.groups = groups;
         this.groupType = groupType;
+
+        Iterator<Group> it = groups.iterator();
+        while(it.hasNext()) {
+            Group group = it.next();
+            if(group.isDebug() && !BuildConfig.DEBUG) {
+                it.remove();
+            }
+        }
 
     }
 
