@@ -404,6 +404,8 @@ public enum GroupManager {
         actionSubject.setText(action.getSubject());
         actionDescription.setText(action.getBody());
 
+        final int actionLevel = (int)action.getLevel();
+
         Picasso.with(context)
                 .load(action.getImageUrl())
                 .placeholder(R.drawable.placeholder_spinner)
@@ -417,6 +419,7 @@ public enum GroupManager {
             public void onClick(View v) {
                 actionDialog.dismiss();
                 RepresentativesManager.INSTANCE.selectRepresentativesTab();
+                RepresentativesManager.INSTANCE.setPageByIndex(actionLevel);
             }
         });
 

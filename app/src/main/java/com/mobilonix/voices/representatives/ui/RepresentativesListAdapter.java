@@ -36,27 +36,37 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+        final ViewHolder mViewHolder;
 
         if(convertView == null) {
             LayoutInflater inflater = (LayoutInflater)
                     parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             convertView = inflater.inflate(resource, parent, false);
+            mViewHolder = new ViewHolder();
 
-            final LinearLayout representativesLinearLayout = (LinearLayout)convertView.findViewById(R.id.representatives_linear_layout);
-            final ImageView listImage = (ImageView)convertView.findViewById(R.id.representatives_list_image);
-            TextView representativesNameText = (TextView)convertView.findViewById(R.id.representatives_list_name_text);
-            representativesNameText.setText(representatives.get(position).getName());
+            mViewHolder.mLinearLayout = (LinearLayout)convertView.findViewById(R.id.representatives_linear_layout);
+            mViewHolder.mRepsImage = (ImageView)convertView.findViewById(R.id.representatives_list_image);
+            mViewHolder.mRepsName = (TextView)convertView.findViewById(R.id.representatives_list_name_text);
+            convertView.setTag(mViewHolder);
+            mViewHolder.mCallImage = (ImageView)convertView.findViewById(R.id.representatives_list_call_image);
+            mViewHolder.mEmailImage = (ImageView)convertView.findViewById(R.id.representatives_list_email_image);
+            mViewHolder.mTwitterImage = (ImageView)convertView.findViewById(R.id.representatives_list_twitter_image);
+            } else {
+                mViewHolder = (ViewHolder)convertView.getTag();
+            }
 
-            Picasso.with(listImage.getContext())
+            mViewHolder.mRepsName.setText(representatives.get(position).getName());
+
+            Picasso.with(mViewHolder.mRepsImage.getContext())
                     .load(representatives.get(position).getRepresentativeImageUrl())
                     .resize(400, 500)
                     .placeholder(R.drawable.placeholder_spinner)
                     .error(R.drawable.representatives_place_holder_male)
                     .transform(new RoundedTransformation(50, 4))
-                    .into(listImage);
+                    .into(mViewHolder.mRepsImage);
 
-            representativesLinearLayout.setOnClickListener(new View.OnClickListener() {
+            mViewHolder.mLinearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     detailsDialog = new Dialog(getContext());
@@ -103,14 +113,10 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                 }
             });
 
-            final ImageView twitterImage = (ImageView)convertView.findViewById(R.id.representatives_list_twitter_image);
-            final ImageView callImage = (ImageView)convertView.findViewById(R.id.representatives_list_call_image);
-            final ImageView emailImage = (ImageView)convertView.findViewById(R.id.representatives_list_email_image);
-
             String check = representatives.get(position).getPhoneNumber();
             if(check == null || check.equals("")){
-                callImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
-                callImage.setOnClickListener(new View.OnClickListener() {
+                mViewHolder.mCallImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
+                mViewHolder.mCallImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         String emailInstead = getContext().getResources().getString(R.string.email_instead);
@@ -118,7 +124,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                     }
                 });
             } else {
-                callImage.setOnClickListener(new View.OnClickListener() {
+                mViewHolder.mCallImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(Intent.ACTION_DIAL);
@@ -130,8 +136,8 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
 
             check = representatives.get(position).getEmailAddress();
             if(check == null || check.equals("")){
-                emailImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
-                emailImage.setOnClickListener(new View.OnClickListener() {
+                mViewHolder.mEmailImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
+                mViewHolder.mEmailImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         String callInstead = getContext().getResources().getString(R.string.call_instead);
@@ -139,7 +145,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                     }
                 });
             } else {
-                emailImage.setOnClickListener(new View.OnClickListener() {
+                mViewHolder.mEmailImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
@@ -157,8 +163,8 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
 
             check = representatives.get(position).getTwitterHandle();
             if(check == null || check.equals("")){
-                twitterImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
-                twitterImage.setOnClickListener(new View.OnClickListener() {
+                mViewHolder.mTwitterImage .setColorFilter(getContext().getResources().getColor(R.color.light_grey));
+                mViewHolder.mTwitterImage .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         String callInstead = getContext().getResources().getString(R.string.call_instead);
@@ -166,7 +172,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                     }
                 });
             } else {
-                twitterImage.setOnClickListener(new View.OnClickListener() {
+                mViewHolder.mTwitterImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         String url = "https://twitter.com/intent/tweet?text="
@@ -177,7 +183,6 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                     }
                 });
             }
-        }
 
         return convertView;
     }
@@ -198,5 +203,15 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
             }
         });
         noContactInfoDialog.show();
+    }
+
+    private class ViewHolder {
+        private LinearLayout mLinearLayout;
+        private ImageView mRepsImage;
+        private TextView mRepsName;
+        private ImageView mMoreInfoImage;
+        private ImageView mCallImage;
+        private ImageView mEmailImage;
+        private ImageView mTwitterImage;
     }
 }

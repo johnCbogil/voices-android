@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.location.LocationListener;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -28,10 +27,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.groups.GroupManager;
-import com.mobilonix.voices.groups.model.Group;
 import com.mobilonix.voices.location.LocationRequestManager;
 import com.mobilonix.voices.location.model.LatLong;
 import com.mobilonix.voices.location.util.LocationUtil;
+import com.mobilonix.voices.notifications.NotificationManager;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.splash.SplashManager;
@@ -123,6 +122,11 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
      * @param intent
      */
     public void handleDeeplink(Intent intent) {
+
+        Bundle extras = intent.getExtras();
+        if(((extras != null) && extras.containsKey(NotificationManager.NOTIFICATION_KEY))) {
+            RepresentativesManager.INSTANCE.selectGroupsTab();
+        }
 
         if(googleApiClient == null) {
            googleApiClient = new GoogleApiClient.Builder(this)

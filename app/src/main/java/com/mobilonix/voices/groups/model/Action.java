@@ -7,6 +7,7 @@ public class Action implements Comparable<Action> {
     String groupKey;
     String groupName;
     String imageUrl;
+    long level;
     String subject;
     long timeStamp;
     String title;
@@ -16,6 +17,7 @@ public class Action implements Comparable<Action> {
                   String groupKey,
                   String groupName,
                   String imageUrl,
+                  long level,
                   String subject,
                   long timeStamp,
                   String title) {
@@ -25,6 +27,7 @@ public class Action implements Comparable<Action> {
         this.groupKey = groupKey;
         this.groupName = groupName;
         this.imageUrl = imageUrl;
+        this.level = level;
         this.subject = subject;
         this.timeStamp = timeStamp;
         this.title = title;
@@ -49,6 +52,10 @@ public class Action implements Comparable<Action> {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public long getLevel(){
+        return level;
     }
 
     public String getSubject() {
