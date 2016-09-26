@@ -326,7 +326,7 @@ public enum RepresentativesManager {
             public void onClick(View v) {
 
                 /* Always set the page back to the federal reps when selevting the groups tav*/
-                RepresentativesManager.INSTANCE.setPageByIndex(0);
+                //RepresentativesManager.INSTANCE.setPageByIndex(0);
 
 
                 representativesPager.setVisibility(View.VISIBLE);
@@ -419,6 +419,10 @@ public enum RepresentativesManager {
         representativesTab.callOnClick();
     }
 
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
+    public void selectGroupsTab() {
+        groupsTab.callOnClick();
+    }
 
     /**
      *
@@ -558,9 +562,14 @@ public enum RepresentativesManager {
     }
 
     public void setPageByIndex(int index) {
+
+        if(index >= 3) {
+            index = 0;
+        }
+
         if((pagerIndicator != null) && (representativesFrame != null)) {
-            ((ViewPager) representativesFrame.findViewById(R.id.representatives_pager)).setCurrentItem(0);
-            pagerIndicator.onPageSelected(0);
+            ((ViewPager) representativesFrame.findViewById(R.id.representatives_pager)).setCurrentItem(index);
+            pagerIndicator.onPageSelected(index);
         }
     }
 

@@ -370,6 +370,10 @@ public enum SessionManager {
                     String groupKey = (String) action.child("groupKey").getValue();
                     String groupName = (String) action.child("groupName").getValue();
                     String imageUrl = (String) action.child("imageURL").getValue();
+                    long level = 3;
+                    if(action.child("level").exists()) {
+                        level = (long) action.child("level").getValue();
+                    }
                     String subject = (String) action.child("subject").getValue();
                     long timestamp = (long)action.child("timestamp").getValue();
                     String title = (String) action.child("title").getValue();
@@ -379,8 +383,9 @@ public enum SessionManager {
                             (String) action.child("groupKey").getValue(),
                             (String) action.child("groupName").getValue(),
                             (String) action.child("imageUrl").getValue(),
+                            level,
                             (String) action.child("subject").getValue(),
-                            (long)action.child("timestamp").getValue(),
+                            (long) action.child("timestamp").getValue(),
                             (String) action.child("title").getValue()));
 
                     Action actionToAdd =
@@ -389,6 +394,7 @@ public enum SessionManager {
                                     groupKey,
                                     groupName,
                                     imageUrl,
+                                    level,
                                     subject,
                                     timestamp,
                                     title);
