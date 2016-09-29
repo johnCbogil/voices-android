@@ -56,8 +56,18 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                 mViewHolder = (ViewHolder)convertView.getTag();
             }
 
-            mViewHolder.mRepsName.setText(representatives.get(position).getName());
+        mViewHolder.mRepsName.setText(representatives.get(position).getName());
 
+        if(representatives.get(position).getGender().equals("F")) {
+            Picasso.with(mViewHolder.mRepsImage.getContext())
+                    .load(representatives.get(position).getRepresentativeImageUrl())
+                    .resize(400, 500)
+                    .centerCrop()
+                    .placeholder(R.drawable.placeholder_spinner)
+                    .error(R.drawable.representatives_place_holder_female)
+                    .transform(new RoundedTransformation(50, 4))
+                    .into(mViewHolder.mRepsImage);
+        } else if (representatives.get(position).getGender().equals("M")) {
             Picasso.with(mViewHolder.mRepsImage.getContext())
                     .load(representatives.get(position).getRepresentativeImageUrl())
                     .resize(400, 500)
@@ -66,6 +76,28 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                     .error(R.drawable.representatives_place_holder_male)
                     .transform(new RoundedTransformation(50, 4))
                     .into(mViewHolder.mRepsImage);
+        } else {
+            double random = Math.random();
+            if(random < 0.5){
+                Picasso.with(mViewHolder.mRepsImage.getContext())
+                        .load(representatives.get(position).getRepresentativeImageUrl())
+                        .resize(100, 125)
+                        .centerCrop()
+                        .placeholder(R.drawable.placeholder_spinner)
+                        .error(R.drawable.representatives_place_holder_female)
+                        .transform(new RoundedTransformation(10, 4))
+                        .into(mViewHolder.mRepsImage);
+            } else {
+                Picasso.with(mViewHolder.mRepsImage.getContext())
+                        .load(representatives.get(position).getRepresentativeImageUrl())
+                        .resize(100, 125)
+                        .centerCrop()
+                        .placeholder(R.drawable.placeholder_spinner)
+                        .error(R.drawable.representatives_place_holder_male)
+                        .transform(new RoundedTransformation(10, 4))
+                        .into(mViewHolder.mRepsImage);
+            }
+        }
 
             mViewHolder.mLinearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -78,14 +110,46 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                     TextView repsParty = (TextView)detailsDialog.findViewById(R.id.reps_party);
                     TextView repsDistrict = (TextView)detailsDialog.findViewById(R.id.reps_district);
                     TextView repsElectionDate = (TextView)detailsDialog.findViewById(R.id.reps_election_date);
-                    Picasso.with(repsImage.getContext())
-                            .load(representatives.get(position).getRepresentativeImageUrl())
-                            .resize(100, 125)
-                            .centerCrop()
-                            .placeholder(R.drawable.placeholder_spinner)
-                            .error(R.drawable.representatives_place_holder_male)
-                            .transform(new RoundedTransformation(10, 4))
-                            .into(repsImage);
+                    if(representatives.get(position).getGender()=="F") {
+                        Picasso.with(repsImage.getContext())
+                                .load(representatives.get(position).getRepresentativeImageUrl())
+                                .resize(100, 125)
+                                .centerCrop()
+                                .placeholder(R.drawable.placeholder_spinner)
+                                .error(R.drawable.representatives_place_holder_female)
+                                .transform(new RoundedTransformation(10, 4))
+                                .into(repsImage);
+                    } else if(representatives.get(position).getGender()=="M"){
+                        Picasso.with(repsImage.getContext())
+                                .load(representatives.get(position).getRepresentativeImageUrl())
+                                .resize(100, 125)
+                                .centerCrop()
+                                .placeholder(R.drawable.placeholder_spinner)
+                                .error(R.drawable.representatives_place_holder_male)
+                                .transform(new RoundedTransformation(10, 4))
+                                .into(repsImage);
+                    } else {
+                        double random = Math.random();
+                        if(random < 0.5){
+                            Picasso.with(repsImage.getContext())
+                                    .load(representatives.get(position).getRepresentativeImageUrl())
+                                    .resize(100, 125)
+                                    .centerCrop()
+                                    .placeholder(R.drawable.placeholder_spinner)
+                                    .error(R.drawable.representatives_place_holder_female)
+                                    .transform(new RoundedTransformation(10, 4))
+                                    .into(repsImage);
+                        } else {
+                            Picasso.with(repsImage.getContext())
+                                    .load(representatives.get(position).getRepresentativeImageUrl())
+                                    .resize(100, 125)
+                                    .centerCrop()
+                                    .placeholder(R.drawable.placeholder_spinner)
+                                    .error(R.drawable.representatives_place_holder_male)
+                                    .transform(new RoundedTransformation(10, 4))
+                                    .into(repsImage);
+                        }
+                    }
                     repsName.setText(representatives.get(position).getName());
 
                     if(representatives.get(position).getParty().equals("")){
