@@ -7,8 +7,8 @@ android {
     buildToolsVersion "23.0.3"
 
     def major = 1;
-    def minor = 3;
-    def patch = 0;
+    def minor = 4;
+    def patch = 1;
 
     def base = 100000000;
     def date = new SimpleDateFormat("yyyyMMdd").format(new Date());;

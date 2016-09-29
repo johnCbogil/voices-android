@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mobilonix.voices.R;
-import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.delegates.Callback;
 
 import java.util.ArrayList;
@@ -45,7 +44,6 @@ public class PagerIndicator extends LinearLayout implements ViewPager.OnPageChan
         repsLevel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GeneralUtil.toast("Tabs pressed");
 
                 if(callback != null) {
 

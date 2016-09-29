@@ -48,18 +48,6 @@
         android:id="@+id/instructions_text_2"
         android:text="@string/instructions_text_2"/>
 
-    <com.mobilonix.voices.util.AvenirTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:gravity="center_horizontal"
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/instructions_text_3"
-        android:text="@string/instructions_text_3"/>
-
     <com.mobilonix.voices.util.AvenirButton
         android:id="@+id/got_it_button"
         android:layout_width="wrap_content"
