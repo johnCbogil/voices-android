@@ -240,7 +240,7 @@ public enum GroupManager {
         if(userGroups != null) {
             for (Group g : groupPage.getUserGroups()) {
                 if (g.getGroupKey().equals(group.getGroupKey())) {
-                    groupsFollowGroupsButton.setText(R.string.unfollow_groups_text);
+                    groupsFollowGroupsButton.setText(R.string.following_groups_text);
                 }
             }
         }
@@ -248,29 +248,43 @@ public enum GroupManager {
         groupsFollowGroupsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 /* check if we're already subscribed to the group */
                 if(userGroups != null) {
                     for (Group g : groupPage.getUserGroups()) {
                         if (g.getGroupKey().equals(group.getGroupKey())) {
-
-                            unSubscribeFromGroup(group, true, new Callback<Boolean>() {
+                            final Dialog followDialog;
+                            followDialog = new Dialog(groupPage.getContext());
+                            followDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            followDialog.setContentView(R.layout.dialog_follow);
+                            Button unfollowButton = (Button)followDialog.findViewById(R.id.unfollow_button);
+                            Button cancelButton = (Button)followDialog.findViewById(R.id.cancel_button);
+                            unfollowButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
-                                public boolean onExecuted(Boolean data) {
-                                    groupsFollowGroupsButton.setText(R.string.follow_groups_text);
-                                    return false;
+                                public void onClick(View v) {
+                                    unSubscribeFromGroup(group, true, new Callback<Boolean>() {
+                                        @Override
+                                        public boolean onExecuted(Boolean data) {
+                                            groupsFollowGroupsButton.setText(R.string.follow_groups_text);
+                                            return false;
+                                        }
+                                    });
+                                return;
                                 }
                             });
-
-                            return;
+                            cancelButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    followDialog.dismiss();
+                                }
+                            });
+                            followDialog.show();
                         }
                     }
                 }
-
                 subscribeToGroup(group, true, new Callback<Boolean>() {
                     @Override
                     public boolean onExecuted(Boolean data) {
-                        groupsFollowGroupsButton.setText(R.string.unfollow_groups_text);
+                        groupsFollowGroupsButton.setText(R.string.following_groups_text);
                         return false;
                     }
                 });
