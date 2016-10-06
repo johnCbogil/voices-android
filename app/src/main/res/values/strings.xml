@@ -55,8 +55,11 @@
     <!--Groups Dialog-->
     <string name="button_learnmore">Take Action</string>
     <string name="follow_groups_text">Follow This Group</string>
-    <string name="unfollow_groups_text">Unfollow This Group</string>
+    <string name="following_groups_text">Following</string>
     <string name="policy_positions_text">Policy Positions</string>
+    <string name="follow_question">Are you sure you want to unfollow this group?</string>
+    <string name="unfollow">Unfollow Group</string>
+    <string name="cancel">Cancel</string>
 
     <!--No Contact Info Dialog-->
     <string name="no_info_title">Oops</string>
