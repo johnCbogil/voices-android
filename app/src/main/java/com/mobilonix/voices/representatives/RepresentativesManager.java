@@ -38,6 +38,7 @@ import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.location.model.LatLong;
 import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.representatives.model.RepresentativesPage;
+import com.mobilonix.voices.representatives.ui.DetailPageLayout;
 import com.mobilonix.voices.representatives.ui.PagerIndicator;
 import com.mobilonix.voices.representatives.ui.RepresentativesListAdapter;
 import com.mobilonix.voices.representatives.ui.RepresentativesPagerAdapter;
@@ -71,6 +72,10 @@ public enum RepresentativesManager {
     View divider;
     LinearLayout groupsTab;
     LinearLayout representativesTab;
+
+    DetailPageLayout detailPageLayout;
+
+    ListView representativesListView;
 
     PagerIndicator pagerIndicator;
 
@@ -151,6 +156,8 @@ public enum RepresentativesManager {
             actionSelectionButton.setVisibility(View.GONE);
             groupsSelectionButton.setVisibility(View.GONE);
             addGroupIcon.setVisibility(View.GONE);
+
+            detailPageLayout = (DetailPageLayout) representativesFrame.findViewById(R.id.view_reps_details);
 
             final ArrayList<RepresentativesPage> pages = new ArrayList<>();
             final ViewPager representativesPager = (ViewPager) representativesFrame.findViewById(R.id.representatives_pager);
@@ -523,7 +530,7 @@ public enum RepresentativesManager {
 
         currentRepsMap.put(type.getIdentifier(), data);
 
-        ListView representativesListView =
+        representativesListView =
                 (ListView) representativesPager
                         .findViewWithTag(type.getIdentifier());
         SwipeRefreshLayout pageRefresh = (SwipeRefreshLayout)representativesPager
@@ -627,4 +634,7 @@ public enum RepresentativesManager {
         return representativesScreenVisible;
     }
 
+    public DetailPageLayout getDetailPageLayout() {
+        return detailPageLayout;
+    }
 }

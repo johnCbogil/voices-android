@@ -2,6 +2,7 @@ package com.mobilonix.voices.groups;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
@@ -210,7 +212,7 @@ public enum GroupManager {
      * @param context
      * @param group
      */
-    public void toggleSubscribeToGroupDialog(Context context, final Group group) {
+    public void toggleSubscribeToGroupDialog(final Context context, final Group group) {
 
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_groups);
@@ -264,10 +266,15 @@ public enum GroupManager {
                                     unSubscribeFromGroup(group, true, new Callback<Boolean>() {
                                         @Override
                                         public boolean onExecuted(Boolean data) {
+                                            FirebaseAnalytics fa = FirebaseAnalytics.getInstance(context);
+                                            Bundle eventDetails = new Bundle();
+                                            eventDetails.putString("msg", group.getGroupKey());
+                                            fa.logEvent("Unfollow_" + group.getGroupKey(), eventDetails);
                                             groupsFollowGroupsButton.setText(R.string.follow_groups_text);
                                             return false;
                                         }
                                     });
+                                    followDialog.dismiss();
                                 return;
                                 }
                             });
@@ -284,6 +291,10 @@ public enum GroupManager {
                 subscribeToGroup(group, true, new Callback<Boolean>() {
                     @Override
                     public boolean onExecuted(Boolean data) {
+                        FirebaseAnalytics fa = FirebaseAnalytics.getInstance(context);
+                        Bundle eventDetails = new Bundle();
+                        eventDetails.putString("msg", group.getGroupKey());
+                        fa.logEvent("Follow_" + group.getGroupKey(), eventDetails);
                         groupsFollowGroupsButton.setText(R.string.following_groups_text);
                         return false;
                     }

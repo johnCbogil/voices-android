@@ -23,6 +23,7 @@ import com.google.android.gms.appinvite.AppInviteReferral;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.delegates.Callback;
@@ -49,6 +50,7 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
     WeakHandler handler = new WeakHandler();
 
     GoogleApiClient googleApiClient;
+    public FirebaseAnalytics mFirebaseAnalytics;
 
     Boolean autoLaunchDeepLink = new Boolean(false);
 
@@ -64,6 +66,7 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
                 return false;
             }
         });
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         currentLocation = LocationUtil.getLastLocation(this);
 
         initViews();
@@ -188,7 +191,6 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
     @Override
     public void onBackPressed() {
 
-
         /* Since we aren't using fragments, we need to fabricate a back stack.
         * This absolutely OK because it's easy to do, and we get much better
         * control of the back flow than if we were relying on fragment/child
@@ -200,10 +202,16 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
             }
         }
 
+        if(RepresentativesManager.INSTANCE.getDetailPageLayout().getVisibility()==View.VISIBLE){
+            RepresentativesManager.INSTANCE.getDetailPageLayout().setVisibility(View.GONE);
+            return;
+        }
+
         /* If we back out too far, we want to make sure the user is ok leaving the app */
         if(!leaveAppDialogShowing) {
             showLeaveAppDialog();
         }
+
     }
 
     public void showLeaveAppDialog() {
@@ -229,6 +237,12 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
                 }
         );
         Dialog dialog = builder.create();
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                leaveAppDialogShowing = false;
+            }
+        });
         leaveAppDialogShowing = true;
         dialog.show();
 
