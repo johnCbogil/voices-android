@@ -3,7 +3,7 @@
     android:id="@+id/representatives_linear_layout"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="110dp">
     <ImageView
         android:layout_width="110dp"
         android:layout_height="110dp"
@@ -12,29 +12,25 @@
         android:layout_gravity="center_horizontal" />
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="110dp"
         android:orientation="vertical">
-        <LinearLayout
+        <com.mobilonix.voices.util.AvenirTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="1">
-            <com.mobilonix.voices.util.AvenirTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/representatives_list_name_text"
-                android:layout_marginLeft="10dp"
-                android:textSize="22sp"
-                android:textColor="#000"
-                android:layout_weight="0.75"/>
-            <ImageView
-                android:layout_gravity="right|center"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:id="@+id/more_info_arrow_image"
-                android:src="@drawable/right_carat"
-                android:tint="@color/voices_orange"
-                android:layout_weight="0.25"/>
-            </LinearLayout>
+            android:id="@+id/representatives_list_name_text"
+            android:layout_marginLeft="10dp"
+            android:textSize="22sp"
+            android:textColor="#000"
+            android:layout_weight="0.75"/>
+        <ImageView
+            android:layout_gravity="right|bottom"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="15dp"
+            android:id="@+id/more_info_arrow_image"
+            android:src="@drawable/right_carat"
+            android:tint="@color/voices_orange"
+            android:layout_weight="0.25"/>
     </LinearLayout>
 </LinearLayout>
