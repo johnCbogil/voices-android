@@ -59,6 +59,7 @@ dependencies {
     compile ('com.google.android.gms:play-services-base:9.4.0')
     compile ('com.google.android.gms:play-services-places:9.4.0')
     compile ('com.google.android.gms:play-services-location:9.4.0')
+    compile ('com.google.android.gms:play-services-analytics:9.4.0')
 
 }
 

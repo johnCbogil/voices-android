@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesApplication;
+import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.model.Representative;
 import com.squareup.picasso.Picasso;
 
@@ -25,7 +26,6 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
 
     int resource;
     ArrayList<Representative> representatives;
-    Dialog detailsDialog;
 
     public RepresentativesListAdapter(Context context, int resource, ArrayList<Representative> representatives) {
         super(context, resource, representatives);
@@ -49,209 +49,124 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
             mViewHolder.mRepsImage = (ImageView)convertView.findViewById(R.id.representatives_list_image);
             mViewHolder.mRepsName = (TextView)convertView.findViewById(R.id.representatives_list_name_text);
             convertView.setTag(mViewHolder);
-            mViewHolder.mCallImage = (ImageView)convertView.findViewById(R.id.representatives_list_call_image);
-            mViewHolder.mEmailImage = (ImageView)convertView.findViewById(R.id.representatives_list_email_image);
-            mViewHolder.mTwitterImage = (ImageView)convertView.findViewById(R.id.representatives_list_twitter_image);
-            } else {
-                mViewHolder = (ViewHolder)convertView.getTag();
-            }
+        } else {
+            mViewHolder = (ViewHolder)convertView.getTag();
+        }
 
         mViewHolder.mRepsName.setText(representatives.get(position).getName());
 
-        if(representatives.get(position).getGender().equals("F")) {
-            Picasso.with(mViewHolder.mRepsImage.getContext())
-                    .load(representatives.get(position).getRepresentativeImageUrl())
-                    .resize(400, 500)
-                    .centerCrop()
-                    .placeholder(R.drawable.placeholder_spinner)
-                    .error(R.drawable.representatives_place_holder_female)
-                    .transform(new RoundedTransformation(50, 4))
-                    .into(mViewHolder.mRepsImage);
-        } else if (representatives.get(position).getGender().equals("M")) {
-            Picasso.with(mViewHolder.mRepsImage.getContext())
-                    .load(representatives.get(position).getRepresentativeImageUrl())
-                    .resize(400, 500)
-                    .centerCrop()
-                    .placeholder(R.drawable.placeholder_spinner)
-                    .error(R.drawable.representatives_place_holder_male)
-                    .transform(new RoundedTransformation(50, 4))
-                    .into(mViewHolder.mRepsImage);
-        } else {
-            double random = Math.random();
-            if(random < 0.5){
-                Picasso.with(mViewHolder.mRepsImage.getContext())
-                        .load(representatives.get(position).getRepresentativeImageUrl())
-                        .resize(100, 125)
-                        .centerCrop()
-                        .placeholder(R.drawable.placeholder_spinner)
-                        .error(R.drawable.representatives_place_holder_female)
-                        .transform(new RoundedTransformation(10, 4))
-                        .into(mViewHolder.mRepsImage);
-            } else {
-                Picasso.with(mViewHolder.mRepsImage.getContext())
-                        .load(representatives.get(position).getRepresentativeImageUrl())
-                        .resize(100, 125)
-                        .centerCrop()
-                        .placeholder(R.drawable.placeholder_spinner)
-                        .error(R.drawable.representatives_place_holder_male)
-                        .transform(new RoundedTransformation(10, 4))
-                        .into(mViewHolder.mRepsImage);
-            }
-        }
+        setGender(mViewHolder.mRepsImage, position);
 
-            mViewHolder.mLinearLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    detailsDialog = new Dialog(getContext());
-                    detailsDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    detailsDialog.setContentView(R.layout.dialog_repsdetails);
-                    ImageView repsImage = (ImageView)detailsDialog.findViewById(R.id.reps_image);
-                    TextView repsName = (TextView)detailsDialog.findViewById(R.id.reps_name);
-                    TextView repsParty = (TextView)detailsDialog.findViewById(R.id.reps_party);
-                    TextView repsDistrict = (TextView)detailsDialog.findViewById(R.id.reps_district);
-                    TextView repsElectionDate = (TextView)detailsDialog.findViewById(R.id.reps_election_date);
-                    if(representatives.get(position).getGender()=="F") {
-                        Picasso.with(repsImage.getContext())
-                                .load(representatives.get(position).getRepresentativeImageUrl())
-                                .resize(100, 125)
-                                .centerCrop()
-                                .placeholder(R.drawable.placeholder_spinner)
-                                .error(R.drawable.representatives_place_holder_female)
-                                .transform(new RoundedTransformation(10, 4))
-                                .into(repsImage);
-                    } else if(representatives.get(position).getGender()=="M"){
-                        Picasso.with(repsImage.getContext())
-                                .load(representatives.get(position).getRepresentativeImageUrl())
-                                .resize(100, 125)
-                                .centerCrop()
-                                .placeholder(R.drawable.placeholder_spinner)
-                                .error(R.drawable.representatives_place_holder_male)
-                                .transform(new RoundedTransformation(10, 4))
-                                .into(repsImage);
-                    } else {
-                        double random = Math.random();
-                        if(random < 0.5){
-                            Picasso.with(repsImage.getContext())
-                                    .load(representatives.get(position).getRepresentativeImageUrl())
-                                    .resize(100, 125)
-                                    .centerCrop()
-                                    .placeholder(R.drawable.placeholder_spinner)
-                                    .error(R.drawable.representatives_place_holder_female)
-                                    .transform(new RoundedTransformation(10, 4))
-                                    .into(repsImage);
-                        } else {
-                            Picasso.with(repsImage.getContext())
-                                    .load(representatives.get(position).getRepresentativeImageUrl())
-                                    .resize(100, 125)
-                                    .centerCrop()
-                                    .placeholder(R.drawable.placeholder_spinner)
-                                    .error(R.drawable.representatives_place_holder_male)
-                                    .transform(new RoundedTransformation(10, 4))
-                                    .into(repsImage);
-                        }
-                    }
-                    repsName.setText(representatives.get(position).getName());
+        mViewHolder.mLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DetailPageLayout detailPageLayout = RepresentativesManager.INSTANCE.getDetailPageLayout();
 
-                    if(representatives.get(position).getParty().equals("")){
-                        repsParty.setText(VoicesApplication.getContext().getResources().getString(R.string.party)
-                                + VoicesApplication.getContext().getResources().getString(R.string.not_available));
-                    } else {
-                        repsParty.setText(VoicesApplication.getContext().getResources().getString(R.string.party)
-                                + representatives.get(position).getParty());
-                    }
+                detailPageLayout.repsName.setText(representatives.get(position).getName());
 
-                    if(representatives.get(position).getDistrict().equals("")){
-                        repsDistrict.setText(VoicesApplication.getContext().getResources().getString(R.string.district)
-                                + VoicesApplication.getContext().getResources().getString(R.string.not_available));
-                    } else {
-                        repsDistrict.setText(VoicesApplication.getContext().getResources().getString(R.string.district)
-                                + representatives.get(position).getDistrict());
-                    }
+                setGender(detailPageLayout.repsImage,position);
 
-                    if(representatives.get(position).getElectionDate().equals("")){
-                        repsElectionDate.setText(VoicesApplication.getContext().getResources().getString(R.string.next_election)
-                                + VoicesApplication.getContext().getResources().getString(R.string.not_available));
-                    } else {
-                        repsElectionDate.setText(VoicesApplication.getContext().getResources().getString(R.string.next_election)
-                                + representatives.get(position).getElectionDate());
-                    }
-                    detailsDialog.show();
+                if(representatives.get(position).getParty().equals("")){
+                    detailPageLayout.repsParty.setText(VoicesApplication.getContext().getResources().getString(R.string.party)
+                            + VoicesApplication.getContext().getResources().getString(R.string.not_available));
+                } else {
+                    detailPageLayout.repsParty.setText(VoicesApplication.getContext().getResources().getString(R.string.party)
+                            + representatives.get(position).getParty());
                 }
-            });
 
-            String check = representatives.get(position).getPhoneNumber();
-            if(check == null || check.equals("")){
-                mViewHolder.mCallImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
-                mViewHolder.mCallImage.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String emailInstead = getContext().getResources().getString(R.string.email_instead);
-                        toggleNoContactInfoDialog(emailInstead);
-                    }
-                });
-            } else {
-                mViewHolder.mCallImage.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(Intent.ACTION_DIAL);
-                        intent.setData(Uri.parse("tel:" + representatives.get(position).getPhoneNumber()));
-                        v.getContext().startActivity(intent);
-                    }
-                });
+                if(representatives.get(position).getDistrict().equals("")){
+                    detailPageLayout.repsDistrict.setText(VoicesApplication.getContext().getResources().getString(R.string.district)
+                            + VoicesApplication.getContext().getResources().getString(R.string.not_available));
+                } else {
+                    detailPageLayout.repsDistrict.setText(VoicesApplication.getContext().getResources().getString(R.string.district)
+                            + representatives.get(position).getDistrict());
+                }
+
+                if(representatives.get(position).getElectionDate().equals("")){
+                    detailPageLayout.repsElectionDate.setText(VoicesApplication.getContext().getResources().getString(R.string.next_election)
+                            + VoicesApplication.getContext().getResources().getString(R.string.not_available));
+                } else {
+                    detailPageLayout.repsElectionDate.setText(VoicesApplication.getContext().getResources().getString(R.string.next_election)
+                            + representatives.get(position).getElectionDate());
+                }
+
+                String check = representatives.get(position).getPhoneNumber();
+                if(check == null || check.equals("")){
+                    detailPageLayout.mCallImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
+                    detailPageLayout.mCallImage.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String emailInstead = getContext().getResources().getString(R.string.email_instead);
+                            toggleNoContactInfoDialog(emailInstead);
+                        }
+                    });
+                } else {
+                    detailPageLayout.mCallImage.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(Intent.ACTION_DIAL);
+                            intent.setData(Uri.parse("tel:" + representatives.get(position).getPhoneNumber()));
+                            v.getContext().startActivity(intent);
+                        }
+                    });
+                }
+
+                check = representatives.get(position).getEmailAddress();
+                if(check == null || check.equals("")){
+                    detailPageLayout.mEmailImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
+                    detailPageLayout.mEmailImage.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String callInstead = getContext().getResources().getString(R.string.call_instead);
+                            toggleNoContactInfoDialog(callInstead);
+                        }
+                    });
+                } else {
+                    detailPageLayout.mEmailImage.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                                    "mailto",representatives.get(position).getEmailAddress(), null));
+                            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
+                            emailIntent.putExtra(Intent.EXTRA_TEXT, "");
+                            ArrayList<String> addresses = new ArrayList<>();
+                            addresses.add(representatives.get(position).getEmailAddress());
+                            emailIntent.putExtra(Intent.EXTRA_EMAIL, addresses);
+
+                            v.getContext().startActivity(Intent.createChooser(emailIntent, "Send Email"));
+                        }
+                    });
+                }
+
+                check = representatives.get(position).getTwitterHandle();
+                if(check == null || check.equals("")){
+                    detailPageLayout.mTwitterImage .setColorFilter(getContext().getResources().getColor(R.color.light_grey));
+                    detailPageLayout.mTwitterImage .setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String callInstead = getContext().getResources().getString(R.string.call_instead);
+                            toggleNoContactInfoDialog(callInstead);
+                        }
+                    });
+                } else {
+                    detailPageLayout.mTwitterImage.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String url = "https://twitter.com/intent/tweet?text="
+                                    + "@" + representatives.get(position).getTwitterHandle();
+                            Intent i = new Intent(Intent.ACTION_VIEW);
+                            i.setData(Uri.parse(url));
+                            v.getContext().startActivity(i);
+                        }
+                    });
+                }
+                detailPageLayout.setVisibility(View.VISIBLE);
             }
-
-            check = representatives.get(position).getEmailAddress();
-            if(check == null || check.equals("")){
-                mViewHolder.mEmailImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
-                mViewHolder.mEmailImage.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String callInstead = getContext().getResources().getString(R.string.call_instead);
-                        toggleNoContactInfoDialog(callInstead);
-                    }
-                });
-            } else {
-                mViewHolder.mEmailImage.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                                "mailto",representatives.get(position).getEmailAddress(), null));
-                        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
-                        emailIntent.putExtra(Intent.EXTRA_TEXT, "");
-                        ArrayList<String> addresses = new ArrayList<>();
-                        addresses.add(representatives.get(position).getEmailAddress());
-                        emailIntent.putExtra(Intent.EXTRA_EMAIL, addresses);
-
-                        v.getContext().startActivity(Intent.createChooser(emailIntent, "Send Email"));
-                    }
-                });
-            }
-
-            check = representatives.get(position).getTwitterHandle();
-            if(check == null || check.equals("")){
-                mViewHolder.mTwitterImage .setColorFilter(getContext().getResources().getColor(R.color.light_grey));
-                mViewHolder.mTwitterImage .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String callInstead = getContext().getResources().getString(R.string.call_instead);
-                        toggleNoContactInfoDialog(callInstead);
-                    }
-                });
-            } else {
-                mViewHolder.mTwitterImage.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String url = "https://twitter.com/intent/tweet?text="
-                                + "@" + representatives.get(position).getTwitterHandle();
-                        Intent i = new Intent(Intent.ACTION_VIEW);
-                        i.setData(Uri.parse(url));
-                        v.getContext().startActivity(i);
-                    }
-                });
-            }
+        });
 
         return convertView;
     }
+
     public void toggleNoContactInfoDialog(String text) {
 
         final Dialog noContactInfoDialog;
@@ -271,13 +186,53 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
         noContactInfoDialog.show();
     }
 
+    public void setGender(ImageView image, int position){
+        if(representatives.get(position).getGender()=="F") {
+            Picasso.with(image.getContext())
+                    .load(representatives.get(position).getRepresentativeImageUrl())
+                    .resize(100, 125)
+                    .centerCrop()
+                    .placeholder(R.drawable.placeholder_spinner)
+                    .error(R.drawable.representatives_place_holder_female)
+                    .transform(new RoundedTransformation(10, 4))
+                    .into(image);
+        } else if(representatives.get(position).getGender()=="M"){
+            Picasso.with(image.getContext())
+                    .load(representatives.get(position).getRepresentativeImageUrl())
+                    .resize(100, 125)
+                    .centerCrop()
+                    .placeholder(R.drawable.placeholder_spinner)
+                    .error(R.drawable.representatives_place_holder_male)
+                    .transform(new RoundedTransformation(10, 4))
+                    .into(image);
+        } else {
+            double random = Math.random();
+            if(random < 0.5){
+                Picasso.with(image.getContext())
+                        .load(representatives.get(position).getRepresentativeImageUrl())
+                        .resize(100, 125)
+                        .centerCrop()
+                        .placeholder(R.drawable.placeholder_spinner)
+                        .error(R.drawable.representatives_place_holder_female)
+                        .transform(new RoundedTransformation(10, 4))
+                        .into(image);
+            } else {
+                Picasso.with(image.getContext())
+                        .load(representatives.get(position).getRepresentativeImageUrl())
+                        .resize(100, 125)
+                        .centerCrop()
+                        .placeholder(R.drawable.placeholder_spinner)
+                        .error(R.drawable.representatives_place_holder_male)
+                        .transform(new RoundedTransformation(10, 4))
+                        .into(image);
+            }
+        }
+    }
+
     private class ViewHolder {
         private LinearLayout mLinearLayout;
         private ImageView mRepsImage;
         private TextView mRepsName;
         private ImageView mMoreInfoImage;
-        private ImageView mCallImage;
-        private ImageView mEmailImage;
-        private ImageView mTwitterImage;
     }
 }
