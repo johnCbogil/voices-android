@@ -14,6 +14,10 @@
         android:layout_width="match_parent"
         android:layout_height="110dp"
         android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
             <com.mobilonix.voices.util.AvenirTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -23,20 +27,21 @@
                 android:textColor="#000"
                 android:layout_weight="0.75"/>
             <ImageView
-                android:layout_gravity="right|center"
+                android:layout_gravity="right"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:id="@+id/more_info_arrow_image"
                 android:src="@drawable/right_carat"
                 android:tint="@color/voices_orange"
                 android:layout_weight="0.25"/>
-    </LinearLayout>
+        </LinearLayout>
         <com.mobilonix.voices.util.AvenirTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/election_upcoming"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
             android:textSize="20sp"
             android:textColor="@color/darker_red"
             android:layout_weight="0.75"/>
+    </LinearLayout>
 </LinearLayout>
