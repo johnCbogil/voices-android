@@ -75,7 +75,7 @@ public class UsCongressSunlightApi implements ApiEngine {
 
                 String firstName = jsonPolitico.optString("first_name");
                 String lastName = jsonPolitico.optString("last_name");
-                String title = jsonPolitico.optString("title") + ".";
+                String title = setTitle(jsonPolitico.optString("title"));
                 String gender = jsonPolitico.optString("gender");
                 String party = jsonPolitico.optString("party");
                 String district;
@@ -123,6 +123,20 @@ public class UsCongressSunlightApi implements ApiEngine {
             return "November 3, 2020";
         } else {
             return "";
+        }
+    }
+
+    public String setTitle(String title) {
+        if (title.equals("Sen")) {
+            return "Senator";
+        } else if (title.equals("Rep")) {
+            return "Representative";
+        } else if (title.equals("Del")) {
+            return "Delegate";
+        } else if (title.equals("Com")) {
+            return "Com";
+        } else {
+            return title;
         }
     }
     @Override

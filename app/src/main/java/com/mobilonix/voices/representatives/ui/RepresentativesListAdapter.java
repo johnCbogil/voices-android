@@ -48,12 +48,17 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
             mViewHolder.mLinearLayout = (LinearLayout)convertView.findViewById(R.id.representatives_linear_layout);
             mViewHolder.mRepsImage = (ImageView)convertView.findViewById(R.id.representatives_list_image);
             mViewHolder.mRepsName = (TextView)convertView.findViewById(R.id.representatives_list_name_text);
+            mViewHolder.mElectionUpcoming = (TextView)convertView.findViewById(R.id.election_upcoming);
             convertView.setTag(mViewHolder);
         } else {
             mViewHolder = (ViewHolder)convertView.getTag();
         }
 
         mViewHolder.mRepsName.setText(representatives.get(position).getName());
+
+        if(representatives.get(position).getElectionDate().contains("2016")){
+            mViewHolder.mElectionUpcoming.setText(R.string.election_upcoming);
+        }
 
         setGender(mViewHolder.mRepsImage, position);
 
@@ -233,6 +238,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
         private LinearLayout mLinearLayout;
         private ImageView mRepsImage;
         private TextView mRepsName;
+        private TextView mElectionUpcoming;
         private ImageView mMoreInfoImage;
     }
 }
