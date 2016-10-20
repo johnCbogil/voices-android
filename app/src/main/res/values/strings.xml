@@ -42,6 +42,7 @@
     <string name="click_image">Click image for more</string>
     <string name="reps">Reps</string>
     <string name="groups">Groups</string>
+    <string name="election_upcoming">Election Upcoming!</string>
 
     <!--Actions/Groups Tabs-->
     <string name="no_follow_actions">To receive actions from advocacy groups, tap the + button above to follow groups.</string>
@@ -69,7 +70,7 @@
     <string name="call_instead">Please consider calling them instead.</string>
     <string name="email_instead">Please consider emailing them instead.</string>
 
-    <!--Reps Details Dialog-->
+    <!--Reps Details-->
     <string name="details_title">More Info</string>
     <string name="nyc_election_date">November 7, 2017</string>
     <string name="nyc_title">Council Member</string>
@@ -77,7 +78,8 @@
     <string name="district">District:&#160;</string>
     <string name="next_election">Next Election:&#160;</string>
     <string name="not_available">N/A</string>
-    <string name="gov_title">Gov.</string>
+    <string name="gov_title">Governor</string>
+
     <!-- Errors-->
     <string name="groups_fetch_error">"Server/Network Error! Attempting to fetch groups again..."</string>
     <string name="council_not_yet_error">City Council members not available yet.  Coming soon!</string>
