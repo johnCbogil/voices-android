@@ -3,7 +3,7 @@
     android:id="@+id/representatives_linear_layout"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="110dp">
     <ImageView
         android:layout_width="110dp"
         android:layout_height="110dp"
@@ -12,13 +12,8 @@
         android:layout_gravity="center_horizontal" />
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="110dp"
         android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="1">
             <com.mobilonix.voices.util.AvenirTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -35,7 +30,7 @@
                 android:src="@drawable/right_carat"
                 android:tint="@color/voices_orange"
                 android:layout_weight="0.25"/>
-            </LinearLayout>
+    </LinearLayout>
         <com.mobilonix.voices.util.AvenirTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,5 +39,4 @@
             android:textSize="20sp"
             android:textColor="@color/darker_red"
             android:layout_weight="0.75"/>
-    </LinearLayout>
 </LinearLayout>
