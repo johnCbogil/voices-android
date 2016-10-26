@@ -16,8 +16,10 @@ import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.mobilonix.voices.BuildConfig;
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
+import com.mobilonix.voices.analytics.AnalyticsManager;
 import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
@@ -263,6 +265,7 @@ public enum GroupManager {
                             unfollowButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+
                                     unSubscribeFromGroup(group, true, new Callback<Boolean>() {
                                         @Override
                                         public boolean onExecuted(Boolean data) {
@@ -271,11 +274,19 @@ public enum GroupManager {
                                             eventDetails.putString("msg", group.getGroupKey());
                                             fa.logEvent("Unfollow_" + group.getGroupKey(), eventDetails);
                                             groupsFollowGroupsButton.setText(R.string.follow_groups_text);
+
+                                            if(data) {
+                                                AnalyticsManager.INSTANCE.trackEvent("UNSUBSCRIBE_EVENT",
+                                                        group.getGroupKey(),
+                                                        SessionManager.INSTANCE.getCurrentUserToken(),"none", null);
+                                            }
+
                                             return false;
                                         }
                                     });
                                     followDialog.dismiss();
-                                return;
+
+                                    return;
                                 }
                             });
                             cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -285,9 +296,11 @@ public enum GroupManager {
                                 }
                             });
                             followDialog.show();
+                            return;
                         }
                     }
                 }
+
                 subscribeToGroup(group, true, new Callback<Boolean>() {
                     @Override
                     public boolean onExecuted(Boolean data) {
@@ -296,6 +309,13 @@ public enum GroupManager {
                         eventDetails.putString("msg", group.getGroupKey());
                         fa.logEvent("Follow_" + group.getGroupKey(), eventDetails);
                         groupsFollowGroupsButton.setText(R.string.following_groups_text);
+
+                        if(data) {
+                            AnalyticsManager.INSTANCE.trackEvent("SUBSCRIBE_EVENT",
+                                    group.getGroupKey(),
+                                    SessionManager.INSTANCE.getCurrentUserToken(),"none", null);
+                        }
+
                         return false;
                     }
                 });
@@ -319,7 +339,7 @@ public enum GroupManager {
      *
      * @param group
      */
-    public void subscribeToGroup(Group group, final boolean refresh, final Callback<Boolean> callback) {
+    public void subscribeToGroup(final Group group, final boolean refresh, final Callback<Boolean> callback) {
 
         subscriptionCompleted = false;
 
@@ -337,6 +357,7 @@ public enum GroupManager {
             public boolean onExecuted(Boolean data) {
 
                 if (!subscriptionCompleted) {
+
                     if (refresh) {
                         GroupManager.INSTANCE.refreshGroupsAndActionList();
                         if (callback != null) {
@@ -352,7 +373,7 @@ public enum GroupManager {
         });
     }
 
-    public void unSubscribeFromGroup(Group group, final boolean refresh, final Callback<Boolean> callback) {
+    public void unSubscribeFromGroup(final Group group, final boolean refresh, final Callback<Boolean> callback) {
 
         try {
             FirebaseMessaging.getInstance()
