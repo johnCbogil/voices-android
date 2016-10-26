@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.location.LocationListener;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -43,6 +44,8 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
 
     private static final int SPLASH_FADE_TIME = 2000;
 
+    public boolean isComingFromNotification = false;
+
     public final static String TAG = VoicesMainActivity.class.getCanonicalName();
 
     public FrameLayout mainContentFrame;
@@ -69,9 +72,35 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         currentLocation = LocationUtil.getLastLocation(this);
 
+        Intent intent = getIntent();
+        if(intent != null) {
+            Bundle extras = intent.getExtras();
+            Uri data = intent.getData();
+            if((data == null) && (extras != null)) {
+                isComingFromNotification = true;
+            }
+        }
+
+        isComingFromNotification = checkIsComingFromNotification();
+
         initViews();
         initialTransition();
+        //041505
     }
+
+    private boolean checkIsComingFromNotification() {
+        Intent intent = getIntent();
+        if(intent != null) {
+            Bundle extras = intent.getExtras();
+            Uri data = intent.getData();
+            if((data == null) && (extras != null)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     private void initViews() {
 
@@ -108,6 +137,18 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
                         RepresentativesManager.INSTANCE
                                 .toggleRepresentativesScreen(currentLocation,
                                         VoicesMainActivity.this, true);
+
+                        if(isComingFromNotification) {
+                            RepresentativesManager.INSTANCE.selectGroupsTab();
+//                            if(RepresentativesManager.INSTANCE.representativesTab.isSelected()){
+//                                RepresentativesManager.INSTANCE
+//                                        .toggleRepresentativesScreen(currentLocation,
+//                                                VoicesMainActivity.this, true);
+//                                RepresentativesManager.INSTANCE.representativesTab.callOnClick();
+//                            }
+                            isComingFromNotification=false;
+                        }
+
                     } else {
                         LocationRequestManager.INSTANCE
                                 .toggleLocationRequestScreen(VoicesMainActivity.this, true);

@@ -18,7 +18,7 @@ android {
     }
     defaultConfig {
         applicationId "com.johnbogil.mobilonix.voices"
-        minSdkVersion 14
+        minSdkVersion 15
         targetSdkVersion 22
         versionCode Integer.parseInt(date + 1) + base //temporary version code to make sure we're above the 3.0 version
         versionName major + "." + minor + "." + patch

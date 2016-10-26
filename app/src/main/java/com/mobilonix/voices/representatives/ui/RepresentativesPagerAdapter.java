@@ -22,6 +22,7 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
 
     private ArrayList<RepresentativesPage> representatives;
 
+    SwipeRefreshLayout pageRefresh;
 
     public RepresentativesPagerAdapter(ArrayList<RepresentativesPage> representatives) {
         this.representatives = representatives;
@@ -66,6 +67,8 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
             }
         });
 
+        this.pageRefresh = pageRefresh;
+
         representativesList
                 .setAdapter(new RepresentativesListAdapter
                 (representativesList.getContext(),
@@ -95,5 +98,10 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
     public CharSequence getPageTitle(int position) {
         return "REPRESENTATIVES";
     }
+
+    public SwipeRefreshLayout getPagerRefresh() {
+        return pageRefresh;
+    }
+
 
 }
