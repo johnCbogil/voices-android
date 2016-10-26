@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mobilonix.voices.R;
+import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.delegates.Callback;
 
 import java.util.ArrayList;
@@ -23,12 +24,14 @@ public class PagerIndicator extends LinearLayout implements ViewPager.OnPageChan
 
     Callback callback;
 
+    TextView repsLevel;
+
     public PagerIndicator(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     public void addIndicator(String level, final String indicatorTag) {
-        final TextView repsLevel = new TextView(getContext());
+        repsLevel = new TextView(getContext());
         repsLevel.setText(level);
         Typeface avenirBold = Typeface.createFromAsset(getContext().getAssets(), "fonts/avenir-next-bold.ttf");
         repsLevel.setTypeface(avenirBold);
@@ -96,5 +99,11 @@ public class PagerIndicator extends LinearLayout implements ViewPager.OnPageChan
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    public TextView getRepsLevel() {
+
+        GeneralUtil.toast("Getting reps level");
+        return repsLevel;
     }
 }

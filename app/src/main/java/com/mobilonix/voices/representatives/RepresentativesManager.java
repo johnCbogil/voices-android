@@ -71,7 +71,7 @@ public enum RepresentativesManager {
     View primaryToolbar;
     View divider;
     LinearLayout groupsTab;
-    LinearLayout representativesTab;
+    public LinearLayout representativesTab;
 
     DetailPageLayout detailPageLayout;
 
@@ -303,7 +303,8 @@ public enum RepresentativesManager {
             @Override
             public void onClick(View v) {
 
-
+                groupsTab.setSelected(true);
+                representativesTab.setSelected(false);
                 representativesPager.setVisibility(View.GONE);
                 groupsView.setVisibility(View.VISIBLE);
                 primaryToolbar.setVisibility(View.VISIBLE);
@@ -335,7 +336,17 @@ public enum RepresentativesManager {
                 /* Always set the page back to the federal reps when selevting the groups tav*/
                 //RepresentativesManager.INSTANCE.setPageByIndex(0);
 
+//                RepresentativesManager.INSTANCE
+//                        .refreshRepresentativesContent(lastLocationString,
+//                                lastLat,
+//                                lastLon,
+//                                ((VoicesMainActivity) RepresentativesManager.INSTANCE.getPagerIndicator().getContext()),
+//                                lastPages,
+//                                (ViewPager)RepresentativesManager.INSTANCE.getRepresentativesFrame()
+//                                        .findViewById(R.id.representatives_pager));
 
+                representativesTab.setSelected(true);
+                groupsTab.setSelected(false);
                 representativesPager.setVisibility(View.VISIBLE);
                 groupsView.setVisibility(View.GONE);
                 primaryToolbar.setVisibility(View.VISIBLE);
@@ -356,6 +367,10 @@ public enum RepresentativesManager {
                 groupsTabIcon.getDrawable().setColorFilter(grey,PorterDuff.Mode.SRC_ATOP);
 
                 GroupManager.INSTANCE.toggleGroupPage(groupsView, false);
+
+                ViewPager pager = (ViewPager) RepresentativesManager.INSTANCE.getRepresentativesFrame()
+                        .findViewById(R.id.representatives_pager);
+//                ((SwipeRefreshLayout)pager.findViewById(R.id.swipe_refresh_layout)).setRefreshing(true);
             }
         });
 
@@ -431,6 +446,15 @@ public enum RepresentativesManager {
         groupsTab.callOnClick();
     }
 
+    private ArrayList<RepresentativesPage> lastPages = new ArrayList<>();
+    String lastLocationString = "";
+    double lastLat;
+    double lastLon;
+
+    public ArrayList<RepresentativesPage> getLastPages() {
+        return lastPages;
+    }
+
     /**
      *
      *
@@ -446,6 +470,8 @@ public enum RepresentativesManager {
                                               final VoicesMainActivity activity,
                                               final ArrayList<RepresentativesPage> pages,
                                               final ViewPager representativesPager) {
+
+        lastPages = pages;
 
         for (RepresentativesType type : RepresentativesType.values()) {
 
@@ -636,5 +662,9 @@ public enum RepresentativesManager {
 
     public DetailPageLayout getDetailPageLayout() {
         return detailPageLayout;
+    }
+
+    public PagerIndicator getPagerIndicator() {
+        return pagerIndicator;
     }
 }
