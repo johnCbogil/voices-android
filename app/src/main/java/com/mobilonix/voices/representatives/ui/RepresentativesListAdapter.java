@@ -3,6 +3,7 @@ package com.mobilonix.voices.representatives.ui;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +49,6 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
             mViewHolder.mLinearLayout = (LinearLayout)convertView.findViewById(R.id.representatives_linear_layout);
             mViewHolder.mRepsImage = (ImageView)convertView.findViewById(R.id.representatives_list_image);
             mViewHolder.mRepsName = (TextView)convertView.findViewById(R.id.representatives_list_name_text);
-            mViewHolder.mElectionUpcoming = (TextView)convertView.findViewById(R.id.election_upcoming);
             convertView.setTag(mViewHolder);
         } else {
             mViewHolder = (ViewHolder)convertView.getTag();
@@ -56,11 +56,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
 
         mViewHolder.mRepsName.setText(representatives.get(position).getName());
 
-        if(representatives.get(position).getElectionDate().contains("2016")){
-            mViewHolder.mElectionUpcoming.setText(R.string.election_upcoming);
-        }
-
-        setGender(mViewHolder.mRepsImage, position);
+        setImage(mViewHolder.mRepsImage, position);
 
         mViewHolder.mLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +65,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
 
                 detailPageLayout.repsName.setText(representatives.get(position).getName());
 
-                setGender(detailPageLayout.repsImage,position);
+                setImage(detailPageLayout.repsImage,position);
 
                 if(representatives.get(position).getParty().equals("")){
                     detailPageLayout.repsParty.setText(VoicesApplication.getContext().getResources().getString(R.string.party)
@@ -93,6 +89,12 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                 } else {
                     detailPageLayout.repsElectionDate.setText(VoicesApplication.getContext().getResources().getString(R.string.next_election)
                             + representatives.get(position).getElectionDate());
+                }
+
+                if(representatives.get(position).getElectionDate().contains("2017")){
+                    detailPageLayout.electionUpcoming.setText(R.string.election_upcoming);
+                } else {
+                    detailPageLayout.electionUpcoming.setText("");
                 }
 
                 String check = representatives.get(position).getPhoneNumber();
@@ -191,46 +193,53 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
         noContactInfoDialog.show();
     }
 
-    public void setGender(ImageView image, int position){
-        if(representatives.get(position).getGender()=="F") {
-            Picasso.with(image.getContext())
-                    .load(representatives.get(position).getRepresentativeImageUrl())
-                    .resize(100, 125)
-                    .centerCrop()
-                    .placeholder(R.drawable.placeholder_spinner)
-                    .error(R.drawable.representatives_place_holder_female)
-                    .transform(new RoundedTransformation(10, 4))
-                    .into(image);
-        } else if(representatives.get(position).getGender()=="M"){
-            Picasso.with(image.getContext())
-                    .load(representatives.get(position).getRepresentativeImageUrl())
-                    .resize(100, 125)
-                    .centerCrop()
-                    .placeholder(R.drawable.placeholder_spinner)
-                    .error(R.drawable.representatives_place_holder_male)
-                    .transform(new RoundedTransformation(10, 4))
-                    .into(image);
-        } else {
-            double random = Math.random();
-            if(random < 0.5){
-                Picasso.with(image.getContext())
-                        .load(representatives.get(position).getRepresentativeImageUrl())
-                        .resize(100, 125)
-                        .centerCrop()
-                        .placeholder(R.drawable.placeholder_spinner)
-                        .error(R.drawable.representatives_place_holder_female)
-                        .transform(new RoundedTransformation(10, 4))
-                        .into(image);
-            } else {
-                Picasso.with(image.getContext())
-                        .load(representatives.get(position).getRepresentativeImageUrl())
-                        .resize(100, 125)
-                        .centerCrop()
-                        .placeholder(R.drawable.placeholder_spinner)
-                        .error(R.drawable.representatives_place_holder_male)
-                        .transform(new RoundedTransformation(10, 4))
-                        .into(image);
+    public void setImage(final ImageView image, final int position) {
+
+        String gender = representatives.get(position).getGender();
+
+        int id = 0;
+
+        switch (gender) {
+            case "M": {
+                id = R.drawable.representatives_place_holder_male;
+                break;
             }
+            case "F": {
+                id = R.drawable.representatives_place_holder_female;
+                break;
+            }
+            default: {
+                double random = Math.random();
+                id = random > 0.5
+                        ? R.drawable.representatives_place_holder_male
+                        : R.drawable.representatives_place_holder_female;
+                break;
+            }
+        }
+
+        Picasso.with(image.getContext())
+                .load(representatives.get(position).getRepresentativeImageUrl())
+                .resize(100,125)
+                .centerCrop()
+                .placeholder(R.drawable.placeholder_spinner)
+                .error(id)
+                .transform(new RoundedTransformation(10, 4))
+                .into(image);
+    }
+
+
+    private boolean isOnline()
+    {
+        try
+        {
+            ConnectivityManager cm = (ConnectivityManager)
+                    VoicesApplication.getContext()
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            return cm.getActiveNetworkInfo().isConnectedOrConnecting();
+        }
+        catch (Exception e)
+        {
+            return false;
         }
     }
 
@@ -238,7 +247,5 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
         private LinearLayout mLinearLayout;
         private ImageView mRepsImage;
         private TextView mRepsName;
-        private TextView mElectionUpcoming;
-        private ImageView mMoreInfoImage;
     }
 }

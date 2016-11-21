@@ -43,6 +43,8 @@ import com.mobilonix.voices.representatives.ui.PagerIndicator;
 import com.mobilonix.voices.representatives.ui.RepresentativesListAdapter;
 import com.mobilonix.voices.representatives.ui.RepresentativesPagerAdapter;
 import com.mobilonix.voices.session.SessionManager;
+import com.mobilonix.voices.util.AvenirButton;
+import com.mobilonix.voices.util.DatabaseUtil;
 import com.mobilonix.voices.util.RESTUtil;
 import com.mobilonix.voices.util.ViewUtil;
 
@@ -65,6 +67,8 @@ public enum RepresentativesManager {
     static NycLocalOfficialsApi nycScraperApi = new NycLocalOfficialsApi();
 
     boolean representativesScreenVisible = false;
+
+    VoicesMainActivity voicesMainActivity;
 
     FrameLayout representativesFrame;
 
@@ -145,7 +149,7 @@ public enum RepresentativesManager {
                     inflater.inflate(R.layout.view_representatives, null, false);
 
             primaryToolbar = activity.getToolbar();
-            divider = activity.findViewById(R.id.divider);
+            divider = activity.findViewById(R.id.toolbar_divider);
 
             final TextView actionSelectionButton = (TextView) primaryToolbar.findViewById(R.id.action_selection_text);
             final TextView groupsSelectionButton = (TextView) primaryToolbar.findViewById(R.id.groups_selection_text);
@@ -242,11 +246,13 @@ public enum RepresentativesManager {
                                 pages,
                                 representativesPager);
                     }
+
                     @Override
                     public void onError(Status status) {
 
                     }
                 });
+            }
 
                 refreshRepresentativesContent(
                         CURRENT_LOCATION,
@@ -266,7 +272,6 @@ public enum RepresentativesManager {
 
             representativesScreenVisible = state;
         }
-    }
 
     /**
      * Initialize the representatives and view tabs and thir respective actions
@@ -286,6 +291,7 @@ public enum RepresentativesManager {
         final TextView groupsSelectionButton = (TextView)primaryToolbar.findViewById(R.id.groups_selection_text);
         final ImageView infoIcon = (ImageView)primaryToolbar.findViewById(R.id.representatives_info_icon);
         final ImageView helpIcon = (ImageView)primaryToolbar.findViewById(R.id.representatives_help_icon);
+        final AvenirButton saveButton = (AvenirButton)primaryToolbar.findViewById(R.id.save_location_button);
         final ImageView backArrow = (ImageView)primaryToolbar.findViewById(R.id.primary_toolbar_back_arrow);
         final TextView groupsInfoText = (TextView)primaryToolbar.findViewById(R.id.all_groups_info_text);
         final ImageView addGroupIcon = (ImageView)primaryToolbar.findViewById(R.id.action_add_groups);
@@ -310,14 +316,15 @@ public enum RepresentativesManager {
                 primaryToolbar.setVisibility(View.VISIBLE);
                 infoIcon.setVisibility(View.GONE);
                 helpIcon.setVisibility(View.GONE);
+                saveButton.setVisibility(View.GONE);
                 backArrow.setVisibility(View.GONE);
                 actionSelectionButton.setVisibility(View.VISIBLE);
                 actionSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.white));
                 groupsSelectionButton.setVisibility(View.VISIBLE);
                 groupsSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.voices_orange));
                 groupsInfoText.setVisibility(View.GONE);
-                divider.setVisibility(View.VISIBLE);
                 addGroupIcon.setVisibility(View.VISIBLE);
+                divider.setVisibility(View.VISIBLE);
 
                 RepresentativesManager.INSTANCE.toggleSearchBar(false);
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(false);
@@ -352,12 +359,12 @@ public enum RepresentativesManager {
                 primaryToolbar.setVisibility(View.VISIBLE);
                 infoIcon.setVisibility(View.VISIBLE);
                 helpIcon.setVisibility(View.VISIBLE);
+                saveButton.setVisibility(View.VISIBLE);
                 actionSelectionButton.setVisibility(View.GONE);
                 groupsSelectionButton.setVisibility(View.GONE);
                 groupsInfoText.setVisibility(View.GONE);
                 backArrow.setVisibility(View.GONE);
                 divider.setVisibility(View.VISIBLE);
-
                 addGroupIcon.setVisibility(View.GONE);
 
                 RepresentativesManager.INSTANCE.toggleSearchBar(true);
@@ -572,8 +579,8 @@ public enum RepresentativesManager {
         if(pageRefresh != null) {
             pageRefresh.setRefreshing(false);
         }
-
-
+        //TODO: cache the representatives for each representative level using the type as a key and data as value
+        DatabaseUtil.saveRepresentatives(type.getIdentifier(),data);
     }
 
     /**

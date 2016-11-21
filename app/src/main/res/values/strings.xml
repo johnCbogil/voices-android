@@ -3,7 +3,7 @@
 
     <!-- Splash -->
     <string name="splash_title">Get Started</string>
-    <string name="splash_voices_intro">Voices connects you with activist groups and representatives in your area.</string>
+    <string name="splash_voices_intro">Help groups and elected officials fight for the causes you care about</string>
     <string name="splash_button">Get Started</string>
     <!-- Location Request -->
     <string name="location_request_text">Turn on location services to Voices can show you who represents your community.</string>
@@ -43,6 +43,7 @@
     <string name="reps">Reps</string>
     <string name="groups">Groups</string>
     <string name="election_upcoming">Election Upcoming!</string>
+    <string name="save_location">Save Location</string>
 
     <!--Actions/Groups Tabs-->
     <string name="no_follow_actions">To receive actions from advocacy groups, tap the + button above to follow groups.</string>
@@ -56,7 +57,7 @@
     <!--Groups Dialog-->
     <string name="button_learnmore">Take Action</string>
     <string name="follow_groups_text">Follow This Group</string>
-    <string name="following_groups_text">Following</string>
+    <string name="following_groups_text">Following▾</string>
     <string name="policy_positions_text">Policy Positions</string>
     <string name="follow_question">Are you sure you want to unfollow this group?</string>
     <string name="unfollow">Unfollow Group</string>
@@ -90,4 +91,8 @@
         or swipe down to use current location).
     </string>
 
+    <!--Shared Preferences-->
+    <string name="pref_location_label">Location</string>
+    <string name="pref_location_key">location</string>
+    <string name="pref_location_default"></string>
 </resources>

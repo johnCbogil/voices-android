@@ -1,7 +1,12 @@
 package com.mobilonix.voices.util;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.mobilonix.voices.VoicesApplication;
+import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.data.model.Politico;
 import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.delegates.Callback2;
@@ -73,36 +78,49 @@ public class RESTUtil {
                                                   final Callback2<ArrayList<Representative>,
                                                           RepresentativesManager.RepresentativesType>
                                                           representativesCallback) {
-
         final OkHttpClient client = new OkHttpClient.Builder()
                 .readTimeout(REQUEST_READ_TIMEOUT, TimeUnit.SECONDS)
                 .build();
 
         /* Make call to auto-complete api */
         try {
-            client.newCall(type.getRequest(repLat, repLong)).enqueue(new okhttp3.Callback() {
+            ConnectivityManager cm = (ConnectivityManager)VoicesApplication.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+            boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+            if (isConnected==false) {
 
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    Log.e(TAG, "Record request failed..." + e);
-                    representativesCallback.onExecuted(new ArrayList<Representative>(), type);
-                }
+                GeneralUtil.toast("REP REQUEST FAILED!");
+                representativesCallback.onExecuted(DatabaseUtil.fetchRepresentatives(type.getIdentifier()), type);
 
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    Log.e(TAG, "Record request success... with response" + response);
+                // There are no active networks.
+                //TODO: if you are offline then fetch from cache and then call representativesCallback.onExecuted with SharedPreferences key and value
+            } else {
+                client.newCall(type.getRequest(repLat, repLong)).enqueue(new okhttp3.Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        Log.e(TAG, "Record request failed..." + e);
+                        representativesCallback.onExecuted(DatabaseUtil.fetchRepresentatives(type.getIdentifier()), type);
+
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        Log.e(TAG, "Record request success... with response" + response);
+
 
                 /* Om Success return auto-complete Address results to callback */
-                    String responseString = response.body().string();
-                    ArrayList<Representative> representatives = parseRepresentativesList(responseString, type);
-                    representativesCallback.onExecuted(representatives, type);
-                    response.body().close();
-                }
-            });
-        } catch (IOException e) {
-            Log.e(TAG, "API request failed..." + e);
-            representativesCallback.onExecuted(new ArrayList<Representative>(), type);
-        }
+                        String responseString = response.body().string();
+                        ArrayList<Representative> representatives = parseRepresentativesList(responseString, type);
+                        //this is executed only if you are online and have a successful request
+                        representativesCallback.onExecuted(representatives, type);
+                        response.body().close();
+                    }
+                });
+            }
+            }catch(IOException e){
+                Log.e(TAG, "API request failed..." + e);
+                representativesCallback.onExecuted(new ArrayList<Representative>(), type);
+            }
     }
 
     /* TODO: Replace this method's logic here with ACTUAL AUTOCOPLETE LOGIC.  A real address autocomplete list
@@ -164,5 +182,4 @@ public class RESTUtil {
 
         return (int)((upperBound - lowerBound)*Math.random() + lowerBound);
     }
-
 }

@@ -15,6 +15,7 @@ public class DetailPageLayout extends LinearLayout {
     TextView repsParty;
     TextView repsDistrict;
     TextView repsElectionDate;
+    TextView electionUpcoming;
     ImageView mCallImage;
     ImageView mEmailImage;
     ImageView mTwitterImage;
@@ -31,6 +32,7 @@ public class DetailPageLayout extends LinearLayout {
         repsParty = (TextView)findViewById(R.id.reps_party);
         repsDistrict = (TextView)findViewById(R.id.reps_district);
         repsElectionDate = (TextView)findViewById(R.id.reps_election_date);
+        electionUpcoming = (TextView)findViewById(R.id.election_upcoming);
         mCallImage = (ImageView)findViewById(R.id.representatives_list_call_image);
         mEmailImage = (ImageView)findViewById(R.id.representatives_list_email_image);
         mTwitterImage = (ImageView)findViewById(R.id.representatives_list_twitter_image);

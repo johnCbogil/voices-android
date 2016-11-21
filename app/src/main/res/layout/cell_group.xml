@@ -8,7 +8,6 @@
         android:layout_gravity="center_vertical|right"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_marginTop="5dp"
         android:id="@+id/arrow_image"
         android:src="@drawable/right_carat"
         android:tint="@color/voices_orange"
@@ -23,14 +22,14 @@
         <ImageView
             android:layout_width="75dp"
             android:layout_height="75dp"
-            android:layout_marginRight="10dp"
             android:id="@+id/cell_group_image"
             android:src="@drawable/representatives_place_holder_male"/>
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp">
 
             <com.mobilonix.voices.util.AvenirTextView
                 android:layout_width="wrap_content"
@@ -74,7 +73,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:id="@+id/divider"
+        android:id="@+id/groups_divider"
         android:background="@color/light_grey"
         android:layout_gravity="bottom"
         android:visibility="visible">
