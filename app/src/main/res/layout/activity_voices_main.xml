@@ -27,17 +27,26 @@
                         android:tint="@color/voices_orange"
                         android:visibility="gone"/>
                     <ImageView
-                        android:id="@+id/representatives_info_icon"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="right|center"
-                        android:src="@drawable/info_icon"/>
-                    <ImageView
                         android:id="@+id/representatives_help_icon"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_gravity="left|center"
                         android:src="@drawable/help_icon"/>
+                    <com.mobilonix.voices.util.AvenirButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="5dp"
+                        android:text="@string/save_location"
+                        android:textColor="#FFF"
+                        android:textSize="15sp"
+                        android:id="@+id/save_location_button" />
+                    <ImageView
+                        android:id="@+id/representatives_info_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="right|center"
+                        android:src="@drawable/info_icon"/>
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
@@ -86,8 +95,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:id="@+id/divider"
-            android:background="@color/grey"
+            android:id="@+id/toolbar_divider"
+            android:background="@color/light_grey"
             android:layout_marginRight="-10dp"
             android:layout_marginLeft="-10dp"
             android:layout_gravity="bottom"

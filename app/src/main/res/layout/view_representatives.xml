@@ -65,8 +65,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:id="@+id/divider"
-            android:background="@color/grey"
+            android:id="@+id/tabs_divider"
+            android:background="@color/light_grey"
             android:layout_marginRight="-10dp"
             android:layout_marginLeft="-10dp"
             android:layout_marginBottom="5dp"

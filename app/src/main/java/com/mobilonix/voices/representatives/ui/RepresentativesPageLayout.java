@@ -15,9 +15,11 @@ import android.widget.LinearLayout;
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.representatives.model.RepresentativesPage;
+import com.mobilonix.voices.util.AvenirButton;
 
 public class RepresentativesPageLayout extends LinearLayout {
     public String TAG = RepresentativesPageLayout.class.getCanonicalName();
+    VoicesMainActivity voicesMainActivity;
     RepresentativesPage representativesPage;
 
     Dialog responseDialog;
@@ -35,6 +37,7 @@ public class RepresentativesPageLayout extends LinearLayout {
 
         ImageView infoIcon = (ImageView)toolbar.findViewById(R.id.representatives_info_icon);
         ImageView helpIcon = (ImageView)toolbar.findViewById(R.id.representatives_help_icon);
+        AvenirButton saveLocationButton = (AvenirButton)toolbar.findViewById(R.id.save_location_button);
 
         infoIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,6 +47,15 @@ public class RepresentativesPageLayout extends LinearLayout {
                 responseDialog.setContentView(R.layout.dialog_info);
                 responseDialog.setTitle(R.string.response_title);
                 responseDialog.show();
+            }
+        });
+
+        saveLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //SharedPreferences.Editor editor = voicesMainActivity.getSharedPreferences("prefs_general", Context.MODE_PRIVATE).edit();
+                //editor.putString("location", voicesMainActivity.getSavedLocation());
+                //editor.commit();
             }
         });
 

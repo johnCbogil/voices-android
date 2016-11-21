@@ -1,9 +1,11 @@
 package com.mobilonix.voices.representatives.model;
 
+import java.io.Serializable;
+
 /**
  * This model holds the representative info
  */
-public class Representative {
+public class Representative implements Serializable {
 
     private String gender;
     private String party;
@@ -16,6 +18,7 @@ public class Representative {
     private String title;
     private String name;
     private String location;
+    private String mediaStoreUri;
 
     public String getGender() { return gender; }
 
@@ -77,5 +80,18 @@ public class Representative {
         this.emailAddress = emailAddress;
         this.representativeImageUrl = representativeImageUrl;
 
+    }
+
+    public void setMediaStoreUri(String mediaStoreUri) {
+        this.mediaStoreUri = mediaStoreUri;
+    }
+
+    public String getMediaStoreUri() {
+        return mediaStoreUri;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

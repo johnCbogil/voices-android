@@ -7,7 +7,7 @@ android {
     buildToolsVersion "23.0.3"
 
     def major = 1;
-    def minor = 5;
+    def minor = 6;
     def patch = 1;
 
     def base = 100000000;
@@ -39,6 +39,7 @@ dependencies {
     compile ('com.squareup.okhttp3:okhttp:3.3.1')
     compile ('com.badoo.mobile:android-weak-handler:1.1')
 
+    compile 'com.google.code.gson:gson:2.8.0'
 
     compile ('com.android.support:appcompat-v7:22.+') {
         exclude group: 'com.android.support'
