@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mobilonix.voices.R;
-import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.delegates.Callback;
 
 import java.util.ArrayList;
@@ -102,8 +101,6 @@ public class PagerIndicator extends LinearLayout implements ViewPager.OnPageChan
     }
 
     public TextView getRepsLevel() {
-
-        GeneralUtil.toast("Getting reps level");
         return repsLevel;
     }
 }

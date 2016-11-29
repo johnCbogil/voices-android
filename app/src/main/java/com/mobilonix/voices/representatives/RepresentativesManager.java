@@ -3,8 +3,11 @@ package com.mobilonix.voices.representatives;
 import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.util.LruCache;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
@@ -42,11 +45,14 @@ import com.mobilonix.voices.representatives.ui.DetailPageLayout;
 import com.mobilonix.voices.representatives.ui.PagerIndicator;
 import com.mobilonix.voices.representatives.ui.RepresentativesListAdapter;
 import com.mobilonix.voices.representatives.ui.RepresentativesPagerAdapter;
+import com.mobilonix.voices.representatives.ui.RoundedTransformation;
 import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.util.AvenirButton;
 import com.mobilonix.voices.util.DatabaseUtil;
 import com.mobilonix.voices.util.RESTUtil;
 import com.mobilonix.voices.util.ViewUtil;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -85,6 +91,8 @@ public enum RepresentativesManager {
 
     PlaceAutocompleteFragment autoCompleteTextView;
     ConcurrentHashMap<String, ArrayList<Representative>> currentRepsMap = new ConcurrentHashMap<>();
+
+    private LruCache<String, Bitmap> mMemoryCache;
 
     /**
      *
@@ -556,8 +564,8 @@ public enum RepresentativesManager {
         }
     }
 
-    private void finalizePageOrder(ArrayList<Representative> data,
-                                   RepresentativesType type,
+    private void finalizePageOrder(final ArrayList<Representative> data,
+                                   final RepresentativesType type,
                                    ArrayList<RepresentativesPage> pages,
                                    ViewPager representativesPager) {
 
@@ -579,8 +587,37 @@ public enum RepresentativesManager {
         if(pageRefresh != null) {
             pageRefresh.setRefreshing(false);
         }
-        //TODO: cache the representatives for each representative level using the type as a key and data as value
-        DatabaseUtil.saveRepresentatives(type.getIdentifier(),data);
+
+        //cache representatives
+        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+        final int cacheSize = maxMemory / 8;
+        mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
+            @Override
+            protected int sizeOf(String key, Bitmap bitmap) {
+                return bitmap.getByteCount() / 1024;
+            }
+        };
+        for (final Representative rep : data) {
+            Picasso.with(VoicesApplication.getContext())
+                    .load(rep.getRepresentativeImageUrl())
+                    .placeholder(R.drawable.placeholder_spinner)
+                    .error(R.drawable.representatives_place_holder_male)
+                    .transform(new RoundedTransformation(10, 4))
+                    .into(new Target() {
+                        @Override
+                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                            addBitmapToMemoryCache(rep.getName(),bitmap);
+                        }
+                        @Override
+                        public void onBitmapFailed(Drawable errorDrawable) {
+                            getBitmapFromMemCache(rep.getName());
+                        }
+                        @Override
+                        public void onPrepareLoad(Drawable placeHolderDrawable) {
+                        }
+                    });
+        }
+        DatabaseUtil.saveRepresentatives(type.toString(),data);
     }
 
     /**
@@ -651,6 +688,16 @@ public enum RepresentativesManager {
 
     public void toggleErrorDisplay(RepresentativesType type, boolean state) {
         toggleErrorDisplay(type.getIdentifier(), state);
+    }
+
+    public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
+        if (getBitmapFromMemCache(key) == null) {
+            mMemoryCache.put(key, bitmap);
+        }
+    }
+
+    public Bitmap getBitmapFromMemCache(String key) {
+        return mMemoryCache.get(key);
     }
 
     /**

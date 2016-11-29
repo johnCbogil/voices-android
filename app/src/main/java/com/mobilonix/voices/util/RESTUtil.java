@@ -84,11 +84,7 @@ public class RESTUtil {
 
         /* Make call to auto-complete api */
         try {
-            ConnectivityManager cm = (ConnectivityManager)VoicesApplication.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-            boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-            if (isConnected==false) {
-
+            if (isOnline()==false) {
                 GeneralUtil.toast("REP REQUEST FAILED!");
                 representativesCallback.onExecuted(DatabaseUtil.fetchRepresentatives(type.getIdentifier()), type);
 
@@ -99,16 +95,15 @@ public class RESTUtil {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         Log.e(TAG, "Record request failed..." + e);
-                        representativesCallback.onExecuted(DatabaseUtil.fetchRepresentatives(type.getIdentifier()), type);
+                        ArrayList<Representative> representatives = DatabaseUtil.fetchRepresentatives(type.getIdentifier());
+                        representativesCallback.onExecuted(representatives, type);
 
                     }
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         Log.e(TAG, "Record request success... with response" + response);
-
-
-                /* Om Success return auto-complete Address results to callback */
+                        // On success return auto-complete address results to callback
                         String responseString = response.body().string();
                         ArrayList<Representative> representatives = parseRepresentativesList(responseString, type);
                         //this is executed only if you are online and have a successful request
@@ -181,5 +176,12 @@ public class RESTUtil {
     public static int getRandomInt(int lowerBound, int upperBound)  {
 
         return (int)((upperBound - lowerBound)*Math.random() + lowerBound);
+    }
+
+    public static boolean isOnline(){
+        ConnectivityManager cm = (ConnectivityManager)VoicesApplication.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        return isConnected;
     }
 }
