@@ -223,7 +223,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
 
         Picasso.with(image.getContext())
                 .load(representatives.get(position).getRepresentativeImageUrl())
-                .resize(100,80)
+                .resize(imageWidth,imageHeight)
                 .centerCrop()
                 .placeholder(R.drawable.placeholder_spinner)
                 .error(id)
