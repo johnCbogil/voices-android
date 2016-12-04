@@ -32,15 +32,6 @@
                         android:layout_height="25dp"
                         android:layout_gravity="left|center"
                         android:src="@drawable/help_icon"/>
-                    <com.mobilonix.voices.util.AvenirButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:padding="5dp"
-                        android:text="@string/save_location"
-                        android:textColor="#FFF"
-                        android:textSize="15sp"
-                        android:id="@+id/save_location_button" />
                     <ImageView
                         android:id="@+id/representatives_info_icon"
                         android:layout_width="30dp"

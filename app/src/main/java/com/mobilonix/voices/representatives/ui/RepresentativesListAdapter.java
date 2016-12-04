@@ -3,8 +3,9 @@ package com.mobilonix.voices.representatives.ui;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
+import android.content.res.Resources;
 import android.net.Uri;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,19 +40,19 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
     public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder mViewHolder;
 
-        if(convertView == null) {
+        if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater)
                     parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             convertView = inflater.inflate(resource, parent, false);
             mViewHolder = new ViewHolder();
 
-            mViewHolder.mLinearLayout = (LinearLayout)convertView.findViewById(R.id.representatives_linear_layout);
-            mViewHolder.mRepsImage = (ImageView)convertView.findViewById(R.id.representatives_list_image);
-            mViewHolder.mRepsName = (TextView)convertView.findViewById(R.id.representatives_list_name_text);
+            mViewHolder.mLinearLayout = (LinearLayout) convertView.findViewById(R.id.representatives_linear_layout);
+            mViewHolder.mRepsImage = (ImageView) convertView.findViewById(R.id.representatives_list_image);
+            mViewHolder.mRepsName = (TextView) convertView.findViewById(R.id.representatives_list_name_text);
             convertView.setTag(mViewHolder);
         } else {
-            mViewHolder = (ViewHolder)convertView.getTag();
+            mViewHolder = (ViewHolder) convertView.getTag();
         }
 
         mViewHolder.mRepsName.setText(representatives.get(position).getName());
@@ -65,9 +66,9 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
 
                 detailPageLayout.repsName.setText(representatives.get(position).getName());
 
-                setImage(detailPageLayout.repsImage,position);
+                setImage(detailPageLayout.repsImage, position);
 
-                if(representatives.get(position).getParty().equals("")){
+                if (representatives.get(position).getParty().equals("")) {
                     detailPageLayout.repsParty.setText(VoicesApplication.getContext().getResources().getString(R.string.party)
                             + VoicesApplication.getContext().getResources().getString(R.string.not_available));
                 } else {
@@ -75,7 +76,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                             + representatives.get(position).getParty());
                 }
 
-                if(representatives.get(position).getDistrict().equals("")){
+                if (representatives.get(position).getDistrict().equals("")) {
                     detailPageLayout.repsDistrict.setText(VoicesApplication.getContext().getResources().getString(R.string.district)
                             + VoicesApplication.getContext().getResources().getString(R.string.not_available));
                 } else {
@@ -83,7 +84,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                             + representatives.get(position).getDistrict());
                 }
 
-                if(representatives.get(position).getElectionDate().equals("")){
+                if (representatives.get(position).getElectionDate().equals("")) {
                     detailPageLayout.repsElectionDate.setText(VoicesApplication.getContext().getResources().getString(R.string.next_election)
                             + VoicesApplication.getContext().getResources().getString(R.string.not_available));
                 } else {
@@ -91,14 +92,14 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                             + representatives.get(position).getElectionDate());
                 }
 
-                if(representatives.get(position).getElectionDate().contains("2017")){
+                if (representatives.get(position).getElectionDate().contains("2017")) {
                     detailPageLayout.electionUpcoming.setText(R.string.election_upcoming);
                 } else {
                     detailPageLayout.electionUpcoming.setText("");
                 }
 
                 String check = representatives.get(position).getPhoneNumber();
-                if(check == null || check.equals("")){
+                if (check == null || check.equals("")) {
                     detailPageLayout.mCallImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
                     detailPageLayout.mCallImage.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -119,7 +120,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                 }
 
                 check = representatives.get(position).getEmailAddress();
-                if(check == null || check.equals("")){
+                if (check == null || check.equals("")) {
                     detailPageLayout.mEmailImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
                     detailPageLayout.mEmailImage.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -133,7 +134,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                         @Override
                         public void onClick(View v) {
                             Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                                    "mailto",representatives.get(position).getEmailAddress(), null));
+                                    "mailto", representatives.get(position).getEmailAddress(), null));
                             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
                             emailIntent.putExtra(Intent.EXTRA_TEXT, "");
                             ArrayList<String> addresses = new ArrayList<>();
@@ -146,9 +147,9 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                 }
 
                 check = representatives.get(position).getTwitterHandle();
-                if(check == null || check.equals("")){
-                    detailPageLayout.mTwitterImage .setColorFilter(getContext().getResources().getColor(R.color.light_grey));
-                    detailPageLayout.mTwitterImage .setOnClickListener(new View.OnClickListener() {
+                if (check == null || check.equals("")) {
+                    detailPageLayout.mTwitterImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
+                    detailPageLayout.mTwitterImage.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             String callInstead = getContext().getResources().getString(R.string.call_instead);
@@ -181,9 +182,9 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
         noContactInfoDialog = new Dialog(getContext());
         noContactInfoDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         noContactInfoDialog.setContentView(R.layout.dialog_nocontactinfo);
-        TextView considerText = (TextView)noContactInfoDialog.findViewById(R.id.consider_text);
+        TextView considerText = (TextView) noContactInfoDialog.findViewById(R.id.consider_text);
         considerText.setText(text);
-        Button gotItButton = (Button)noContactInfoDialog.findViewById(R.id.got_it_button_2);
+        Button gotItButton = (Button) noContactInfoDialog.findViewById(R.id.got_it_button_2);
         gotItButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -197,7 +198,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
 
         String gender = representatives.get(position).getGender();
 
-        int id = 0;
+        int id;
 
         switch (gender) {
             case "M": {
@@ -217,30 +218,42 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
             }
         }
 
+        int imageHeight = Math.round(convertDpToPixel(100,VoicesApplication.getContext()));
+        int imageWidth = Math.round(convertDpToPixel(80, VoicesApplication.getContext()));
+
         Picasso.with(image.getContext())
                 .load(representatives.get(position).getRepresentativeImageUrl())
-                .resize(100,125)
+                .resize(100,80)
                 .centerCrop()
                 .placeholder(R.drawable.placeholder_spinner)
                 .error(id)
                 .transform(new RoundedTransformation(10, 4))
                 .into(image);
+                        //new Target() {
+                   // @Override
+                    //public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                       // image.setImageBitmap(bitmap);
+                    //}
+                    //@Override
+                    //public void onBitmapFailed(Drawable errorDrawable) {
+                      //  try {
+                        //    image.setImageBitmap(RepresentativesManager.INSTANCE.getBitmapFromMemCache(representatives.get(position) + ""));
+                      //  } catch (Exception e) {
+                      //      e.printStackTrace();
+                      // }
+                 // }
+
+                  // @Override
+                  // public void onPrepareLoad(Drawable placeHolderDrawable) {
+                 //  }
+              // });
     }
 
-
-    private boolean isOnline()
-    {
-        try
-        {
-            ConnectivityManager cm = (ConnectivityManager)
-                    VoicesApplication.getContext()
-                    .getSystemService(Context.CONNECTIVITY_SERVICE);
-            return cm.getActiveNetworkInfo().isConnectedOrConnecting();
-        }
-        catch (Exception e)
-        {
-            return false;
-        }
+    public static float convertDpToPixel(float dp, Context context){
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return px;
     }
 
     private class ViewHolder {

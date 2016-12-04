@@ -5,13 +5,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -22,7 +20,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mobilonix.voices.BuildConfig;
 import com.mobilonix.voices.VoicesApplication;
-import com.mobilonix.voices.analytics.AnalyticsManager;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.groups.GroupManager;
@@ -105,7 +102,6 @@ public enum SessionManager {
         });
 
         if(BuildConfig.DEBUG) {
-            GeneralUtil.toast("This is a debug build. Don't submit this to the store.  Subscribing to test topic");
             FirebaseMessaging.getInstance().subscribeToTopic("TEST");
         }
     }

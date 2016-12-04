@@ -34,13 +34,9 @@ import com.mobilonix.voices.location.model.LatLong;
 import com.mobilonix.voices.location.util.LocationUtil;
 import com.mobilonix.voices.notifications.NotificationManager;
 import com.mobilonix.voices.representatives.RepresentativesManager;
-import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.splash.SplashManager;
-import com.mobilonix.voices.util.DatabaseUtil;
 import com.mobilonix.voices.util.DeeplinkUtil;
-
-import java.util.ArrayList;
 
 public class VoicesMainActivity extends AppCompatActivity implements LocationListener {
 
@@ -89,11 +85,6 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
 
         initViews();
         initialTransition();
-        //041505
-
-        DatabaseUtil.saveRepresentatives("TEST_REPS", new ArrayList<Representative>());
-
-        DatabaseUtil.fetchRepresentatives("TEST_REPS");
 
     }
 
@@ -342,8 +333,6 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
             LocationUtil.triggerLocationUpdate(this, new Callback<LatLong>() {
                 @Override
                 public boolean onExecuted(LatLong data) {
-
-                    GeneralUtil.toast("Activity result called.  Loading rep page");
 
                     RepresentativesManager.INSTANCE
                             .toggleRepresentativesScreen(data,

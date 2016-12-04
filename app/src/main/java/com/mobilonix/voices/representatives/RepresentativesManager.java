@@ -3,11 +3,15 @@ package com.mobilonix.voices.representatives;
 import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.util.LruCache;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -42,11 +46,13 @@ import com.mobilonix.voices.representatives.ui.DetailPageLayout;
 import com.mobilonix.voices.representatives.ui.PagerIndicator;
 import com.mobilonix.voices.representatives.ui.RepresentativesListAdapter;
 import com.mobilonix.voices.representatives.ui.RepresentativesPagerAdapter;
+import com.mobilonix.voices.representatives.ui.RoundedTransformation;
 import com.mobilonix.voices.session.SessionManager;
-import com.mobilonix.voices.util.AvenirButton;
 import com.mobilonix.voices.util.DatabaseUtil;
 import com.mobilonix.voices.util.RESTUtil;
 import com.mobilonix.voices.util.ViewUtil;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -68,8 +74,6 @@ public enum RepresentativesManager {
 
     boolean representativesScreenVisible = false;
 
-    VoicesMainActivity voicesMainActivity;
-
     FrameLayout representativesFrame;
 
     View primaryToolbar;
@@ -85,6 +89,8 @@ public enum RepresentativesManager {
 
     PlaceAutocompleteFragment autoCompleteTextView;
     ConcurrentHashMap<String, ArrayList<Representative>> currentRepsMap = new ConcurrentHashMap<>();
+
+    private LruCache<String, Bitmap> mMemoryCache;
 
     /**
      *
@@ -291,7 +297,6 @@ public enum RepresentativesManager {
         final TextView groupsSelectionButton = (TextView)primaryToolbar.findViewById(R.id.groups_selection_text);
         final ImageView infoIcon = (ImageView)primaryToolbar.findViewById(R.id.representatives_info_icon);
         final ImageView helpIcon = (ImageView)primaryToolbar.findViewById(R.id.representatives_help_icon);
-        final AvenirButton saveButton = (AvenirButton)primaryToolbar.findViewById(R.id.save_location_button);
         final ImageView backArrow = (ImageView)primaryToolbar.findViewById(R.id.primary_toolbar_back_arrow);
         final TextView groupsInfoText = (TextView)primaryToolbar.findViewById(R.id.all_groups_info_text);
         final ImageView addGroupIcon = (ImageView)primaryToolbar.findViewById(R.id.action_add_groups);
@@ -316,7 +321,6 @@ public enum RepresentativesManager {
                 primaryToolbar.setVisibility(View.VISIBLE);
                 infoIcon.setVisibility(View.GONE);
                 helpIcon.setVisibility(View.GONE);
-                saveButton.setVisibility(View.GONE);
                 backArrow.setVisibility(View.GONE);
                 actionSelectionButton.setVisibility(View.VISIBLE);
                 actionSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.white));
@@ -359,7 +363,6 @@ public enum RepresentativesManager {
                 primaryToolbar.setVisibility(View.VISIBLE);
                 infoIcon.setVisibility(View.VISIBLE);
                 helpIcon.setVisibility(View.VISIBLE);
-                saveButton.setVisibility(View.VISIBLE);
                 actionSelectionButton.setVisibility(View.GONE);
                 groupsSelectionButton.setVisibility(View.GONE);
                 groupsInfoText.setVisibility(View.GONE);
@@ -556,8 +559,8 @@ public enum RepresentativesManager {
         }
     }
 
-    private void finalizePageOrder(ArrayList<Representative> data,
-                                   RepresentativesType type,
+    private void finalizePageOrder(final ArrayList<Representative> data,
+                                   final RepresentativesType type,
                                    ArrayList<RepresentativesPage> pages,
                                    ViewPager representativesPager) {
 
@@ -566,7 +569,7 @@ public enum RepresentativesManager {
         representativesListView =
                 (ListView) representativesPager
                         .findViewWithTag(type.getIdentifier());
-        SwipeRefreshLayout pageRefresh = (SwipeRefreshLayout)representativesPager
+        SwipeRefreshLayout pageRefresh = (SwipeRefreshLayout) representativesPager
                 .findViewWithTag(type.getIdentifier() + "_REFRESH");
 
 
@@ -576,13 +579,48 @@ public enum RepresentativesManager {
                             R.layout.representatives_list_item, data));
         }
 
-        if(pageRefresh != null) {
+        if (pageRefresh != null) {
             pageRefresh.setRefreshing(false);
         }
-        //TODO: cache the representatives for each representative level using the type as a key and data as value
-        DatabaseUtil.saveRepresentatives(type.getIdentifier(),data);
-    }
 
+        //cache representatives
+        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+        final int cacheSize = maxMemory / 8;
+        mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
+            @Override
+            protected int sizeOf(String key, Bitmap bitmap) {
+                return bitmap.getByteCount() / 1024;
+            }
+        };
+        for (RepresentativesType repType : RepresentativesType.values()){
+            for (int i = 0; i < data.size(); i++) {
+                final int finalI = i;
+                Picasso.with(VoicesApplication.getContext())
+                        .load(data.get(i).getRepresentativeImageUrl())
+                        .placeholder(R.drawable.placeholder_spinner)
+                        .error(R.drawable.representatives_place_holder_male)
+                        .transform(new RoundedTransformation(10, 4))
+                        .into(new Target() {
+                            @Override
+                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                addBitmapToMemoryCache(finalI + "", bitmap);
+                                Log.e(finalI + "", bitmap.toString() + type.toString());
+                            }
+
+                            @Override
+                            public void onBitmapFailed(Drawable errorDrawable) {
+                                Log.e(finalI + "", type.toString());
+                                getBitmapFromMemCache(finalI + "");
+                            }
+
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                            }
+                        });
+            }
+            DatabaseUtil.saveRepresentatives(type.toString(), data);
+        }
+    }
     /**
      * Turn the search bar on and off (conditionally)
      *
@@ -651,6 +689,16 @@ public enum RepresentativesManager {
 
     public void toggleErrorDisplay(RepresentativesType type, boolean state) {
         toggleErrorDisplay(type.getIdentifier(), state);
+    }
+
+    public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
+        if (getBitmapFromMemCache(key) == null) {
+            mMemoryCache.put(key, bitmap);
+        }
+    }
+
+    public Bitmap getBitmapFromMemCache(String key) {
+        return mMemoryCache.get(key);
     }
 
     /**
