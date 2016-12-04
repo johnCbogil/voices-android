@@ -3,9 +3,9 @@ package com.mobilonix.voices.representatives.ui;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
+import android.content.res.Resources;
 import android.net.Uri;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +21,6 @@ import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.model.Representative;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 
@@ -219,31 +218,42 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
             }
         }
 
+        int imageHeight = Math.round(convertDpToPixel(100,VoicesApplication.getContext()));
+        int imageWidth = Math.round(convertDpToPixel(80, VoicesApplication.getContext()));
+
         Picasso.with(image.getContext())
                 .load(representatives.get(position).getRepresentativeImageUrl())
-                .resize(110,110)
+                .resize(100,80)
                 .centerCrop()
                 .placeholder(R.drawable.placeholder_spinner)
                 .error(id)
                 .transform(new RoundedTransformation(10, 4))
-                .into(new Target() {
-                    @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        image.setImageBitmap(bitmap);
-                    }
-                    @Override
-                    public void onBitmapFailed(Drawable errorDrawable) {
-                        try {
-                            image.setImageBitmap(RepresentativesManager.INSTANCE.getBitmapFromMemCache(representatives.get(position).getName()));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                       }
-                  }
+                .into(image);
+                        //new Target() {
+                   // @Override
+                    //public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                       // image.setImageBitmap(bitmap);
+                    //}
+                    //@Override
+                    //public void onBitmapFailed(Drawable errorDrawable) {
+                      //  try {
+                        //    image.setImageBitmap(RepresentativesManager.INSTANCE.getBitmapFromMemCache(representatives.get(position) + ""));
+                      //  } catch (Exception e) {
+                      //      e.printStackTrace();
+                      // }
+                 // }
 
-                   @Override
-                   public void onPrepareLoad(Drawable placeHolderDrawable) {
-                   }
-               });
+                  // @Override
+                  // public void onPrepareLoad(Drawable placeHolderDrawable) {
+                 //  }
+              // });
+    }
+
+    public static float convertDpToPixel(float dp, Context context){
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return px;
     }
 
     private class ViewHolder {

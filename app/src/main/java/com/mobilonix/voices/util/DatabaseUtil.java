@@ -25,7 +25,7 @@ public class DatabaseUtil {
 
             Representative representative = repsList.get(i);
 
-            RepresentativesManager.INSTANCE.getBitmapFromMemCache(representative.getName());
+            RepresentativesManager.INSTANCE.getBitmapFromMemCache(i + "");
 
             String repJson = gson.toJson(representative);
             repsHashSet.add(repJson);

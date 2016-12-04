@@ -11,6 +11,7 @@ import android.support.v4.util.LruCache;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -47,7 +48,6 @@ import com.mobilonix.voices.representatives.ui.RepresentativesListAdapter;
 import com.mobilonix.voices.representatives.ui.RepresentativesPagerAdapter;
 import com.mobilonix.voices.representatives.ui.RoundedTransformation;
 import com.mobilonix.voices.session.SessionManager;
-import com.mobilonix.voices.util.AvenirButton;
 import com.mobilonix.voices.util.DatabaseUtil;
 import com.mobilonix.voices.util.RESTUtil;
 import com.mobilonix.voices.util.ViewUtil;
@@ -73,8 +73,6 @@ public enum RepresentativesManager {
     static NycLocalOfficialsApi nycScraperApi = new NycLocalOfficialsApi();
 
     boolean representativesScreenVisible = false;
-
-    VoicesMainActivity voicesMainActivity;
 
     FrameLayout representativesFrame;
 
@@ -299,7 +297,6 @@ public enum RepresentativesManager {
         final TextView groupsSelectionButton = (TextView)primaryToolbar.findViewById(R.id.groups_selection_text);
         final ImageView infoIcon = (ImageView)primaryToolbar.findViewById(R.id.representatives_info_icon);
         final ImageView helpIcon = (ImageView)primaryToolbar.findViewById(R.id.representatives_help_icon);
-        final AvenirButton saveButton = (AvenirButton)primaryToolbar.findViewById(R.id.save_location_button);
         final ImageView backArrow = (ImageView)primaryToolbar.findViewById(R.id.primary_toolbar_back_arrow);
         final TextView groupsInfoText = (TextView)primaryToolbar.findViewById(R.id.all_groups_info_text);
         final ImageView addGroupIcon = (ImageView)primaryToolbar.findViewById(R.id.action_add_groups);
@@ -324,7 +321,6 @@ public enum RepresentativesManager {
                 primaryToolbar.setVisibility(View.VISIBLE);
                 infoIcon.setVisibility(View.GONE);
                 helpIcon.setVisibility(View.GONE);
-                saveButton.setVisibility(View.GONE);
                 backArrow.setVisibility(View.GONE);
                 actionSelectionButton.setVisibility(View.VISIBLE);
                 actionSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.white));
@@ -367,7 +363,6 @@ public enum RepresentativesManager {
                 primaryToolbar.setVisibility(View.VISIBLE);
                 infoIcon.setVisibility(View.VISIBLE);
                 helpIcon.setVisibility(View.VISIBLE);
-                saveButton.setVisibility(View.VISIBLE);
                 actionSelectionButton.setVisibility(View.GONE);
                 groupsSelectionButton.setVisibility(View.GONE);
                 groupsInfoText.setVisibility(View.GONE);
@@ -574,7 +569,7 @@ public enum RepresentativesManager {
         representativesListView =
                 (ListView) representativesPager
                         .findViewWithTag(type.getIdentifier());
-        SwipeRefreshLayout pageRefresh = (SwipeRefreshLayout)representativesPager
+        SwipeRefreshLayout pageRefresh = (SwipeRefreshLayout) representativesPager
                 .findViewWithTag(type.getIdentifier() + "_REFRESH");
 
 
@@ -584,7 +579,7 @@ public enum RepresentativesManager {
                             R.layout.representatives_list_item, data));
         }
 
-        if(pageRefresh != null) {
+        if (pageRefresh != null) {
             pageRefresh.setRefreshing(false);
         }
 
@@ -597,29 +592,35 @@ public enum RepresentativesManager {
                 return bitmap.getByteCount() / 1024;
             }
         };
-        for (final Representative rep : data) {
-            Picasso.with(VoicesApplication.getContext())
-                    .load(rep.getRepresentativeImageUrl())
-                    .placeholder(R.drawable.placeholder_spinner)
-                    .error(R.drawable.representatives_place_holder_male)
-                    .transform(new RoundedTransformation(10, 4))
-                    .into(new Target() {
-                        @Override
-                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                            addBitmapToMemoryCache(rep.getName(),bitmap);
-                        }
-                        @Override
-                        public void onBitmapFailed(Drawable errorDrawable) {
-                            getBitmapFromMemCache(rep.getName());
-                        }
-                        @Override
-                        public void onPrepareLoad(Drawable placeHolderDrawable) {
-                        }
-                    });
-        }
-        DatabaseUtil.saveRepresentatives(type.toString(),data);
-    }
+        for (RepresentativesType repType : RepresentativesType.values()){
+            for (int i = 0; i < data.size(); i++) {
+                final int finalI = i;
+                Picasso.with(VoicesApplication.getContext())
+                        .load(data.get(i).getRepresentativeImageUrl())
+                        .placeholder(R.drawable.placeholder_spinner)
+                        .error(R.drawable.representatives_place_holder_male)
+                        .transform(new RoundedTransformation(10, 4))
+                        .into(new Target() {
+                            @Override
+                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                addBitmapToMemoryCache(finalI + "", bitmap);
+                                Log.e(finalI + "", bitmap.toString() + type.toString());
+                            }
 
+                            @Override
+                            public void onBitmapFailed(Drawable errorDrawable) {
+                                Log.e(finalI + "", type.toString());
+                                getBitmapFromMemCache(finalI + "");
+                            }
+
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                            }
+                        });
+            }
+            DatabaseUtil.saveRepresentatives(type.toString(), data);
+        }
+    }
     /**
      * Turn the search bar on and off (conditionally)
      *
