@@ -3,7 +3,7 @@
 
     <!-- Splash -->
     <string name="splash_title">Get Started</string>
-    <string name="splash_voices_intro">Voices connects you with activist groups and representatives in your area.</string>
+    <string name="splash_voices_intro">Support the groups and causes you care about.</string>
     <string name="splash_button">Get Started</string>
     <!-- Location Request -->
     <string name="location_request_text">Turn on location services to Voices can show you who represents your community.</string>
@@ -12,7 +12,7 @@
     <!--Instructions Dialog-->
     <string name="instructions_title">To View Your Representatives</string>
     <string name="instructions_text_1">Use the search bar to find representatives by address or swipe down to fetch representatives at your current location.</string>
-    <string name="instructions_text_2">After representatives have loaded, swipe right to see state and local representatives.</string>
+    <string name="instructions_text_2">Swipe right to see state and local representatives.</string>
     <string name="got_it_button_text">Got It!</string>
 
     <!--Info Dialog-->
