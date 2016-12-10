@@ -65,6 +65,9 @@ public enum RepresentativesManager {
 
     boolean representativesScreenVisible = false;
 
+    String lastActionSelectedForContact = "<NOT COMING FROM GROUP>";
+    String groupForLastAction = "<NOT COMING FROM GROUP>";
+
     FrameLayout representativesFrame;
 
     View primaryToolbar;
@@ -627,4 +630,16 @@ public enum RepresentativesManager {
         return representativesScreenVisible;
     }
 
+    public void setLastActionSelectedForContact(String lastActionSelected, String groupForLastAction) {
+        this.lastActionSelectedForContact = lastActionSelected;
+        this.groupForLastAction = groupForLastAction;
+    }
+
+    public String getLastActionSelectedForContact() {
+        return lastActionSelectedForContact;
+    }
+
+    public String getGroupForLastAction() {
+        return groupForLastAction;
+    }
 }

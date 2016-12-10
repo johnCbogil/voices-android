@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
+import com.mobilonix.voices.analytics.AnalyticsManager;
 import com.mobilonix.voices.delegates.Callback;
 import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
@@ -253,15 +254,18 @@ public enum GroupManager {
                 if(userGroups != null) {
                     for (Group g : groupPage.getUserGroups()) {
                         if (g.getGroupKey().equals(group.getGroupKey())) {
-
                             unSubscribeFromGroup(group, true, new Callback<Boolean>() {
                                 @Override
                                 public boolean onExecuted(Boolean data) {
                                     groupsFollowGroupsButton.setText(R.string.follow_groups_text);
+                                    if(data) {
+                                        AnalyticsManager.INSTANCE.trackEvent("UNSUBSCRIBE_EVENT",
+                                                group.getGroupKey(),
+                                                SessionManager.INSTANCE.getCurrentUserToken(),"none", null);
+                                    }
                                     return false;
                                 }
                             });
-
                             return;
                         }
                     }
@@ -271,6 +275,13 @@ public enum GroupManager {
                     @Override
                     public boolean onExecuted(Boolean data) {
                         groupsFollowGroupsButton.setText(R.string.unfollow_groups_text);
+
+                        if(data) {
+                            AnalyticsManager.INSTANCE.trackEvent("SUBSCRIBE_EVENT",
+                                    group.getGroupKey(),
+                                    SessionManager.INSTANCE.getCurrentUserToken(),"none", null);
+                        }
+
                         return false;
                     }
                 });
@@ -387,7 +398,7 @@ public enum GroupManager {
         return groupPageVisible;
     }
 
-    public void toggleActionDialog(Context context, Action action) {
+    public void toggleActionDialog(Context context, final Action action) {
         final Dialog actionDialog = new Dialog(context);
         actionDialog.setTitle("Take Action");
         actionDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -414,12 +425,17 @@ public enum GroupManager {
                 .into(actionImage);
 
         contactRepresentativesButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
-                actionDialog.dismiss();
+
                 RepresentativesManager.INSTANCE.selectRepresentativesTab();
                 RepresentativesManager.INSTANCE.setPageByIndex(actionLevel);
+                RepresentativesManager.INSTANCE
+                        .setLastActionSelectedForContact(action.getActionKey(),action.getGroupKey());
+//                AnalyticsManager.INSTANCE.trackEvent("CONTACT_REPRESENTATIVES_EVENT",
+//                        action.getGroupKey(),
+//                        SessionManager.INSTANCE.getCurrentUserToken(),action.getActionKey(), null);
+                actionDialog.dismiss();
             }
         });
 
