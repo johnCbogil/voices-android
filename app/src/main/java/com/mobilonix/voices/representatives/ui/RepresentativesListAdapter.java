@@ -16,7 +16,10 @@ import android.widget.TextView;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesApplication;
+import com.mobilonix.voices.analytics.AnalyticsManager;
+import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.model.Representative;
+import com.mobilonix.voices.session.SessionManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -193,6 +196,13 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                 mViewHolder.mCallImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        AnalyticsManager.INSTANCE.trackEvent("CALL_REPRESENTATIVES_EVENT",
+                                representatives.get(position).getName(),
+                        SessionManager.INSTANCE.getCurrentUserToken(),
+                                "ACTION=" + RepresentativesManager.INSTANCE.getLastActionSelectedForContact() +
+                                ";GROUP=" + RepresentativesManager.INSTANCE.getGroupForLastAction(), null);
+
                         Intent intent = new Intent(Intent.ACTION_DIAL);
                         intent.setData(Uri.parse("tel:" + representatives.get(position).getPhoneNumber()));
                         v.getContext().startActivity(intent);
@@ -214,6 +224,12 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                 mViewHolder.mEmailImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        AnalyticsManager.INSTANCE.trackEvent("" + "EMAIL_REPRESENTATIVES_EVENT",
+                                representatives.get(position).getName(),
+                                SessionManager.INSTANCE.getCurrentUserToken(),
+                                "ACTION=" + RepresentativesManager.INSTANCE.getLastActionSelectedForContact() +
+                                        ";GROUP=" + RepresentativesManager.INSTANCE.getGroupForLastAction(), null);
+
                         Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                                 "mailto",representatives.get(position).getEmailAddress(), null));
                         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
@@ -239,8 +255,15 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                 });
             } else {
                 mViewHolder.mTwitterImage.setOnClickListener(new View.OnClickListener() {
+
                     @Override
                     public void onClick(View v) {
+                        AnalyticsManager.INSTANCE.trackEvent("" + "TWEET_REPRESENTATIVES_EVENT",
+                                representatives.get(position).getName(),
+                                SessionManager.INSTANCE.getCurrentUserToken(),
+                                "ACTION=" + RepresentativesManager.INSTANCE.getLastActionSelectedForContact() +
+                                        ";GROUP=" + RepresentativesManager.INSTANCE.getGroupForLastAction(), null);
+
                         String url = "https://twitter.com/intent/tweet?text="
                                 + "@" + representatives.get(position).getTwitterHandle();
                         Intent i = new Intent(Intent.ACTION_VIEW);

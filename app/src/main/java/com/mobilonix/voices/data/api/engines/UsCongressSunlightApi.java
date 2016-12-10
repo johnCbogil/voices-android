@@ -111,9 +111,7 @@ public class UsCongressSunlightApi implements ApiEngine {
     }
 
     public String setElectionDate(String termEnd) {
-        if (termEnd.contains("2017")) {
-            return "November 8, 2016";
-        } else if (termEnd.contains("2018")) {
+        if (termEnd.contains("2018")) {
             return "November 7, 2017";
         } else if (termEnd.contains("2019")) {
             return "November 6, 2018";
@@ -122,7 +120,7 @@ public class UsCongressSunlightApi implements ApiEngine {
         } else if (termEnd.contains("2021")){
             return "November 3, 2020";
         } else {
-            return "";
+            return "N/A";
         }
     }
     @Override
