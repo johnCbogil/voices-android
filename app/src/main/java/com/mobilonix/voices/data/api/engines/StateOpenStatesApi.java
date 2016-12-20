@@ -204,9 +204,9 @@ public class StateOpenStatesApi implements ApiEngine {
 
     public String setTitle(String chamber){
         if (chamber.equals("upper")) {
-            return "Sen. ";
+            return "Senator ";
         } else if (chamber.equals("lower")){
-            return "Rep. ";
+            return "Representative ";
         } else{
             return "";
         }

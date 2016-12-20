@@ -145,7 +145,7 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
         DeeplinkUtil.parseDeeplink(intent, new Callback<String>() {
             @Override
             public boolean onExecuted(String groupKey) {
-                GroupManager.INSTANCE.setDefferredGroupKey(groupKey.toUpperCase());
+                GroupManager.INSTANCE.setDefferredGroupKey(groupKey.toUpperCase(), false);
                 autoLaunchDeepLink = true;
                 return false;
             }
@@ -164,7 +164,7 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
                                     if(deepLink != null) {
                                         deepLink = deepLink.replace("http://tryvoices.com/","");
                                     }
-                                    GroupManager.INSTANCE.setDefferredGroupKey(deepLink.toUpperCase());
+                                    GroupManager.INSTANCE.setDefferredGroupKey(deepLink.toUpperCase(), true);
                                 } else {
                                     Log.e(TAG, "getInvitation: no deep link found.");
                                 }

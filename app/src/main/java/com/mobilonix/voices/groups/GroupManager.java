@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.badoo.mobile.util.WeakHandler;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
@@ -54,26 +55,30 @@ public enum GroupManager {
 
     ArrayList<Group> allGroupsData = new ArrayList<>();
 
+    ArrayList<Group> userGroups = new ArrayList<Group>();
+
+    ArrayList<Group> allGroups = new ArrayList<Group>();
+
     String defferredGroupKey = null;
 
     public void toggleGroupPage(ViewGroup pageRoot, boolean state) {
 
-        if(isRefreshing) {
-            ((VoicesMainActivity)pageRoot.getContext()).toggleProgressSpinner(true);
+        if (isRefreshing) {
+            ((VoicesMainActivity) pageRoot.getContext()).toggleProgressSpinner(true);
         } else {
-            ((VoicesMainActivity)pageRoot.getContext()).toggleProgressSpinner(false);
+            ((VoicesMainActivity) pageRoot.getContext()).toggleProgressSpinner(false);
         }
 
-        if(state) {
-            if(groupPage == null) {
-                LayoutInflater inflater = (LayoutInflater)pageRoot.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                groupPage = (GroupPage)inflater.inflate(R.layout.view_groups_screen, null, false);
+        if (state) {
+            if (groupPage == null) {
+                LayoutInflater inflater = (LayoutInflater) pageRoot.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                groupPage = (GroupPage) inflater.inflate(R.layout.view_groups_screen, null, false);
             }
 
 
             /* Add the groups view to the main page*/
-            if(groupPage.getParent()!=null)
-                ((ViewGroup)groupPage.getParent()).removeView(groupPage);
+            if (groupPage.getParent() != null)
+                ((ViewGroup) groupPage.getParent()).removeView(groupPage);
 
             pageRoot.addView(groupPage);
 
@@ -86,13 +91,13 @@ public enum GroupManager {
 
             groupPageVisible = true;
         } else {
-            if(groupPage != null) {
+            if (groupPage != null) {
 
-                ((VoicesMainActivity)pageRoot.getContext()).toggleProgressSpinner(false);
+                ((VoicesMainActivity) pageRoot.getContext()).toggleProgressSpinner(false);
                 pageRoot.removeView(groupPage);
             }
 
-            groupPageVisible  = false;
+            groupPageVisible = false;
         }
     }
 
@@ -101,7 +106,7 @@ public enum GroupManager {
         /* TODO: We wanto retrieve this from cache first, otherwise if not present, re-request it from backend */
 
         isRefreshing = true;
-        ((VoicesMainActivity)groupPage.getContext())
+        ((VoicesMainActivity) groupPage.getContext())
                 .toggleProgressSpinner(isRefreshing);
 
         SessionManager.INSTANCE.fetchAllGroupsFromDatabase(new Callback<ArrayList<Group>>() {
@@ -124,15 +129,27 @@ public enum GroupManager {
 
                         groupPage.setActions(data);
                         isRefreshing = false;
-                        ((VoicesMainActivity)groupPage.getContext())
+                        ((VoicesMainActivity) groupPage.getContext())
                                 .toggleProgressSpinner(isRefreshing);
 
                         return false;
                     }
                 });
 
-                if(defferredGroupKey != null) {
+                if (defferredGroupKey != null) {
                     subscribeToGroup(findGroupWithKey(defferredGroupKey), true, null);
+                    //, new Callback<Boolean>() {
+                    //@Override
+                    //public boolean onExecuted(Boolean data) {
+                    //groupsFollowGroupsButton.setText(R.string.following_groups_text);
+                    //if(data) {
+                    //AnalyticsManager.INSTANCE.trackEvent("SUBSCRIBE_EVENT",
+                    // findGroupWithKey(defferredGroupKey).getGroupKey(),
+                    //SessionManager.INSTANCE.getCurrentUserToken(),"none", null);
+                    //}
+                    // return false;
+                    //}
+                    // });
                     defferredGroupKey = null;
                 }
 
@@ -143,15 +160,15 @@ public enum GroupManager {
 
     public void toggleGroups(GroupType groupType) {
 
-        Toolbar toolbar = ((VoicesMainActivity)groupPage.getContext()).getToolbar();
+        Toolbar toolbar = ((VoicesMainActivity) groupPage.getContext()).getToolbar();
 
-        if(groupType == GroupType.ACTION) {
+        if (groupType == GroupType.ACTION) {
 
             groupPage.findViewById(R.id.actions_container).setVisibility(View.VISIBLE);
             groupPage.findViewById(R.id.user_groups_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.all_groups_container).setVisibility(View.GONE);
 
-            ((EntityContainer)groupPage.findViewById(R.id.actions_container)).setType(groupType);
+            ((EntityContainer) groupPage.findViewById(R.id.actions_container)).setType(groupType);
 
             toolbar.findViewById(R.id.groups_selection_text).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.action_selection_text).setVisibility(View.VISIBLE);
@@ -163,13 +180,13 @@ public enum GroupManager {
 
             MODE = GroupType.ACTION;
 
-        } else if(groupType == GroupType.USER) {
+        } else if (groupType == GroupType.USER) {
 
             groupPage.findViewById(R.id.actions_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.user_groups_container).setVisibility(View.VISIBLE);
             groupPage.findViewById(R.id.all_groups_container).setVisibility(View.GONE);
 
-            ((EntityContainer)groupPage.findViewById(R.id.user_groups_container)).setType(groupType);
+            ((EntityContainer) groupPage.findViewById(R.id.user_groups_container)).setType(groupType);
 
             toolbar.findViewById(R.id.groups_selection_text).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.action_selection_text).setVisibility(View.VISIBLE);
@@ -178,13 +195,13 @@ public enum GroupManager {
 
             MODE = GroupType.USER;
 
-        } else if(groupType == GroupType.ALL) {
+        } else if (groupType == GroupType.ALL) {
 
             groupPage.findViewById(R.id.actions_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.user_groups_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.all_groups_container).setVisibility(View.VISIBLE);
 
-            ((EntityContainer)groupPage.findViewById(R.id.all_groups_container)).setType(groupType);
+            ((EntityContainer) groupPage.findViewById(R.id.all_groups_container)).setType(groupType);
 
             toolbar.findViewById(R.id.primary_toolbar_back_arrow).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.all_groups_info_text).setVisibility(View.VISIBLE);
@@ -217,7 +234,7 @@ public enum GroupManager {
         dialog.setContentView(R.layout.dialog_groups);
         dialog.setTitle(group.getGroupName());
 
-        ImageView groupsImage = (ImageView)dialog.findViewById(R.id.group_info_image);
+        ImageView groupsImage = (ImageView) dialog.findViewById(R.id.group_info_image);
 
         Picasso.with(context)
                 .load(group.getGroupImageUrl())
@@ -228,20 +245,20 @@ public enum GroupManager {
                 .into(groupsImage);
 
         TextView groupsInfoDescription = (TextView) dialog.findViewById(R.id.group_info_description);
-        TextView groupsInfoPolicyText = (TextView)dialog
+        TextView groupsInfoPolicyText = (TextView) dialog
                 .findViewById(R.id.group_info_policy_text);
         final Button groupsFollowGroupsButton =
-                (Button)dialog.findViewById(R.id.follow_groups_button);
-        ListView policyList = (ListView)dialog.findViewById(R.id.groups_policy_list);
+                (Button) dialog.findViewById(R.id.follow_groups_button);
+        ListView policyList = (ListView) dialog.findViewById(R.id.groups_policy_list);
 
         groupsInfoDescription.setText(group.getGroupDescription());
         groupsInfoPolicyText.setText(group.getGroupCategory());
 
         final ArrayList<Group> userGroups = groupPage.getUserGroups();
-        if(userGroups != null) {
+        if (userGroups != null) {
             for (Group g : groupPage.getUserGroups()) {
                 if (g.getGroupKey().equals(group.getGroupKey())) {
-                    groupsFollowGroupsButton.setText(R.string.unfollow_groups_text);
+                    groupsFollowGroupsButton.setText(R.string.following_groups_text);
                 }
             }
         }
@@ -251,22 +268,41 @@ public enum GroupManager {
             public void onClick(View v) {
 
                 /* check if we're already subscribed to the group */
-                if(userGroups != null) {
+                if (userGroups != null) {
                     for (Group g : groupPage.getUserGroups()) {
                         if (g.getGroupKey().equals(group.getGroupKey())) {
-                            unSubscribeFromGroup(group, true, new Callback<Boolean>() {
+                            final Dialog followDialog;
+                            followDialog = new Dialog(groupPage.getContext());
+                            followDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            followDialog.setContentView(R.layout.dialog_follow);
+                            Button unfollowButton = (Button) followDialog.findViewById(R.id.unfollow_button);
+                            Button cancelButton = (Button) followDialog.findViewById(R.id.cancel_button);
+                            unfollowButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
-                                public boolean onExecuted(Boolean data) {
-                                    groupsFollowGroupsButton.setText(R.string.follow_groups_text);
-                                    if(data) {
-                                        AnalyticsManager.INSTANCE.trackEvent("UNSUBSCRIBE_EVENT",
-                                                group.getGroupKey(),
-                                                SessionManager.INSTANCE.getCurrentUserToken(),"none", null);
-                                    }
-                                    return false;
+                                public void onClick(View v) {
+                                    unSubscribeFromGroup(group, true, new Callback<Boolean>() {
+                                        @Override
+                                        public boolean onExecuted(Boolean data) {
+                                            groupsFollowGroupsButton.setText(R.string.follow_groups_text);
+                                            if (data) {
+                                                AnalyticsManager.INSTANCE.trackEvent("UNSUBSCRIBE_EVENT",
+                                                        group.getGroupKey(),
+                                                        SessionManager.INSTANCE.getCurrentUserToken(), "none", null);
+                                            }
+                                            followDialog.dismiss();
+                                            return false;
+                                        }
+                                    });
+                                    return;
                                 }
                             });
-                            return;
+                            cancelButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    followDialog.dismiss();
+                                }
+                            });
+                            followDialog.show();
                         }
                     }
                 }
@@ -274,12 +310,12 @@ public enum GroupManager {
                 subscribeToGroup(group, true, new Callback<Boolean>() {
                     @Override
                     public boolean onExecuted(Boolean data) {
-                        groupsFollowGroupsButton.setText(R.string.unfollow_groups_text);
+                        groupsFollowGroupsButton.setText(R.string.following_groups_text);
 
-                        if(data) {
+                        if (data) {
                             AnalyticsManager.INSTANCE.trackEvent("SUBSCRIBE_EVENT",
                                     group.getGroupKey(),
-                                    SessionManager.INSTANCE.getCurrentUserToken(),"none", null);
+                                    SessionManager.INSTANCE.getCurrentUserToken(), "none", null);
                         }
 
                         return false;
@@ -366,14 +402,15 @@ public enum GroupManager {
         toggleGroups(GroupType.USER);
         Toolbar toolbar = ((VoicesMainActivity) groupPage.getContext()).getToolbar();
         toolbar.findViewById(R.id.primary_toolbar_back_arrow).setVisibility(View.GONE);
-        final TextView actionSelectionButton = (TextView)toolbar.findViewById(R.id.action_selection_text);
-        final TextView groupsSelectionButton = (TextView)toolbar.findViewById(R.id.groups_selection_text);
+        final TextView actionSelectionButton = (TextView) toolbar.findViewById(R.id.action_selection_text);
+        final TextView groupsSelectionButton = (TextView) toolbar.findViewById(R.id.groups_selection_text);
 
         actionSelectionButton.setBackgroundResource(R.drawable.button_back);
         actionSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.voices_orange));
         groupsSelectionButton.setBackgroundResource(R.drawable.button_back_selected);
         groupsSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.white));
     }
+
     /**
      * Find the group for a specific key
      *
@@ -382,7 +419,7 @@ public enum GroupManager {
      */
     public Group findGroupWithKey(String actionKey) {
         for (Group group : allGroupsData) {
-            if(group.getGroupKey().equals(actionKey)) {
+            if (group.getGroupKey().equals(actionKey)) {
                 return group;
             }
         }
@@ -404,18 +441,18 @@ public enum GroupManager {
         actionDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         actionDialog.setContentView(R.layout.dialog_actions);
 
-        TextView actionTitle  = (TextView)actionDialog.findViewById(R.id.actions_title);
-        TextView actionSubject  = (TextView)actionDialog.findViewById(R.id.actions_subject);
-        TextView actionDescription = (TextView)actionDialog.findViewById(R.id.actions_description);
-        ImageView actionImage = (ImageView)actionDialog.findViewById(R.id.actions_image);
+        TextView actionTitle = (TextView) actionDialog.findViewById(R.id.actions_title);
+        TextView actionSubject = (TextView) actionDialog.findViewById(R.id.actions_subject);
+        TextView actionDescription = (TextView) actionDialog.findViewById(R.id.actions_description);
+        ImageView actionImage = (ImageView) actionDialog.findViewById(R.id.actions_image);
 
-        Button contactRepresentativesButton = (Button)actionDialog.findViewById(R.id.actions_button_contact_representatives);
+        Button contactRepresentativesButton = (Button) actionDialog.findViewById(R.id.actions_button_contact_representatives);
 
         actionTitle.setText(action.getGroupName());
         actionSubject.setText(action.getSubject());
         actionDescription.setText(action.getBody());
 
-        final int actionLevel = (int)action.getLevel();
+        final int actionLevel = (int) action.getLevel();
 
         Picasso.with(context)
                 .load(action.getImageUrl())
@@ -431,7 +468,7 @@ public enum GroupManager {
                 RepresentativesManager.INSTANCE.selectRepresentativesTab();
                 RepresentativesManager.INSTANCE.setPageByIndex(actionLevel);
                 RepresentativesManager.INSTANCE
-                        .setLastActionSelectedForContact(action.getActionKey(),action.getGroupKey());
+                        .setLastActionSelectedForContact(action.getActionKey(), action.getGroupKey());
 //                AnalyticsManager.INSTANCE.trackEvent("CONTACT_REPRESENTATIVES_EVENT",
 //                        action.getGroupKey(),
 //                        SessionManager.INSTANCE.getCurrentUserToken(),action.getActionKey(), null);
@@ -452,11 +489,11 @@ public enum GroupManager {
         actionDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         actionDialog.setContentView(R.layout.dialog_policies);
 
-        TextView policiesTitle  = (TextView)actionDialog.findViewById(R.id.policies_title);
-        TextView policiesDescription = (TextView)actionDialog.findViewById(R.id.policies_description);
-        Button contactRepresentativesButton = (Button)actionDialog.findViewById(R.id.button_contact_representatives);
+        TextView policiesTitle = (TextView) actionDialog.findViewById(R.id.policies_title);
+        TextView policiesDescription = (TextView) actionDialog.findViewById(R.id.policies_description);
+        Button contactRepresentativesButton = (Button) actionDialog.findViewById(R.id.button_contact_representatives);
 
-        if(policy != null) {
+        if (policy != null) {
             policiesTitle.setText(policy.getPolicyName());
             policiesDescription.setText(policy.getPolicyDescription());
         }
@@ -466,7 +503,7 @@ public enum GroupManager {
             @Override
             public void onClick(View v) {
 
-                if(parentDialog != null) {
+                if (parentDialog != null) {
                     parentDialog.dismiss();
                 }
 
@@ -478,7 +515,41 @@ public enum GroupManager {
         actionDialog.show();
     }
 
-    public void setDefferredGroupKey(String defferredGroupKey) {
+    public void setDefferredGroupKey(final String defferredGroupKey, boolean subscribe) {
         this.defferredGroupKey = defferredGroupKey;
+
+        if(!subscribe) {
+            return;
+        }
+
+        final WeakHandler handler = new WeakHandler();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (GroupManager.INSTANCE.allGroupsData.size() == 0) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                    }
+                }
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ArrayList<Group> userGroups = groupPage.getUserGroups();
+                        if(userGroups != null) {
+                            for (Group group : userGroups) {
+                                if (group.getGroupKey().equals(defferredGroupKey)) {
+                                    return;
+                                }
+                            }
+                        }
+                        AnalyticsManager.INSTANCE.trackEvent("SUBSCRIBE_EVENT",
+                                findGroupWithKey(defferredGroupKey).getGroupKey(),
+                                SessionManager.INSTANCE.getCurrentUserToken(), "none", null);
+                    }
+                });
+            }
+        });
+        thread.start();
     }
 }

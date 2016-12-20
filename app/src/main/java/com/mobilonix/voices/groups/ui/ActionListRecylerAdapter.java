@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.groups.model.Action;
+import com.mobilonix.voices.representatives.ui.RoundedTransformation;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -63,6 +64,7 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .placeholder(R.drawable.placeholder_spinner)
                 .error(R.drawable.representatives_place_holder_male)
+                .transform(new RoundedTransformation(10, 4))
                 .fit()
                 .into(holder.actionImage);
 

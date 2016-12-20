@@ -227,6 +227,7 @@ public enum RepresentativesManager {
 
                 autoCompleteTextView.getView().setVisibility(View.VISIBLE);
                 autoCompleteTextView.setHint(activity.getString(R.string.search_text));
+                autoCompleteTextView.getView().setBackgroundColor(VoicesApplication.getContext().getResources().getColor(R.color.voices_orange));
                 autoCompleteTextView.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                     @Override
                     public void onPlaceSelected(Place place) {
