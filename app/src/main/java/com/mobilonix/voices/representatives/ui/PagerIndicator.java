@@ -9,7 +9,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mobilonix.voices.R;
+import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.delegates.Callback;
+import com.mobilonix.voices.util.ViewUtil;
 
 import java.util.ArrayList;
 
@@ -31,10 +33,11 @@ public class PagerIndicator extends LinearLayout implements ViewPager.OnPageChan
         final TextView repsLevel = new TextView(getContext());
         repsLevel.setText(level);
         Typeface avenirBold = Typeface.createFromAsset(getContext().getAssets(), "fonts/avenir-next-bold.ttf");
+        int padding = Math.round(ViewUtil.convertDpToPixel(10, VoicesApplication.getContext()));
         repsLevel.setTypeface(avenirBold);
         repsLevel.setTextColor(getResources().getColor(R.color.light_grey));
         repsLevel.setTextSize(25);
-        repsLevel.setPadding(20,0,20,0);
+        repsLevel.setPadding(padding,0,padding,0);
         //formatting of the TextView goes here
         indicators.add(repsLevel);
         final int position = indicators.size() - 1;
