@@ -17,15 +17,8 @@
 
     <!--Info Dialog-->
     <string name="response_title">Here\'s what to say</string>
-    <string name="response_1">Hello my name is &#160;</string>
-    <string name="response_2">[your name]</string>
-    <string name="response_3">and I am a constituent.</string>
-    <string name="response_4">I would like the representative to</string>
-    <string name="response_5">[support or oppose]</string>
-    <string name="response_6">[an issue that you care about]</string>
-    <string name="response_7">and I will be voting in November.</string>
-    <string name="dialog_email_button">Launch Email</string>
-    <string name="dialog_close_button">Close Window</string>
+    <string name="response">Hello my name is [your name] \n and I am a constituent. \n I would like the representative to \n [support or oppose] \n [an issue that you care about] \n and I will be voting in November.</string>
+    <string name="info_close_button">Close Window</string>
 
     <string name="firebase_endpoint">https://voices-430ae.firebaseio.com</string>
 

@@ -3,6 +3,9 @@ package com.mobilonix.voices.groups;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +19,7 @@ import android.widget.TextView;
 import com.badoo.mobile.util.WeakHandler;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mobilonix.voices.R;
+import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.analytics.AnalyticsManager;
 import com.mobilonix.voices.delegates.Callback;
@@ -60,6 +64,8 @@ public enum GroupManager {
     ArrayList<Group> allGroups = new ArrayList<Group>();
 
     String defferredGroupKey = null;
+
+    Dialog responseDialog;
 
     public void toggleGroupPage(ViewGroup pageRoot, boolean state) {
 
@@ -464,14 +470,41 @@ public enum GroupManager {
         contactRepresentativesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int voicesOrange = VoicesApplication.getContext().getResources().getColor(R.color.voices_orange);
+                responseDialog = new Dialog(v.getContext());
+                responseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                responseDialog.setContentView(R.layout.dialog_info);
+                responseDialog.setTitle(VoicesApplication.getContext().getString(R.string.response_title));
+                TextView responseTextView = (TextView)responseDialog.findViewById(R.id.response);
+                String response;
+                String script = action.getScript();
 
+                if((action == null) || (script == null)) {
+                    response = VoicesApplication.getContext().getString(R.string.response);
+                    responseTextView.setText(response);
+                    Spannable span = new SpannableString(response);
+                    span.setSpan(new ForegroundColorSpan(voicesOrange), 17, 28, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    span.setSpan(new ForegroundColorSpan(voicesOrange), 94, 149, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    responseTextView.setText(span);
+                } else {
+                    response = action.getScript();
+                    responseTextView.setText(response);
+                }
+                Button infoCloseButton = (Button) responseDialog.findViewById(R.id.info_close_button);
+                infoCloseButton.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        responseDialog.dismiss();
+                    }
+                });
+                responseDialog.show();
                 RepresentativesManager.INSTANCE.selectRepresentativesTab();
                 RepresentativesManager.INSTANCE.setPageByIndex(actionLevel);
                 RepresentativesManager.INSTANCE
                         .setLastActionSelectedForContact(action.getActionKey(), action.getGroupKey());
-//                AnalyticsManager.INSTANCE.trackEvent("CONTACT_REPRESENTATIVES_EVENT",
-//                        action.getGroupKey(),
-//                        SessionManager.INSTANCE.getCurrentUserToken(),action.getActionKey(), null);
+                //AnalyticsManager.INSTANCE.trackEvent("CONTACT_REPRESENTATIVES_EVENT",
+                        //action.getGroupKey(),
+                        //SessionManager.INSTANCE.getCurrentUserToken(),action.getActionKey(), null);
                 actionDialog.dismiss();
             }
         });
@@ -480,7 +513,7 @@ public enum GroupManager {
         actionDialog.show();
     }
 
-    public void togglePolicyDialog(Context context, Policy policy, Action action, final Dialog parentDialog) {
+    public void togglePolicyDialog(Context context, Policy policy, final Action action, final Dialog parentDialog) {
 
         final Dialog actionDialog;
 
@@ -502,16 +535,15 @@ public enum GroupManager {
 
             @Override
             public void onClick(View v) {
-
                 if (parentDialog != null) {
                     parentDialog.dismiss();
                 }
 
                 actionDialog.dismiss();
                 RepresentativesManager.INSTANCE.selectRepresentativesTab();
+
             }
         });
-
         actionDialog.show();
     }
 

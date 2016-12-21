@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mobilonix.voices.BuildConfig;
+import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.delegates.Callback;
@@ -403,6 +404,10 @@ public enum SessionManager {
                     String subject = (String) action.child("subject").getValue();
                     long timestamp = (long)action.child("timestamp").getValue();
                     String title = (String) action.child("title").getValue();
+                    String script = (String) action.child ("script").getValue();
+                    if(script==null) {
+                        script = VoicesApplication.getContext().getString(R.string.response);
+                    }
 
                     allActions.add(new Action(action.getKey(),
                             (String) action.child("body").getValue(),
@@ -412,7 +417,8 @@ public enum SessionManager {
                             level,
                             (String) action.child("subject").getValue(),
                             (long) action.child("timestamp").getValue(),
-                            (String) action.child("title").getValue()));
+                            (String) action.child("title").getValue(),
+                            (String) action.child("script").getValue()));
 
                     Action actionToAdd =
                             new Action(actionKey,
@@ -423,7 +429,8 @@ public enum SessionManager {
                                     level,
                                     subject,
                                     timestamp,
-                                    title);
+                                    title,
+                                    script);
 
                     allActions.add(actionToAdd);
                 }
