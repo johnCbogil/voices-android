@@ -11,6 +11,7 @@ public class Action implements Comparable<Action> {
     String subject;
     long timeStamp;
     String title;
+    String script;
 
     public Action(String actionKey,
                   String body,
@@ -20,7 +21,8 @@ public class Action implements Comparable<Action> {
                   long level,
                   String subject,
                   long timeStamp,
-                  String title) {
+                  String title,
+                  String script) {
 
         this.actionKey = actionKey;
         this.body = body;
@@ -31,6 +33,7 @@ public class Action implements Comparable<Action> {
         this.subject = subject;
         this.timeStamp = timeStamp;
         this.title = title;
+        this.script = script;
 
     }
 
@@ -68,6 +71,10 @@ public class Action implements Comparable<Action> {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getScript(){
+        return script;
     }
     
     public void setImageUrl(String imageUrl) {
