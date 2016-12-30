@@ -1,6 +1,7 @@
 package com.mobilonix.voices.analytics;
 
 import com.mobilonix.voices.BuildConfig;
+import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.delegates.Callback2;
 
 import java.io.IOException;
@@ -40,17 +41,22 @@ public enum AnalyticsManager {
                                 eventName = "DEBUG_" + eventName;
                     }
 
+
+                    String time = GeneralUtil.getTime();
+
                         final OkHttpClient client = new OkHttpClient.Builder()
                                 .readTimeout(ANALYTICS_REQUEST_TIMEOUT, TimeUnit.SECONDS)
                                 .build();
 
                         final Request recordRequest = new Request.Builder()
                                 .url(ANALYTICS_URL + "?eventType=" + eventName +
-                                "&eventFocus=" + eventFocus +
-                                "&eventLoggerId=" + loggingId +
-                                "&eventData=" + eventData +
-                                "&platform=" + "Android" +
-                                "&osVersion=" + android.os.Build.VERSION.RELEASE).build();
+                                        "&eventFocus=" + eventFocus +
+                                        "&eventLoggerId=" + loggingId +
+                                        "&eventData=" + eventData +
+                                        "&platform=" + "Android" +
+                                        "&osVersion=" + android.os.Build.VERSION.RELEASE +
+                                        "&eventTime=" + time)
+                                .build();
 
                         /* Make call to auto-complete api */
                                 client.newCall(recordRequest).enqueue(new okhttp3.Callback() {

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ImageView
-        android:layout_width="110dp"
+        android:layout_width="100dp"
         android:layout_height="110dp"
         android:id="@+id/representatives_list_image"
         android:src="@android:drawable/ic_menu_search"
@@ -23,14 +23,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/representatives_list_name_text"
-                android:layout_marginLeft="10dp"
                 android:textSize="22sp"
                 android:textColor="#000"
                 android:layout_weight="0.75"/>
             <ImageView
                 android:layout_gravity="right|center"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:id="@+id/more_info_arrow_image"
                 android:src="@drawable/right_carat"
                 android:tint="@color/voices_orange"
@@ -39,33 +39,27 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="1">
+            android:orientation="horizontal">
             <ImageView
                 android:layout_width="37dp"
                 android:layout_height="37dp"
-                android:layout_gravity="left"
                 android:id="@+id/representatives_list_call_image"
-                android:layout_weight="0.33"
                 android:src="@drawable/phone_icon"
                 android:tint="@color/voices_orange"/>
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_weight="0.33"
+                android:layout_marginLeft="35dp"
                 android:id="@+id/representatives_list_email_image"
-                android:layout_gravity="left"
                 android:src="@drawable/mail_icon"
                 android:tint="@color/voices_orange"/>
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_weight="0.33"
+                android:layout_marginLeft="35dp"
                 android:id="@+id/representatives_list_twitter_image"
-                android:layout_gravity="left"
                 android:src="@drawable/twitter_icon"
                 android:tint="@color/voices_orange"/>
-
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

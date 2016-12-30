@@ -33,7 +33,7 @@ public class PagerIndicator extends LinearLayout implements ViewPager.OnPageChan
         final TextView repsLevel = new TextView(getContext());
         repsLevel.setText(level);
         Typeface avenirBold = Typeface.createFromAsset(getContext().getAssets(), "fonts/avenir-next-bold.ttf");
-        int padding = Math.round(ViewUtil.convertDpToPixel(10, VoicesApplication.getContext()));
+        int padding = ViewUtil.convertDpToPixel(18, VoicesApplication.getContext());
         repsLevel.setTypeface(avenirBold);
         repsLevel.setTextColor(getResources().getColor(R.color.light_grey));
         repsLevel.setTextSize(25);
