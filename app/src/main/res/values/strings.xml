@@ -34,7 +34,7 @@
     <string name="representatives_error_message">Officials are not available in your area yet.</string>
     <string name="click_image">Click image for more</string>
     <string name="reps">Find Reps</string>
-    <string name="groups">Groups</string>
+    <string name="groups">Take Action</string>
 
     <!--Actions/Groups Tabs-->
     <string name="no_follow_actions">To receive actions from advocacy groups, tap the + button above to follow groups.</string>

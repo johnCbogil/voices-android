@@ -8,7 +8,7 @@ android {
 
     def major = 1;
     def minor = 8;
-    def patch = 1;
+    def patch = 2;
 
     def base = 100000000;
     def date = new SimpleDateFormat("yyyyMMdd").format(new Date());;

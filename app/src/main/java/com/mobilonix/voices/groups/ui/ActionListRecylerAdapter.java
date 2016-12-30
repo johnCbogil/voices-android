@@ -64,7 +64,7 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .placeholder(R.drawable.placeholder_spinner)
                 .error(R.drawable.representatives_place_holder_male)
-                .transform(new RoundedTransformation(10, 4))
+                .transform(new RoundedTransformation(10, 0))
                 .fit()
                 .into(holder.actionImage);
 

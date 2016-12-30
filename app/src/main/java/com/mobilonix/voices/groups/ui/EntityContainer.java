@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mobilonix.voices.R;
@@ -57,7 +57,7 @@ public class EntityContainer extends FrameLayout
             entityListTopText.setText(VoicesApplication.EMPTY);
             entityListBottomText.setText(R.string.groups_fetch_error);
             noFollowImage.setImageResource(R.drawable.voices_error);
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) noFollowImage.getLayoutParams();
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) noFollowImage.getLayoutParams();
             params.height = 100;
             params.width = 100;
             params.setMargins(0,10,0,0);

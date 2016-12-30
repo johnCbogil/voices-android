@@ -30,6 +30,7 @@ import com.mobilonix.voices.groups.ui.EntityContainer;
 import com.mobilonix.voices.groups.ui.GroupPage;
 import com.mobilonix.voices.groups.ui.PolicyListAdapter;
 import com.mobilonix.voices.representatives.RepresentativesManager;
+import com.mobilonix.voices.representatives.ui.RoundedTransformation;
 import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.util.ViewUtil;
 import com.squareup.picasso.MemoryPolicy;
@@ -247,6 +248,7 @@ public enum GroupManager {
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .placeholder(R.drawable.voices_icon)
                 .error(R.drawable.voices_icon)
+                .transform(new RoundedTransformation(10, 0))
                 .fit()
                 .into(groupsImage);
 
@@ -313,20 +315,22 @@ public enum GroupManager {
                     }
                 }
 
-                subscribeToGroup(group, true, new Callback<Boolean>() {
-                    @Override
-                    public boolean onExecuted(Boolean data) {
-                        groupsFollowGroupsButton.setText(R.string.following_groups_text);
+                if(!groupsFollowGroupsButton.getText().toString().equals(R.string.following_groups_text)) {
+                    subscribeToGroup(group, true, new Callback<Boolean>() {
+                        @Override
+                        public boolean onExecuted(Boolean data) {
+                            groupsFollowGroupsButton.setText(R.string.following_groups_text);
 
-                        if (data) {
-                            AnalyticsManager.INSTANCE.trackEvent("SUBSCRIBE_EVENT",
-                                    group.getGroupKey(),
-                                    SessionManager.INSTANCE.getCurrentUserToken(), "none", null);
+                            if (data) {
+                                AnalyticsManager.INSTANCE.trackEvent("SUBSCRIBE_EVENT",
+                                        group.getGroupKey(),
+                                        SessionManager.INSTANCE.getCurrentUserToken(), "none", null);
+                            }
+
+                            return false;
                         }
-
-                        return false;
-                    }
-                });
+                    });
+                }
             }
         });
 

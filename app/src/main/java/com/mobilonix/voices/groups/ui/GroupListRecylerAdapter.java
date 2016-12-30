@@ -13,9 +13,9 @@ import android.widget.TextView;
 
 import com.mobilonix.voices.BuildConfig;
 import com.mobilonix.voices.R;
-import com.mobilonix.voices.representatives.ui.RoundedTransformation;
 import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.groups.model.Group;
+import com.mobilonix.voices.representatives.ui.RoundedTransformation;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -70,7 +70,7 @@ public class GroupListRecylerAdapter extends RecyclerView.Adapter<GroupListRecyl
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .placeholder(R.drawable.placeholder_spinner)
                 .error(R.drawable.voices_icon)
-                .transform(new RoundedTransformation(10, 4))
+                .transform(new RoundedTransformation(10, 0))
                 .into(holder.groupImage);
 
         holder.arrowImage.setVisibility(View.GONE);

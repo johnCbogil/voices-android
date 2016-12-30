@@ -1,9 +1,7 @@
 package com.mobilonix.voices.util;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.support.v4.content.ContextCompat;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -25,10 +23,10 @@ public class ViewUtil {
         return ContextCompat.getColor(VoicesApplication.getContext(), resource);
     }
 
-    public static float convertDpToPixel(float dp, Context context){
-        Resources resources = context.getResources();
-        DisplayMetrics metrics = resources.getDisplayMetrics();
-        float px = dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
-        return px;
+    public static int convertDpToPixel(int dpPadding, Context context)
+    {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        int pxPadding = (int) (dpPadding * scale + 0.5f);
+        return pxPadding;
     }
 }
