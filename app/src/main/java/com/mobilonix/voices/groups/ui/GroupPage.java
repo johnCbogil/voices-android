@@ -91,6 +91,16 @@ public class GroupPage extends FrameLayout {
         return userActions;
     }
 
+    public boolean hasUserGroupWithKey(String name) {
+        for(Group group : userGroups) {
+            if(group.getGroupKey().equals(name)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public ArrayList<Action> getActions() {
         return actions;
     }

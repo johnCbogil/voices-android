@@ -315,7 +315,8 @@ public enum GroupManager {
                     }
                 }
 
-                if(!groupsFollowGroupsButton.getText().toString().equals(R.string.following_groups_text)) {
+                if(!groupPage.hasUserGroupWithKey(group.getGroupKey())) {
+
                     subscribeToGroup(group, true, new Callback<Boolean>() {
                         @Override
                         public boolean onExecuted(Boolean data) {
@@ -550,6 +551,7 @@ public enum GroupManager {
         });
         actionDialog.show();
     }
+
 
     public void setDefferredGroupKey(final String defferredGroupKey, boolean subscribe) {
         this.defferredGroupKey = defferredGroupKey;
