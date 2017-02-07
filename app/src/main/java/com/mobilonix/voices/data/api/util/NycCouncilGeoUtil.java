@@ -12,11 +12,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-/**
- *
- * Converts NYC lat / lon to physical address String and provides address String and mBorough*
- *
- */
+//Converts NYC lat / lon to physical address String and provides address String and mBorough
 
 public class NycCouncilGeoUtil extends VoicesGeoUtil{
 
@@ -27,14 +23,14 @@ public class NycCouncilGeoUtil extends VoicesGeoUtil{
         parseBorough(addresses);
     }
 
-    //TODO switch to regex match in order to take advantage of matches() method for multiple terms
+    //TODO: switch to regex match in order to take advantage of matches() method for multiple terms
     private void parseBorough(List<Address> addresses) {
         String allAddys = null;
 
         try {
             allAddys = addresses.toString().toLowerCase();
         } catch (Exception e) {
-            //FIXME add proper exception handling
+            //TODO: add proper exception handling
             Log.e("NycCouncilGeoUtil","Problem parsing boroughs");
         }
 
@@ -70,12 +66,10 @@ public class NycCouncilGeoUtil extends VoicesGeoUtil{
                 double shapeLon = ((JSONObject) map.get(i)).getDouble("lon");
 
                 double distance = distanceCalc(shapeLat, shapeLon, lat, lon);
-                Log.i("json","distance: " + distance + "sLat: " +shapeLat + "sLon: " + shapeLon + "lat: " +lat + "lon: " + lon);
 
                 if(distance < shortestDistance) {
                     shortestDistance = distance;
                     district = ((JSONObject) map.get(i)).getInt("dist");
-                    Log.i("json","district:"  + district + "shortest dist: " + shortestDistance);
                 }
             }
 
@@ -96,7 +90,7 @@ public class NycCouncilGeoUtil extends VoicesGeoUtil{
         return Integer.toString(mBorough);
     }
     
-    public boolean isNyc() {
-        return mBorough != 0;
-    }
+    //public boolean isNyc() {
+        //return mBorough != 0;
+    //}
 }

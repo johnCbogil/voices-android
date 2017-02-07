@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesApplication;
-import com.mobilonix.voices.delegates.Callback;
+import com.mobilonix.voices.callbacks.Callback;
 import com.mobilonix.voices.util.ViewUtil;
 
 import java.util.ArrayList;

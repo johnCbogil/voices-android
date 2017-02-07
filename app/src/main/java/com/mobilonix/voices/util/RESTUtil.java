@@ -3,8 +3,8 @@ package com.mobilonix.voices.util;
 import android.util.Log;
 
 import com.mobilonix.voices.data.model.Politico;
-import com.mobilonix.voices.delegates.Callback;
-import com.mobilonix.voices.delegates.Callback2;
+import com.mobilonix.voices.callbacks.Callback;
+import com.mobilonix.voices.callbacks.Callback2;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.model.Representative;
 
@@ -90,8 +90,6 @@ public class RESTUtil {
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    Log.e(TAG, "Record request success... with response" + response);
-
                 /* Om Success return auto-complete Address results to callback */
                     String responseString = response.body().string();
                     ArrayList<Representative> representatives = parseRepresentativesList(responseString, type);

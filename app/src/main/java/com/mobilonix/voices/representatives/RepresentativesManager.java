@@ -26,14 +26,13 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.VoicesMainActivity;
-import com.mobilonix.voices.base.util.GeneralUtil;
 import com.mobilonix.voices.data.api.ApiEngine;
 import com.mobilonix.voices.data.api.engines.NycLocalOfficialsApi;
 import com.mobilonix.voices.data.api.engines.StateOpenStatesApi;
 import com.mobilonix.voices.data.api.engines.UsCongressSunlightApi;
 import com.mobilonix.voices.data.model.Politico;
-import com.mobilonix.voices.delegates.Callback;
-import com.mobilonix.voices.delegates.Callback2;
+import com.mobilonix.voices.callbacks.Callback;
+import com.mobilonix.voices.callbacks.Callback2;
 import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.location.model.LatLong;
 import com.mobilonix.voices.representatives.model.Representative;
@@ -42,6 +41,7 @@ import com.mobilonix.voices.representatives.ui.PagerIndicator;
 import com.mobilonix.voices.representatives.ui.RepresentativesListAdapter;
 import com.mobilonix.voices.representatives.ui.RepresentativesPagerAdapter;
 import com.mobilonix.voices.session.SessionManager;
+import com.mobilonix.voices.util.GeneralUtil;
 import com.mobilonix.voices.util.RESTUtil;
 import com.mobilonix.voices.util.ViewUtil;
 
@@ -608,7 +608,7 @@ public enum RepresentativesManager {
                         .getString(R.string.reps_fetch_error)
                         .replace("[identifier]","<b>" + identifier + "</b>")));
             } else {
-                errorMessageText.setText(R.string.council_not_yet_error);
+                errorMessageText.setText(R.string.local_not_yet_error);
             }
         }
     }

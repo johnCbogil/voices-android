@@ -74,7 +74,7 @@
 
     <!-- Errors-->
     <string name="groups_fetch_error">"Server/Network Error! Attempting to fetch groups again..."</string>
-    <string name="council_not_yet_error">City Council members not available yet.  Coming soon!</string>
+    <string name="local_not_yet_error">Local officials are not available in this area yet.</string>
 
     <string name="reps_fetch_error">
         Could not fetch any [identifier] officials!

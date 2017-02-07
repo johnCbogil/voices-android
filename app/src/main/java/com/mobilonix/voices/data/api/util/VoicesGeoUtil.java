@@ -9,10 +9,6 @@ import com.mobilonix.voices.VoicesApplication;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Created by cakiadeg on 9/18/16.
- */
-
 public class VoicesGeoUtil {
 
     String mAddressLine;
@@ -23,6 +19,7 @@ public class VoicesGeoUtil {
 
     public VoicesGeoUtil() {}
 
+    //TODO: Do we need this or not?
     public VoicesGeoUtil(double lat, double lon) {
         resetLocation(lat,lon);
     }
@@ -47,9 +44,6 @@ public class VoicesGeoUtil {
     }
 
     private void setLocationData(List<Address> addresses) {
-
-        Log.i("maddresses", "" + addresses);
-
         if(addresses != null) {
 
             for (Address address : addresses) {
@@ -59,11 +53,6 @@ public class VoicesGeoUtil {
                 if(mCity == null) mCity = address.getLocality();
 
             }
-
-            Log.d("TAG", "addresses: " + addresses);
-            Log.d("TAG", "address: " + mAddressLine);
-            Log.d("TAG", "state: " + mState);
-            Log.d("TAG", "city: " + mCity);
         }
     }
 

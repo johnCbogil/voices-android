@@ -1,4 +1,4 @@
-package com.mobilonix.voices.base.util;
+package com.mobilonix.voices.util;
 
 import android.widget.Toast;
 
@@ -6,8 +6,7 @@ import com.mobilonix.voices.VoicesApplication;
 
 import java.util.Calendar;
 
-/* Oh yeah, why is that? It's purpose is to expose general utility functions that don't
-necessarily fit into any specific category */
+//general utility functions that don't necessarily fit into any specific category
 public class GeneralUtil {
 
     public static void toast(String message) {

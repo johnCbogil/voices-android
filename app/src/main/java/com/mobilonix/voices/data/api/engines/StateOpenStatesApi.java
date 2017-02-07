@@ -22,10 +22,7 @@ import java.util.ArrayList;
 
 import okhttp3.Request;
 
-//TODO
 public class StateOpenStatesApi implements ApiEngine {
-
-    //  legislator strings
 
     public static final String BASE_URL = "http://openstates.org/api/v1//legislators/geo/";
     public static final String LATITUDE_KEY = "lat";
@@ -38,8 +35,6 @@ public class StateOpenStatesApi implements ApiEngine {
     static final String TAG = "StateOpenStatesApi";
 
     public StateOpenStatesApi() {
-
-        Log.i("response","in openstates" );
 
     }
 
@@ -63,8 +58,6 @@ public class StateOpenStatesApi implements ApiEngine {
 
     @Override
     public ArrayList<Politico> parseData(String response){
-
-        Log.i("response", response);
 
         ArrayList<Politico> politicos = new ArrayList<>();
 
@@ -173,7 +166,6 @@ public class StateOpenStatesApi implements ApiEngine {
 
             try {
                 JSONObject jsonObject = new JSONObject(convertStreamToString(inputStream));
-                Log.d("TAG", jsonObject.toString());
                 return jsonObject;
 
             } catch (JSONException e) {

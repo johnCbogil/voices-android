@@ -28,7 +28,7 @@ import okhttp3.RequestBody;
 
 public class NycLocalOfficialsApi implements ApiEngine {
 
-    //FIXME this is a temporary way to convert from lat/lon to address
+    //TODO: this is a temporary way to convert from lat/lon to address
 
     public NycCouncilGeoUtil geoUtil;
 
@@ -53,12 +53,6 @@ public class NycLocalOfficialsApi implements ApiEngine {
 
         String address = geoUtil.getAddressLine();
         String borough = geoUtil.getBorough();
-
-        //uncomment below for testing
-            //address = "1515 Broadway"
-            //borough = "1";
-
-        Log.i(TAG, "address: " + address + " borough: " + borough) ;
 
         URL url;
 
@@ -104,22 +98,14 @@ public class NycLocalOfficialsApi implements ApiEngine {
 
     public Politico politicianFromDistrict(Integer district) {
 
-        Log.i(TAG, "politician from disctrict: " + district);
-
         if (!(district >= 1 && district <= 51)) {
             district = geoUtil.filterDistrict(mLatitude, mLongitude);
-            Log.i("nycapi", "in here district: " + district);
         }
 
         try {
             JSONObject districts = JsonUtil.getJsonFromResource(R.raw.nyc_district_data);
-
-            Log.e(TAG, "0: " + districts.toString());
-
             JSONObject member = districts.getJSONObject("districts");
-            Log.e(TAG, "1: " + member);
             member = member.getJSONObject(district + "");
-            Log.e(TAG, "2: " + member);
 
             String firstName = member.optString("firstName");
             String lastName = member.optString("lastName");

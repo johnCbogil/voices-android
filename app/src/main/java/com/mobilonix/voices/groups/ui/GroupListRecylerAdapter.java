@@ -3,7 +3,6 @@ package com.mobilonix.voices.groups.ui;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +22,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class GroupListRecylerAdapter extends RecyclerView.Adapter<GroupListRecylerAdapter.GroupListHolder> {
-
-    private final static String TAG = GroupListRecylerAdapter.class.getCanonicalName();
-
     ArrayList<Group> groups;
     GroupManager.GroupType groupType;
 
@@ -55,11 +51,7 @@ public class GroupListRecylerAdapter extends RecyclerView.Adapter<GroupListRecyl
 
     @Override
     public void onBindViewHolder(GroupListHolder holder, final int position) {
-
         holder.setPosition(position);
-
-        Log.wtf(TAG, "Adapter GET VIEW: " + groups.get(position).getGroupName());
-
         holder.groupName.setText(groups.get(position).getGroupName());
         holder.groupCategory.setText(groups.get(position).getGroupCategory());
         holder.groupDescription.setText(groups.get(position).getGroupDescription());

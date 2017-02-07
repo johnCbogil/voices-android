@@ -24,8 +24,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.auth.FirebaseAuth;
-import com.mobilonix.voices.base.util.GeneralUtil;
-import com.mobilonix.voices.delegates.Callback;
+import com.mobilonix.voices.callbacks.Callback;
 import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.location.LocationRequestManager;
 import com.mobilonix.voices.location.model.LatLong;
@@ -35,6 +34,7 @@ import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.splash.SplashManager;
 import com.mobilonix.voices.util.DeeplinkUtil;
+import com.mobilonix.voices.util.GeneralUtil;
 
 public class VoicesMainActivity extends AppCompatActivity implements LocationListener {
 
@@ -133,8 +133,8 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
                    .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                        @Override
                        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                           GeneralUtil.toast("Could not connect to google api! ");
-                           Log.e(TAG, "Could not retrieve deeplink!");
+                           GeneralUtil.toast("Could not connect to Google API.");
+                           Log.e(TAG, "Could not retrieve the deeplink.");
                        }
                    })
                    .addApi(AppInvite.API)
@@ -251,8 +251,6 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
                     @Override
                     public boolean onExecuted(LatLong data) {
                         progress.dismiss();
-                        GeneralUtil.toast("Got current location");
-
                         RepresentativesManager.INSTANCE
                                 .toggleRepresentativesScreen(currentLocation, VoicesMainActivity.this, true);
                         return false;
@@ -278,9 +276,6 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
             LocationUtil.triggerLocationUpdate(this, new Callback<LatLong>() {
                 @Override
                 public boolean onExecuted(LatLong data) {
-
-                    GeneralUtil.toast("Activity result called.  Loading rep page");
-
                     RepresentativesManager.INSTANCE
                             .toggleRepresentativesScreen(data,
                                     VoicesMainActivity.this,

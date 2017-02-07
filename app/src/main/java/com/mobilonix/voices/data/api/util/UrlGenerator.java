@@ -1,14 +1,10 @@
 package com.mobilonix.voices.data.api.util;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
-/**
- * Created by cakiadeg on 6/27/16.
- */
 public class UrlGenerator {
 
     private static final char AMPERSAND = '&';
@@ -43,6 +39,7 @@ public class UrlGenerator {
         }
     }
 
+    //TODO: Do we need this or not?
     public String generateGetUrlString() {
 
         String fullUrlAsString = "";
