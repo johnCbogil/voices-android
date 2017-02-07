@@ -21,12 +21,12 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.mobilonix.voices.BuildConfig;
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesApplication;
-import com.mobilonix.voices.base.util.GeneralUtil;
-import com.mobilonix.voices.delegates.Callback;
+import com.mobilonix.voices.callbacks.Callback;
 import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
 import com.mobilonix.voices.groups.model.Policy;
+import com.mobilonix.voices.util.GeneralUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -66,9 +66,6 @@ public enum SessionManager {
     public void signIn(final Callback<Boolean> callback) {
 
         final FirebaseAuth firebase = FirebaseAuth.getInstance();
-
-        Log.e(TAG, "FINGERPRINT: " + getCertificateSHA1Fingerprint());
-
         currentUserToken = PreferenceManager
                 .getDefaultSharedPreferences(VoicesApplication.getContext())
                 .getString(FIREBASE_TOKEN_KEY, FIREBASE_NO_TOKEN);
@@ -336,11 +333,6 @@ public enum SessionManager {
 
                 ArrayList<Group> userGroups = new ArrayList<Group>();
 
-                Log.e("SESSION", "List of All groups");
-                for (Group group : allGroups) {
-                    Log.e("SESSION", "Group name: " + group.getGroupKey());
-                }
-
                 /* TODO: Improve this algorithm here.  It's linear, can be optimized with Hash Structures */
                 for (DataSnapshot user : dataSnapshot.getChildren()) {
 
@@ -352,9 +344,6 @@ public enum SessionManager {
 
                             HashMap<String, String> groupMap
                                     = (HashMap) user.child("groups").getValue();
-
-                            Log.e(TAG, "User: " + user.getKey().toString() + "has groups " + groupMap);
-
                             Iterator it = groupMap.entrySet().iterator();
                             while (it.hasNext()) {
                                 Map.Entry pair = (Map.Entry) it.next();

@@ -101,6 +101,7 @@ public class GroupPage extends FrameLayout {
         return false;
     }
 
+    //TODO: Do we need these or not?
     public ArrayList<Action> getActions() {
         return actions;
     }

@@ -4,10 +4,11 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -27,9 +28,6 @@ public class VoicesNotificationUpdateService extends FirebaseMessagingService{
      */
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
-        Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
-
         sendNotification(remoteMessage.getNotification().getBody());
     }
 
@@ -40,6 +38,8 @@ public class VoicesNotificationUpdateService extends FirebaseMessagingService{
      */
     private void sendNotification(String messageBody) {
         Intent intent = new Intent(this, VoicesMainActivity.class);
+        Bitmap voicesIcon = BitmapFactory.decodeResource(getResources(), R.drawable.voices_icon);
+
         intent.putExtra(
                 com.mobilonix.voices.notifications.NotificationManager.NOTIFICATION_KEY,
                 com.mobilonix.voices.notifications.NotificationManager.NOTIFICATION_KEY);
@@ -50,6 +50,7 @@ public class VoicesNotificationUpdateService extends FirebaseMessagingService{
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.voices_icon)
+                .setLargeIcon(voicesIcon)
                 .setContentTitle("Voices Message")
                 .setContentText(messageBody)
                 .setAutoCancel(true)

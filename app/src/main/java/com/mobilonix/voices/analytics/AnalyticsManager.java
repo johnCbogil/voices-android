@@ -1,8 +1,8 @@
 package com.mobilonix.voices.analytics;
 
 import com.mobilonix.voices.BuildConfig;
-import com.mobilonix.voices.base.util.GeneralUtil;
-import com.mobilonix.voices.delegates.Callback2;
+import com.mobilonix.voices.callbacks.Callback2;
+import com.mobilonix.voices.util.GeneralUtil;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -22,8 +22,8 @@ public enum AnalyticsManager {
     public static String ANALYTICS_URL
                 = "https://script.google.com/macros/s/AKfycbxBK6HTkA6tTXU09sRF5PHHCq2LpBOFdx4ZH7E4ORf3sG374iU/exec";
 
-    public static final String UNSUBSCRIBE_EVENT = "UNSUBSCRIBE_EVENT";
-    public static final String SUBSCRIBE_EVENT = "SUBSCRIBE_EVENT";
+    //public static final String UNSUBSCRIBE_EVENT = "UNSUBSCRIBE_EVENT";
+    //public static final String SUBSCRIBE_EVENT = "SUBSCRIBE_EVENT";
 
                 public static int ANALYTICS_REQUEST_TIMEOUT = 5000;
 
@@ -81,7 +81,7 @@ public enum AnalyticsManager {
 
                     }
 
-                public void shouldLogDebugEvents(boolean status) {
-                logDebugEvents = status;
-            }
+                //public void shouldLogDebugEvents(boolean status) {
+                //logDebugEvents = status;
+            //}
     }

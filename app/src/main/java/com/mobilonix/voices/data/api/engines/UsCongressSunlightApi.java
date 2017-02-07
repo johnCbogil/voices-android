@@ -29,13 +29,10 @@ public class UsCongressSunlightApi implements ApiEngine {
     public static final String API_VALUE = "939e3373a07c468bac51ddd604ebba1f";
 
     public UsCongressSunlightApi() {
-        Log.i("response","in sunlight" );
     }
 
     @Override
     public Request generateRequest(double latitude, double longitude) {
-
-        Log.i("sunlight", "lat: " + latitude + "lon: " + longitude);
 
         Bundle urlBundle = new Bundle();
 
@@ -54,7 +51,6 @@ public class UsCongressSunlightApi implements ApiEngine {
 
     @Override
     public ArrayList<Politico> parseData(String response) {
-        Log.i("response",response );
         return httpResponseToPoliticos(response);
     }
 

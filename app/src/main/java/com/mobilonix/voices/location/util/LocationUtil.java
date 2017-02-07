@@ -6,13 +6,10 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 
 import com.mobilonix.voices.VoicesApplication;
-import com.mobilonix.voices.base.util.GeneralUtil;
-import com.mobilonix.voices.delegates.Callback;
+import com.mobilonix.voices.callbacks.Callback;
 import com.mobilonix.voices.location.model.LatLong;
 
 import java.util.List;

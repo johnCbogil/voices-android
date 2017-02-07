@@ -2,9 +2,6 @@ package com.mobilonix.voices.groups.model;
 
 import java.util.ArrayList;
 
-/**
- * Model representing an advocacy group
- */
 public class Group {
 
     String groupName;
@@ -72,11 +69,7 @@ public class Group {
         return debug;
     }
 
-    /**
-     * Return the indices of associated actions obtained from the list of all actions
-     *
-     * @return
-     */
+    //Return the indices of associated actions obtained from the list of all actions
     public ArrayList<String> getActions() {
         return actions;
     }

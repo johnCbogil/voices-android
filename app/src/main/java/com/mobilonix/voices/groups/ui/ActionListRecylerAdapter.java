@@ -20,16 +20,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRecylerAdapter.ActionListHolder> {
-
-    private final static String TAG = ActionListRecylerAdapter.class.getCanonicalName();
-
     ArrayList<Action> actions;
 
     public ActionListRecylerAdapter(Context context, ArrayList<Action> actions) {
 
         ArrayList<Action> modifiedActionsList = new ArrayList<>();
 
-        /* TODO: There is a bug here which requires this go between.  Fix it */
+        //TODO: There is a bug here which requires this go between.  Fix it
         for(int i = 0; i < actions.size(); i++) {
             if(i % 2 == 0) {
                 modifiedActionsList.add(actions.get(i));

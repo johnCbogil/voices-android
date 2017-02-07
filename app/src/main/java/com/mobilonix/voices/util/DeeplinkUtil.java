@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
-import com.mobilonix.voices.base.util.GeneralUtil;
-import com.mobilonix.voices.delegates.Callback;
-import com.mobilonix.voices.groups.GroupManager;
+import com.mobilonix.voices.callbacks.Callback;
 
 public class DeeplinkUtil {
 

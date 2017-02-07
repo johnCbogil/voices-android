@@ -16,8 +16,7 @@ import com.mobilonix.voices.groups.GroupManager;
 
 import java.util.ArrayList;
 
-public class EntityContainer extends FrameLayout
-{
+public class EntityContainer extends FrameLayout {
     RecyclerView entityList;
 
     TextView entityListTopText;

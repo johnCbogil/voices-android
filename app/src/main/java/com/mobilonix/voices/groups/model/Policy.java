@@ -12,6 +12,7 @@ public class Policy {
         this.associatedRepresentative = associatedRepresentative;
     }
 
+    //TODO: Do we need this or not?
     public String getAssociatedRepresentative() {
         return associatedRepresentative;
     }

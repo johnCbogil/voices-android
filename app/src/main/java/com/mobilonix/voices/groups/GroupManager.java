@@ -22,8 +22,7 @@ import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.analytics.AnalyticsManager;
-import com.mobilonix.voices.base.util.GeneralUtil;
-import com.mobilonix.voices.delegates.Callback;
+import com.mobilonix.voices.callbacks.Callback;
 import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
 import com.mobilonix.voices.groups.model.Policy;
@@ -558,8 +557,6 @@ public enum GroupManager {
 
         this.defferredGroupKey = defferredGroupKey;
         this.defferredGroupKey = this.defferredGroupKey.toUpperCase().replace("HTTPS://TRYVOICES.COM/", "");
-
-        GeneralUtil.toast("SUBSCRIBE TO " + this.defferredGroupKey);
 
         if(!subscribe) {
             return;

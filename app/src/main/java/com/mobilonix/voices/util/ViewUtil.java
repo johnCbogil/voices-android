@@ -23,8 +23,7 @@ public class ViewUtil {
         return ContextCompat.getColor(VoicesApplication.getContext(), resource);
     }
 
-    public static int convertDpToPixel(int dpPadding, Context context)
-    {
+    public static int convertDpToPixel(int dpPadding, Context context) {
         final float scale = context.getResources().getDisplayMetrics().density;
         int pxPadding = (int) (dpPadding * scale + 0.5f);
         return pxPadding;

@@ -1,7 +1,5 @@
 package com.mobilonix.voices.util;
 
-import android.util.Log;
-
 import com.mobilonix.voices.VoicesApplication;
 
 import org.json.JSONException;
@@ -11,9 +9,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * Created by cakiadeg on 9/18/16.
- */
 public class JsonUtil {
 
     private static String convertStreamToString(InputStream inputStream) {
@@ -41,8 +36,6 @@ public class JsonUtil {
         if(jsonResource > 0){
             try {
                 JSONObject jsonObject = new JSONObject(convertStreamToString(inputStream));
-
-                Log.d("TAG", jsonObject.toString());
                 return jsonObject;
 
             } catch (JSONException e) {
