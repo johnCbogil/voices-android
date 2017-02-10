@@ -3,10 +3,12 @@ package com.mobilonix.voices.data.api.engines;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.mobilonix.voices.R;
 import com.mobilonix.voices.data.api.ApiEngine;
 import com.mobilonix.voices.data.api.util.UrlGenerator;
 import com.mobilonix.voices.data.model.Politico;
 import com.mobilonix.voices.representatives.RepresentativesManager;
+import com.mobilonix.voices.util.JsonUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -74,6 +76,7 @@ public class UsCongressSunlightApi implements ApiEngine {
                 String title = setTitle(jsonPolitico.optString("title"));
                 String gender = jsonPolitico.optString("gender");
                 String party = jsonPolitico.optString("party");
+                String level = "Federal";
                 String district;
                 if(jsonPolitico.optString("district").equals("null")){
                     district = "";
@@ -83,17 +86,19 @@ public class UsCongressSunlightApi implements ApiEngine {
                 String electionDate = setElectionDate(jsonPolitico.optString("term_end"));
                 String phoneNumber = jsonPolitico.optString("phone");
                 String twitter = jsonPolitico.optString("twitter_id");
-                String bioguide_id = jsonPolitico.optString("bioguide_id");
-                String email = jsonPolitico.optString("oc_email");
+                String bioguideId = jsonPolitico.optString("bioguide_id");
+                String contactForm = getContactFormUrl(bioguideId);
                 Politico politico = new Politico.Builder()
                         .setGender(gender)
                         .setParty(party)
+                        .setLevel(level)
                         .setDistrict(district)
                         .setElectionDate(electionDate)
-                        .setEmailAddy(email)
                         .setPhoneNumber(phoneNumber)
                         .setTwitterHandle(twitter)
-                        .setPicUrl(IMAGE_BASE_URL + bioguide_id + IMAGE_FILE_EXTENSION)
+                        .setContactForm(contactForm)
+                        .setEmailAddress("")
+                        .setPicUrl(IMAGE_BASE_URL + bioguideId + IMAGE_FILE_EXTENSION)
                         .build(title, firstName, lastName);
 
                 politicos.add(politico);
@@ -132,6 +137,14 @@ public class UsCongressSunlightApi implements ApiEngine {
         } else {
             return "N/A";
         }
+    }
+
+    public String getContactFormUrl(String bioguideId){
+        JSONObject reps = JsonUtil.getJsonFromResource(R.raw.rep_contact_forms);
+        if(reps.has(bioguideId)){
+            return reps.optString(bioguideId);
+        }
+        return "";
     }
     @Override
     public RepresentativesManager.RepresentativesType getRepresentativeType() {
