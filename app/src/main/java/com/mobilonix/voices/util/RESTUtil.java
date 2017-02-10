@@ -144,8 +144,10 @@ public class RESTUtil {
                             poli.getElectionDate(),
                             poli.getPhoneNumber(),
                             poli.getTwitterHandle(),
-                            poli.getEmailAddy(),
-                            poli.getPicUrl()));
+                            poli.getContactForm(),
+                            poli.getEmailAddress(),
+                            poli.getPicUrl(),
+                            poli.getLevel()));
         }
 
         return representatives;

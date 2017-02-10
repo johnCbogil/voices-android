@@ -77,6 +77,7 @@ public class StateOpenStatesApi implements ApiEngine {
 
                 String gender = "";
                 String party = jsonPolitico.optString("party");
+                String level = "State";
                 String district = jsonPolitico.optString("district");
 
                 JSONObject rolesObject;
@@ -107,9 +108,10 @@ public class StateOpenStatesApi implements ApiEngine {
                 Politico politico = new Politico.Builder()
                         .setGender(gender)
                         .setParty(party)
+                        .setLevel(level)
                         .setDistrict(district)
                         .setElectionDate(electionDate)
-                        .setEmailAddy(email)
+                        .setEmailAddress(email)
                         .setPhoneNumber(phoneNumber)
                         .setPicUrl(picUrl)
                         .build(fullName);
@@ -135,6 +137,7 @@ public class StateOpenStatesApi implements ApiEngine {
             String title = VoicesApplication.getContext().getResources().getString(R.string.gov_title);
             String gender = gov.optString("gender");
             String party = gov.optString("party");
+            String level = "State";
             String district = gov.optString("state");
             String electionDate = gov.optString("next_election_date");
             String phoneNumber = gov.optString("phone");
@@ -144,12 +147,15 @@ public class StateOpenStatesApi implements ApiEngine {
             politico = new Politico.Builder()
                 .setGender(gender)
                 .setParty(party)
+                .setLevel(level)
                 .setDistrict(district)
                 .setElectionDate(electionDate)
-                .setEmailAddy(email)
                 .setPhoneNumber(phoneNumber)
-                .setPicUrl(photo)
                 .setTwitterHandle(twitter)
+                .setContactForm("")
+                .setEmailAddress(email)
+                .setPicUrl(photo)
+
                 .build(title, firstName, lastName);
         } catch (JSONException e) {
             Log.e(TAG, "json parse: " + e);

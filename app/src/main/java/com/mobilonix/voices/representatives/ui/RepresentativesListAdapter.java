@@ -42,97 +42,125 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
     public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder mViewHolder;
 
-        if(convertView == null) {
+        if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater)
                     parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             convertView = inflater.inflate(resource, parent, false);
             mViewHolder = new ViewHolder();
 
-            mViewHolder.mLinearLayout = (LinearLayout)convertView.findViewById(R.id.representatives_linear_layout);
-            mViewHolder.mRepsImage = (ImageView)convertView.findViewById(R.id.representatives_list_image);
-            mViewHolder.mRepsName = (TextView)convertView.findViewById(R.id.representatives_list_name_text);
+            mViewHolder.mLinearLayout = (LinearLayout) convertView.findViewById(R.id.representatives_linear_layout);
+            mViewHolder.mRepsImage = (ImageView) convertView.findViewById(R.id.representatives_list_image);
+            mViewHolder.mRepsName = (TextView) convertView.findViewById(R.id.representatives_list_name_text);
             convertView.setTag(mViewHolder);
-            mViewHolder.mCallImage = (ImageView)convertView.findViewById(R.id.representatives_list_call_image);
-            mViewHolder.mEmailImage = (ImageView)convertView.findViewById(R.id.representatives_list_email_image);
-            mViewHolder.mTwitterImage = (ImageView)convertView.findViewById(R.id.representatives_list_twitter_image);
-            } else {
-                mViewHolder = (ViewHolder)convertView.getTag();
-            }
-        setImage(mViewHolder.mRepsImage,position);
+            mViewHolder.mCallImage = (ImageView) convertView.findViewById(R.id.representatives_list_call_image);
+            mViewHolder.mEmailImage = (ImageView) convertView.findViewById(R.id.representatives_list_email_image);
+            mViewHolder.mTwitterImage = (ImageView) convertView.findViewById(R.id.representatives_list_twitter_image);
+        } else {
+            mViewHolder = (ViewHolder) convertView.getTag();
+        }
+        setImage(mViewHolder.mRepsImage, position);
         mViewHolder.mRepsName.setText(representatives.get(position).getName());
 
-            mViewHolder.mLinearLayout.setOnClickListener(new View.OnClickListener() {
+        mViewHolder.mLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                detailsDialog = new Dialog(getContext());
+                detailsDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                detailsDialog.setContentView(R.layout.dialog_repsdetails);
+                ImageView repsImage = (ImageView) detailsDialog.findViewById(R.id.reps_image);
+                TextView repsName = (TextView) detailsDialog.findViewById(R.id.reps_name);
+                TextView repsParty = (TextView) detailsDialog.findViewById(R.id.reps_party);
+                TextView repsDistrict = (TextView) detailsDialog.findViewById(R.id.reps_district);
+                TextView repsElectionDate = (TextView) detailsDialog.findViewById(R.id.reps_election_date);
+                setImage(repsImage, position);
+                repsName.setText(representatives.get(position).getName());
+
+                if (representatives.get(position).getParty().equals("")) {
+                    repsParty.setText(VoicesApplication.getContext().getResources().getString(R.string.party)
+                            + VoicesApplication.getContext().getResources().getString(R.string.not_available));
+                } else {
+                    repsParty.setText(VoicesApplication.getContext().getResources().getString(R.string.party)
+                            + representatives.get(position).getParty());
+                }
+
+                if (representatives.get(position).getDistrict().equals("")) {
+                    repsDistrict.setText(VoicesApplication.getContext().getResources().getString(R.string.district)
+                            + VoicesApplication.getContext().getResources().getString(R.string.not_available));
+                } else {
+                    repsDistrict.setText(VoicesApplication.getContext().getResources().getString(R.string.district)
+                            + representatives.get(position).getDistrict());
+                }
+
+                if (representatives.get(position).getElectionDate().equals("")) {
+                    repsElectionDate.setText(VoicesApplication.getContext().getResources().getString(R.string.next_election)
+                            + VoicesApplication.getContext().getResources().getString(R.string.not_available));
+                } else {
+                    repsElectionDate.setText(VoicesApplication.getContext().getResources().getString(R.string.next_election)
+                            + representatives.get(position).getElectionDate());
+                }
+                detailsDialog.show();
+            }
+        });
+
+        String check = representatives.get(position).getPhoneNumber();
+        if (check == null || check.equals("")) {
+            mViewHolder.mCallImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
+            mViewHolder.mCallImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    detailsDialog = new Dialog(getContext());
-                    detailsDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    detailsDialog.setContentView(R.layout.dialog_repsdetails);
-                    ImageView repsImage = (ImageView)detailsDialog.findViewById(R.id.reps_image);
-                    TextView repsName = (TextView)detailsDialog.findViewById(R.id.reps_name);
-                    TextView repsParty = (TextView)detailsDialog.findViewById(R.id.reps_party);
-                    TextView repsDistrict = (TextView)detailsDialog.findViewById(R.id.reps_district);
-                    TextView repsElectionDate = (TextView)detailsDialog.findViewById(R.id.reps_election_date);
-                    setImage(repsImage,position);
-                    repsName.setText(representatives.get(position).getName());
-
-                    if(representatives.get(position).getParty().equals("")){
-                        repsParty.setText(VoicesApplication.getContext().getResources().getString(R.string.party)
-                                + VoicesApplication.getContext().getResources().getString(R.string.not_available));
-                    } else {
-                        repsParty.setText(VoicesApplication.getContext().getResources().getString(R.string.party)
-                                + representatives.get(position).getParty());
-                    }
-
-                    if(representatives.get(position).getDistrict().equals("")){
-                        repsDistrict.setText(VoicesApplication.getContext().getResources().getString(R.string.district)
-                                + VoicesApplication.getContext().getResources().getString(R.string.not_available));
-                    } else {
-                        repsDistrict.setText(VoicesApplication.getContext().getResources().getString(R.string.district)
-                                + representatives.get(position).getDistrict());
-                    }
-
-                    if(representatives.get(position).getElectionDate().equals("")){
-                        repsElectionDate.setText(VoicesApplication.getContext().getResources().getString(R.string.next_election)
-                                + VoicesApplication.getContext().getResources().getString(R.string.not_available));
-                    } else {
-                        repsElectionDate.setText(VoicesApplication.getContext().getResources().getString(R.string.next_election)
-                                + representatives.get(position).getElectionDate());
-                    }
-                    detailsDialog.show();
+                    String emailInstead = getContext().getResources().getString(R.string.email_instead);
+                    toggleNoContactInfoDialog(emailInstead);
                 }
             });
+        } else {
+            mViewHolder.mCallImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-            String check = representatives.get(position).getPhoneNumber();
-            if(check == null || check.equals("")){
-                mViewHolder.mCallImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
-                mViewHolder.mCallImage.setOnClickListener(new View.OnClickListener() {
+                    AnalyticsManager.INSTANCE.trackEvent("CALL_REPRESENTATIVES_EVENT",
+                            representatives.get(position).getName(),
+                            SessionManager.INSTANCE.getCurrentUserToken(),
+                            "ACTION=" + RepresentativesManager.INSTANCE.getLastActionSelectedForContact() +
+                                    ";GROUP=" + RepresentativesManager.INSTANCE.getGroupForLastAction(), null);
+
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse("tel:" + representatives.get(position).getPhoneNumber()));
+                    v.getContext().startActivity(intent);
+                }
+            });
+        }
+
+        if (representatives.get(position).getLevel().equals("Federal")) {
+            check = representatives.get(position).getContactForm();
+            if (check == null || check.equals("")) {
+                mViewHolder.mEmailImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
+                mViewHolder.mEmailImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String emailInstead = getContext().getResources().getString(R.string.email_instead);
-                        toggleNoContactInfoDialog(emailInstead);
+                        String callInstead = getContext().getResources().getString(R.string.call_instead);
+                        toggleNoContactInfoDialog(callInstead);
                     }
                 });
             } else {
-                mViewHolder.mCallImage.setOnClickListener(new View.OnClickListener() {
+                mViewHolder.mEmailImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-                        AnalyticsManager.INSTANCE.trackEvent("CALL_REPRESENTATIVES_EVENT",
+                        AnalyticsManager.INSTANCE.trackEvent("" + "WEBFORM_REPRESENTATIVES_EVENT",
                                 representatives.get(position).getName(),
-                        SessionManager.INSTANCE.getCurrentUserToken(),
+                                SessionManager.INSTANCE.getCurrentUserToken(),
                                 "ACTION=" + RepresentativesManager.INSTANCE.getLastActionSelectedForContact() +
-                                ";GROUP=" + RepresentativesManager.INSTANCE.getGroupForLastAction(), null);
-
-                        Intent intent = new Intent(Intent.ACTION_DIAL);
-                        intent.setData(Uri.parse("tel:" + representatives.get(position).getPhoneNumber()));
-                        v.getContext().startActivity(intent);
+                                        ";GROUP=" + RepresentativesManager.INSTANCE.getGroupForLastAction(), null);
+                        String url = representatives.get(position).getContactForm();
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(url));
+                        v.getContext().startActivity(i);
                     }
                 });
             }
-
+        } else {
             check = representatives.get(position).getEmailAddress();
-            if(check == null || check.equals("")){
+            if (check == null || check.equals("")) {
                 mViewHolder.mEmailImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
                 mViewHolder.mEmailImage.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -152,7 +180,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                                         ";GROUP=" + RepresentativesManager.INSTANCE.getGroupForLastAction(), null);
 
                         Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                                "mailto",representatives.get(position).getEmailAddress(), null));
+                                "mailto", representatives.get(position).getEmailAddress(), null));
                         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
                         emailIntent.putExtra(Intent.EXTRA_TEXT, "");
                         ArrayList<String> addresses = new ArrayList<>();
@@ -165,9 +193,9 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
             }
 
             check = representatives.get(position).getTwitterHandle();
-            if(check == null || check.equals("")){
-                mViewHolder.mTwitterImage .setColorFilter(getContext().getResources().getColor(R.color.light_grey));
-                mViewHolder.mTwitterImage .setOnClickListener(new View.OnClickListener() {
+            if (check == null || check.equals("")) {
+                mViewHolder.mTwitterImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
+                mViewHolder.mTwitterImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         String callInstead = getContext().getResources().getString(R.string.call_instead);
@@ -193,7 +221,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                     }
                 });
             }
-
+        }
         return convertView;
     }
 

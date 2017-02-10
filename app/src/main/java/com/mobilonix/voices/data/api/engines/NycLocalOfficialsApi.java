@@ -111,6 +111,7 @@ public class NycLocalOfficialsApi implements ApiEngine {
             String lastName = member.optString("lastName");
             String gender = "";
             String party = member.optString("party");
+            String level = "Local";
             String repDistrict = member.optString("district");
             String electionDate = VoicesApplication.getContext().getResources().getString(R.string.nyc_election_date);
             String title = VoicesApplication.getContext().getResources().getString(R.string.nyc_title);
@@ -122,10 +123,11 @@ public class NycLocalOfficialsApi implements ApiEngine {
             Politico politico = new Politico.Builder()
                     .setGender(gender)
                     .setParty(party)
+                    .setLevel(level)
                     .setDistrict(repDistrict)
                     .setElectionDate(electionDate)
                     .setPhoneNumber(phoneNumbers)
-                    .setEmailAddy(email)
+                    .setEmailAddress(email)
                     .setPicUrl(photos)
                     .setTwitterHandle(twitter)
                     .build(title, firstName, lastName);
@@ -168,6 +170,7 @@ public class NycLocalOfficialsApi implements ApiEngine {
                 String title = rep.optString("title");
                 String gender = rep.optString("gender");
                 String party = rep.optString("party");
+                String level = "Local";
                 String district = "";
                 String electionDate = rep.optString("nextElection");
                 String phoneNumber = rep.optString("phoneNumber");
@@ -177,9 +180,10 @@ public class NycLocalOfficialsApi implements ApiEngine {
                 Politico politico = new Politico.Builder()
                         .setGender(gender)
                         .setParty(party)
+                        .setLevel(level)
                         .setDistrict(district)
                         .setElectionDate(electionDate)
-                        .setEmailAddy(email)
+                        .setEmailAddress(email)
                         .setPhoneNumber(phoneNumber)
                         .setPicUrl(photo)
                         .setTwitterHandle(twitter)

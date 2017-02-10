@@ -10,12 +10,14 @@ public class Representative {
     private String district;
     private String electionDate;
     private String phoneNumber;
-    private String emailAddress;
     private String twitterHandle;
+    private String emailAddress;
+    private String contactForm;
     private String representativeImageUrl;
     private String title;
     private String name;
     private String location;
+    private String level;
 
     public String getGender() { return gender; }
 
@@ -29,8 +31,12 @@ public class Representative {
         return phoneNumber;
     }
 
-    public String getEmailAddress() {
+    public String getEmailAddress(){
         return emailAddress;
+    }
+
+    public String getContactForm() {
+        return contactForm;
     }
 
     public String getTwitterHandle() {
@@ -53,6 +59,10 @@ public class Representative {
         return title;
     }
 
+    public String getLevel(){
+        return level;
+    }
+
     public Representative(String title,
                           String name,
                           String location,
@@ -62,8 +72,10 @@ public class Representative {
                           String electionDate,
                           String phoneNumber,
                           String twitterHandle,
+                          String contactForm,
                           String emailAddress,
-                          String representativeImageUrl) {
+                          String representativeImageUrl,
+                          String level) {
 
         this.title = title;
         this.name = name;
@@ -74,8 +86,9 @@ public class Representative {
         this.electionDate = electionDate;
         this.phoneNumber = phoneNumber;
         this.twitterHandle = twitterHandle;
+        this.contactForm = contactForm;
         this.emailAddress = emailAddress;
         this.representativeImageUrl = representativeImageUrl;
-
+        this.level = level;
     }
 }

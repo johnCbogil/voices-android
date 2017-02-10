@@ -9,15 +9,19 @@ public class Politico {
     String mTermEnd;
     String mElectionDate;
     String mPhoneNumber;
-    String mEmailAddy;
     String mTwitterHandle;
+    String mContactForm;
+    String mEmailAddress;
     String mPicUrl;
+    String mLevel;
+    String mBioguideId;
 
     public Politico(){
 
     }
     private Politico(String fullName, String gender, String party, String district, String termEnd, String electionDate,
-                     String phoneNumber, String emailAddy, String twitterHandle, String picUrl) {
+                     String phoneNumber, String twitterHandle, String contactForm, String emailAddress,
+                     String picUrl, String level, String bioguideId) {
         mFullName = fullName;
         mGender = gender;
         mParty = party;
@@ -25,9 +29,12 @@ public class Politico {
         mTermEnd = termEnd;
         mElectionDate = electionDate;
         mPhoneNumber = phoneNumber;
-        mEmailAddy = emailAddy;
         mTwitterHandle = twitterHandle;
+        mContactForm = contactForm;
+        mEmailAddress = emailAddress;
         mPicUrl = picUrl;
+        mLevel = level;
+        mBioguideId = bioguideId;
 
     }
 
@@ -45,18 +52,31 @@ public class Politico {
 
     public String getPhoneNumber() { return mPhoneNumber; }
 
-    public String getEmailAddy() { return mEmailAddy; }
+    public String getContactForm() { return mContactForm; }
+
+    public String getEmailAddress(){
+        return mEmailAddress;
+    }
 
     public String getTwitterHandle() { return mTwitterHandle; }
 
     public String getPicUrl() { return mPicUrl; }
 
+    public String getLevel(){
+        return mLevel;
+    }
+
+    public String getBioguideId() {
+        return mBioguideId;
+    }
+
     @Override
     public String toString() {
         return  "\nFull Name: " + mFullName +
                 "\nPhone Number: " + mPhoneNumber +
-                "\nEmail Addy: " + mEmailAddy +
                 "\nTwitter Handle: " + mTwitterHandle +
+                "\nContact Form: " + mContactForm +
+                "\nEmail Address: " + mEmailAddress +
                 "\nPic URL:" + mPicUrl;
     }
 
@@ -69,16 +89,19 @@ public class Politico {
         String termEnd;
         String electionDate;
         String phoneNumber;
-        String emailAddy;
         String twitterHandle;
+        String contactForm;
+        String emailAddress;
         String picUrl;
+        String level;
+        String bioguideId;
 
         public Politico build(String title, String firstName, String lastName) {
 
             fullName = title + " " + firstName + " " + lastName;
 
             Politico a = new Politico(fullName, gender, party, district, termEnd, electionDate,
-                    phoneNumber, emailAddy,twitterHandle, picUrl);
+                    phoneNumber, twitterHandle, contactForm, emailAddress, picUrl, level, bioguideId);
             return a ;
         }
 
@@ -94,16 +117,31 @@ public class Politico {
 
         public Builder setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; return this; }
 
-        public Builder setEmailAddy(String emailAddy) { this.emailAddy = emailAddy; return this; }
-
         public Builder setTwitterHandle(String twitterHandle) { this.twitterHandle = twitterHandle; return this; }
 
+        public Builder setContactForm(String contactForm) { this.contactForm = contactForm; return this; }
+
+        public Builder setEmailAddress(String emailAddress){
+            this.emailAddress = emailAddress;
+            return this;
+        }
+
         public Builder setPicUrl(String picUrl) { this.picUrl = picUrl; return this;}
+
+        public Builder setLevel(String level){
+            this.level = level;
+            return this;
+        }
+
+        public Builder setBioguideId(String bioguideId){
+            this.bioguideId = bioguideId;
+            return this;
+        }
 
         public Politico build(String fullName) {
 
             Politico a = new Politico(fullName, gender, party, district, termEnd, electionDate,
-                    phoneNumber, emailAddy,twitterHandle, picUrl);
+                    phoneNumber, twitterHandle, contactForm, emailAddress, picUrl, level, bioguideId);
             return a ;
 
         }
