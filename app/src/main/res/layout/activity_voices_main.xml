@@ -47,7 +47,7 @@
                     <com.mobilonix.voices.util.AvenirTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
+                        android:textSize="18dp"
                         android:id="@+id/all_groups_info_text"
                         android:text="@string/all_groups_info"
                         android:textColor="#000"

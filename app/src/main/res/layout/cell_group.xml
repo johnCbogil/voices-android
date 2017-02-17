@@ -35,21 +35,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/cell_group_name"
-                android:textSize="20sp"
+                android:textSize="20dp"
                 android:textColor="#000"/>
 
             <com.mobilonix.voices.util.AvenirTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/cell_group_category"
-                android:textSize="17sp"
+                android:textSize="17dp"
                 android:textColor="@color/medium_grey"/>
 
             <com.mobilonix.voices.util.AvenirTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/cell_group_description"
-                android:textSize="17sp"
+                android:textSize="17dp"
                 android:textColor="#000"/>
 
             <FrameLayout
