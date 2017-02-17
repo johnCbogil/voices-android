@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/group_info_policy_text"
         android:textStyle="bold"
-        android:textSize="20sp"
+        android:textSize="20dp"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp" />
 
@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textColor="#000"
-        android:textSize="16sp"
+        android:textSize="16dp"
         android:layout_marginBottom="10dp"
         android:text="@string/policy_positions_text"/>
     <ListView
