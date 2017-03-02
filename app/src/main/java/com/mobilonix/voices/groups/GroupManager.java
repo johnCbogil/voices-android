@@ -1,6 +1,7 @@
 package com.mobilonix.voices.groups;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
@@ -32,6 +33,7 @@ import com.mobilonix.voices.groups.ui.PolicyListAdapter;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.ui.RoundedTransformation;
 import com.mobilonix.voices.session.SessionManager;
+import com.mobilonix.voices.util.GeneralUtil;
 import com.mobilonix.voices.util.ViewUtil;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
@@ -271,10 +273,20 @@ public enum GroupManager {
             }
         }
 
+        final ProgressDialog pd = new ProgressDialog(dialog.getContext());
+        pd.setTitle("Processing....");
+        pd.setMessage("");
+        pd.setIndeterminate(true);
+        pd.setCancelable(false);
+
         groupsFollowGroupsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                if(!groupsFollowGroupsButton.getText().toString().equals(v.getContext()
+                        .getString(R.string.following_groups_text))) {
+                    pd.show();
+                }
                 /* check if we're already subscribed to the group */
                 if (userGroups != null) {
                     for (Group g : groupPage.getUserGroups()) {
@@ -288,9 +300,11 @@ public enum GroupManager {
                             unfollowButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    pd.show();
                                     unSubscribeFromGroup(group, true, new Callback<Boolean>() {
                                         @Override
                                         public boolean onExecuted(Boolean data) {
+                                            pd.dismiss();
                                             groupsFollowGroupsButton.setText(R.string.follow_groups_text);
                                             if (data) {
                                                 AnalyticsManager.INSTANCE.trackEvent("UNSUBSCRIBE_EVENT",
@@ -307,6 +321,7 @@ public enum GroupManager {
                             cancelButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    pd.dismiss();
                                     followDialog.dismiss();
                                 }
                             });
@@ -321,6 +336,8 @@ public enum GroupManager {
                         @Override
                         public boolean onExecuted(Boolean data) {
                             groupsFollowGroupsButton.setText(R.string.following_groups_text);
+
+                            pd.dismiss();
 
                             if (data) {
                                 AnalyticsManager.INSTANCE.trackEvent("SUBSCRIBE_EVENT",
