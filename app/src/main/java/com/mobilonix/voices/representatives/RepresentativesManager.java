@@ -6,7 +6,6 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,13 +25,13 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.VoicesMainActivity;
+import com.mobilonix.voices.callbacks.Callback;
+import com.mobilonix.voices.callbacks.Callback2;
 import com.mobilonix.voices.data.api.ApiEngine;
 import com.mobilonix.voices.data.api.engines.NycLocalOfficialsApi;
 import com.mobilonix.voices.data.api.engines.StateOpenStatesApi;
 import com.mobilonix.voices.data.api.engines.UsCongressSunlightApi;
 import com.mobilonix.voices.data.model.Politico;
-import com.mobilonix.voices.callbacks.Callback;
-import com.mobilonix.voices.callbacks.Callback2;
 import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.location.model.LatLong;
 import com.mobilonix.voices.representatives.model.Representative;
@@ -50,6 +49,8 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 import okhttp3.Request;
+
+//import com.mobilonix.voices.location.model.LatLong;
 
 public enum RepresentativesManager {
 
@@ -226,7 +227,7 @@ public enum RepresentativesManager {
                                 .findFragmentById(R.id.place_autocomplete_fragment);
 
                 autoCompleteTextView.getView().setVisibility(View.VISIBLE);
-                autoCompleteTextView.setHint(activity.getString(R.string.search_text));
+                autoCompleteTextView.setHint(activity.getString(R.string.search_text_1));
                 //autoCompleteTextView.getView().setBackgroundColor(VoicesApplication.getContext().getResources().getColor(R.color.voices_orange));
                 autoCompleteTextView.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                     @Override
@@ -245,13 +246,13 @@ public enum RepresentativesManager {
                     }
                 });
 
-                refreshRepresentativesContent(
-                        CURRENT_LOCATION,
-                        location.getLatitude(),
-                        location.getLongitude(),
-                        activity,
-                        pages,
-                        representativesPager);
+                //refreshRepresentativesContent(
+                        //CURRENT_LOCATION,
+                        //location.getLatitude(),
+                        //location.getLongitude(),
+                        //activity,
+                        //pages,
+                        //representativesPager);
 
                 initTabView();
 
@@ -530,8 +531,8 @@ public enum RepresentativesManager {
         ListView representativesListView =
                 (ListView) representativesPager
                         .findViewWithTag(type.getIdentifier());
-        SwipeRefreshLayout pageRefresh = (SwipeRefreshLayout)representativesPager
-                .findViewWithTag(type.getIdentifier() + "_REFRESH");
+        //SwipeRefreshLayout pageRefresh = (SwipeRefreshLayout)representativesPager
+                //.findViewWithTag(type.getIdentifier() + "_REFRESH");
 
 
         if (representativesListView != null) {
@@ -540,9 +541,9 @@ public enum RepresentativesManager {
                             R.layout.representatives_list_item, data));
         }
 
-        if(pageRefresh != null) {
-            pageRefresh.setRefreshing(false);
-        }
+        //if(pageRefresh != null) {
+            //pageRefresh.setRefreshing(false);
+        //}
 
 
     }

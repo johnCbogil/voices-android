@@ -2,12 +2,9 @@ package com.mobilonix.voices;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.location.Location;
-import android.location.LocationListener;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -26,9 +23,6 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mobilonix.voices.callbacks.Callback;
 import com.mobilonix.voices.groups.GroupManager;
-import com.mobilonix.voices.location.LocationRequestManager;
-import com.mobilonix.voices.location.model.LatLong;
-import com.mobilonix.voices.location.util.LocationUtil;
 import com.mobilonix.voices.notifications.NotificationManager;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.session.SessionManager;
@@ -36,9 +30,10 @@ import com.mobilonix.voices.splash.SplashManager;
 import com.mobilonix.voices.util.DeeplinkUtil;
 import com.mobilonix.voices.util.GeneralUtil;
 
-public class VoicesMainActivity extends AppCompatActivity implements LocationListener {
+public class VoicesMainActivity extends AppCompatActivity {
+    //implements LocationListener
 
-    LatLong currentLocation = new LatLong(0, 0);
+    //LatLong currentLocation = new LatLong(0, 0);
 
     private static final int SPLASH_FADE_TIME = 2000;
 
@@ -64,7 +59,7 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
                 return false;
             }
         });
-        currentLocation = LocationUtil.getLastLocation(this);
+        //currentLocation = LocationUtil.getLastLocation(this);
 
         initViews();
         initialTransition();
@@ -99,18 +94,15 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
                 @Override
                 public void run() {
                     SplashManager.INSTANCE.toggleSplashScreen(VoicesMainActivity.this, false);
-
-                    if (LocationUtil.isGPSEnabled(VoicesMainActivity.this)) {
-                        LocationUtil.triggerLocationUpdate(VoicesMainActivity.this, null);
+                    //if (LocationUtil.isGPSEnabled(VoicesMainActivity.this)) {
+                        //LocationUtil.triggerLocationUpdate(VoicesMainActivity.this, null);
                         RepresentativesManager.INSTANCE
-                                .toggleRepresentativesScreen(currentLocation,
+                                .toggleRepresentativesScreen(null,
                                         VoicesMainActivity.this, true);
-                    } else {
-                        LocationRequestManager.INSTANCE
-                                .toggleLocationRequestScreen(VoicesMainActivity.this, true);
-
-                    }
-
+                    //} else {
+                        //LocationRequestManager.INSTANCE
+                                //.toggleLocationRequestScreen(VoicesMainActivity.this, true);
+                    //}
                 }
             }, SPLASH_FADE_TIME);
         }
@@ -237,62 +229,61 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
     @Override
     protected void onResume() {
         super.onResume();
+        //if(LocationRequestManager.INSTANCE.isLocationRequestScreenOn()) {
+            //if (LocationUtil.isGPSEnabled(this)) {
+                //LocationRequestManager.INSTANCE.toggleLocationRequestScreen(this, false);
+                //final ProgressDialog progress = ProgressDialog.show(this, "Finding Location",
+                        //"Awaiting to resolve location. One moment...", true);
 
-        if(LocationRequestManager.INSTANCE.isLocationRequestScreenOn()) {
-            if (LocationUtil.isGPSEnabled(this)) {
-                LocationRequestManager.INSTANCE.toggleLocationRequestScreen(this, false);
-                final ProgressDialog progress = ProgressDialog.show(this, "Finding Location",
-                        "Awaiting to resolve location. One moment...", true);
+                //progress.setCancelable(false);
+                //progress.setCanceledOnTouchOutside(false);
 
-                progress.setCancelable(false);
-                progress.setCanceledOnTouchOutside(false);
-
-                LocationUtil.triggerLocationUpdate(this, new Callback<LatLong>() {
-                    @Override
-                    public boolean onExecuted(LatLong data) {
-                        progress.dismiss();
-                        RepresentativesManager.INSTANCE
-                                .toggleRepresentativesScreen(currentLocation, VoicesMainActivity.this, true);
-                        return false;
-                    }
-                });
-            }
-        } else {
-            if(!LocationUtil.isGPSEnabled(this) && !SplashManager.INSTANCE.splashScreenVisible) {
-                LocationRequestManager.INSTANCE.showGPSNotEnabledDialog(this);
-            }
-        }
+//                LocationUtil.triggerLocationUpdate(this, new Callback<LatLong>() {
+//                    @Override
+//                    public boolean onExecuted(LatLong data) {
+//                        progress.dismiss();
+//                        RepresentativesManager.INSTANCE
+//                                .toggleRepresentativesScreen(null, VoicesMainActivity.this, true);
+//                        return false;
+//                    }
+//                });
+//            }
+//        } else {
+//            if(!LocationUtil.isGPSEnabled(this) && !SplashManager.INSTANCE.splashScreenVisible) {
+//                LocationRequestManager.INSTANCE.showGPSNotEnabledDialog(this);
+//            }
+//        }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    //@Override
+    //protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
 
         /**
          * If the GPS is enabled at this point, then we trigger a location update
          */
-        if(LocationUtil.isGPSEnabled(this) || LocationUtil.isNetworkLocationEnabled(this) ) {
-            LocationRequestManager.INSTANCE.showGPSEnabledDialog(this);
-            LocationUtil.triggerLocationUpdate(this, new Callback<LatLong>() {
-                @Override
-                public boolean onExecuted(LatLong data) {
-                    RepresentativesManager.INSTANCE
-                            .toggleRepresentativesScreen(data,
-                                    VoicesMainActivity.this,
-                                    true);
-                    return false;
-                }
-            });
-        } else {
-            LocationRequestManager.INSTANCE.showGPSNotEnabledDialog(this);
-        }
-
-        LocationRequestManager.INSTANCE.toggleLocationRequestScreen(this, false);
-        RepresentativesManager.INSTANCE
-                .toggleRepresentativesScreen(getCurrentLocation(),
-                this,
-                true);
-    }
+//        if(LocationUtil.isGPSEnabled(this) || LocationUtil.isNetworkLocationEnabled(this) ) {
+//            LocationRequestManager.INSTANCE.showGPSEnabledDialog(this);
+//            LocationUtil.triggerLocationUpdate(this, new Callback<LatLong>() {
+//                @Override
+//                public boolean onExecuted(LatLong data) {
+//                    RepresentativesManager.INSTANCE
+//                            .toggleRepresentativesScreen(data,
+//                                    VoicesMainActivity.this,
+//                                    true);
+//                    return false;
+//                }
+//            });
+//        } else {
+//            LocationRequestManager.INSTANCE.showGPSNotEnabledDialog(this);
+//        }
+//
+//        LocationRequestManager.INSTANCE.toggleLocationRequestScreen(this, false);
+//        RepresentativesManager.INSTANCE
+//                .toggleRepresentativesScreen(getCurrentLocation(),
+//                this,
+//                true);
+//    }
 
     public Toolbar getToolbar() {
         return (Toolbar)findViewById(R.id.primary_toolbar);
@@ -300,40 +291,40 @@ public class VoicesMainActivity extends AppCompatActivity implements LocationLis
 
     @Override
     protected void onDestroy() {
-        LocationUtil.stopLocationUpdates(this);
+        //LocationUtil.stopLocationUpdates(this);
         FirebaseAuth.getInstance().signOut();
 
         super.onDestroy();
     }
 
-    public LatLong getCurrentLocation() {
-        return currentLocation;
-    }
+    //public LatLong getCurrentLocation() {
+        //return currentLocation;
+    //}
 
-    @Override
-    public void onLocationChanged(Location location) {
-        currentLocation = new LatLong(location.getLatitude(), location.getLongitude());
-
-        Callback<LatLong> callback = LocationUtil.getLocationRequestCallback();
-
-        /* Currently we only want this to execute once and then nullify it */
-        if(callback != null) {
-            callback.onExecuted(currentLocation);
-            LocationUtil.setLocationRequestCallback(null);
-        }
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {}
-
-    @Override
-    public void onProviderEnabled(String provider) {}
-
-    @Override
-    public void onProviderDisabled(String provider) {
-        LocationRequestManager.INSTANCE
-                .toggleLocationRequestScreen(VoicesMainActivity.this, false);
-    }
+//    @Override
+//    public void onLocationChanged(Location location) {
+//        currentLocation = new LatLong(location.getLatitude(), location.getLongitude());
+//
+//        Callback<LatLong> callback = LocationUtil.getLocationRequestCallback();
+//
+//        /* Currently we only want this to execute once and then nullify it */
+//        if(callback != null) {
+//            callback.onExecuted(currentLocation);
+//            LocationUtil.setLocationRequestCallback(null);
+//        }
+//    }
+//
+//    @Override
+//    public void onStatusChanged(String provider, int status, Bundle extras) {}
+//
+//    @Override
+//    public void onProviderEnabled(String provider) {}
+//
+//    @Override
+//    public void onProviderDisabled(String provider) {
+//        LocationRequestManager.INSTANCE
+//                .toggleLocationRequestScreen(VoicesMainActivity.this, false);
+//    }
 
     public void toggleProgressSpinner(boolean state) {
         findViewById(R.id.app_progress_spinner).setVisibility(state ? View.VISIBLE : View.GONE);

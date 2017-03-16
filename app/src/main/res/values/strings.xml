@@ -23,7 +23,8 @@
     <string name="firebase_endpoint">https://voices-430ae.firebaseio.com</string>
 
     <!--Search Bar-->
-    <string name="search_text">Search by address</string>
+    <string name="search_text_1">Find Your Reps</string>
+    <string name="search_text_2">Enter Address</string>
     <string name="all_groups_info">Select A Group To Learn More</string>
 
     <string name="google_places_api_key">AIzaSyAT87ms7SyySJIG5OrimyKbrHAZRQ2qgcI</string>

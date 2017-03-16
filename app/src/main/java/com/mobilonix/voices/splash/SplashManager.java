@@ -10,8 +10,6 @@ import android.widget.FrameLayout;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
-import com.mobilonix.voices.location.LocationRequestManager;
-import com.mobilonix.voices.location.util.LocationUtil;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 
 
@@ -32,14 +30,12 @@ public enum  SplashManager {
                 @Override
                 public void onClick(View v) {
                     INSTANCE.toggleSplashScreen(activity, false);
-                    if (LocationUtil.isGPSEnabled(activity)) {
-                        RepresentativesManager.INSTANCE
-                                .toggleRepresentativesScreen(
-                                        activity.getCurrentLocation(),
-                                        activity, true);
-                    } else {
-                        LocationRequestManager.INSTANCE.toggleLocationRequestScreen(activity, true);
-                    }
+//                    if (LocationUtil.isGPSEnabled(activity)) {
+                       RepresentativesManager.INSTANCE
+                                .toggleRepresentativesScreen(null, activity, true);
+                    //} else {
+                        //LocationRequestManager.INSTANCE.toggleLocationRequestScreen(activity, true);
+                    //}
                 }
             });
             splashScreenVisible = true;
