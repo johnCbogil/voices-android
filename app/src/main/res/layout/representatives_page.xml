@@ -20,11 +20,10 @@
             android:orientation="vertical"
             android:visibility="gone">
             <ImageView
-                android:layout_width="250dp"
-                android:layout_height="113dp"
-                android:layout_marginLeft="10dp"
-                android:gravity="top|left"
-                android:src="@drawable/zero_state_lennon1" />
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:gravity="center"
+                android:src="@drawable/representatives_zero_state" />
             <com.mobilonix.voices.util.AvenirTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
