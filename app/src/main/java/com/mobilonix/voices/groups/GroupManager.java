@@ -33,7 +33,6 @@ import com.mobilonix.voices.groups.ui.PolicyListAdapter;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.ui.RoundedTransformation;
 import com.mobilonix.voices.session.SessionManager;
-import com.mobilonix.voices.util.GeneralUtil;
 import com.mobilonix.voices.util.ViewUtil;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
@@ -184,7 +183,6 @@ public enum GroupManager {
             toolbar.findViewById(R.id.groups_selection_text).setBackgroundResource(R.drawable.button_back);
             toolbar.findViewById(R.id.action_selection_text).setBackgroundResource(R.drawable.button_back_selected);
             toolbar.findViewById(R.id.action_add_groups).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.all_groups_info_text).setVisibility(View.GONE);
 
 
             MODE = GroupType.ACTION;
@@ -200,7 +198,6 @@ public enum GroupManager {
             toolbar.findViewById(R.id.groups_selection_text).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.action_selection_text).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.action_add_groups).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.all_groups_info_text).setVisibility(View.GONE);
 
             MODE = GroupType.USER;
 
@@ -213,7 +210,6 @@ public enum GroupManager {
             ((EntityContainer) groupPage.findViewById(R.id.all_groups_container)).setType(groupType);
 
             toolbar.findViewById(R.id.primary_toolbar_back_arrow).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.all_groups_info_text).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.action_add_groups).setVisibility(View.GONE);
             toolbar.findViewById(R.id.groups_selection_text).setVisibility(View.GONE);
             toolbar.findViewById(R.id.action_selection_text).setVisibility(View.GONE);

@@ -11,7 +11,7 @@
         tools:context="com.mobilonix.voices.VoicesMainActivity">
         <android.support.v7.widget.Toolbar
             android:id="@+id/primary_toolbar"
-            android:background="#FFF"
+            android:background="@color/voices_orange"
             android:layout_height="@android:dimen/app_icon_size"
             android:layout_width="match_parent">
             <FrameLayout
@@ -24,37 +24,28 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/primary_toolbar_back_arrow"
                         android:src="@drawable/ic_action_previous_item"
-                        android:tint="@color/voices_orange"
+                        android:tint="#FFF"
                         android:visibility="gone"/>
-                    <ImageView
-                        android:id="@+id/representatives_info_icon"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="right|center"
-                        android:src="@drawable/info_icon"/>
-                    <ImageView
-                        android:id="@+id/representatives_help_icon"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_gravity="left|center"
-                        android:src="@drawable/help_icon"/>
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:id="@+id/action_add_groups"
                         android:src="@drawable/add_groups_icon"
                         android:layout_gravity="right|center" />
-                    <com.mobilonix.voices.util.AvenirTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="18dp"
-                        android:id="@+id/all_groups_info_text"
-                        android:text="@string/all_groups_info"
-                        android:textColor="#000"
-                        android:visibility="gone"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_gravity="right|center"/>
+                    <ImageView
+                        android:id="@+id/representatives_tab_icon"
+                        android:layout_gravity="left"
+                        android:src="@drawable/representatives_tab_icon"
+                        android:tint="#FFF"
+                        android:layout_width="25sp"
+                        android:layout_height="wrap_content"/>
+                    <ImageView
+                        android:id="@+id/groups_tab_icon"
+                        android:layout_gravity="center"
+                        android:src="@drawable/groups_tab_icon"
+                        android:tint="#FFF"
+                        android:layout_width="25sp"
+                        android:layout_height="wrap_content"/>
                     <LinearLayout
                         android:orientation="horizontal"
                         android:layout_gravity="center"
@@ -83,22 +74,11 @@
                     </LinearLayout>
                 </FrameLayout>
             </android.support.v7.widget.Toolbar>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:id="@+id/divider"
-            android:background="@color/grey"
-            android:layout_marginRight="-10dp"
-            android:layout_marginLeft="-10dp"
-            android:layout_gravity="bottom"
-            android:visibility="gone">
-        </View>
         <FrameLayout
             android:id="@+id/main_content_frame"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
         </FrameLayout>
-
     </LinearLayout>
 
     <ProgressBar

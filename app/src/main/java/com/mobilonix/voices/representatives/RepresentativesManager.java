@@ -1,16 +1,12 @@
 package com.mobilonix.voices.representatives;
 
 import android.annotation.TargetApi;
-import android.app.Dialog;
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,7 +35,6 @@ import com.mobilonix.voices.representatives.model.RepresentativesPage;
 import com.mobilonix.voices.representatives.ui.PagerIndicator;
 import com.mobilonix.voices.representatives.ui.RepresentativesListAdapter;
 import com.mobilonix.voices.representatives.ui.RepresentativesPagerAdapter;
-import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.util.GeneralUtil;
 import com.mobilonix.voices.util.RESTUtil;
 import com.mobilonix.voices.util.ViewUtil;
@@ -72,11 +67,11 @@ public enum RepresentativesManager {
     FrameLayout representativesFrame;
 
     View primaryToolbar;
-    View divider;
-    LinearLayout groupsTab;
-    LinearLayout representativesTab;
 
     PagerIndicator pagerIndicator;
+
+    ImageView representativesTabIcon;
+    ImageView groupsTabIcon;
 
     PlaceAutocompleteFragment autoCompleteTextView;
     ConcurrentHashMap<String, ArrayList<Representative>> currentRepsMap = new ConcurrentHashMap<>();
@@ -144,14 +139,12 @@ public enum RepresentativesManager {
                     inflater.inflate(R.layout.view_representatives, null, false);
 
             primaryToolbar = activity.getToolbar();
-            divider = activity.findViewById(R.id.divider);
 
             final TextView actionSelectionButton = (TextView) primaryToolbar.findViewById(R.id.action_selection_text);
             final TextView groupsSelectionButton = (TextView) primaryToolbar.findViewById(R.id.groups_selection_text);
             final ImageView addGroupIcon = (ImageView)primaryToolbar.findViewById(R.id.action_add_groups);
 
             primaryToolbar.setVisibility(View.VISIBLE);
-            divider.setVisibility(View.VISIBLE);
             actionSelectionButton.setVisibility(View.GONE);
             groupsSelectionButton.setVisibility(View.GONE);
             addGroupIcon.setVisibility(View.GONE);
@@ -271,33 +264,20 @@ public enum RepresentativesManager {
      */
     private void initTabView() {
 
-        groupsTab = (LinearLayout)representativesFrame.findViewById(R.id.groups_tab);
-        representativesTab = (LinearLayout)representativesFrame.findViewById(R.id.representatives_tab);
-
-        final ImageView representativesTabIcon = (ImageView)representativesFrame.findViewById(R.id.representatives_tab_icon);
-        final ImageView groupsTabIcon = (ImageView)representativesFrame.findViewById(R.id.groups_tab_icon);
+        representativesTabIcon = (ImageView)primaryToolbar.findViewById(R.id.representatives_tab_icon);
+        groupsTabIcon = (ImageView)primaryToolbar.findViewById(R.id.groups_tab_icon);
 
         final ViewPager representativesPager = (ViewPager)representativesFrame.findViewById(R.id.representatives_pager);
         final FrameLayout groupsView = (FrameLayout)representativesFrame.findViewById(R.id.groups_view);
 
         final TextView actionSelectionButton = (TextView)primaryToolbar.findViewById(R.id.action_selection_text);
         final TextView groupsSelectionButton = (TextView)primaryToolbar.findViewById(R.id.groups_selection_text);
-        final ImageView infoIcon = (ImageView)primaryToolbar.findViewById(R.id.representatives_info_icon);
-        final ImageView helpIcon = (ImageView)primaryToolbar.findViewById(R.id.representatives_help_icon);
         final ImageView backArrow = (ImageView)primaryToolbar.findViewById(R.id.primary_toolbar_back_arrow);
-        final TextView groupsInfoText = (TextView)primaryToolbar.findViewById(R.id.all_groups_info_text);
         final ImageView addGroupIcon = (ImageView)primaryToolbar.findViewById(R.id.action_add_groups);
-        final int voicesOrange = VoicesApplication.getContext().getResources().getColor(R.color.voices_orange);
-        final int grey = VoicesApplication.getContext().getResources().getColor(R.color.grey);
+        //final int voicesOrange = VoicesApplication.getContext().getResources().getColor(R.color.voices_orange);
+        //final int grey = VoicesApplication.getContext().getResources().getColor(R.color.grey);
 
-        helpIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleHelpDialog();
-            }
-        });
-
-        groupsTab.setOnClickListener(new View.OnClickListener() {
+        groupsTabIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -305,28 +285,24 @@ public enum RepresentativesManager {
                 representativesPager.setVisibility(View.GONE);
                 groupsView.setVisibility(View.VISIBLE);
                 primaryToolbar.setVisibility(View.VISIBLE);
-                infoIcon.setVisibility(View.GONE);
-                helpIcon.setVisibility(View.GONE);
                 backArrow.setVisibility(View.GONE);
                 actionSelectionButton.setVisibility(View.VISIBLE);
                 actionSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.white));
                 groupsSelectionButton.setVisibility(View.VISIBLE);
                 groupsSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.voices_orange));
-                groupsInfoText.setVisibility(View.GONE);
-                divider.setVisibility(View.VISIBLE);
                 addGroupIcon.setVisibility(View.VISIBLE);
 
                 RepresentativesManager.INSTANCE.toggleSearchBar(false);
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(false);
 
-                groupsTabIcon.getDrawable().setColorFilter(voicesOrange,PorterDuff.Mode.SRC_ATOP);
-                representativesTabIcon.getDrawable().setColorFilter(grey,PorterDuff.Mode.SRC_ATOP);
+                //groupsTabIcon.getDrawable().setColorFilter(voicesOrange,PorterDuff.Mode.SRC_ATOP);
+                //representativesTabIcon.getDrawable().setColorFilter(grey,PorterDuff.Mode.SRC_ATOP);
 
                 GroupManager.INSTANCE.toggleGroupPage(groupsView, true);
             }
         });
 
-        representativesTab.setOnClickListener(new View.OnClickListener() {
+        representativesTabIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -337,21 +313,17 @@ public enum RepresentativesManager {
                 representativesPager.setVisibility(View.VISIBLE);
                 groupsView.setVisibility(View.GONE);
                 primaryToolbar.setVisibility(View.VISIBLE);
-                infoIcon.setVisibility(View.VISIBLE);
-                helpIcon.setVisibility(View.VISIBLE);
                 actionSelectionButton.setVisibility(View.GONE);
                 groupsSelectionButton.setVisibility(View.GONE);
-                groupsInfoText.setVisibility(View.GONE);
                 backArrow.setVisibility(View.GONE);
-                divider.setVisibility(View.VISIBLE);
 
                 addGroupIcon.setVisibility(View.GONE);
 
                 RepresentativesManager.INSTANCE.toggleSearchBar(true);
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(true);
 
-                representativesTabIcon.getDrawable().setColorFilter(voicesOrange, PorterDuff.Mode.SRC_ATOP);
-                groupsTabIcon.getDrawable().setColorFilter(grey,PorterDuff.Mode.SRC_ATOP);
+                //representativesTabIcon.getDrawable().setColorFilter(voicesOrange, PorterDuff.Mode.SRC_ATOP);
+                //groupsTabIcon.getDrawable().setColorFilter(grey,PorterDuff.Mode.SRC_ATOP);
 
                 GroupManager.INSTANCE.toggleGroupPage(groupsView, false);
             }
@@ -395,38 +367,16 @@ public enum RepresentativesManager {
                 GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ALL);
             }
         });
-
-        if(SessionManager.INSTANCE.checkIfFirstRun(true)) {
-            toggleHelpDialog();
-        }
-    }
-
-    public void toggleHelpDialog() {
-
-        final Dialog helpDialog;
-
-        helpDialog = new Dialog(representativesTab.getContext());
-        helpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        helpDialog.setContentView(R.layout.dialog_instructions);
-        helpDialog.setTitle(R.string.instructions_title);
-        Button gotItButton = (Button)helpDialog.findViewById(R.id.got_it_button);
-        gotItButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                helpDialog.dismiss();
-            }
-        });
-        helpDialog.show();
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
     public void selectRepresentativesTab() {
-        representativesTab.callOnClick();
+        representativesTabIcon.callOnClick();
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
     public void selectGroupsTab() {
-        groupsTab.callOnClick();
+        groupsTabIcon.callOnClick();
     }
 
     /**
