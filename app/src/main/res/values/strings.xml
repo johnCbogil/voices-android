@@ -5,9 +5,6 @@
     <string name="splash_title">Get Started</string>
     <string name="splash_voices_intro">Support the groups and causes you care about.</string>
     <string name="splash_button">Get Started</string>
-    <!-- Location Request -->
-    <string name="location_request_text">Turn on location services to Voices can show you who represents your community.</string>
-    <string name="location_request_button">Turn On Location Services</string>
 
     <!--Instructions Dialog-->
     <string name="instructions_title">To View Your Representatives</string>
@@ -79,8 +76,7 @@
 
     <string name="reps_fetch_error">
         Could not fetch any [identifier] officials!
-        Please try again (use the search bar above
-        or swipe down to use current location).
+        Please use the search bar above to find representatives.
     </string>
 
 </resources>

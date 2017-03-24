@@ -2,12 +2,14 @@ package com.mobilonix.voices.groups.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
+import com.mobilonix.voices.util.AvenirTextView;
 
 import java.util.ArrayList;
 
@@ -61,7 +63,10 @@ public class GroupPage extends FrameLayout {
         EntityContainer allGroupsContainer = (EntityContainer)findViewById(R.id.all_groups_container);
         allGroupsContainer.addItems(allGroups,
                 GroupManager.GroupType.USER);
-
+        AvenirTextView actionsButton=(AvenirTextView)allGroupsContainer.findViewById(R.id.actions_button);
+        actionsButton.setVisibility(View.GONE);
+        AvenirTextView groupsButton=(AvenirTextView)allGroupsContainer.findViewById(R.id.groups_button);
+        groupsButton.setVisibility(View.GONE);
     }
 
     /**

@@ -37,7 +37,6 @@ import com.mobilonix.voices.representatives.ui.RepresentativesListAdapter;
 import com.mobilonix.voices.representatives.ui.RepresentativesPagerAdapter;
 import com.mobilonix.voices.util.GeneralUtil;
 import com.mobilonix.voices.util.RESTUtil;
-import com.mobilonix.voices.util.ViewUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -139,14 +138,9 @@ public enum RepresentativesManager {
                     inflater.inflate(R.layout.view_representatives, null, false);
 
             primaryToolbar = activity.getToolbar();
-
-            final TextView actionSelectionButton = (TextView) primaryToolbar.findViewById(R.id.action_selection_text);
-            final TextView groupsSelectionButton = (TextView) primaryToolbar.findViewById(R.id.groups_selection_text);
             final ImageView addGroupIcon = (ImageView)primaryToolbar.findViewById(R.id.action_add_groups);
 
             primaryToolbar.setVisibility(View.VISIBLE);
-            actionSelectionButton.setVisibility(View.GONE);
-            groupsSelectionButton.setVisibility(View.GONE);
             addGroupIcon.setVisibility(View.GONE);
 
             final ArrayList<RepresentativesPage> pages = new ArrayList<>();
@@ -269,13 +263,8 @@ public enum RepresentativesManager {
 
         final ViewPager representativesPager = (ViewPager)representativesFrame.findViewById(R.id.representatives_pager);
         final FrameLayout groupsView = (FrameLayout)representativesFrame.findViewById(R.id.groups_view);
-
-        final TextView actionSelectionButton = (TextView)primaryToolbar.findViewById(R.id.action_selection_text);
-        final TextView groupsSelectionButton = (TextView)primaryToolbar.findViewById(R.id.groups_selection_text);
         final ImageView backArrow = (ImageView)primaryToolbar.findViewById(R.id.primary_toolbar_back_arrow);
         final ImageView addGroupIcon = (ImageView)primaryToolbar.findViewById(R.id.action_add_groups);
-        //final int voicesOrange = VoicesApplication.getContext().getResources().getColor(R.color.voices_orange);
-        //final int grey = VoicesApplication.getContext().getResources().getColor(R.color.grey);
 
         groupsTabIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -286,10 +275,6 @@ public enum RepresentativesManager {
                 groupsView.setVisibility(View.VISIBLE);
                 primaryToolbar.setVisibility(View.VISIBLE);
                 backArrow.setVisibility(View.GONE);
-                actionSelectionButton.setVisibility(View.VISIBLE);
-                actionSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.white));
-                groupsSelectionButton.setVisibility(View.VISIBLE);
-                groupsSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.voices_orange));
                 addGroupIcon.setVisibility(View.VISIBLE);
 
                 RepresentativesManager.INSTANCE.toggleSearchBar(false);
@@ -313,8 +298,6 @@ public enum RepresentativesManager {
                 representativesPager.setVisibility(View.VISIBLE);
                 groupsView.setVisibility(View.GONE);
                 primaryToolbar.setVisibility(View.VISIBLE);
-                actionSelectionButton.setVisibility(View.GONE);
-                groupsSelectionButton.setVisibility(View.GONE);
                 backArrow.setVisibility(View.GONE);
 
                 addGroupIcon.setVisibility(View.GONE);
@@ -329,41 +312,11 @@ public enum RepresentativesManager {
             }
         });
 
-        actionSelectionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                actionSelectionButton.setBackgroundResource(R.drawable.button_back_selected);
-                actionSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.white));
-
-                groupsSelectionButton.setBackgroundResource(R.drawable.button_back);
-                groupsSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.voices_orange));
-
-                GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ACTION);
-
-            }
-        });
-
-        groupsSelectionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                actionSelectionButton.setBackgroundResource(R.drawable.button_back);
-                actionSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.voices_orange));
-
-                groupsSelectionButton.setTextColor(ViewUtil.getResourceColor(R.color.white));
-                groupsSelectionButton.setBackgroundResource(R.drawable.button_back_selected);
-
-                GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.USER);
-
-            }
-        });
-
         /* Show all the groups */
         addGroupIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ALL);
             }
         });
