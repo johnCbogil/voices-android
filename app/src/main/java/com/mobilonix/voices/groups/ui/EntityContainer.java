@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.groups.GroupManager;
+import com.mobilonix.voices.util.AvenirTextView;
 
 import java.util.ArrayList;
 
@@ -25,6 +26,9 @@ public class EntityContainer extends FrameLayout {
     GroupManager.GroupType type;
 
     ImageView noFollowImage;
+
+    TextView actionSelectionButton;
+    TextView groupsSelectionButton;
 
     public EntityContainer(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -40,6 +44,30 @@ public class EntityContainer extends FrameLayout {
         entityListBottomText = (TextView)findViewById(R.id.entity_no_follows_bottom_line);
 
         noFollowImage = (ImageView)findViewById(R.id.entity_no_follows_image);
+
+        actionSelectionButton=(AvenirTextView)findViewById(R.id.actions_button);
+        groupsSelectionButton=(AvenirTextView)findViewById(R.id.groups_button);
+        final int indicatorBlue = VoicesApplication.getContext().getResources().getColor(R.color.indicator_blue);
+        final int lightGrey = VoicesApplication.getContext().getResources().getColor(R.color.light_grey);
+
+
+        actionSelectionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actionSelectionButton.setTextColor(lightGrey);
+                groupsSelectionButton.setTextColor(indicatorBlue);
+                GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ACTION);
+            }
+        });
+
+        groupsSelectionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actionSelectionButton.setTextColor(indicatorBlue);
+                groupsSelectionButton.setTextColor(lightGrey);
+                GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.USER);
+            }
+        });
 
     }
 
@@ -103,5 +131,4 @@ public class EntityContainer extends FrameLayout {
             noFollowImage.setVisibility(View.VISIBLE);
         }
     }
-
 }

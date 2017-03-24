@@ -31,6 +31,7 @@
                         android:layout_height="30dp"
                         android:id="@+id/action_add_groups"
                         android:src="@drawable/add_groups_icon"
+                        android:tint="#FFF"
                         android:layout_gravity="right|center" />
                     <ImageView
                         android:id="@+id/representatives_tab_icon"
@@ -46,32 +47,6 @@
                         android:tint="#FFF"
                         android:layout_width="25sp"
                         android:layout_height="wrap_content"/>
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp">
-                        <com.mobilonix.voices.util.AvenirTextView
-                            android:layout_width="@dimen/toolbar_option_width"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:id="@+id/action_selection_text"
-                            android:layout_gravity="center"
-                            android:background="@drawable/button_back_selected"
-                            android:text="@string/actions"
-                            android:textColor="#FFF"/>
-                        <com.mobilonix.voices.util.AvenirTextView
-                            android:layout_width="@dimen/toolbar_option_width"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:id="@+id/groups_selection_text"
-                            android:background="@drawable/button_back"
-                            android:layout_gravity="center"
-                            android:text="@string/my_groups"
-                            android:textColor="@color/voices_orange"/>
-                    </LinearLayout>
                 </FrameLayout>
             </android.support.v7.widget.Toolbar>
         <FrameLayout
