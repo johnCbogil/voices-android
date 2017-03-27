@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,6 +105,11 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
         });
 
         String check = representatives.get(position).getPhoneNumber();
+        if(check!=null){
+            Log.e("phone",representatives.get(position).getName() + " " + check);
+        } else {
+            Log.e("phone",representatives.get(position).getName() + " " + "null");
+        }
         if (check == null || check.equals("")) {
             mViewHolder.mCallImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
             mViewHolder.mCallImage.setOnClickListener(new View.OnClickListener() {
@@ -158,6 +164,40 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                     }
                 });
             }
+            check = representatives.get(position).getTwitterHandle();
+            if(check!=null){
+                Log.e("twitter",representatives.get(position).getName() + " " + check);
+            } else {
+                Log.e("twitter",representatives.get(position).getName() + " " + "null");
+            }
+            if (check == null || check.equals("")) {
+                mViewHolder.mTwitterImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
+                mViewHolder.mTwitterImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String callInstead = getContext().getResources().getString(R.string.call_instead);
+                        toggleNoContactInfoDialog(callInstead);
+                    }
+                });
+            } else {
+                mViewHolder.mTwitterImage.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        AnalyticsManager.INSTANCE.trackEvent("" + "TWEET_REPRESENTATIVES_EVENT",
+                                representatives.get(position).getName(),
+                                SessionManager.INSTANCE.getCurrentUserToken(),
+                                "ACTION=" + RepresentativesManager.INSTANCE.getLastActionSelectedForContact() +
+                                        ";GROUP=" + RepresentativesManager.INSTANCE.getGroupForLastAction(), null);
+
+                        String url = "https://twitter.com/intent/tweet?text="
+                                + "@" + representatives.get(position).getTwitterHandle();
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(url));
+                        v.getContext().startActivity(i);
+                    }
+                });
+            }
         } else {
             check = representatives.get(position).getEmailAddress();
             if (check == null || check.equals("")) {
@@ -193,6 +233,11 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
             }
 
             check = representatives.get(position).getTwitterHandle();
+            if(check!=null){
+                Log.e("twitter",representatives.get(position).getName() + " " + check);
+            } else {
+                Log.e("twitter",representatives.get(position).getName() + " " + "null");
+            }
             if (check == null || check.equals("")) {
                 mViewHolder.mTwitterImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
                 mViewHolder.mTwitterImage.setOnClickListener(new View.OnClickListener() {
