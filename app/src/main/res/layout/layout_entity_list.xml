@@ -8,25 +8,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal">
-        <com.mobilonix.voices.util.AvenirTextView
+        <com.mobilonix.voices.util.AvenirBoldTextView
             android:id="@+id/actions_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="left"
-            android:layout_marginLeft="25dp"
-            android:textSize="22dp"
+            android:gravity="center_horizontal"
+            android:layout_marginRight="50dp"
+            android:layout_marginLeft="30dp"
+            android:textSize="23dp"
             android:text="@string/actions"
             android:textColor="@color/indicator_blue"
             android:onClick="onClick"
             android:clickable="true"
             />
-        <com.mobilonix.voices.util.AvenirTextView
+        <com.mobilonix.voices.util.AvenirBoldTextView
             android:id="@+id/groups_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:layout_marginLeft="25dp"
-            android:textSize="22dp"
+            android:textSize="23dp"
             android:text="@string/my_groups"
             android:textColor="@color/light_grey"
             android:onClick="onClick"
@@ -41,7 +41,7 @@
         <com.mobilonix.voices.util.AvenirTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="35dp"
             android:textStyle="bold"
             android:textSize="20dp"
             android:textAlignment="center"
@@ -58,9 +58,9 @@
             android:id="@+id/entity_no_follows_image"
             android:adjustViewBounds="true"
             android:layout_gravity="center_horizontal"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:src="@drawable/no_follows"/>
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/groups_zero"/>
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

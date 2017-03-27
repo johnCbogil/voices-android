@@ -59,8 +59,8 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
         Picasso.with(holder.actionImage.getContext())
                 .load(actions.get(position).getImageUrl())
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .placeholder(R.drawable.placeholder_spinner)
-                .error(R.drawable.representatives_place_holder_male)
+                .placeholder(R.drawable.spinner_moving)
+                .error(R.drawable.reps_male)
                 .transform(new RoundedTransformation(10, 0))
                 .fit()
                 .into(holder.actionImage);

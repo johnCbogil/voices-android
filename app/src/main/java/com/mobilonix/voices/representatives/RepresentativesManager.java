@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -35,6 +36,7 @@ import com.mobilonix.voices.representatives.model.RepresentativesPage;
 import com.mobilonix.voices.representatives.ui.PagerIndicator;
 import com.mobilonix.voices.representatives.ui.RepresentativesListAdapter;
 import com.mobilonix.voices.representatives.ui.RepresentativesPagerAdapter;
+import com.mobilonix.voices.util.AvenirBoldTextView;
 import com.mobilonix.voices.util.GeneralUtil;
 import com.mobilonix.voices.util.RESTUtil;
 
@@ -138,7 +140,7 @@ public enum RepresentativesManager {
                     inflater.inflate(R.layout.view_representatives, null, false);
 
             primaryToolbar = activity.getToolbar();
-            final ImageView addGroupIcon = (ImageView)primaryToolbar.findViewById(R.id.action_add_groups);
+            final ImageView addGroupIcon = (ImageView)primaryToolbar.findViewById(R.id.toolbar_add);
 
             primaryToolbar.setVisibility(View.VISIBLE);
             addGroupIcon.setVisibility(View.GONE);
@@ -213,8 +215,8 @@ public enum RepresentativesManager {
                         (PlaceAutocompleteFragment) activity.getFragmentManager()
                                 .findFragmentById(R.id.place_autocomplete_fragment);
 
-                autoCompleteTextView.getView().setVisibility(View.VISIBLE);
-                autoCompleteTextView.setHint(activity.getString(R.string.search_text_1));
+                //autoCompleteTextView.getView().setVisibility(View.VISIBLE);
+                autoCompleteTextView.setHint(activity.getString(R.string.search_text));
                 //autoCompleteTextView.getView().setBackgroundColor(VoicesApplication.getContext().getResources().getColor(R.color.voices_orange));
                 autoCompleteTextView.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                     @Override
@@ -226,6 +228,7 @@ public enum RepresentativesManager {
                                 activity,
                                 pages,
                                 representativesPager);
+                        toggleSearchBar(false);
                     }
                     @Override
                     public void onError(Status status) {
@@ -258,13 +261,25 @@ public enum RepresentativesManager {
      */
     private void initTabView() {
 
-        representativesTabIcon = (ImageView)primaryToolbar.findViewById(R.id.representatives_tab_icon);
-        groupsTabIcon = (ImageView)primaryToolbar.findViewById(R.id.groups_tab_icon);
+        representativesTabIcon = (ImageView)primaryToolbar.findViewById(R.id.toolbar_reps);
+        groupsTabIcon = (ImageView)primaryToolbar.findViewById(R.id.toolbar_groups);
 
         final ViewPager representativesPager = (ViewPager)representativesFrame.findViewById(R.id.representatives_pager);
         final FrameLayout groupsView = (FrameLayout)representativesFrame.findViewById(R.id.groups_view);
-        final ImageView backArrow = (ImageView)primaryToolbar.findViewById(R.id.primary_toolbar_back_arrow);
-        final ImageView addGroupIcon = (ImageView)primaryToolbar.findViewById(R.id.action_add_groups);
+        final ImageView backArrow = (ImageView)primaryToolbar.findViewById(R.id.toolbar_previous);
+        final ImageView addGroupIcon = (ImageView)primaryToolbar.findViewById(R.id.toolbar_add);
+        final ImageView searchIcon = (ImageView)primaryToolbar.findViewById(R.id.toolbar_search);
+        final AvenirBoldTextView findReps = (AvenirBoldTextView)primaryToolbar.findViewById(R.id.findreps);
+        final AvenirBoldTextView takeAction = (AvenirBoldTextView)primaryToolbar.findViewById(R.id.takeaction);
+        final ImageView repsHorizontal = (ImageView)primaryToolbar.findViewById(R.id.reps_horizontal);
+        final ImageView groupsHorizontal = (ImageView)primaryToolbar.findViewById(R.id.groups_horizontal);
+
+        searchIcon.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                toggleSearchBar(true);
+            }
+        });
 
         groupsTabIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -276,8 +291,11 @@ public enum RepresentativesManager {
                 primaryToolbar.setVisibility(View.VISIBLE);
                 backArrow.setVisibility(View.GONE);
                 addGroupIcon.setVisibility(View.VISIBLE);
-
-                RepresentativesManager.INSTANCE.toggleSearchBar(false);
+                searchIcon.setVisibility(View.GONE);
+                findReps.setVisibility(View.GONE);
+                takeAction.setVisibility(View.VISIBLE);
+                groupsHorizontal.setVisibility(View.VISIBLE);
+                repsHorizontal.setVisibility(View.INVISIBLE);
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(false);
 
                 //groupsTabIcon.getDrawable().setColorFilter(voicesOrange,PorterDuff.Mode.SRC_ATOP);
@@ -299,10 +317,12 @@ public enum RepresentativesManager {
                 groupsView.setVisibility(View.GONE);
                 primaryToolbar.setVisibility(View.VISIBLE);
                 backArrow.setVisibility(View.GONE);
-
                 addGroupIcon.setVisibility(View.GONE);
-
-                RepresentativesManager.INSTANCE.toggleSearchBar(true);
+                searchIcon.setVisibility(View.VISIBLE);
+                findReps.setVisibility(View.VISIBLE);
+                takeAction.setVisibility(View.GONE);
+                groupsHorizontal.setVisibility(View.INVISIBLE);
+                repsHorizontal.setVisibility(View.VISIBLE);
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(true);
 
                 //representativesTabIcon.getDrawable().setColorFilter(voicesOrange, PorterDuff.Mode.SRC_ATOP);
@@ -316,8 +336,8 @@ public enum RepresentativesManager {
         addGroupIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ALL);
+                takeAction.setVisibility(View.GONE);
             }
         });
     }
@@ -459,14 +479,14 @@ public enum RepresentativesManager {
     public void toggleSearchBar(boolean state) {
         representativesFrame.findViewById(R.id.auto_complete_holder)
                 .setVisibility(state ? View.VISIBLE : View.GONE);
-//        if(autoCompleteTextView != null) {
-//            try {
-//                autoCompleteTextView
-//                        .getView().setVisibility(state ? View.VISIBLE : View.GONE);
-//            } catch (Exception e) {
-//                Log.e(TAG, "Auto complete fragment null");
-//            }
-//        }
+         if(autoCompleteTextView != null) {
+            try {
+                autoCompleteTextView
+                        .getView().setVisibility(state ? View.VISIBLE : View.GONE);
+            } catch (Exception e) {
+                Log.e(TAG, "Auto complete fragment null");
+            }
+        }
     }
 
     public void setPageByIndex(int index) {

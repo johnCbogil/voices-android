@@ -233,18 +233,18 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
 
         switch (gender) {
             case "M": {
-                id = R.drawable.representatives_place_holder_male;
+                id = R.drawable.reps_male;
                 break;
             }
             case "F": {
-                id = R.drawable.representatives_place_holder_female;
+                id = R.drawable.reps_female;
                 break;
             }
             default: {
                 double random = Math.random();
                 id = random > 0.5
-                        ? R.drawable.representatives_place_holder_male
-                        : R.drawable.representatives_place_holder_female;
+                        ? R.drawable.reps_male
+                        : R.drawable.reps_female;
                 break;
             }
         }
@@ -255,7 +255,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                 .load(representatives.get(position).getRepresentativeImageUrl())
                 .resize(imageWidth, imageHeight)
                 .centerCrop()
-                .placeholder(R.drawable.placeholder_spinner)
+                .placeholder(R.drawable.spinner_moving)
                 .error(id)
                 .transform(new RoundedTransformation(10, 4))
                 .into(image);

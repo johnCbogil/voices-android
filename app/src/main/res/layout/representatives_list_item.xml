@@ -44,21 +44,21 @@
                 android:layout_width="37dp"
                 android:layout_height="37dp"
                 android:id="@+id/representatives_list_call_image"
-                android:src="@drawable/phone_icon"
+                android:src="@drawable/reps_phone"
                 android:tint="@color/voices_orange"/>
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="35dp"
                 android:id="@+id/representatives_list_email_image"
-                android:src="@drawable/mail_icon"
+                android:src="@drawable/reps_email"
                 android:tint="@color/voices_orange"/>
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="35dp"
                 android:id="@+id/representatives_list_twitter_image"
-                android:src="@drawable/twitter_icon"
+                android:src="@drawable/reps_twitter"
                 android:tint="@color/voices_orange"/>
         </LinearLayout>
     </LinearLayout>
