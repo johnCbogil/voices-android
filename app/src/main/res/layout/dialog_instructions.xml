@@ -27,15 +27,6 @@
         android:id="@+id/instructions_text"
         android:text="@string/instructions_text_1"/>
 
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_gravity="center"
-        android:adjustViewBounds="true"
-        android:src="@drawable/swipe_down"/>
-
     <com.mobilonix.voices.util.AvenirTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

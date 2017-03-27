@@ -28,7 +28,7 @@
     <ImageView
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:src="@drawable/phone_icon"
+        android:src="@drawable/reps_phone"
         android:tint="@color/voices_orange"
         android:layout_gravity="center"/>
     <com.mobilonix.voices.util.AvenirTextView
@@ -39,7 +39,7 @@
     <ImageView
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:src="@drawable/phone_icon"
+        android:src="@drawable/reps_phone"
         android:tint="@color/light_grey"
         android:layout_gravity="center"/>
     <com.mobilonix.voices.util.AvenirButton

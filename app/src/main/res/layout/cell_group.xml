@@ -24,7 +24,7 @@
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:id="@+id/cell_group_image"
-            android:src="@drawable/representatives_place_holder_male"/>
+            android:src="@drawable/reps_male"/>
 
         <LinearLayout
             android:orientation="vertical"

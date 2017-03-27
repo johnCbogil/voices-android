@@ -14,7 +14,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:id="@+id/actions_image"
-            android:src="@drawable/representatives_place_holder_male"/>
+            android:src="@drawable/reps_male"/>
         <com.mobilonix.voices.util.AvenirTextView
             android:id="@+id/actions_title"
             android:layout_width="match_parent"

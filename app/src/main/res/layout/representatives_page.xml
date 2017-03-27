@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="200dp"
                 android:gravity="center"
-                android:src="@drawable/representatives_zero_state" />
+                android:src="@drawable/reps_zero" />
             <com.mobilonix.voices.util.AvenirTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

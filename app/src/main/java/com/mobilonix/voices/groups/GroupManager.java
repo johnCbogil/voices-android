@@ -174,9 +174,13 @@ public enum GroupManager {
             groupPage.findViewById(R.id.actions_container).setVisibility(View.VISIBLE);
             groupPage.findViewById(R.id.user_groups_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.all_groups_container).setVisibility(View.GONE);
+            toolbar.findViewById(R.id.toolbar_reps).setVisibility(View.VISIBLE);
+            toolbar.findViewById(R.id.toolbar_groups).setVisibility(View.VISIBLE);
+            toolbar.findViewById(R.id.groups_horizontal).setVisibility(View.VISIBLE);
+            toolbar.findViewById(R.id.reps_horizontal).setVisibility(View.INVISIBLE);
 
             ((EntityContainer) groupPage.findViewById(R.id.actions_container)).setType(groupType);
-            toolbar.findViewById(R.id.action_add_groups).setVisibility(View.VISIBLE);
+            toolbar.findViewById(R.id.toolbar_add).setVisibility(View.VISIBLE);
 
 
             MODE = GroupType.ACTION;
@@ -186,10 +190,12 @@ public enum GroupManager {
             groupPage.findViewById(R.id.actions_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.user_groups_container).setVisibility(View.VISIBLE);
             groupPage.findViewById(R.id.all_groups_container).setVisibility(View.GONE);
+            toolbar.findViewById(R.id.toolbar_reps).setVisibility(View.VISIBLE);
+            toolbar.findViewById(R.id.toolbar_groups).setVisibility(View.VISIBLE);
 
             ((EntityContainer) groupPage.findViewById(R.id.user_groups_container)).setType(groupType);
 
-            toolbar.findViewById(R.id.action_add_groups).setVisibility(View.VISIBLE);
+            toolbar.findViewById(R.id.toolbar_add).setVisibility(View.VISIBLE);
 
             MODE = GroupType.USER;
 
@@ -201,10 +207,12 @@ public enum GroupManager {
 
             ((EntityContainer) groupPage.findViewById(R.id.all_groups_container)).setType(groupType);
 
-            toolbar.findViewById(R.id.primary_toolbar_back_arrow).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.action_add_groups).setVisibility(View.GONE);
-
-            toolbar.findViewById(R.id.primary_toolbar_back_arrow).setOnClickListener(new View.OnClickListener() {
+            toolbar.findViewById(R.id.toolbar_previous).setVisibility(View.VISIBLE);
+            toolbar.findViewById(R.id.toolbar_add).setVisibility(View.GONE);
+            toolbar.findViewById(R.id.toolbar_reps).setVisibility(View.GONE);
+            toolbar.findViewById(R.id.toolbar_groups).setVisibility(View.GONE);
+            toolbar.findViewById(R.id.groups_horizontal).setVisibility(View.GONE);
+            toolbar.findViewById(R.id.toolbar_previous).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     onBackPress();
@@ -413,7 +421,9 @@ public enum GroupManager {
         MODE = GroupType.USER;
         toggleGroups(GroupType.USER);
         Toolbar toolbar = ((VoicesMainActivity) groupPage.getContext()).getToolbar();
-        toolbar.findViewById(R.id.primary_toolbar_back_arrow).setVisibility(View.GONE);
+        toolbar.findViewById(R.id.toolbar_previous).setVisibility(View.GONE);
+        toolbar.findViewById(R.id.takeaction).setVisibility(View.VISIBLE);
+        toolbar.findViewById(R.id.groups_horizontal).setVisibility(View.VISIBLE);
     }
 
     /**
@@ -461,8 +471,8 @@ public enum GroupManager {
 
         Picasso.with(context)
                 .load(action.getImageUrl())
-                .placeholder(R.drawable.placeholder_spinner)
-                .error(R.drawable.representatives_place_holder_male)
+                .placeholder(R.drawable.spinner_moving)
+                .error(R.drawable.reps_male)
                 .fit()
                 .into(actionImage);
 

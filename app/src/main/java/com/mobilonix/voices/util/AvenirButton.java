@@ -10,7 +10,7 @@ import com.mobilonix.voices.R;
 public class AvenirButton extends Button {
     public AvenirButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/AvenirNext-Regular.ttf"));
+        this.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/avenir-next-regular.ttf"));
         this.setBackgroundResource(R.drawable.rounded_button);
     }
 }
