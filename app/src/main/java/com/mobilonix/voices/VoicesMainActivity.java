@@ -85,7 +85,6 @@ public class VoicesMainActivity extends AppCompatActivity {
      * The initial app work goes here
      */
     private void initialTransition() {
-
         SplashManager.INSTANCE.toggleSplashScreen(this, true);
         if(!SessionManager.INSTANCE.checkIfFirstRun(false)) {
             SplashManager.INSTANCE.toggleOnBoardingCopy(false);
@@ -94,15 +93,7 @@ public class VoicesMainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     SplashManager.INSTANCE.toggleSplashScreen(VoicesMainActivity.this, false);
-                    //if (LocationUtil.isGPSEnabled(VoicesMainActivity.this)) {
-                        //LocationUtil.triggerLocationUpdate(VoicesMainActivity.this, null);
-                        RepresentativesManager.INSTANCE
-                                .toggleRepresentativesScreen(null,
-                                        VoicesMainActivity.this, true);
-                    //} else {
-                        //LocationRequestManager.INSTANCE
-                                //.toggleLocationRequestScreen(VoicesMainActivity.this, true);
-                    //}
+                    RepresentativesManager.INSTANCE.toggleRepresentativesScreen(null, VoicesMainActivity.this, true);
                 }
             }, SPLASH_FADE_TIME);
         }

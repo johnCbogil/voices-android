@@ -140,7 +140,7 @@ public class UsCongressSunlightApi implements ApiEngine {
     }
 
     public String getContactFormUrl(String bioguideId){
-        JSONObject reps = JsonUtil.getJsonFromResource(R.raw.rep_contact_forms);
+        JSONObject reps = JsonUtil.getJsonFromResource(R.raw.contact_forms);
         if(reps.has(bioguideId)){
             return reps.optString(bioguideId);
         }

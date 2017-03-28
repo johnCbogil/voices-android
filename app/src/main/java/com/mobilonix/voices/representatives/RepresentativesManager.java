@@ -277,7 +277,11 @@ public enum RepresentativesManager {
         searchIcon.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                toggleSearchBar(true);
+                if(autoCompleteTextView.isVisible()){
+                    toggleSearchBar(false);
+                } else {
+                    toggleSearchBar(true);
+                }
             }
         });
 
@@ -296,6 +300,7 @@ public enum RepresentativesManager {
                 takeAction.setVisibility(View.VISIBLE);
                 groupsHorizontal.setVisibility(View.VISIBLE);
                 repsHorizontal.setVisibility(View.INVISIBLE);
+                toggleSearchBar(false);
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(false);
 
                 //groupsTabIcon.getDrawable().setColorFilter(voicesOrange,PorterDuff.Mode.SRC_ATOP);

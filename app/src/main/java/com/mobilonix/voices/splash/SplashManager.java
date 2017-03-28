@@ -17,28 +17,19 @@ public enum  SplashManager {
     //Toggle splash screen on and off
     INSTANCE;
     FrameLayout splashContentFrame;
-    public boolean splashScreenVisible = false;
 
     public void toggleSplashScreen(final VoicesMainActivity activity, boolean state) {
-        //TODO: This messes up the group tab, need to find out why
         LayoutInflater inflater=(LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         splashContentFrame=(FrameLayout) inflater.inflate(R.layout.view_splash_screen, null, false);
         if(state) {
-            Button splashGettingStartedButton = (Button)splashContentFrame
-                    .findViewById(R.id.splash_getting_started_button);
+            Button splashGettingStartedButton = (Button)splashContentFrame.findViewById(R.id.splash_getting_started_button);
             splashGettingStartedButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     INSTANCE.toggleSplashScreen(activity, false);
-//                    if (LocationUtil.isGPSEnabled(activity)) {
-                       RepresentativesManager.INSTANCE
-                                .toggleRepresentativesScreen(null, activity, true);
-                    //} else {
-                        //LocationRequestManager.INSTANCE.toggleLocationRequestScreen(activity, true);
-                    //}
+                    RepresentativesManager.INSTANCE.toggleRepresentativesScreen(null, activity, true);
                 }
             });
-            splashScreenVisible = true;
             activity.getMainContentFrame().addView(splashContentFrame);
         } else {
             final Animation animationFadeOut
@@ -50,7 +41,6 @@ public enum  SplashManager {
                 }
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    splashScreenVisible = false;
                     splashContentFrame.setVisibility(View.GONE);
                     activity.getMainContentFrame().removeView(splashContentFrame);
                 }
