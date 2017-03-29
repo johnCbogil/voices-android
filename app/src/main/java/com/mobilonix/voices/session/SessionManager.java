@@ -494,17 +494,14 @@ public enum SessionManager {
         return str.toString();
     }
 
-    public boolean checkIfFirstRun(boolean reset) {
-        SharedPreferences preferences
-                = PreferenceManager.getDefaultSharedPreferences(VoicesApplication.getContext());
+    public boolean isFirstRun(boolean reset) {
+        SharedPreferences preferences=PreferenceManager.getDefaultSharedPreferences(VoicesApplication.getContext());
         if(preferences.getBoolean(CHECK_IF_FIRST_RUN, true)) {
-
             if(reset) {
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putBoolean(CHECK_IF_FIRST_RUN, false);
                 editor.commit();
             }
-
             /* Need to always commit editor changes */
             return true;
         } else {
@@ -515,5 +512,4 @@ public enum SessionManager {
     public String getCurrentUserToken() {
         return currentUserToken;
     }
-
 }

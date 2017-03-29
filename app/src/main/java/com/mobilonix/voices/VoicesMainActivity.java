@@ -31,9 +31,6 @@ import com.mobilonix.voices.util.DeeplinkUtil;
 import com.mobilonix.voices.util.GeneralUtil;
 
 public class VoicesMainActivity extends AppCompatActivity {
-    //implements LocationListener
-
-    //LatLong currentLocation = new LatLong(0, 0);
 
     private static final int SPLASH_FADE_TIME = 2000;
 
@@ -59,16 +56,13 @@ public class VoicesMainActivity extends AppCompatActivity {
                 return false;
             }
         });
-        //currentLocation = LocationUtil.getLastLocation(this);
-
         initViews();
+
         initialTransition();
     }
 
     private void initViews() {
-
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
         mainContentFrame = (FrameLayout)findViewById(R.id.main_content_frame);
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.primary_toolbar));
         findViewById(R.id.primary_toolbar).setVisibility(View.INVISIBLE);
@@ -81,29 +75,29 @@ public class VoicesMainActivity extends AppCompatActivity {
         handleDeeplink(intent);
     }
 
-    /**
-     * The initial app work goes here
-     */
+    //The initial app work goes here
     private void initialTransition() {
-        SplashManager.INSTANCE.toggleSplashScreen(this, true);
-        if(!SessionManager.INSTANCE.checkIfFirstRun(false)) {
+        SplashManager.INSTANCE.toggleSplashScreen(this, true, null);
+        if(!SessionManager.INSTANCE.isFirstRun(false)) {
             SplashManager.INSTANCE.toggleOnBoardingCopy(false);
-            SplashManager.INSTANCE.toggleSplashScreen(VoicesMainActivity.this, false);
-            getHandler().postDelayed(new Runnable() {
+            SplashManager.INSTANCE.toggleSplashScreen(VoicesMainActivity.this, false, new Callback<Boolean>() {
                 @Override
-                public void run() {
-                    SplashManager.INSTANCE.toggleSplashScreen(VoicesMainActivity.this, false);
-                    RepresentativesManager.INSTANCE.toggleRepresentativesScreen(null, VoicesMainActivity.this, true);
+                public boolean onExecuted(Boolean data) {
+                    GeneralUtil.toast("Splash screen animation is complete");
+                    RepresentativesManager.INSTANCE
+                            .toggleRepresentativesScreen(null,
+                                    VoicesMainActivity.this, true);
+                    RepresentativesManager.INSTANCE.setPageByIndex(0);
+                    RepresentativesManager.INSTANCE.toggleErrorDisplay(
+                            RepresentativesManager.RepresentativesType.CONGRESS, true);
+
+                    return false;
                 }
-            }, SPLASH_FADE_TIME);
+            });
         }
     }
 
-    /**
-     * This method will handle any incoming deeplinkins
-     *
-     * @param intent
-     */
+    //This method will handle any incoming deeplinks
     public void handleDeeplink(Intent intent) {
 
         Bundle extras = intent.getExtras();
@@ -112,17 +106,17 @@ public class VoicesMainActivity extends AppCompatActivity {
         }
 
         if(googleApiClient == null) {
-           googleApiClient = new GoogleApiClient.Builder(this)
-                   .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
-                       @Override
-                       public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                           GeneralUtil.toast("Could not connect to Google API.");
-                           Log.e(TAG, "Could not retrieve the deeplink.");
-                       }
-                   })
-                   .addApi(AppInvite.API)
-                   .build();
-       }
+            googleApiClient = new GoogleApiClient.Builder(this)
+                    .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
+                        @Override
+                        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                            GeneralUtil.toast("Could not connect to Google API.");
+                            Log.e(TAG, "Could not retrieve the deeplink.");
+                        }
+                    })
+                    .addApi(AppInvite.API)
+                    .build();
+        }
 
 
         DeeplinkUtil.parseDeeplink(intent, new Callback<String>() {
@@ -183,7 +177,7 @@ public class VoicesMainActivity extends AppCompatActivity {
             }
         }
 
-        /* If we back out too far, we want to make sure the user is ok leaving the app */
+        //If we back out too far, we want to make sure the user is ok leaving the app
         if(!leaveAppDialogShowing) {
             showLeaveAppDialog();
         }
@@ -220,61 +214,7 @@ public class VoicesMainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //if(LocationRequestManager.INSTANCE.isLocationRequestScreenOn()) {
-            //if (LocationUtil.isGPSEnabled(this)) {
-                //LocationRequestManager.INSTANCE.toggleLocationRequestScreen(this, false);
-                //final ProgressDialog progress = ProgressDialog.show(this, "Finding Location",
-                        //"Awaiting to resolve location. One moment...", true);
-
-                //progress.setCancelable(false);
-                //progress.setCanceledOnTouchOutside(false);
-
-//                LocationUtil.triggerLocationUpdate(this, new Callback<LatLong>() {
-//                    @Override
-//                    public boolean onExecuted(LatLong data) {
-//                        progress.dismiss();
-//                        RepresentativesManager.INSTANCE
-//                                .toggleRepresentativesScreen(null, VoicesMainActivity.this, true);
-//                        return false;
-//                    }
-//                });
-//            }
-//        } else {
-//            if(!LocationUtil.isGPSEnabled(this) && !SplashManager.INSTANCE.splashScreenVisible) {
-//                LocationRequestManager.INSTANCE.showGPSNotEnabledDialog(this);
-//            }
-//        }
     }
-
-    //@Override
-    //protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //super.onActivityResult(requestCode, resultCode, data);
-
-        /**
-         * If the GPS is enabled at this point, then we trigger a location update
-         */
-//        if(LocationUtil.isGPSEnabled(this) || LocationUtil.isNetworkLocationEnabled(this) ) {
-//            LocationRequestManager.INSTANCE.showGPSEnabledDialog(this);
-//            LocationUtil.triggerLocationUpdate(this, new Callback<LatLong>() {
-//                @Override
-//                public boolean onExecuted(LatLong data) {
-//                    RepresentativesManager.INSTANCE
-//                            .toggleRepresentativesScreen(data,
-//                                    VoicesMainActivity.this,
-//                                    true);
-//                    return false;
-//                }
-//            });
-//        } else {
-//            LocationRequestManager.INSTANCE.showGPSNotEnabledDialog(this);
-//        }
-//
-//        LocationRequestManager.INSTANCE.toggleLocationRequestScreen(this, false);
-//        RepresentativesManager.INSTANCE
-//                .toggleRepresentativesScreen(getCurrentLocation(),
-//                this,
-//                true);
-//    }
 
     public Toolbar getToolbar() {
         return (Toolbar)findViewById(R.id.primary_toolbar);
@@ -282,40 +222,10 @@ public class VoicesMainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        //LocationUtil.stopLocationUpdates(this);
         FirebaseAuth.getInstance().signOut();
 
         super.onDestroy();
     }
-
-    //public LatLong getCurrentLocation() {
-        //return currentLocation;
-    //}
-
-//    @Override
-//    public void onLocationChanged(Location location) {
-//        currentLocation = new LatLong(location.getLatitude(), location.getLongitude());
-//
-//        Callback<LatLong> callback = LocationUtil.getLocationRequestCallback();
-//
-//        /* Currently we only want this to execute once and then nullify it */
-//        if(callback != null) {
-//            callback.onExecuted(currentLocation);
-//            LocationUtil.setLocationRequestCallback(null);
-//        }
-//    }
-//
-//    @Override
-//    public void onStatusChanged(String provider, int status, Bundle extras) {}
-//
-//    @Override
-//    public void onProviderEnabled(String provider) {}
-//
-//    @Override
-//    public void onProviderDisabled(String provider) {
-//        LocationRequestManager.INSTANCE
-//                .toggleLocationRequestScreen(VoicesMainActivity.this, false);
-//    }
 
     public void toggleProgressSpinner(boolean state) {
         findViewById(R.id.app_progress_spinner).setVisibility(state ? View.VISIBLE : View.GONE);

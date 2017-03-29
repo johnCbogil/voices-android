@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -54,6 +55,7 @@ public class EntityContainer extends FrameLayout {
         actionSelectionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("actionsClick","this should be gray");
                 actionSelectionButton.setTextColor(lightGrey);
                 groupsSelectionButton.setTextColor(indicatorBlue);
                 GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ACTION);
@@ -63,6 +65,7 @@ public class EntityContainer extends FrameLayout {
         groupsSelectionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("groupsClick","this should be gray");
                 actionSelectionButton.setTextColor(indicatorBlue);
                 groupsSelectionButton.setTextColor(lightGrey);
                 GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.USER);

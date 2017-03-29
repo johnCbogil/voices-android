@@ -10,44 +10,56 @@ import android.widget.FrameLayout;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
+import com.mobilonix.voices.callbacks.Callback;
 import com.mobilonix.voices.representatives.RepresentativesManager;
+import com.mobilonix.voices.util.GeneralUtil;
 
 
 public enum  SplashManager {
     //Toggle splash screen on and off
     INSTANCE;
     FrameLayout splashContentFrame;
+    public boolean splashScreenVisible = false;
 
-    public void toggleSplashScreen(final VoicesMainActivity activity, boolean state) {
-        LayoutInflater inflater=(LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        splashContentFrame=(FrameLayout) inflater.inflate(R.layout.view_splash_screen, null, false);
+    public void toggleSplashScreen(final VoicesMainActivity activity, boolean state, final Callback<Boolean> result) {
+        //TODO: This messes up the group tab, need to find out why
+        if(splashContentFrame == null) {
+            LayoutInflater inflater=(LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            splashContentFrame = (FrameLayout) inflater.inflate(R.layout.view_splash_screen, null, false);
+        }
         if(state) {
-            Button splashGettingStartedButton = (Button)splashContentFrame.findViewById(R.id.splash_getting_started_button);
+            Button splashGettingStartedButton = (Button)splashContentFrame
+                    .findViewById(R.id.splash_getting_started_button);
             splashGettingStartedButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    INSTANCE.toggleSplashScreen(activity, false);
-                    RepresentativesManager.INSTANCE.toggleRepresentativesScreen(null, activity, true);
+                    INSTANCE.toggleSplashScreen(activity, false, null);
+                    RepresentativesManager.INSTANCE
+                            .toggleRepresentativesScreen(null, activity, true);
                 }
             });
+            splashScreenVisible = true;
             activity.getMainContentFrame().addView(splashContentFrame);
         } else {
             final Animation animationFadeOut
-                    = AnimationUtils.loadAnimation(splashContentFrame.getContext(), R.anim.anim_fade_out);
+                    = AnimationUtils.loadAnimation(splashContentFrame.getContext(),
+                    R.anim.anim_fade_out);
             animationFadeOut.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-
+                    GeneralUtil.toast("Starting animation fade out");
                 }
                 @Override
                 public void onAnimationEnd(Animation animation) {
+                    splashScreenVisible = false;
                     splashContentFrame.setVisibility(View.GONE);
                     activity.getMainContentFrame().removeView(splashContentFrame);
+                    if(result != null) {
+                        result.onExecuted(true);
+                    }
                 }
                 @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
+                public void onAnimationRepeat(Animation animation) {}
             });
             splashContentFrame.startAnimation(animationFadeOut);
         }

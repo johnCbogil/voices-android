@@ -27,47 +27,24 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup collection, final int position) {
         LayoutInflater inflater = LayoutInflater.from(collection.getContext());
-        ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.representatives_page, collection, false);
+        ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.reps_page, collection, false);
         //layout.setTag(representatives.get(position).getType().getIdentifier());
 
         final ListView representativesList = (ListView)layout.findViewById(R.id.representatives_list);
-        //final SwipeRefreshLayout pageRefresh = (SwipeRefreshLayout)layout.findViewById(R.id.swipe_refresh_layout);
         final LinearLayout errorLayout = (LinearLayout)layout.findViewById(R.id.layout_error_page);
         final ProgressBar progressSpinner = (ProgressBar)layout.findViewById(R.id.reps_progress_spinner);
 
         representativesList.setTag(representatives.get(position).getType().getIdentifier());
-        //pageRefresh.setTag(representatives.get(position).getType().getIdentifier() + "_REFRESH");
         errorLayout.setTag(representatives.get(position).getType().getIdentifier() + "_ERROR");
         progressSpinner.setTag(representatives.get(position).getType().getIdentifier() + "_PROGRESS");
 
-        //pageRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//
-//                representativesList.setAdapter(new RepresentativesListAdapter
-//                        (representativesList.getContext(),
-//                                R.layout.representatives_list_item,
-//                                new ArrayList<Representative>()));
-
-//                RepresentativesManager.INSTANCE
-//                        .refreshRepresentativesContent(
-//                                RepresentativesManager.INSTANCE.CURRENT_LOCATION,
-//                                        ((VoicesMainActivity) pageRefresh.getContext()).getCurrentLocation().getLatitude(),
-//                                ((VoicesMainActivity) pageRefresh.getContext()).getCurrentLocation().getLongitude(),
-//                                ((VoicesMainActivity) pageRefresh.getContext()),
-//                                representatives,
-//                                (ViewPager) RepresentativesManager.INSTANCE.getRepresentativesFrame()
-//                                        .findViewById(R.id.representatives_pager));
-           // }
-        ///});
-
         representativesList
                 .setAdapter(new RepresentativesListAdapter
-                (representativesList.getContext(),
-                        R.layout.representatives_list_item, representatives.get(position).getRepresentatives()));
-
+                        (representativesList.getContext(),
+                                R.layout.reps_item, representatives.get(position).getRepresentatives()));
 
         collection.addView(layout);
+
         return layout;
     }
 

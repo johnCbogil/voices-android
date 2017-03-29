@@ -21,8 +21,7 @@
         android:gravity="center_horizontal"
         android:layout_gravity="center_horizontal|bottom"
         android:id="@+id/splash_voices_intro_text"
-        android:text="@string/splash_voices_intro"
-        android:visibility="gone"/>
+        android:text="@string/splash_voices_intro" />
 
     <com.mobilonix.voices.util.AvenirButton
         android:layout_width="match_parent"
@@ -34,6 +33,5 @@
         android:layout_marginBottom="30dp"
         android:textColor="#FFF"
         android:id="@+id/splash_getting_started_button"
-        android:layout_gravity="center_horizontal|bottom"
-        android:visibility="gone"/>
+        android:layout_gravity="center_horizontal|bottom" />
 </FrameLayout>

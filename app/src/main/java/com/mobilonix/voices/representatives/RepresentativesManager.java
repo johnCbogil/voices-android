@@ -68,6 +68,7 @@ public enum RepresentativesManager {
     FrameLayout representativesFrame;
 
     View primaryToolbar;
+    View dropShadow;
 
     PagerIndicator pagerIndicator;
 
@@ -135,14 +136,18 @@ public enum RepresentativesManager {
     public void toggleRepresentativesScreen(LatLong location, final VoicesMainActivity activity, boolean state) {
 
         if (state) {
-            LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            representativesFrame = (FrameLayout)
-                    inflater.inflate(R.layout.view_representatives, null, false);
+            if(representativesFrame ==  null) {
+                LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                representativesFrame = (FrameLayout)
+                        inflater.inflate(R.layout.reps_view, null, false);
+            }
 
             primaryToolbar = activity.getToolbar();
+            dropShadow = activity.findViewById(R.id.toolbar_dropshadow);
             final ImageView addGroupIcon = (ImageView)primaryToolbar.findViewById(R.id.toolbar_add);
 
             primaryToolbar.setVisibility(View.VISIBLE);
+            dropShadow.setVisibility(View.VISIBLE);
             addGroupIcon.setVisibility(View.GONE);
 
             final ArrayList<RepresentativesPage> pages = new ArrayList<>();
@@ -201,7 +206,7 @@ public enum RepresentativesManager {
                         listView.setAdapter(
                                 new RepresentativesListAdapter(
                                         listView.getContext(),
-                                        R.layout.representatives_list_item,
+                                        R.layout.reps_item,
                                         representatives));
                     }
 
@@ -273,6 +278,8 @@ public enum RepresentativesManager {
         final AvenirBoldTextView takeAction = (AvenirBoldTextView)primaryToolbar.findViewById(R.id.takeaction);
         final ImageView repsHorizontal = (ImageView)primaryToolbar.findViewById(R.id.reps_horizontal);
         final ImageView groupsHorizontal = (ImageView)primaryToolbar.findViewById(R.id.groups_horizontal);
+        final ImageView kebabIcon = (ImageView)primaryToolbar.findViewById(R.id.toolbar_kebab);
+
 
         searchIcon.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -288,8 +295,6 @@ public enum RepresentativesManager {
         groupsTabIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 representativesPager.setVisibility(View.GONE);
                 groupsView.setVisibility(View.VISIBLE);
                 primaryToolbar.setVisibility(View.VISIBLE);
@@ -300,6 +305,7 @@ public enum RepresentativesManager {
                 takeAction.setVisibility(View.VISIBLE);
                 groupsHorizontal.setVisibility(View.VISIBLE);
                 repsHorizontal.setVisibility(View.INVISIBLE);
+                kebabIcon.setVisibility(View.GONE);
                 toggleSearchBar(false);
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(false);
 
@@ -328,6 +334,7 @@ public enum RepresentativesManager {
                 takeAction.setVisibility(View.GONE);
                 groupsHorizontal.setVisibility(View.INVISIBLE);
                 repsHorizontal.setVisibility(View.VISIBLE);
+                kebabIcon.setVisibility(View.VISIBLE);
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(true);
 
                 //representativesTabIcon.getDrawable().setColorFilter(voicesOrange, PorterDuff.Mode.SRC_ATOP);
@@ -466,7 +473,7 @@ public enum RepresentativesManager {
         if (representativesListView != null) {
             representativesListView.setAdapter(
                     new RepresentativesListAdapter(representativesPager.getContext(),
-                            R.layout.representatives_list_item, data));
+                            R.layout.reps_item, data));
         }
 
         //if(pageRefresh != null) {
@@ -518,6 +525,7 @@ public enum RepresentativesManager {
 
     private void toggleErrorDisplay(String identifier, boolean state) {
 
+
         ViewPager pager = (ViewPager) representativesFrame
                 .findViewById(R.id.representatives_pager);
 
@@ -527,7 +535,10 @@ public enum RepresentativesManager {
         if(errorLayout != null) {
             errorLayout.setVisibility(state ? View.VISIBLE : View.GONE);
 
-            TextView errorMessageText = (TextView)errorLayout.findViewById(R.id.representatives_error_message);
+            GeneralUtil.toast("Attempting to toggle error displat for: " + identifier + "_ERROR");
+
+            TextView errorMessageText
+                    = (TextView)errorLayout.findViewById(R.id.representatives_error_message);
 
             /* TODO: When we get the local officials available, we'll need to amend this logic */
             if(!identifier.equals(RepresentativesType.COUNCIL_MEMBERS.getIdentifier())) {
@@ -535,10 +546,14 @@ public enum RepresentativesManager {
                         .setText(Html.fromHtml(VoicesApplication.getContext()
                         .getResources()
                         .getString(R.string.reps_fetch_error)
-                        .replace("[identifier]","<b>" + identifier + "</b>")));
+                        //.replace("[identifier]","<b>" + identifier + "</b>")
+                        ));
             } else {
                 errorMessageText.setText(R.string.local_not_yet_error);
             }
+        } else {
+            //setPageByIndex(1);
+            GeneralUtil.toast("NULL ERROR LAYOUT FOR: " + identifier);
         }
     }
 

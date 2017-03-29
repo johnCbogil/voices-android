@@ -41,7 +41,7 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
     public ActionListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View actionCell = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.cell_group, parent, false);
+                .inflate(R.layout.groups_item, parent, false);
 
         ActionListHolder pvh = new ActionListHolder(actionCell, actions);
         return pvh;
