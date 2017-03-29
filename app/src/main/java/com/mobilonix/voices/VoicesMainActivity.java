@@ -18,8 +18,13 @@ import com.google.android.gms.appinvite.AppInvite;
 import com.google.android.gms.appinvite.AppInviteInvitationResult;
 import com.google.android.gms.appinvite.AppInviteReferral;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mobilonix.voices.callbacks.Callback;
 import com.mobilonix.voices.groups.GroupManager;
@@ -231,4 +236,36 @@ public class VoicesMainActivity extends AppCompatActivity {
         findViewById(R.id.app_progress_spinner).setVisibility(state ? View.VISIBLE : View.GONE);
     }
 
+    public void callPlaceAutocompleteActivityIntent() {
+        try {
+            Intent intent =
+                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                            .build(this);
+            startActivityForResult(intent, 1);
+        } catch (GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException f) {
+            f.printStackTrace();
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(this, data);
+                RepresentativesManager.INSTANCE.refreshRepresentativesContent(
+                        place.getAddress().toString(),
+                        place.getLatLng().latitude,
+                        place.getLatLng().longitude,
+                        this,
+                        RepresentativesManager.INSTANCE.getPages(),
+                        RepresentativesManager.INSTANCE.getRepresentativesPager());
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                Status status = PlaceAutocomplete.getStatus(this, data);
+                Log.i(TAG, status.getStatusMessage());
+            } else if (requestCode == RESULT_CANCELED) {
+            }
+        }
+    }
 }
