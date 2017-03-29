@@ -16,7 +16,7 @@
     <string name="representatives_error_message">Officials are not available in your area yet.</string>
     <string name="local_not_yet_error">Local reps are not available in this area yet.</string>
     <string name="reps_fetch_error">
-        Could not fetch any [identifier] officials!
+        <!--Could not fetch any [identifier] officials!-->
         Please press the search button above to find representatives.
     </string>
 

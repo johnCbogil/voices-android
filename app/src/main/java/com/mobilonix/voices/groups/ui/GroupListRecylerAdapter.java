@@ -43,7 +43,7 @@ public class GroupListRecylerAdapter extends RecyclerView.Adapter<GroupListRecyl
     public GroupListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View actionCell = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.cell_group, parent, false);
+                .inflate(R.layout.groups_item, parent, false);
 
         GroupListHolder pvh = new GroupListHolder(actionCell, groups);
         return pvh;

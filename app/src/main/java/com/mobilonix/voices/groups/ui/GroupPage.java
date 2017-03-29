@@ -22,6 +22,9 @@ public class GroupPage extends FrameLayout {
     boolean userGroupsSet = false;
     boolean actionsSet = false;
 
+    EntityContainer actionsContainer;
+    EntityContainer userGroupsContainer;
+
     public GroupPage(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -35,7 +38,7 @@ public class GroupPage extends FrameLayout {
             }
         }
 
-        EntityContainer actionsContainer = (EntityContainer)findViewById(R.id.actions_container);
+        actionsContainer = (EntityContainer)findViewById(R.id.actions_container);
         actionsContainer.addItems(selectUserActions(actions, userGroups),
                 GroupManager.GroupType.ACTION);
 
@@ -50,7 +53,7 @@ public class GroupPage extends FrameLayout {
     public void setUserGroups(ArrayList<Group> userGroups) {
         this.userGroups = userGroups;
 
-        EntityContainer userGroupsContainer = (EntityContainer)findViewById(R.id.user_groups_container);
+        userGroupsContainer = (EntityContainer)findViewById(R.id.user_groups_container);
         userGroupsContainer.addItems(userGroups,
                 GroupManager.GroupType.USER);
 

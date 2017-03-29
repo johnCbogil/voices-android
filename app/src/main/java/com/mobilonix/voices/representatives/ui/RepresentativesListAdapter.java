@@ -68,7 +68,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
             public void onClick(View v) {
                 detailsDialog = new Dialog(getContext());
                 detailsDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                detailsDialog.setContentView(R.layout.dialog_repsdetails);
+                detailsDialog.setContentView(R.layout.reps_details);
                 ImageView repsImage = (ImageView) detailsDialog.findViewById(R.id.reps_image);
                 TextView repsName = (TextView) detailsDialog.findViewById(R.id.reps_name);
                 TextView repsParty = (TextView) detailsDialog.findViewById(R.id.reps_party);

@@ -2,7 +2,7 @@
 <com.mobilonix.voices.representatives.ui.RepresentativesPageLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:background="@android:color/white"
+    android:background="#FFF"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="true"
@@ -23,7 +23,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="200dp"
                 android:gravity="center"
-                android:src="@drawable/reps_zero" />
+                android:src="@drawable/reps_zero"
+                android:tint="#E6E6E6"/>
             <com.mobilonix.voices.util.AvenirTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
