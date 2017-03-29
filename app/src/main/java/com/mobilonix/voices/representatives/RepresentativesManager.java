@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -46,8 +45,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import okhttp3.Request;
 
-//import com.mobilonix.voices.location.model.LatLong;
-
 public enum RepresentativesManager {
 
     INSTANCE;
@@ -77,6 +74,9 @@ public enum RepresentativesManager {
 
     PlaceAutocompleteFragment autoCompleteTextView;
     ConcurrentHashMap<String, ArrayList<Representative>> currentRepsMap = new ConcurrentHashMap<>();
+
+    ArrayList<RepresentativesPage> pages;
+    ViewPager representativesPager;
 
     /**
      *
@@ -150,8 +150,8 @@ public enum RepresentativesManager {
             dropShadow.setVisibility(View.VISIBLE);
             addGroupIcon.setVisibility(View.GONE);
 
-            final ArrayList<RepresentativesPage> pages = new ArrayList<>();
-            final ViewPager representativesPager = (ViewPager) representativesFrame.findViewById(R.id.representatives_pager);
+            pages = new ArrayList<>();
+            representativesPager = (ViewPager) representativesFrame.findViewById(R.id.representatives_pager);
 
             /* Initialize Pager Indicator */
             pagerIndicator = ((PagerIndicator) representativesFrame
@@ -216,13 +216,9 @@ public enum RepresentativesManager {
 
             /* Initialize Autocomplete fragment */
             if (autoCompleteTextView == null) {
-                autoCompleteTextView =
-                        (PlaceAutocompleteFragment) activity.getFragmentManager()
-                                .findFragmentById(R.id.place_autocomplete_fragment);
-
-                //autoCompleteTextView.getView().setVisibility(View.VISIBLE);
+                autoCompleteTextView = (PlaceAutocompleteFragment) activity.getFragmentManager()
+                        .findFragmentById(R.id.place_autocomplete_fragment);
                 autoCompleteTextView.setHint(activity.getString(R.string.search_text));
-                //autoCompleteTextView.getView().setBackgroundColor(VoicesApplication.getContext().getResources().getColor(R.color.voices_orange));
                 autoCompleteTextView.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                     @Override
                     public void onPlaceSelected(Place place) {
@@ -233,30 +229,17 @@ public enum RepresentativesManager {
                                 activity,
                                 pages,
                                 representativesPager);
-                        toggleSearchBar(false);
                     }
                     @Override
                     public void onError(Status status) {
 
                     }
                 });
-
-                //refreshRepresentativesContent(
-                        //CURRENT_LOCATION,
-                        //location.getLatitude(),
-                        //location.getLongitude(),
-                        //activity,
-                        //pages,
-                        //representativesPager);
-
-                initTabView();
-
+                initTabView(activity);
                 activity.getMainContentFrame().addView(representativesFrame);
             } else {
-
                 activity.getMainContentFrame().removeView(representativesFrame);
             }
-
             representativesScreenVisible = state;
         }
     }
@@ -264,7 +247,7 @@ public enum RepresentativesManager {
     /**
      * Initialize the representatives and view tabs and thir respective actions
      */
-    private void initTabView() {
+    private void initTabView(final VoicesMainActivity activity) {
 
         representativesTabIcon = (ImageView)primaryToolbar.findViewById(R.id.toolbar_reps);
         groupsTabIcon = (ImageView)primaryToolbar.findViewById(R.id.toolbar_groups);
@@ -284,11 +267,7 @@ public enum RepresentativesManager {
         searchIcon.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                if(autoCompleteTextView.isVisible()){
-                    toggleSearchBar(false);
-                } else {
-                    toggleSearchBar(true);
-                }
+                activity.callPlaceAutocompleteActivityIntent();
             }
         });
 
@@ -306,12 +285,7 @@ public enum RepresentativesManager {
                 groupsHorizontal.setVisibility(View.VISIBLE);
                 repsHorizontal.setVisibility(View.INVISIBLE);
                 kebabIcon.setVisibility(View.GONE);
-                toggleSearchBar(false);
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(false);
-
-                //groupsTabIcon.getDrawable().setColorFilter(voicesOrange,PorterDuff.Mode.SRC_ATOP);
-                //representativesTabIcon.getDrawable().setColorFilter(grey,PorterDuff.Mode.SRC_ATOP);
-
                 GroupManager.INSTANCE.toggleGroupPage(groupsView, true);
             }
         });
@@ -336,10 +310,6 @@ public enum RepresentativesManager {
                 repsHorizontal.setVisibility(View.VISIBLE);
                 kebabIcon.setVisibility(View.VISIBLE);
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(true);
-
-                //representativesTabIcon.getDrawable().setColorFilter(voicesOrange, PorterDuff.Mode.SRC_ATOP);
-                //groupsTabIcon.getDrawable().setColorFilter(grey,PorterDuff.Mode.SRC_ATOP);
-
                 GroupManager.INSTANCE.toggleGroupPage(groupsView, false);
             }
         });
@@ -466,38 +436,10 @@ public enum RepresentativesManager {
         ListView representativesListView =
                 (ListView) representativesPager
                         .findViewWithTag(type.getIdentifier());
-        //SwipeRefreshLayout pageRefresh = (SwipeRefreshLayout)representativesPager
-                //.findViewWithTag(type.getIdentifier() + "_REFRESH");
-
-
         if (representativesListView != null) {
             representativesListView.setAdapter(
                     new RepresentativesListAdapter(representativesPager.getContext(),
                             R.layout.reps_item, data));
-        }
-
-        //if(pageRefresh != null) {
-            //pageRefresh.setRefreshing(false);
-        //}
-
-
-    }
-
-    /**
-     * Turn the search bar on and off (conditionally)
-     *
-     * @param state
-     */
-    public void toggleSearchBar(boolean state) {
-        representativesFrame.findViewById(R.id.auto_complete_holder)
-                .setVisibility(state ? View.VISIBLE : View.GONE);
-         if(autoCompleteTextView != null) {
-            try {
-                autoCompleteTextView
-                        .getView().setVisibility(state ? View.VISIBLE : View.GONE);
-            } catch (Exception e) {
-                Log.e(TAG, "Auto complete fragment null");
-            }
         }
     }
 
@@ -546,13 +488,11 @@ public enum RepresentativesManager {
                         .setText(Html.fromHtml(VoicesApplication.getContext()
                         .getResources()
                         .getString(R.string.reps_fetch_error)
-                        //.replace("[identifier]","<b>" + identifier + "</b>")
                         ));
             } else {
                 errorMessageText.setText(R.string.local_not_yet_error);
             }
         } else {
-            //setPageByIndex(1);
             GeneralUtil.toast("NULL ERROR LAYOUT FOR: " + identifier);
         }
     }
@@ -586,5 +526,13 @@ public enum RepresentativesManager {
 
     public String getGroupForLastAction() {
         return groupForLastAction;
+    }
+
+    public ArrayList<RepresentativesPage> getPages(){
+        return pages;
+    }
+
+    public ViewPager getRepresentativesPager(){
+        return representativesPager;
     }
 }
