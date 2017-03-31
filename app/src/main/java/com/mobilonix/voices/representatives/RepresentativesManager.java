@@ -147,7 +147,7 @@ public enum RepresentativesManager {
             final ImageView addGroupIcon = (ImageView)primaryToolbar.findViewById(R.id.toolbar_add);
 
             primaryToolbar.setVisibility(View.VISIBLE);
-            dropShadow.setVisibility(View.VISIBLE);
+            //dropShadow.setVisibility(View.VISIBLE);
             addGroupIcon.setVisibility(View.GONE);
 
             pages = new ArrayList<>();

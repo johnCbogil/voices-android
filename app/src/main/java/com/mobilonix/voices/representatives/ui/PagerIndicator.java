@@ -35,7 +35,7 @@ public class PagerIndicator extends LinearLayout implements ViewPager.OnPageChan
         Typeface avenirBold = Typeface.createFromAsset(getContext().getAssets(), "fonts/avenir-next-bold.ttf");
         int padding = ViewUtil.convertDpToPixel(18, VoicesApplication.getContext());
         repsLevel.setTypeface(avenirBold);
-        repsLevel.setTextColor(getResources().getColor(R.color.light_grey));
+        repsLevel.setTextColor(getResources().getColor(R.color.indicator_grey));
         repsLevel.setTextSize(25);
         repsLevel.setPadding(padding,0,padding,0);
         //formatting of the TextView goes here
@@ -55,7 +55,7 @@ public class PagerIndicator extends LinearLayout implements ViewPager.OnPageChan
                             indicators.get(i).setTextColor(getResources().getColor(R.color.indicator_blue));
                             callback.onExecuted(i);
                         } else{
-                            indicators.get(i).setTextColor(getResources().getColor(R.color.light_grey));
+                            indicators.get(i).setTextColor(getResources().getColor(R.color.indicator_grey));
                         }
                     }
                 }
@@ -85,7 +85,7 @@ public class PagerIndicator extends LinearLayout implements ViewPager.OnPageChan
             if(i == position) {
                 indicators.get(i).setTextColor(getResources().getColor(R.color.indicator_blue));
             } else{
-                indicators.get(i).setTextColor(getResources().getColor(R.color.light_grey));
+                indicators.get(i).setTextColor(getResources().getColor(R.color.indicator_grey));
             }
         }
 
