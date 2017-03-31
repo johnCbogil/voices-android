@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mobilonix.voices.R;
@@ -46,19 +45,21 @@ public class EntityContainer extends FrameLayout {
 
         noFollowImage = (ImageView)findViewById(R.id.entity_no_follows_image);
 
+        final int indicatorBlue = VoicesApplication.getContext().getResources().getColor(R.color.indicator_blue);
+        final int indicatorGrey = VoicesApplication.getContext().getResources().getColor(R.color.indicator_grey);
+
         actionSelectionButton=(AvenirBoldTextView)findViewById(R.id.actions_button);
         groupsSelectionButton=(AvenirBoldTextView)findViewById(R.id.groups_button);
-        final int indicatorBlue = VoicesApplication.getContext().getResources().getColor(R.color.indicator_blue);
-        final int lightGrey = VoicesApplication.getContext().getResources().getColor(R.color.light_grey);
 
+        actionSelectionButton.setTextColor(indicatorBlue);
+        groupsSelectionButton.setTextColor(indicatorGrey);
 
         actionSelectionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("actionsClick","this should be gray");
-                actionSelectionButton.setTextColor(lightGrey);
-                groupsSelectionButton.setTextColor(indicatorBlue);
+                //groupsSelectionButton.setTextColor(indicatorGrey);
                 GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ACTION);
+                //groupsSelectionButton.setTextColor(indicatorBlue);
             }
         });
 
@@ -66,9 +67,9 @@ public class EntityContainer extends FrameLayout {
             @Override
             public void onClick(View v) {
                 Log.e("groupsClick","this should be gray");
-                actionSelectionButton.setTextColor(indicatorBlue);
-                groupsSelectionButton.setTextColor(lightGrey);
+                //groupsSelectionButton.setTextColor(indicatorBlue);
                 GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.USER);
+                //groupsSelectionButton.setTextColor(indicatorGrey);
             }
         });
 
@@ -87,11 +88,11 @@ public class EntityContainer extends FrameLayout {
             entityListTopText.setText(VoicesApplication.EMPTY);
             entityListBottomText.setText(R.string.groups_fetch_error);
             noFollowImage.setImageResource(R.drawable.voices_error);
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) noFollowImage.getLayoutParams();
-            params.height = 100;
-            params.width = 100;
-            params.setMargins(0,10,0,0);
-            noFollowImage.setLayoutParams(params);
+            //LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) noFollowImage.getLayoutParams();
+            //params.height = 100;
+            //params.width = 100;
+            //params.setMargins(0,0,0,0);
+           // noFollowImage.setLayoutParams(params);
         }
     }
 
