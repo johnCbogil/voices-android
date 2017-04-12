@@ -29,6 +29,7 @@
     <string name="next_election">Next Election:&#160;</string>
     <string name="not_available">N/A</string>
     <string name="gov_title">Governor</string>
+    <string name="election_upcoming">Election Upcoming!</string>
 
     <!--No Contact Info Dialog-->
     <string name="no_info_title">Oops</string>
@@ -66,9 +67,12 @@
     <string name="got_it_button_text">Got It!</string>
 
     <!--Info Dialog-->
-    <string name="response_title">Here\'s what to say</string>
-    <string name="response">Hello my name is [your name] \n and I am a constituent. \n I would like the representative to \n [support or oppose] \n [an issue that you care about] \n and I will be voting in November.</string>
-    <string name="info_close_button">Close Window</string>
+    <string name="response_title">Pro Tips</string>
+    <string name="response_1">Why Call</string>
+    <string name="response_2">Calling is the most effective way to get the government to listen to you, according to political staffers. Calls are taken more seriously and have a greater impact than emails or social media.</string>
+    <string name="response_3">What To Say</string>
+    <string name="response_4">Hello my name is [your name] and I am a constituent. I would like the representative to [support or oppose] [an issue that you care about] and I will be voting in the next election.</string>
+    <string name="info_close_button">X</string>
 
     <!--API Keys-->
     <string name="google_places_api_key">AIzaSyAT87ms7SyySJIG5OrimyKbrHAZRQ2qgcI</string>

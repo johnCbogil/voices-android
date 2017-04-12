@@ -12,22 +12,20 @@
             android:id="@+id/actions_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:textSize="23dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginLeft="30dp"
+            android:layout_weight="0.5"
+            android:gravity="center"
             android:text="@string/actions"
-            android:onClick="onClick"
             android:clickable="true"
             />
         <com.mobilonix.voices.util.AvenirBoldTextView
             android:id="@+id/groups_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:textSize="23dp"
+            android:layout_weight="0.5"
+            android:gravity="center"
             android:text="@string/my_groups"
-            android:onClick="onClick"
             android:clickable="true"
             />
     </LinearLayout>

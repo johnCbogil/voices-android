@@ -33,6 +33,8 @@ import com.mobilonix.voices.groups.ui.PolicyListAdapter;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.ui.RoundedTransformation;
 import com.mobilonix.voices.session.SessionManager;
+import com.mobilonix.voices.util.AvenirBoldTextView;
+import com.mobilonix.voices.util.GeneralUtil;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -94,7 +96,6 @@ public enum GroupManager {
             refreshGroupsAndActionList();
 
             toggleGroups(GroupType.ACTION);
-
 
             groupPageVisible = true;
         } else {
@@ -169,6 +170,11 @@ public enum GroupManager {
 
         Toolbar toolbar = ((VoicesMainActivity) groupPage.getContext()).getToolbar();
 
+        int indicatorBlue = VoicesApplication.getContext()
+                .getResources().getColor(R.color.indicator_blue);
+        int indicatorGrey = VoicesApplication.getContext()
+                .getResources().getColor(R.color.indicator_grey);
+
         if (groupType == GroupType.ACTION) {
 
             groupPage.findViewById(R.id.actions_container).setVisibility(View.VISIBLE);
@@ -181,8 +187,12 @@ public enum GroupManager {
 
             ((EntityContainer) groupPage.findViewById(R.id.actions_container)).setType(groupType);
             toolbar.findViewById(R.id.toolbar_add).setVisibility(View.VISIBLE);
+            GeneralUtil.toast("Setting action color");
 
-
+            ((AvenirBoldTextView)(groupPage.findViewById(R.id.actions_container))
+                    .findViewById(R.id.actions_button)).setTextColor(indicatorBlue);
+            ((AvenirBoldTextView)(groupPage.findViewById(R.id.actions_container))
+                    .findViewById(R.id.groups_button)).setTextColor(indicatorGrey);
             MODE = GroupType.ACTION;
 
         } else if (groupType == GroupType.USER) {
@@ -198,6 +208,11 @@ public enum GroupManager {
             toolbar.findViewById(R.id.toolbar_add).setVisibility(View.VISIBLE);
 
             MODE = GroupType.USER;
+
+            ((AvenirBoldTextView)(groupPage.findViewById(R.id.user_groups_container))
+                    .findViewById(R.id.actions_button)).setTextColor(indicatorGrey);
+            ((AvenirBoldTextView)(groupPage.findViewById(R.id.user_groups_container))
+                    .findViewById(R.id.groups_button)).setTextColor(indicatorBlue);
 
         } else if (groupType == GroupType.ALL) {
 
@@ -218,6 +233,12 @@ public enum GroupManager {
                     onBackPress();
                 }
             });
+
+            ((AvenirBoldTextView)(groupPage.findViewById(R.id.all_groups_container))
+                    .findViewById(R.id.actions_button)).setTextColor(indicatorGrey);
+            ((AvenirBoldTextView)(groupPage.findViewById(R.id.all_groups_container))
+                    .findViewById(R.id.groups_button)).setTextColor(indicatorBlue);
+
 
             MODE = GroupType.ALL;
         }
@@ -489,7 +510,7 @@ public enum GroupManager {
                 String script = action.getScript();
 
                 if((action == null) || (script == null)) {
-                    response = VoicesApplication.getContext().getString(R.string.response);
+                    response = VoicesApplication.getContext().getString(R.string.response_4);
                     responseTextView.setText(response);
                     Spannable span = new SpannableString(response);
                     span.setSpan(new ForegroundColorSpan(voicesOrange), 17, 28, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

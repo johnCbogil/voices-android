@@ -1,12 +1,14 @@
 package com.mobilonix.voices.representatives;
 
 import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -78,6 +80,8 @@ public enum RepresentativesManager {
     ArrayList<RepresentativesPage> pages;
     ViewPager representativesPager;
 
+    Dialog infoDialog;
+
     /**
      *
      * The enum value contains the URL that needs to be called to make the representatives request
@@ -145,9 +149,8 @@ public enum RepresentativesManager {
             primaryToolbar = activity.getToolbar();
             dropShadow = activity.findViewById(R.id.toolbar_dropshadow);
             final ImageView addGroupIcon = (ImageView)primaryToolbar.findViewById(R.id.toolbar_add);
-
             primaryToolbar.setVisibility(View.VISIBLE);
-            //dropShadow.setVisibility(View.VISIBLE);
+            dropShadow.setVisibility(View.VISIBLE);
             addGroupIcon.setVisibility(View.GONE);
 
             pages = new ArrayList<>();
@@ -162,10 +165,11 @@ public enum RepresentativesManager {
                 pagerIndicator.addIndicator(representativesType.getIdentifier(), representativesType.getIdentifier());
                 pages.add(new RepresentativesPage(new ArrayList<Representative>(), representativesType));
             }
+
+            GeneralUtil.toast("Pages: " + pages);
+
             representativesPager.setAdapter(new RepresentativesPagerAdapter(pages));
-
             representativesPager.addOnPageChangeListener(pagerIndicator);
-
             pagerIndicator.addIndicatorShiftCallback(new Callback() {
                 @Override
                 public boolean onExecuted(Object data) {
@@ -231,9 +235,7 @@ public enum RepresentativesManager {
                                 representativesPager);
                     }
                     @Override
-                    public void onError(Status status) {
-
-                    }
+                    public void onError(Status status) {}
                 });
                 initTabView(activity);
                 activity.getMainContentFrame().addView(representativesFrame);
@@ -263,6 +265,22 @@ public enum RepresentativesManager {
         final ImageView groupsHorizontal = (ImageView)primaryToolbar.findViewById(R.id.groups_horizontal);
         final ImageView kebabIcon = (ImageView)primaryToolbar.findViewById(R.id.toolbar_kebab);
 
+        kebabIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                infoDialog = new Dialog(primaryToolbar.getContext());
+                infoDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                infoDialog.setContentView(R.layout.dialog_info);
+                infoDialog.show();
+                TextView infoCloseButton = (TextView) infoDialog.findViewById(R.id.info_close_button);
+                infoCloseButton.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        infoDialog.dismiss();
+                    }
+                });
+            }
+        });
 
         searchIcon.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -465,19 +483,19 @@ public enum RepresentativesManager {
                 .setVisibility(state ? View.VISIBLE : View.GONE);
     }
 
+
+
     private void toggleErrorDisplay(String identifier, boolean state) {
 
-
-        ViewPager pager = (ViewPager) representativesFrame
-                .findViewById(R.id.representatives_pager);
+//        GeneralUtil.toast("Got collection: " + ((RepresentativesPagerAdapter)
+//                representativesPager.getAdapter())
+//                .getPageArray().get(0).toString());
 
         LinearLayout errorLayout = (LinearLayout)
-                pager.findViewWithTag(identifier + "_ERROR");
+                representativesPager.findViewWithTag(identifier + "_ERROR");
 
         if(errorLayout != null) {
             errorLayout.setVisibility(state ? View.VISIBLE : View.GONE);
-
-            GeneralUtil.toast("Attempting to toggle error displat for: " + identifier + "_ERROR");
 
             TextView errorMessageText
                     = (TextView)errorLayout.findViewById(R.id.representatives_error_message);
@@ -493,7 +511,8 @@ public enum RepresentativesManager {
                 errorMessageText.setText(R.string.local_not_yet_error);
             }
         } else {
-            GeneralUtil.toast("NULL ERROR LAYOUT FOR: " + identifier);
+            //getRepresentativesPager().getAdapter().instantiateItem(getRepresentativesPager(), 0);
+            GeneralUtil.toast("NULL ERROR LAYOUT FOR: ");
         }
     }
 
