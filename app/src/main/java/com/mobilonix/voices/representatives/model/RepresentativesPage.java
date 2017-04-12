@@ -22,4 +22,9 @@ public class RepresentativesPage {
     public RepresentativesManager.RepresentativesType getType() {
         return type;
     }
+
+    @Override
+    public String toString() {
+        return getType().getIdentifier();
+    }
 }

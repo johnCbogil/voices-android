@@ -74,6 +74,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                 TextView repsParty = (TextView) detailsDialog.findViewById(R.id.reps_party);
                 TextView repsDistrict = (TextView) detailsDialog.findViewById(R.id.reps_district);
                 TextView repsElectionDate = (TextView) detailsDialog.findViewById(R.id.reps_election_date);
+                TextView repsUpcomingElection = (TextView) detailsDialog.findViewById(R.id.reps_election_upcoming);
                 setImage(repsImage, position);
                 repsName.setText(representatives.get(position).getName());
 
@@ -99,6 +100,12 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                 } else {
                     repsElectionDate.setText(VoicesApplication.getContext().getResources().getString(R.string.next_election)
                             + representatives.get(position).getElectionDate());
+                }
+
+               if(representatives.get(position).getElectionDate().contains("2017")){
+                    repsUpcomingElection.setText(R.string.election_upcoming);
+                } else {
+                    repsUpcomingElection.setText(" ");
                 }
                 detailsDialog.show();
             }

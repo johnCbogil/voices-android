@@ -395,7 +395,7 @@ public enum SessionManager {
                     String title = (String) action.child("title").getValue();
                     String script = (String) action.child ("script").getValue();
                     if(script==null) {
-                        script = VoicesApplication.getContext().getString(R.string.response);
+                        script = VoicesApplication.getContext().getString(R.string.response_4);
                     }
 
                     allActions.add(new Action(action.getKey(),

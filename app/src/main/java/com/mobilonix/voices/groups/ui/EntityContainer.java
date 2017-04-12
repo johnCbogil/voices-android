@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -45,35 +44,25 @@ public class EntityContainer extends FrameLayout {
 
         noFollowImage = (ImageView)findViewById(R.id.entity_no_follows_image);
 
-        final int indicatorBlue = VoicesApplication.getContext().getResources().getColor(R.color.indicator_blue);
-        final int indicatorGrey = VoicesApplication.getContext().getResources().getColor(R.color.indicator_grey);
-
         actionSelectionButton=(AvenirBoldTextView)findViewById(R.id.actions_button);
         groupsSelectionButton=(AvenirBoldTextView)findViewById(R.id.groups_button);
-
-        actionSelectionButton.setTextColor(indicatorBlue);
-        groupsSelectionButton.setTextColor(indicatorGrey);
 
         actionSelectionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //groupsSelectionButton.setTextColor(indicatorGrey);
                 GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ACTION);
-                //groupsSelectionButton.setTextColor(indicatorBlue);
             }
         });
 
         groupsSelectionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("groupsClick","this should be gray");
-                //groupsSelectionButton.setTextColor(indicatorBlue);
                 GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.USER);
-                //groupsSelectionButton.setTextColor(indicatorGrey);
             }
         });
 
     }
+
 
     public void setType(GroupManager.GroupType type) {
         this.type = type;

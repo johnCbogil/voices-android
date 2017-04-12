@@ -88,13 +88,14 @@ public class VoicesMainActivity extends AppCompatActivity {
             SplashManager.INSTANCE.toggleSplashScreen(VoicesMainActivity.this, false, new Callback<Boolean>() {
                 @Override
                 public boolean onExecuted(Boolean data) {
-                    GeneralUtil.toast("Splash screen animation is complete");
                     RepresentativesManager.INSTANCE
                             .toggleRepresentativesScreen(null,
                                     VoicesMainActivity.this, true);
-                    RepresentativesManager.INSTANCE.setPageByIndex(0);
-                    RepresentativesManager.INSTANCE.toggleErrorDisplay(
-                            RepresentativesManager.RepresentativesType.CONGRESS, true);
+
+
+                    //RepresentativesManager.INSTANCE.setPageByIndex(0);
+//                    RepresentativesManager.INSTANCE.toggleErrorDisplay(
+//                            RepresentativesManager.RepresentativesType.CONGRESS, true);
 
                     return false;
                 }
