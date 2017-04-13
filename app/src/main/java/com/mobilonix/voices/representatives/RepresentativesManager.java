@@ -314,8 +314,6 @@ public enum RepresentativesManager {
 
                 /* Always set the page back to the federal reps when selevting the groups tav*/
                 //RepresentativesManager.INSTANCE.setPageByIndex(0);
-
-
                 representativesPager.setVisibility(View.VISIBLE);
                 groupsView.setVisibility(View.GONE);
                 primaryToolbar.setVisibility(View.VISIBLE);

@@ -23,6 +23,7 @@
         <ImageView
             android:layout_width="75dp"
             android:layout_height="75dp"
+            android:layout_marginRight="10dp"
             android:id="@+id/cell_group_image"
             android:src="@drawable/reps_male"/>
 

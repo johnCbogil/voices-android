@@ -39,6 +39,11 @@
     <string name="call_instead">Please consider calling them instead.</string>
     <string name="email_instead">Please consider emailing them instead.</string>
 
+    <!--Email Dialog-->
+    <string name="sure_text">Are you sure you want to email&#160;</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
     <!--Actions Tab-->
     <string name="actions">Actions</string>
     <string name="no_follow_actions">To receive actions from advocacy groups, tap the + button above to follow groups.</string>
