@@ -21,6 +21,7 @@ import com.mobilonix.voices.analytics.AnalyticsManager;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.session.SessionManager;
+import com.mobilonix.voices.util.AvenirTextView;
 import com.mobilonix.voices.util.ViewUtil;
 import com.squareup.picasso.Picasso;
 
@@ -159,15 +160,36 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                 mViewHolder.mEmailImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AnalyticsManager.INSTANCE.trackEvent("" + "WEBFORM_REPRESENTATIVES_EVENT",
-                                representatives.get(position).getName(),
-                                SessionManager.INSTANCE.getCurrentUserToken(),
-                                "ACTION=" + RepresentativesManager.INSTANCE.getLastActionSelectedForContact() +
-                                        ";GROUP=" + RepresentativesManager.INSTANCE.getGroupForLastAction(), null);
-                        String url = representatives.get(position).getContactForm();
-                        Intent i = new Intent(Intent.ACTION_VIEW);
-                        i.setData(Uri.parse(url));
-                        v.getContext().startActivity(i);
+                        final Dialog emailDialog;
+                        emailDialog = new Dialog(getContext());
+                        emailDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        emailDialog.setContentView(R.layout.dialog_email);
+                        AvenirTextView sureText = (AvenirTextView) emailDialog.findViewById(R.id.sure_text);
+                        sureText.setText(VoicesApplication.getContext().getResources().getString(R.string.sure_text)
+                                + representatives.get(position).getName() + "?");
+                        Button yesButton = (Button) emailDialog.findViewById(R.id.yes_button);
+                        Button noButton = (Button) emailDialog.findViewById(R.id.no_button);
+                        yesButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                AnalyticsManager.INSTANCE.trackEvent("" + "WEBFORM_REPRESENTATIVES_EVENT",
+                                        representatives.get(position).getName(),
+                                        SessionManager.INSTANCE.getCurrentUserToken(),
+                                        "ACTION=" + RepresentativesManager.INSTANCE.getLastActionSelectedForContact() +
+                                                ";GROUP=" + RepresentativesManager.INSTANCE.getGroupForLastAction(), null);
+                                String url = representatives.get(position).getContactForm();
+                                Intent i = new Intent(Intent.ACTION_VIEW);
+                                i.setData(Uri.parse(url));
+                                v.getContext().startActivity(i);
+                            }
+                        });
+                        noButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                emailDialog.dismiss();
+                            }
+                        });
+                        emailDialog.show();
                     }
                 });
             }
@@ -220,21 +242,41 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                 mViewHolder.mEmailImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AnalyticsManager.INSTANCE.trackEvent("" + "EMAIL_REPRESENTATIVES_EVENT",
-                                representatives.get(position).getName(),
-                                SessionManager.INSTANCE.getCurrentUserToken(),
-                                "ACTION=" + RepresentativesManager.INSTANCE.getLastActionSelectedForContact() +
-                                        ";GROUP=" + RepresentativesManager.INSTANCE.getGroupForLastAction(), null);
+                        final Dialog emailDialog;
+                        emailDialog = new Dialog(getContext());
+                        emailDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        emailDialog.setContentView(R.layout.dialog_email);
+                        AvenirTextView sureText = (AvenirTextView) emailDialog.findViewById(R.id.sure_text);
+                        sureText.setText(VoicesApplication.getContext().getResources().getString(R.string.sure_text)
+                                + representatives.get(position).getName() + "?");
+                        Button yesButton = (Button) emailDialog.findViewById(R.id.yes_button);
+                        Button noButton = (Button) emailDialog.findViewById(R.id.no_button);
+                        yesButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                AnalyticsManager.INSTANCE.trackEvent("" + "EMAIL_REPRESENTATIVES_EVENT",
+                                        representatives.get(position).getName(),
+                                        SessionManager.INSTANCE.getCurrentUserToken(),
+                                        "ACTION=" + RepresentativesManager.INSTANCE.getLastActionSelectedForContact() +
+                                                ";GROUP=" + RepresentativesManager.INSTANCE.getGroupForLastAction(), null);
 
-                        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                                "mailto", representatives.get(position).getEmailAddress(), null));
-                        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
-                        emailIntent.putExtra(Intent.EXTRA_TEXT, "");
-                        ArrayList<String> addresses = new ArrayList<>();
-                        addresses.add(representatives.get(position).getEmailAddress());
-                        emailIntent.putExtra(Intent.EXTRA_EMAIL, addresses);
-
-                        v.getContext().startActivity(Intent.createChooser(emailIntent, "Send Email"));
+                                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                                        "mailto", representatives.get(position).getEmailAddress(), null));
+                                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
+                                emailIntent.putExtra(Intent.EXTRA_TEXT, "");
+                                ArrayList<String> addresses = new ArrayList<>();
+                                addresses.add(representatives.get(position).getEmailAddress());
+                                emailIntent.putExtra(Intent.EXTRA_EMAIL, addresses);
+                                v.getContext().startActivity(Intent.createChooser(emailIntent, "Send Email"));
+                            }
+                        });
+                        noButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                emailDialog.dismiss();
+                            }
+                        });
+                        emailDialog.show();
                     }
                 });
             }

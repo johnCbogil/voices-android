@@ -34,7 +34,6 @@ import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.ui.RoundedTransformation;
 import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.util.AvenirBoldTextView;
-import com.mobilonix.voices.util.GeneralUtil;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -187,7 +186,6 @@ public enum GroupManager {
 
             ((EntityContainer) groupPage.findViewById(R.id.actions_container)).setType(groupType);
             toolbar.findViewById(R.id.toolbar_add).setVisibility(View.VISIBLE);
-            GeneralUtil.toast("Setting action color");
 
             ((AvenirBoldTextView)(groupPage.findViewById(R.id.actions_container))
                     .findViewById(R.id.actions_button)).setTextColor(indicatorBlue);
