@@ -31,8 +31,6 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
 
     public RepresentativesPagerAdapter(ArrayList<RepresentativesPage> representatives) {
         this.representatives = representatives;
-
-        //notifyDataSetChanged();
     }
 
     static int count = 0;
@@ -67,8 +65,6 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
         representativesList.setTag(representatives.get(position).getType().getIdentifier());
         errorLayout.setTag(representatives.get(position).getType().getIdentifier() + "_ERROR");
         progressSpinner.setTag(representatives.get(position).getType().getIdentifier() + "_PROGRESS");
-
-        //errorLayout.setBackgroundColor(ViewUtil.getResourceColor(android.R.color.holo_blue_bright));
 
         representativesList
                 .setAdapter(new RepresentativesListAdapter

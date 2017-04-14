@@ -145,18 +145,6 @@ public enum GroupManager {
 
                 if (defferredGroupKey != null) {
                     subscribeToGroup(findGroupWithKey(defferredGroupKey), true, null);
-                    //, new Callback<Boolean>() {
-                    //@Override
-                    //public boolean onExecuted(Boolean data) {
-                    //groupsFollowGroupsButton.setText(R.string.following_groups_text);
-                    //if(data) {
-                    //AnalyticsManager.INSTANCE.trackEvent("SUBSCRIBE_EVENT",
-                    // findGroupWithKey(defferredGroupKey).getGroupKey(),
-                    //SessionManager.INSTANCE.getCurrentUserToken(),"none", null);
-                    //}
-                    // return false;
-                    //}
-                    // });
                     defferredGroupKey = null;
                 }
 
@@ -268,12 +256,15 @@ public enum GroupManager {
         TextView groupsInfoDescription = (TextView) dialog.findViewById(R.id.group_info_description);
         TextView groupsInfoPolicyText = (TextView) dialog
                 .findViewById(R.id.group_info_policy_text);
+        TextView groupsWebsite = (TextView) dialog
+                .findViewById(R.id.group_website);
         final Button groupsFollowGroupsButton =
                 (Button) dialog.findViewById(R.id.follow_groups_button);
         ListView policyList = (ListView) dialog.findViewById(R.id.groups_policy_list);
 
         groupsInfoDescription.setText(group.getGroupDescription());
         groupsInfoPolicyText.setText(group.getGroupCategory());
+        groupsWebsite.setText(group.getGroupWebsite());
 
         final ArrayList<Group> userGroups = groupPage.getUserGroups();
         if (userGroups != null) {
@@ -530,9 +521,6 @@ public enum GroupManager {
                 RepresentativesManager.INSTANCE.setPageByIndex(actionLevel);
                 RepresentativesManager.INSTANCE
                         .setLastActionSelectedForContact(action.getActionKey(), action.getGroupKey());
-                //AnalyticsManager.INSTANCE.trackEvent("CONTACT_REPRESENTATIVES_EVENT",
-                        //action.getGroupKey(),
-                        //SessionManager.INSTANCE.getCurrentUserToken(),action.getActionKey(), null);
                 actionDialog.dismiss();
             }
         });

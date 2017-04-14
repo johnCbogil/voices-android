@@ -7,8 +7,9 @@ public class Group {
     String groupName;
     String groupCategory;
     String groupDescription;
-    String extendedDescription;
     String groupImageUrl;
+    String extendedDescription;
+    String groupWebsite;
     String groupKey;
     boolean debug = false;
 
@@ -20,21 +21,27 @@ public class Group {
                  String groupDescription,
                  String groupImageUrl,
                  String extendedDescription,
+                 String groupWebsite,
                  ArrayList<Policy> policies,
                  ArrayList<String> actions,
                  String groupKey) {
         this.groupName = groupName;
         this.groupCategory = groupCategory;
         this.groupDescription = groupDescription;
-        this.policies = policies;
-        this.extendedDescription = extendedDescription;
         this.groupImageUrl = groupImageUrl;
+        this.extendedDescription = extendedDescription;
+        this.groupWebsite = groupWebsite;
+        this.policies = policies;
         this.actions = actions;
         this.groupKey = groupKey;
     }
 
     public ArrayList<Policy> getPolicies() {
         return policies;
+    }
+
+    public String getGroupName() {
+        return groupName;
     }
 
     public String getGroupCategory() {
@@ -45,12 +52,12 @@ public class Group {
         return groupDescription;
     }
 
-    public String getGroupImageUrl() {
-        return groupImageUrl;
+    public String getGroupWebsite(){
+        return groupWebsite;
     }
 
-    public String getGroupName() {
-        return groupName;
+    public String getGroupImageUrl() {
+        return groupImageUrl;
     }
 
     public String getExtendedDescription() {

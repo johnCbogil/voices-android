@@ -232,16 +232,45 @@ public enum SessionManager {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                /* Fetch all groups accross all available groups to subscribe to  */
+                /* Fetch all groups across all available groups to subscribe to  */
                 ArrayList<Group> allGroups = new ArrayList<>();
                 for (DataSnapshot group : dataSnapshot.getChildren()) {
 
                     String groupKey = group.getKey();
+                    String description;
+                    String imageUrl;
+                    String name;
+                    String groupType;
+                    String website;
+                    try{
+                        description = group.child("description").getValue().toString();
+                    } catch(NullPointerException e){
+                        description = "";
+                    }
 
-                    String description = group.child("description").getValue().toString();
-                    String imageUrl = group.child("imageURL").getValue().toString();
-                    String name = group.child("name").getValue().toString();
-                    String groupTyle = group.child("groupType").getValue().toString();
+                    try{
+                        imageUrl = group.child("imageURL").getValue().toString();
+                    } catch(NullPointerException e){
+                        imageUrl = "";
+                    }
+
+                    try{
+                        name = group.child("name").getValue().toString();
+                    } catch(NullPointerException e){
+                        name = "";
+                    }
+
+                    try {
+                        groupType = group.child("groupType").getValue().toString();
+                    } catch(NullPointerException e){
+                        groupType="";
+                    }
+
+                    try {
+                        website = group.child("website").getValue().toString();
+                    } catch(NullPointerException e){
+                        website = "";
+                    }
 
                     String debug = "false";
                     if(group.child("debug").exists()) {
@@ -285,7 +314,7 @@ public enum SessionManager {
                         }
                     }
 
-                    Group groupToAdd = new Group(name, groupTyle, description, imageUrl, "", policies, actions, groupKey);
+                    Group groupToAdd = new Group(name, groupType, description, imageUrl, "", website, policies, actions, groupKey);
 
                     try {
                         groupToAdd.setDebug(Boolean.parseBoolean(debug));
@@ -380,34 +409,65 @@ public enum SessionManager {
                 ArrayList<Action> allActions = new ArrayList<Action>();
 
                 for (DataSnapshot action : dataSnapshot.getChildren()) {
-
                     String actionKey = action.getKey();
-                    String body = (String) action.child("body").getValue();
-                    String groupKey = (String) action.child("groupKey").getValue();
-                    String groupName = (String) action.child("groupName").getValue();
-                    String imageUrl = (String) action.child("imageURL").getValue();
+                    String body;
+                    String groupKey;
+                    String groupName;
+                    String imageUrl;
+
+                    try{
+                        body = (String) action.child("body").getValue();
+                    } catch(NullPointerException e){
+                        body = "";
+                    }
+
+                    try{
+                        groupKey = (String) action.child("groupKey").getValue();
+                    } catch(NullPointerException e){
+                        groupKey = "";
+                    }
+
+                    try{
+                        groupName = (String) action.child("groupName").getValue();
+                    } catch(NullPointerException e){
+                        groupName = "";
+                    }
+
+                    try{
+                        imageUrl = (String) action.child("imageURL").getValue();
+                    } catch(NullPointerException e){
+                        imageUrl="";
+                    }
+
                     long level = 3;
                     if(action.child("level").exists()) {
                         level = (long) action.child("level").getValue();
                     }
-                    String subject = (String) action.child("subject").getValue();
-                    long timestamp = (long)action.child("timestamp").getValue();
-                    String title = (String) action.child("title").getValue();
+                    String subject;
+                    long timestamp;
+                    String title;
                     String script = (String) action.child ("script").getValue();
                     if(script==null) {
                         script = VoicesApplication.getContext().getString(R.string.response_4);
                     }
 
-                    allActions.add(new Action(action.getKey(),
-                            (String) action.child("body").getValue(),
-                            (String) action.child("groupKey").getValue(),
-                            (String) action.child("groupName").getValue(),
-                            (String) action.child("imageUrl").getValue(),
-                            level,
-                            (String) action.child("subject").getValue(),
-                            (long) action.child("timestamp").getValue(),
-                            (String) action.child("title").getValue(),
-                            (String) action.child("script").getValue()));
+                    try{
+                        subject =(String) action.child("subject").getValue();
+                    } catch(NullPointerException e){
+                        subject="";
+                    }
+
+                    try{
+                        timestamp = (long)action.child("timestamp").getValue();
+                    } catch(NullPointerException e){
+                        timestamp = 0;
+                    }
+
+                    try{
+                        title = (String) action.child("title").getValue();
+                    } catch(NullPointerException e){
+                        title = "";
+                    }
 
                     Action actionToAdd =
                             new Action(actionKey,
@@ -423,7 +483,6 @@ public enum SessionManager {
 
                     allActions.add(actionToAdd);
                 }
-
                 callback.onExecuted(allActions);
             }
 

@@ -4,14 +4,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <!-- Color Map -->
-    <color name="cream">#ccffcc</color>
-    <color name="transparent">#00000000</color>
-    <color name="darker_red">#cc0000</color>
-
-    <!-- Toolbar -->
-    <color name="bar_color">@color/cream</color>
-
     <color name="voices_orange">#fc9225</color>
     <color name="indicator_blue">#1A8CFF</color>
     <color name="indicator_grey">#BFBFBF</color>

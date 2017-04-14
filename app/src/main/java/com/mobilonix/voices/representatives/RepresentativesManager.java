@@ -485,10 +485,6 @@ public enum RepresentativesManager {
 
     private void toggleErrorDisplay(String identifier, boolean state) {
 
-//        GeneralUtil.toast("Got collection: " + ((RepresentativesPagerAdapter)
-//                representativesPager.getAdapter())
-//                .getPageArray().get(0).toString());
-
         LinearLayout errorLayout = (LinearLayout)
                 representativesPager.findViewWithTag(identifier + "_ERROR");
 
@@ -509,7 +505,6 @@ public enum RepresentativesManager {
                 errorMessageText.setText(R.string.local_not_yet_error);
             }
         } else {
-            //getRepresentativesPager().getAdapter().instantiateItem(getRepresentativesPager(), 0);
             GeneralUtil.toast("NULL ERROR LAYOUT FOR: ");
         }
     }

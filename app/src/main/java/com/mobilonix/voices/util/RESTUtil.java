@@ -152,17 +152,4 @@ public class RESTUtil {
 
         return representatives;
     }
-
-    /**
-     * Random integer
-     *
-     * @param lowerBound
-     * @param upperBound
-     * @return
-     */
-    public static int getRandomInt(int lowerBound, int upperBound)  {
-
-        return (int)((upperBound - lowerBound)*Math.random() + lowerBound);
-    }
-
 }
