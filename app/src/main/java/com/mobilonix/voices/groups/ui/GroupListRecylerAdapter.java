@@ -1,6 +1,5 @@
 package com.mobilonix.voices.groups.ui;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -115,8 +114,6 @@ public class GroupListRecylerAdapter extends RecyclerView.Adapter<GroupListRecyl
         TextView groupCategory;
 
         Button learnMoreButton;
-
-        Dialog groupDialog;
 
         int position;
 

@@ -22,9 +22,6 @@ public enum AnalyticsManager {
     public static String ANALYTICS_URL
                 = "https://script.google.com/macros/s/AKfycbxBK6HTkA6tTXU09sRF5PHHCq2LpBOFdx4ZH7E4ORf3sG374iU/exec";
 
-    //public static final String UNSUBSCRIBE_EVENT = "UNSUBSCRIBE_EVENT";
-    //public static final String SUBSCRIBE_EVENT = "SUBSCRIBE_EVENT";
-
                 public static int ANALYTICS_REQUEST_TIMEOUT = 5000;
 
                 public void trackEvent(String eventName,
@@ -58,7 +55,7 @@ public enum AnalyticsManager {
                                         "&eventTime=" + time)
                                 .build();
 
-                        /* Make call to auto-complete api */
+                        // Make call to auto-complete api
                                 client.newCall(recordRequest).enqueue(new okhttp3.Callback() {
                                         @Override
                                         public void onFailure(Call call, IOException e) {
@@ -70,7 +67,7 @@ public enum AnalyticsManager {
                                                 @Override
                                         public void onResponse(Call call, Response response) throws IOException {
 
-                                                        /* On Success return auto-complete Address results to callback */
+                                                        //On Success return auto-complete Address results to callback
                                                                 String responseString = response.body().string();
                                                 if(callback != null) {
                                                         callback.onExecuted(responseString, true);
@@ -78,10 +75,5 @@ public enum AnalyticsManager {
                                                 response.body().close();
                                             }
                                     });
-
                     }
-
-                //public void shouldLogDebugEvents(boolean status) {
-                //logDebugEvents = status;
-            //}
     }

@@ -89,8 +89,4 @@ public class NycCouncilGeoUtil extends VoicesGeoUtil{
     public String getBorough() {
         return Integer.toString(mBorough);
     }
-    
-    //public boolean isNyc() {
-        //return mBorough != 0;
-    //}
 }
