@@ -166,8 +166,6 @@ public enum RepresentativesManager {
                 pages.add(new RepresentativesPage(new ArrayList<Representative>(), representativesType));
             }
 
-            GeneralUtil.toast("Pages: " + pages);
-
             representativesPager.setAdapter(new RepresentativesPagerAdapter(pages));
             representativesPager.addOnPageChangeListener(pagerIndicator);
             pagerIndicator.addIndicatorShiftCallback(new Callback() {
