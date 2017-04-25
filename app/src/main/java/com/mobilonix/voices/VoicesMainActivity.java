@@ -54,6 +54,8 @@ public class VoicesMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voices_main);
 
+        VoicesApplication.setGlobalHandler(new WeakHandler());
+
         SessionManager.INSTANCE.signIn(new Callback<Boolean>() {
             @Override
             public boolean onExecuted(Boolean data) {
@@ -91,12 +93,6 @@ public class VoicesMainActivity extends AppCompatActivity {
                     RepresentativesManager.INSTANCE
                             .toggleRepresentativesScreen(null,
                                     VoicesMainActivity.this, true);
-
-
-                    //RepresentativesManager.INSTANCE.setPageByIndex(0);
-//                    RepresentativesManager.INSTANCE.toggleErrorDisplay(
-//                            RepresentativesManager.RepresentativesType.CONGRESS, true);
-
                     return false;
                 }
             });

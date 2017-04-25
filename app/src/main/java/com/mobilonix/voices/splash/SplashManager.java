@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.mobilonix.voices.R;
+import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.callbacks.Callback;
 import com.mobilonix.voices.representatives.RepresentativesManager;
@@ -34,8 +35,14 @@ public enum  SplashManager {
                 @Override
                 public void onClick(View v) {
                     INSTANCE.toggleSplashScreen(activity, false, null);
-                    RepresentativesManager.INSTANCE
-                            .toggleRepresentativesScreen(null, activity, true);
+
+                    VoicesApplication.getGlobalHandler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            RepresentativesManager.INSTANCE
+                                    .toggleRepresentativesScreen(null, activity, true);
+                        }
+                    }, 2500);
                 }
             });
             splashScreenVisible = true;
@@ -51,6 +58,9 @@ public enum  SplashManager {
                 }
                 @Override
                 public void onAnimationEnd(Animation animation) {
+
+                    GeneralUtil.toast("Ending animation fade out");
+
                     splashScreenVisible = false;
                     splashContentFrame.setVisibility(View.GONE);
                     activity.getMainContentFrame().removeView(splashContentFrame);

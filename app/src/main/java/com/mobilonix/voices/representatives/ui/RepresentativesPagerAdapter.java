@@ -40,20 +40,20 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
 
         pageArray.add(collection);
 
-        if(representatives.get(position).getType().getIdentifier()
-                .equals(RepresentativesManager.RepresentativesType.CONGRESS) && count > 0) {
-            GeneralUtil.toast(RepresentativesManager.RepresentativesType.CONGRESS + "Page created already. returning");
-            return null;
-        } else {
-            GeneralUtil.toast("Count: " + count);
-        }
-
-        if(representatives.get(position).getType().getIdentifier().toLowerCase()
-                .equals("Federal".toLowerCase())){
-            count++;
-        } else {
-            GeneralUtil.toast("Identifier: " + representatives.get(position).getType().getIdentifier());
-        }
+//        if(representatives.get(position).getType().getIdentifier()
+//                .equals(RepresentativesManager.RepresentativesType.CONGRESS) && count > 0) {
+//            GeneralUtil.toast(RepresentativesManager.RepresentativesType.CONGRESS + "Page created already. returning");
+//            return null;
+//        } else {
+//            GeneralUtil.toast("Count: " + count);
+//        }
+//
+//        if(representatives.get(position).getType().getIdentifier().toLowerCase()
+//                .equals("Federal".toLowerCase())){
+//            count++;
+//        } else {
+//            GeneralUtil.toast("Identifier: " + representatives.get(position).getType().getIdentifier());
+//        }
 
         LayoutInflater inflater = LayoutInflater.from(collection.getContext());
         ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.reps_page, collection, false);
