@@ -144,7 +144,7 @@ public class RESTUtil {
                             poli.getElectionDate(),
                             poli.getPhoneNumber(),
                             poli.getTwitterHandle(),
-                            poli.getContactForm(),
+                            //poli.getContactForm(),
                             poli.getEmailAddress(),
                             poli.getPicUrl(),
                             poli.getLevel()));
