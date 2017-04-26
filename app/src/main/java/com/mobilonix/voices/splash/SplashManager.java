@@ -34,15 +34,14 @@ public enum  SplashManager {
             splashGettingStartedButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    INSTANCE.toggleSplashScreen(activity, false, null);
-
-                    VoicesApplication.getGlobalHandler().postDelayed(new Runnable() {
+                    INSTANCE.toggleSplashScreen(activity, false, new Callback<Boolean>() {
                         @Override
-                        public void run() {
+                        public boolean onExecuted(Boolean data) {
                             RepresentativesManager.INSTANCE
                                     .toggleRepresentativesScreen(null, activity, true);
+                            return false;
                         }
-                    }, 2500);
+                    });
                 }
             });
             splashScreenVisible = true;
@@ -53,14 +52,9 @@ public enum  SplashManager {
                     R.anim.anim_fade_out);
             animationFadeOut.setAnimationListener(new Animation.AnimationListener() {
                 @Override
-                public void onAnimationStart(Animation animation) {
-                    GeneralUtil.toast("Starting animation fade out");
-                }
+                public void onAnimationStart(Animation animation) {}
                 @Override
                 public void onAnimationEnd(Animation animation) {
-
-                    GeneralUtil.toast("Ending animation fade out");
-
                     splashScreenVisible = false;
                     splashContentFrame.setVisibility(View.GONE);
                     activity.getMainContentFrame().removeView(splashContentFrame);

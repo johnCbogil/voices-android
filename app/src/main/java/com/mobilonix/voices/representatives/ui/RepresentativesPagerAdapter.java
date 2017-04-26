@@ -1,17 +1,27 @@
 package com.mobilonix.voices.representatives.ui;
 
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
+import android.text.Html;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.mobilonix.voices.R;
+import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.model.RepresentativesPage;
 import com.mobilonix.voices.util.GeneralUtil;
+import com.mobilonix.voices.util.ViewUtil;
 
 import java.util.ArrayList;
 
@@ -33,27 +43,10 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
         this.representatives = representatives;
     }
 
-    static int count = 0;
-
     @Override
     public Object instantiateItem(ViewGroup collection, final int position) {
 
         pageArray.add(collection);
-
-//        if(representatives.get(position).getType().getIdentifier()
-//                .equals(RepresentativesManager.RepresentativesType.CONGRESS) && count > 0) {
-//            GeneralUtil.toast(RepresentativesManager.RepresentativesType.CONGRESS + "Page created already. returning");
-//            return null;
-//        } else {
-//            GeneralUtil.toast("Count: " + count);
-//        }
-//
-//        if(representatives.get(position).getType().getIdentifier().toLowerCase()
-//                .equals("Federal".toLowerCase())){
-//            count++;
-//        } else {
-//            GeneralUtil.toast("Identifier: " + representatives.get(position).getType().getIdentifier());
-//        }
 
         LayoutInflater inflater = LayoutInflater.from(collection.getContext());
         ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.reps_page, collection, false);
@@ -70,6 +63,21 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
                 .setAdapter(new RepresentativesListAdapter
                         (representativesList.getContext(),
                                 R.layout.reps_item, representatives.get(position).getRepresentatives()));
+
+
+        /**********Start experiment*************/
+
+        if(representatives.get(position).getType().getIdentifier().equalsIgnoreCase("Federal")) {
+            FrameLayout frameLayout = (FrameLayout) layout.getChildAt(0);
+            frameLayout.findViewById(R.id.layout_error_page).setVisibility(View.VISIBLE);
+            ((TextView)frameLayout.findViewById(R.id.representatives_error_message))
+                    .setText(Html.fromHtml(VoicesApplication.getContext()
+                    .getResources()
+                    .getString(R.string.reps_fetch_error)
+            ));
+        }
+
+        /**********End experiment*************/
 
         collection.addView(layout);
 

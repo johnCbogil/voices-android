@@ -23,6 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="200dp"
                 android:gravity="center"
+                android:id="@+id/reps_image"
                 android:src="@drawable/reps_zero"
                 android:tint="#E6E6E6"/>
             <com.mobilonix.voices.util.AvenirTextView
