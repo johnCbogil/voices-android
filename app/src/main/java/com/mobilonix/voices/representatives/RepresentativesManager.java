@@ -502,9 +502,8 @@ public enum RepresentativesManager {
             } else {
                 errorMessageText.setText(R.string.local_not_yet_error);
             }
-        } else {
-            GeneralUtil.toast("NULL ERROR LAYOUT FOR: ");
         }
+
     }
 
     public void toggleErrorDisplay(RepresentativesType type, boolean state) {
