@@ -146,8 +146,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
         }
 
         if (representatives.get(position).getLevel().equals("Federal")) {
-            check = null;
-            //representatives.get(position).getContactForm();
+            check = representatives.get(position).getContactForm();
             if (check == null || check.equals("")) {
                 mViewHolder.mEmailImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
                 mViewHolder.mEmailImage.setOnClickListener(new View.OnClickListener() {
@@ -178,10 +177,10 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                                         SessionManager.INSTANCE.getCurrentUserToken(),
                                         "ACTION=" + RepresentativesManager.INSTANCE.getLastActionSelectedForContact() +
                                                 ";GROUP=" + RepresentativesManager.INSTANCE.getGroupForLastAction(), null);
-                                //String url = representatives.get(position).getContactForm();
-                                //Intent i = new Intent(Intent.ACTION_VIEW);
-                                //i.setData(Uri.parse(url));
-                                //v.getContext().startActivity(i);
+                                String url = representatives.get(position).getContactForm();
+                                Intent i = new Intent(Intent.ACTION_VIEW);
+                                i.setData(Uri.parse(url));
+                                v.getContext().startActivity(i);
                             }
                         });
                         noButton.setOnClickListener(new View.OnClickListener() {
