@@ -3,10 +3,12 @@ package com.mobilonix.voices.data.api.engines;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.mobilonix.voices.R;
 import com.mobilonix.voices.data.api.ApiEngine;
 import com.mobilonix.voices.data.api.util.UrlGenerator;
 import com.mobilonix.voices.data.model.Politico;
 import com.mobilonix.voices.representatives.RepresentativesManager;
+import com.mobilonix.voices.util.JsonUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -85,7 +87,7 @@ public class UsCongressSunlightApi implements ApiEngine {
                 String phoneNumber = jsonPolitico.optString("phone");
                 String twitter = jsonPolitico.optString("twitter_id");
                 String bioguideId = jsonPolitico.optString("bioguide_id");
-                //String contactForm = getContactFormUrl(bioguideId);
+                String contactForm = getContactFormUrl(bioguideId);
                 Politico politico = new Politico.Builder()
                         .setGender(gender)
                         .setParty(party)
@@ -94,7 +96,7 @@ public class UsCongressSunlightApi implements ApiEngine {
                         .setElectionDate(electionDate)
                         .setPhoneNumber(phoneNumber)
                         .setTwitterHandle(twitter)
-                        //.setContactForm(contactForm)
+                        .setContactForm(contactForm)
                         .setEmailAddress("")
                         .setPicUrl(IMAGE_BASE_URL + bioguideId + IMAGE_FILE_EXTENSION)
                         .build(title, firstName, lastName);
@@ -137,13 +139,13 @@ public class UsCongressSunlightApi implements ApiEngine {
         }
     }
 
-//    public String getContactFormUrl(String bioguideId){
-//        JSONObject reps = JsonUtil.getJsonFromResource(R.raw.contact_forms);
-//        if(reps.has(bioguideId)){
-//            return reps.optString(bioguideId);
-//        }
-//        return "";
-//    }
+    public String getContactFormUrl(String bioguideId){
+        JSONObject reps = JsonUtil.getJsonFromResource(R.raw.contact_forms);
+        if(reps.has(bioguideId)){
+            return reps.optString(bioguideId);
+        }
+        return "";
+    }
     @Override
     public RepresentativesManager.RepresentativesType getRepresentativeType() {
         return RepresentativesManager.RepresentativesType.CONGRESS;

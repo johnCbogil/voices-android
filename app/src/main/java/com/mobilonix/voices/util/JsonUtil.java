@@ -12,9 +12,7 @@ import java.io.InputStream;
 public class JsonUtil {
 
     private static String convertStreamToString(InputStream inputStream) {
-
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
         byte buf[] = new byte[1024];
         int len;
         try {
@@ -24,7 +22,6 @@ public class JsonUtil {
             outputStream.close();
             inputStream.close();
         } catch (IOException e) {
-
             //TODO handle exception
         }
         return outputStream.toString();
@@ -32,7 +29,6 @@ public class JsonUtil {
 
     public static JSONObject getJsonFromResource(int jsonResource)  {
         InputStream inputStream = VoicesApplication.getContext().getResources().openRawResource(jsonResource); // getting XML
-
         if(jsonResource > 0){
             try {
                 JSONObject jsonObject = new JSONObject(convertStreamToString(inputStream));

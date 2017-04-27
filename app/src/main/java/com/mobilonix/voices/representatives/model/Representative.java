@@ -12,7 +12,7 @@ public class Representative {
     private String phoneNumber;
     private String twitterHandle;
     private String emailAddress;
-    //private String contactForm;
+    private String contactForm;
     private String representativeImageUrl;
     private String title;
     private String name;
@@ -35,9 +35,9 @@ public class Representative {
         return emailAddress;
     }
 
-    //public String getContactForm() {
-        //return contactForm;
-    //}
+    public String getContactForm() {
+        return contactForm;
+    }
 
     public String getTwitterHandle() {
         return twitterHandle;
@@ -72,7 +72,7 @@ public class Representative {
                           String electionDate,
                           String phoneNumber,
                           String twitterHandle,
-                          //String contactForm,
+                          String contactForm,
                           String emailAddress,
                           String representativeImageUrl,
                           String level) {
@@ -86,7 +86,7 @@ public class Representative {
         this.electionDate = electionDate;
         this.phoneNumber = phoneNumber;
         this.twitterHandle = twitterHandle;
-        //this.contactForm = contactForm;
+        this.contactForm = contactForm;
         this.emailAddress = emailAddress;
         this.representativeImageUrl = representativeImageUrl;
         this.level = level;
