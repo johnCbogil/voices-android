@@ -43,6 +43,16 @@
                         android:text="@string/takeaction"
                         android:textColor="#FFF"
                         android:visibility="gone"/>
+                    <com.mobilonix.voices.util.AvenirTextView
+                        android:id="@+id/allgroups_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginTop="5dp"
+                        android:textSize="25dp"
+                        android:text="@string/all_groups_info"
+                        android:textColor="#FFF"
+                        android:visibility="gone"/>
                     <ImageView
                         android:id="@+id/toolbar_search"
                         android:layout_width="40dp"
@@ -108,6 +118,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|top"
+                        android:layout_marginTop="5dp"
                         android:src="@drawable/toolbar_previous"
                         android:tint="#FFF"
                         android:visibility="gone"/>

@@ -16,10 +16,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.VoicesMainActivity;
@@ -38,6 +34,7 @@ import com.mobilonix.voices.representatives.ui.PagerIndicator;
 import com.mobilonix.voices.representatives.ui.RepresentativesListAdapter;
 import com.mobilonix.voices.representatives.ui.RepresentativesPagerAdapter;
 import com.mobilonix.voices.util.AvenirBoldTextView;
+import com.mobilonix.voices.util.AvenirTextView;
 import com.mobilonix.voices.util.GeneralUtil;
 import com.mobilonix.voices.util.RESTUtil;
 
@@ -74,7 +71,6 @@ public enum RepresentativesManager {
     ImageView representativesTabIcon;
     ImageView groupsTabIcon;
 
-    PlaceAutocompleteFragment autoCompleteTextView;
     ConcurrentHashMap<String, ArrayList<Representative>> currentRepsMap = new ConcurrentHashMap<>();
 
     ArrayList<RepresentativesPage> pages;
@@ -215,31 +211,8 @@ public enum RepresentativesManager {
                     return false;
                 }
             });
-
-            /* Initialize Autocomplete fragment */
-            if (autoCompleteTextView == null) {
-                autoCompleteTextView = (PlaceAutocompleteFragment) activity.getFragmentManager()
-                        .findFragmentById(R.id.place_autocomplete_fragment);
-                autoCompleteTextView.setHint(activity.getString(R.string.search_text));
-                autoCompleteTextView.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-                    @Override
-                    public void onPlaceSelected(Place place) {
-                        refreshRepresentativesContent(
-                                place.getAddress().toString(),
-                                place.getLatLng().latitude,
-                                place.getLatLng().longitude,
-                                activity,
-                                pages,
-                                representativesPager);
-                    }
-                    @Override
-                    public void onError(Status status) {}
-                });
                 initTabView(activity);
                 activity.getMainContentFrame().addView(representativesFrame);
-            } else {
-                activity.getMainContentFrame().removeView(representativesFrame);
-            }
             representativesScreenVisible = state;
         }
     }
@@ -255,6 +228,7 @@ public enum RepresentativesManager {
         final ViewPager representativesPager = (ViewPager)representativesFrame.findViewById(R.id.representatives_pager);
         final FrameLayout groupsView = (FrameLayout)representativesFrame.findViewById(R.id.groups_view);
         final ImageView backArrow = (ImageView)primaryToolbar.findViewById(R.id.toolbar_previous);
+        final AvenirTextView allGroupsText = (AvenirTextView)primaryToolbar.findViewById(R.id.allgroups_text);
         final ImageView addGroupIcon = (ImageView)primaryToolbar.findViewById(R.id.toolbar_add);
         final ImageView searchIcon = (ImageView)primaryToolbar.findViewById(R.id.toolbar_search);
         final AvenirBoldTextView findReps = (AvenirBoldTextView)primaryToolbar.findViewById(R.id.findreps);
@@ -294,6 +268,7 @@ public enum RepresentativesManager {
                 groupsView.setVisibility(View.VISIBLE);
                 primaryToolbar.setVisibility(View.VISIBLE);
                 backArrow.setVisibility(View.GONE);
+                allGroupsText.setVisibility(View.GONE);
                 addGroupIcon.setVisibility(View.VISIBLE);
                 searchIcon.setVisibility(View.GONE);
                 findReps.setVisibility(View.GONE);
@@ -316,6 +291,7 @@ public enum RepresentativesManager {
                 groupsView.setVisibility(View.GONE);
                 primaryToolbar.setVisibility(View.VISIBLE);
                 backArrow.setVisibility(View.GONE);
+                allGroupsText.setVisibility(View.GONE);
                 addGroupIcon.setVisibility(View.GONE);
                 searchIcon.setVisibility(View.VISIBLE);
                 findReps.setVisibility(View.VISIBLE);

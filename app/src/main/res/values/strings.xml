@@ -15,7 +15,7 @@
     <string name="search_text">Find Your Reps</string>
     <string name="representatives_error_message">Officials are not available in your area yet.</string>
     <string name="local_not_yet_error">Local reps are not available in this area yet.</string>
-    <string name="reps_fetch_error">Please press the search button above to find representatives.</string>
+    <string name="reps_fetch_error">Enter your address: use the search button above to find your reps.</string>
 
     <!--Reps Details Dialog-->
     <string name="details_title">More Info</string>
@@ -74,6 +74,8 @@
     <string name="response_2">Calling is the most effective way to get the government to listen to you, according to political staffers. Calls are taken more seriously and have a greater impact than emails or social media.</string>
     <string name="response_3">What To Say</string>
     <string name="response_4">Hello my name is [your name] and I am a constituent. I would like the representative to [support or oppose] [an issue that you care about] and I will be voting in the next election.</string>
+    <string name="response_5">What To Expect</string>
+    <string name="response_6">You will likely talk to an intern or staffer dedicated to constituent services. They will take down your name, opinion and relay that information to your representative. Many offices tally the number of constituents that call to support or oppose various issues.</string>
     <string name="info_close_button">X</string>
 
     <!--API Keys-->

@@ -29,7 +29,7 @@
             <com.mobilonix.voices.util.AvenirTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_margin="10dp"
                 android:text="@string/representatives_error_message"
                 android:id="@+id/representatives_error_message"
                 android:gravity="center" />

@@ -5,24 +5,11 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/reps_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:weightSum="1.0"
         android:orientation="vertical">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.1"
-            android:id="@+id/auto_complete_holder"
-            android:visibility="gone">
-            <fragment
-                    android:id="@+id/place_autocomplete_fragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
-                    android:visibility="gone"/>
-        </FrameLayout>
 
         <FrameLayout
             android:id="@+id/pager_meta_frame"

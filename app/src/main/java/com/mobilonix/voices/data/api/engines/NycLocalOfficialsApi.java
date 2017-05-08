@@ -88,11 +88,11 @@ public class NycLocalOfficialsApi implements ApiEngine {
 
         ArrayList<Politico> politicos = getOtherReps();
 
-        Politico politico = politicianFromDistrict(getDistrict(response));
-
-        if(politico != null) {
-            politicos.add(politico);
-        }
+//        Politico politico = politicianFromDistrict(getDistrict(response));
+//
+//        if(politico != null) {
+//            politicos.add(politico);
+//        }
         return politicos;
     }
 
@@ -191,7 +191,6 @@ public class NycLocalOfficialsApi implements ApiEngine {
                 politicos.add(politico);
             }
         } catch (JSONException e) {
-            Log.e(TAG, "json parse: " + e);
             return politicos;
         }
         return politicos;
