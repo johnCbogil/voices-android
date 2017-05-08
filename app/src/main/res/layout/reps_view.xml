@@ -3,20 +3,17 @@
     android:background="#FFF"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <LinearLayout
         android:id="@+id/reps_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:weightSum="1.0"
         android:orientation="vertical">
-
         <FrameLayout
             android:id="@+id/pager_meta_frame"
             android:layout_weight="0.1"
             android:layout_width="match_parent"
             android:layout_height="0dp">
-
             <com.mobilonix.voices.representatives.ui.PagerIndicator
                 android:id="@+id/pager_indicator"
                 android:orientation="horizontal"
@@ -25,7 +22,6 @@
                 android:layout_marginBottom="10dp"
                 android:layout_gravity="bottom|center">
             </com.mobilonix.voices.representatives.ui.PagerIndicator>
-
         </FrameLayout>
 
         <!-- The primary view for the reps window -->

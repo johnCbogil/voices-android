@@ -74,14 +74,12 @@ public class EntityContainer extends FrameLayout {
             entityListTopText.setText(R.string.no_follow_groups_top);
             entityListBottomText.setText(R.string.no_follow_groups);
         } else if(type == GroupManager.GroupType.ALL) {
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)entityList.getLayoutParams();
+            params.setMargins(0,0,0,0);
+            entityList.setLayoutParams(params);
             entityListTopText.setText(VoicesApplication.EMPTY);
             entityListBottomText.setText(R.string.groups_fetch_error);
             noFollowImage.setImageResource(R.drawable.voices_error);
-            //LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) noFollowImage.getLayoutParams();
-            //params.height = 100;
-            //params.width = 100;
-            //params.setMargins(0,0,0,0);
-           // noFollowImage.setLayoutParams(params);
         }
     }
 
