@@ -284,8 +284,7 @@ public enum RepresentativesManager {
         representativesTabIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                /* Always set the page back to the federal reps when selevting the groups tav*/
+                /* Always set the page back to the federal reps when selecting the groups tab*/
                 //RepresentativesManager.INSTANCE.setPageByIndex(0);
                 representativesPager.setVisibility(View.VISIBLE);
                 groupsView.setVisibility(View.GONE);
