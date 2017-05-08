@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.groups.GroupManager;
@@ -62,7 +63,6 @@ public class GroupPage extends FrameLayout {
 
     public void setAllGroups(ArrayList<Group> allGroups) {
         this.allGroups = allGroups;
-
         EntityContainer allGroupsContainer = (EntityContainer)findViewById(R.id.all_groups_container);
         allGroupsContainer.addItems(allGroups,
                 GroupManager.GroupType.USER);
@@ -70,6 +70,8 @@ public class GroupPage extends FrameLayout {
         actionsButton.setVisibility(View.GONE);
         AvenirBoldTextView groupsButton=(AvenirBoldTextView)allGroupsContainer.findViewById(R.id.groups_button);
         groupsButton.setVisibility(View.GONE);
+        LinearLayout actionsGroupsLinearLayout=(LinearLayout)allGroupsContainer.findViewById(R.id.actions_groups_linear_layout);
+        actionsGroupsLinearLayout.setVisibility(View.GONE);
     }
 
     /**

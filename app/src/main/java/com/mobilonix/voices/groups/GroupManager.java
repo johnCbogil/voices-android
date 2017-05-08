@@ -163,7 +163,6 @@ public enum GroupManager {
                 .getResources().getColor(R.color.indicator_grey);
 
         if (groupType == GroupType.ACTION) {
-
             groupPage.findViewById(R.id.actions_container).setVisibility(View.VISIBLE);
             groupPage.findViewById(R.id.user_groups_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.all_groups_container).setVisibility(View.GONE);
@@ -209,6 +208,7 @@ public enum GroupManager {
             ((EntityContainer) groupPage.findViewById(R.id.all_groups_container)).setType(groupType);
 
             toolbar.findViewById(R.id.toolbar_previous).setVisibility(View.VISIBLE);
+            toolbar.findViewById(R.id.allgroups_text).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.toolbar_add).setVisibility(View.GONE);
             toolbar.findViewById(R.id.toolbar_reps).setVisibility(View.GONE);
             toolbar.findViewById(R.id.toolbar_groups).setVisibility(View.GONE);
@@ -432,6 +432,7 @@ public enum GroupManager {
         toggleGroups(GroupType.USER);
         Toolbar toolbar = ((VoicesMainActivity) groupPage.getContext()).getToolbar();
         toolbar.findViewById(R.id.toolbar_previous).setVisibility(View.GONE);
+        toolbar.findViewById(R.id.allgroups_text).setVisibility(View.GONE);
         toolbar.findViewById(R.id.takeaction).setVisibility(View.VISIBLE);
         toolbar.findViewById(R.id.groups_horizontal).setVisibility(View.VISIBLE);
     }
