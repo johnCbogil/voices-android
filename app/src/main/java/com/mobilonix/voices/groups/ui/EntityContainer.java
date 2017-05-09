@@ -66,7 +66,6 @@ public class EntityContainer extends FrameLayout {
 
     public void setType(GroupManager.GroupType type) {
         this.type = type;
-
         if(type == GroupManager.GroupType.ACTION) {
             entityListTopText.setText(R.string.no_follow_actions_top);
             entityListBottomText.setText(R.string.no_follow_actions);
