@@ -5,6 +5,7 @@ import android.widget.Toast;
 import com.mobilonix.voices.VoicesApplication;
 
 import java.util.Calendar;
+import java.util.TimeZone;
 
 //general utility functions that don't necessarily fit into any specific category
 public class GeneralUtil {
@@ -18,8 +19,9 @@ public class GeneralUtil {
         int hours = c.get(Calendar.HOUR_OF_DAY);
         int minutes = c.get(Calendar.MINUTE);
         int seconds = c.get(Calendar.SECOND);
+        String timeZone = Calendar.getInstance().getTimeZone().getDisplayName(false, TimeZone.SHORT);
 
-        return hours+":"+minutes+":"+seconds;
+        return hours+":"+minutes+":"+seconds + " " + timeZone;
     }
 
 }
