@@ -34,6 +34,7 @@ import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.ui.RoundedTransformation;
 import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.util.AvenirBoldTextView;
+import com.mobilonix.voices.util.AvenirTextView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -510,7 +511,7 @@ public enum GroupManager {
                     response = action.getScript();
                     responseTextView.setText(response);
                 }
-                Button infoCloseButton = (Button) responseDialog.findViewById(R.id.info_close_button);
+                AvenirTextView infoCloseButton = (AvenirTextView)responseDialog.findViewById(R.id.info_close_button);
                 infoCloseButton.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v){
