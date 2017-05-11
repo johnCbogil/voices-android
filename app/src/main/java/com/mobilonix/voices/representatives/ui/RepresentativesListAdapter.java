@@ -137,6 +137,24 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                             SessionManager.INSTANCE.getCurrentUserToken(),
                             "ACTION=" + RepresentativesManager.INSTANCE.getLastActionSelectedForContact() +
                                     ";GROUP=" + RepresentativesManager.INSTANCE.getGroupForLastAction(), null);
+//                    Intent intent = new Intent();
+//                    PendingIntent contentIntent = PendingIntent.getActivity
+//                            (VoicesApplication.getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//                    NotificationCompat.Builder b = new NotificationCompat.Builder(VoicesApplication.getContext());
+//                    b.setAutoCancel(true)
+//                            .setDefaults(Notification.DEFAULT_ALL)
+//                            .setWhen(System.currentTimeMillis())
+//                            .setSmallIcon(R.drawable.ic_launcher)
+//                            .setTicker("Hearty365")
+//                            .setContentTitle("Default notification")
+//                            .setContentText("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+//                            .setDefaults(Notification.DEFAULT_LIGHTS| Notification.DEFAULT_SOUND)
+//                            .setContentIntent(contentIntent)
+//                            .setContentInfo("Info");
+//
+//
+//                    NotificationManager notificationManager = (NotificationManager)VoicesApplication.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+//                    notificationManager.notify(1, b.build());
 
                     Intent intent = new Intent(Intent.ACTION_DIAL);
                     intent.setData(Uri.parse("tel:" + representatives.get(position).getPhoneNumber()));
