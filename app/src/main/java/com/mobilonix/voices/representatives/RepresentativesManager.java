@@ -79,9 +79,7 @@ public enum RepresentativesManager {
     Dialog infoDialog;
 
     /**
-     *
      * The enum value contains the URL that needs to be called to make the representatives request
-     *
      */
 
     /* Fixme The old enum structure assumed that only an Api URL was necessary to pull data     */
@@ -110,7 +108,7 @@ public enum RepresentativesManager {
 
             Request a = mApi.generateRequest(lat, lon);
 
-            if(a == null) {
+            if (a == null) {
                 throw new IOException("API Failure");
             }
 
@@ -122,7 +120,7 @@ public enum RepresentativesManager {
 
             try {
                 return mApi.parseData(response);
-            } catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace(); //TODO Handle exception with appropriate dialog or activity msg
                 return null;
             }
@@ -136,7 +134,7 @@ public enum RepresentativesManager {
     public void toggleRepresentativesScreen(LatLong location, final VoicesMainActivity activity, boolean state) {
 
         if (state) {
-            if(representativesFrame ==  null) {
+            if (representativesFrame == null) {
                 LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 representativesFrame = (FrameLayout)
                         inflater.inflate(R.layout.reps_view, null, false);
@@ -144,7 +142,7 @@ public enum RepresentativesManager {
 
             primaryToolbar = activity.getToolbar();
             dropShadow = activity.findViewById(R.id.toolbar_dropshadow);
-            final ImageView addGroupIcon = (ImageView)primaryToolbar.findViewById(R.id.toolbar_add);
+            final ImageView addGroupIcon = (ImageView) primaryToolbar.findViewById(R.id.toolbar_add);
             primaryToolbar.setVisibility(View.VISIBLE);
             dropShadow.setVisibility(View.VISIBLE);
             addGroupIcon.setVisibility(View.GONE);
@@ -170,13 +168,13 @@ public enum RepresentativesManager {
 
                     String tag = "";
 
-                    if(data == null) {
+                    if (data == null) {
                         tag = pagerIndicator
                                 .getCurrentIndicatorTag();
-                    } else if (data instanceof String){
-                        tag = (String)data;
+                    } else if (data instanceof String) {
+                        tag = (String) data;
                     } else if (data instanceof Integer) {
-                        representativesPager.setCurrentItem((Integer)data);
+                        representativesPager.setCurrentItem((Integer) data);
                         return true;
                     }
 
@@ -211,8 +209,8 @@ public enum RepresentativesManager {
                     return false;
                 }
             });
-                initTabView(activity);
-                activity.getMainContentFrame().addView(representativesFrame);
+            initTabView(activity);
+            activity.getMainContentFrame().addView(representativesFrame);
             representativesScreenVisible = state;
         }
     }
@@ -222,42 +220,50 @@ public enum RepresentativesManager {
      */
     private void initTabView(final VoicesMainActivity activity) {
 
-        representativesTabIcon = (ImageView)primaryToolbar.findViewById(R.id.toolbar_reps);
-        groupsTabIcon = (ImageView)primaryToolbar.findViewById(R.id.toolbar_groups);
+        representativesTabIcon = (ImageView) primaryToolbar.findViewById(R.id.toolbar_reps);
+        groupsTabIcon = (ImageView) primaryToolbar.findViewById(R.id.toolbar_groups);
 
-        final ViewPager representativesPager = (ViewPager)representativesFrame.findViewById(R.id.representatives_pager);
-        final FrameLayout groupsView = (FrameLayout)representativesFrame.findViewById(R.id.groups_view);
-        final ImageView backArrow = (ImageView)primaryToolbar.findViewById(R.id.toolbar_previous);
-        final AvenirTextView allGroupsText = (AvenirTextView)primaryToolbar.findViewById(R.id.allgroups_text);
-        final ImageView addGroupIcon = (ImageView)primaryToolbar.findViewById(R.id.toolbar_add);
-        final ImageView searchIcon = (ImageView)primaryToolbar.findViewById(R.id.toolbar_search);
-        final AvenirBoldTextView findReps = (AvenirBoldTextView)primaryToolbar.findViewById(R.id.findreps);
-        final AvenirBoldTextView takeAction = (AvenirBoldTextView)primaryToolbar.findViewById(R.id.takeaction);
-        final ImageView repsHorizontal = (ImageView)primaryToolbar.findViewById(R.id.reps_horizontal);
-        final ImageView groupsHorizontal = (ImageView)primaryToolbar.findViewById(R.id.groups_horizontal);
-        final ImageView kebabIcon = (ImageView)primaryToolbar.findViewById(R.id.toolbar_kebab);
+        final ViewPager representativesPager = (ViewPager) representativesFrame.findViewById(R.id.representatives_pager);
+        final FrameLayout groupsView = (FrameLayout) representativesFrame.findViewById(R.id.groups_view);
+        final ImageView backArrow = (ImageView) primaryToolbar.findViewById(R.id.toolbar_previous);
+        final AvenirTextView allGroupsText = (AvenirTextView) primaryToolbar.findViewById(R.id.allgroups_text);
+        final ImageView addGroupIcon = (ImageView) primaryToolbar.findViewById(R.id.toolbar_add);
+        final ImageView searchIcon = (ImageView) primaryToolbar.findViewById(R.id.toolbar_search);
+        final AvenirBoldTextView findReps = (AvenirBoldTextView) primaryToolbar.findViewById(R.id.findreps);
+        final AvenirBoldTextView takeAction = (AvenirBoldTextView) primaryToolbar.findViewById(R.id.takeaction);
+        final ImageView repsHorizontal = (ImageView) primaryToolbar.findViewById(R.id.reps_horizontal);
+        final ImageView groupsHorizontal = (ImageView) primaryToolbar.findViewById(R.id.groups_horizontal);
+        final ImageView kebabIcon = (ImageView) primaryToolbar.findViewById(R.id.toolbar_kebab);
 
         kebabIcon.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 infoDialog = new Dialog(primaryToolbar.getContext());
                 infoDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 infoDialog.setContentView(R.layout.dialog_info);
                 infoDialog.show();
                 TextView infoCloseButton = (TextView) infoDialog.findViewById(R.id.info_close_button);
-                infoCloseButton.setOnClickListener(new View.OnClickListener(){
+                infoCloseButton.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v){
+                    public void onClick(View v) {
                         infoDialog.dismiss();
                     }
                 });
             }
         });
 
-        searchIcon.setOnClickListener(new View.OnClickListener(){
+        searchIcon.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 activity.callPlaceAutocompleteActivityIntent();
+            }
+        });
+
+        addGroupIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ALL);
+                takeAction.setVisibility(View.GONE);
             }
         });
 
@@ -302,36 +308,27 @@ public enum RepresentativesManager {
                 GroupManager.INSTANCE.toggleGroupPage(groupsView, false);
             }
         });
-
-        /* Show all the groups */
-        addGroupIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ALL);
-                takeAction.setVisibility(View.GONE);
-            }
-        });
     }
+        @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
+        public void selectRepresentativesTab () {
+            representativesTabIcon.callOnClick();
+        }
 
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
-    public void selectRepresentativesTab() {
-        representativesTabIcon.callOnClick();
-    }
+        @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
+        public void selectGroupsTab () {
+            groupsTabIcon.callOnClick();
+        }
 
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
-    public void selectGroupsTab() {
-        groupsTabIcon.callOnClick();
-    }
+        /**
+         *
+         *
+         * @param repLat
+         * @param repLong
+         * @param activity;
+         * @param pages
+         * @param representativesPager
+         */
 
-    /**
-     *
-     *
-     * @param repLat
-     * @param repLong
-     * @param activity;
-     * @param pages
-     * @param representativesPager
-     */
     public void refreshRepresentativesContent(final String locationString,
                                               double repLat,
                                               double repLong,
@@ -344,74 +341,74 @@ public enum RepresentativesManager {
             /* reset the error state */
             toggleErrorDisplay(type, false);
 
-            ProgressBar progressSpinner = (ProgressBar)representativesPager
+            ProgressBar progressSpinner = (ProgressBar) representativesPager
                     .findViewWithTag(type.getIdentifier() + "_PROGRESS");
 
-            if(progressSpinner != null) {
+            if (progressSpinner != null) {
                 progressSpinner.setVisibility(View.VISIBLE);
             }
 
 
             RESTUtil.makeRepresentativesRequest(repLat, repLong, type,
                     new Callback2<ArrayList<Representative>, RepresentativesType>() {
-                @Override
-                public boolean onExecuted(final ArrayList<Representative> data, final RepresentativesType type) {
-
-                    //TODO below if statement was put in primarily to handle case when NycLocalOfficialsApi
-                    //  is executed outside of NYC. Prefer an a priori way of checking city. Also,
-                    //  as more cities are on-boarded, a city API selector will be implemented that
-                    //  also requires a priori knowledge
-
-                    activity.getHandler().post(new Runnable() {
                         @Override
-                        public void run() {
-                            ProgressBar progressSpinner = (ProgressBar)representativesPager
-                                    .findViewWithTag(type.getIdentifier() + "_PROGRESS");
+                        public boolean onExecuted(final ArrayList<Representative> data, final RepresentativesType type) {
 
-                            if(progressSpinner != null) {
-                                progressSpinner.setVisibility(View.GONE);
+                            //TODO below if statement was put in primarily to handle case when NycLocalOfficialsApi
+                            //  is executed outside of NYC. Prefer an a priori way of checking city. Also,
+                            //  as more cities are on-boarded, a city API selector will be implemented that
+                            //  also requires a priori knowledge
+
+                            activity.getHandler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ProgressBar progressSpinner = (ProgressBar) representativesPager
+                                            .findViewWithTag(type.getIdentifier() + "_PROGRESS");
+
+                                    if (progressSpinner != null) {
+                                        progressSpinner.setVisibility(View.GONE);
+                                    }
+                                }
+                            });
+
+                            final ArrayList<Representative> result;
+                            if ((data == null) || data.isEmpty()) {
+                                result = new ArrayList<>();
+                            } else {
+                                result = data;
                             }
+
+                            activity.getHandler().post(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    toggleErrorDisplay(type, false);
+
+                                    finalizePageOrder(result, type, pages, representativesPager);
+
+                                    String location = VoicesApplication.EMPTY;
+
+                                    if ((result != null) && (result.size() > 0)) {
+                                        if (locationString.equals(CURRENT_LOCATION)) {
+                                            location = "current location!";
+                                        } else {
+                                            location = "address: " + locationString;
+                                        }
+                                        if (pagerIndicator.getCurrentIndicatorTag()
+                                                .equals(type.getIdentifier())) {
+                                            GeneralUtil.toast("Found "
+                                                    + type.getIdentifier() + " representatives for " + location);
+                                        }
+                                    } else {
+                                        toggleErrorDisplay(type, true);
+                                    }
+
+                                }
+                            });
+
+                            return false;
                         }
                     });
-
-                    final ArrayList<Representative> result;
-                    if((data == null) || data.isEmpty()) {
-                        result = new ArrayList<>();
-                    } else{
-                        result = data;
-                    }
-
-                    activity.getHandler().post(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                toggleErrorDisplay(type, false);
-
-                                finalizePageOrder(result, type, pages, representativesPager);
-
-                                String location = VoicesApplication.EMPTY;
-
-                                if((result != null) && (result.size() > 0)) {
-                                    if (locationString.equals(CURRENT_LOCATION)) {
-                                        location = "current location!";
-                                    } else {
-                                        location = "address: " + locationString;
-                                    }
-                                    if(pagerIndicator.getCurrentIndicatorTag()
-                                            .equals(type.getIdentifier())) {
-                                        GeneralUtil.toast("Found "
-                                                + type.getIdentifier() + " representatives for " + location);
-                                    }
-                                } else {
-                                    toggleErrorDisplay(type, true);
-                                }
-
-                            }
-                    });
-
-                    return false;
-                }
-            });
         }
     }
 
@@ -434,11 +431,11 @@ public enum RepresentativesManager {
 
     public void setPageByIndex(int index) {
 
-        if(index >= 3) {
+        if (index >= 3) {
             index = 0;
         }
 
-        if((pagerIndicator != null) && (representativesFrame != null)) {
+        if ((pagerIndicator != null) && (representativesFrame != null)) {
             ((ViewPager) representativesFrame.findViewById(R.id.representatives_pager)).setCurrentItem(index);
             pagerIndicator.onPageSelected(index);
         }
@@ -455,24 +452,23 @@ public enum RepresentativesManager {
     }
 
 
-
     private void toggleErrorDisplay(String identifier, boolean state) {
 
         LinearLayout errorLayout = (LinearLayout)
                 representativesPager.findViewWithTag(identifier + "_ERROR");
 
-        if(errorLayout != null) {
+        if (errorLayout != null) {
             errorLayout.setVisibility(state ? View.VISIBLE : View.GONE);
 
             TextView errorMessageText
-                    = (TextView)errorLayout.findViewById(R.id.representatives_error_message);
+                    = (TextView) errorLayout.findViewById(R.id.representatives_error_message);
 
             /* TODO: When we get the local officials available, we'll need to amend this logic */
-            if(!identifier.equals(RepresentativesType.COUNCIL_MEMBERS.getIdentifier())) {
+            if (!identifier.equals(RepresentativesType.COUNCIL_MEMBERS.getIdentifier())) {
                 errorMessageText
                         .setText(Html.fromHtml(VoicesApplication.getContext()
-                        .getResources()
-                        .getString(R.string.reps_fetch_error)
+                                .getResources()
+                                .getString(R.string.reps_fetch_error)
                         ));
             } else {
                 errorMessageText.setText(R.string.local_not_yet_error);
@@ -512,11 +508,11 @@ public enum RepresentativesManager {
         return groupForLastAction;
     }
 
-    public ArrayList<RepresentativesPage> getPages(){
+    public ArrayList<RepresentativesPage> getPages() {
         return pages;
     }
 
-    public ViewPager getRepresentativesPager(){
+    public ViewPager getRepresentativesPager() {
         return representativesPager;
     }
 }

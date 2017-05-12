@@ -75,6 +75,7 @@
                         android:id="@+id/toolbar_add"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
+                        android:padding="50sp"
                         android:layout_gravity="right|top"
                         android:src="@drawable/toolbar_add"
                         android:layout_marginTop="4dp"

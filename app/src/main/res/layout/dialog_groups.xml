@@ -53,7 +53,8 @@
         android:textSize="15dp"
         android:gravity="center"
         android:layout_marginBottom="5dp"
-        android:autoLink="web"/>
+        android:autoLink="web"
+        android:textColorLink="#1A8CFF"/>
 
     <com.mobilonix.voices.util.AvenirButton
         android:layout_width="wrap_content"
