@@ -1,9 +1,13 @@
 package com.mobilonix.voices.representatives.ui;
 
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -108,7 +112,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                 } else {
                     repsUpcomingElection.setText(" ");
                 }
-                detailsDialog.show();
+                //detailsDialog.show();
             }
         });
 
@@ -137,28 +141,29 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                             SessionManager.INSTANCE.getCurrentUserToken(),
                             "ACTION=" + RepresentativesManager.INSTANCE.getLastActionSelectedForContact() +
                                     ";GROUP=" + RepresentativesManager.INSTANCE.getGroupForLastAction(), null);
-//                    Intent intent = new Intent();
-//                    PendingIntent contentIntent = PendingIntent.getActivity
-//                            (VoicesApplication.getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-//                    NotificationCompat.Builder b = new NotificationCompat.Builder(VoicesApplication.getContext());
-//                    b.setAutoCancel(true)
-//                            .setDefaults(Notification.DEFAULT_ALL)
-//                            .setWhen(System.currentTimeMillis())
-//                            .setSmallIcon(R.drawable.ic_launcher)
-//                            .setTicker("Hearty365")
-//                            .setContentTitle("Default notification")
-//                            .setContentText("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
-//                            .setDefaults(Notification.DEFAULT_LIGHTS| Notification.DEFAULT_SOUND)
-//                            .setContentIntent(contentIntent)
-//                            .setContentInfo("Info");
-//
-//
-//                    NotificationManager notificationManager = (NotificationManager)VoicesApplication.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-//                    notificationManager.notify(1, b.build());
 
-                    Intent intent = new Intent(Intent.ACTION_DIAL);
-                    intent.setData(Uri.parse("tel:" + representatives.get(position).getPhoneNumber()));
-                    v.getContext().startActivity(intent);
+                    Intent notificationIntent = new Intent();
+                    PendingIntent contentIntent = PendingIntent.getActivity
+                            (VoicesApplication.getContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    NotificationCompat.Builder b = new NotificationCompat.Builder(VoicesApplication.getContext());
+                    NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
+                    bigText.setBigContentTitle("What To Say");
+                    bigText.bigText("Hello my name is [your name] and I am a constituent. I would like the representative to [support or oppose] [an issue that you care about] and I will be voting in the next election.");
+                    b.setDefaults(Notification.DEFAULT_ALL)
+                            .setWhen(System.currentTimeMillis())
+                            .setSmallIcon(R.drawable.ic_launcher)
+                            .setContentTitle("What To Say")
+                            .setContentText("Hello my name is [your name] and I am a constituent. I would like the representative to [support or oppose] [an issue that you care about] and I will be voting in the next election.")
+                            .setDefaults(Notification.DEFAULT_LIGHTS| Notification.DEFAULT_SOUND)
+                            .setContentIntent(contentIntent);
+                    b.setStyle(bigText);
+
+                    NotificationManager notificationManager = (NotificationManager)VoicesApplication.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                    notificationManager.notify(1, b.build());
+
+                    Intent phoneIntent = new Intent(Intent.ACTION_DIAL);
+                    phoneIntent.setData(Uri.parse("tel:" + representatives.get(position).getPhoneNumber()));
+                    v.getContext().startActivity(phoneIntent);
                 }
             });
         }
