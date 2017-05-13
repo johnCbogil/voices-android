@@ -553,6 +553,12 @@ public enum SessionManager {
         return str.toString();
     }
 
+    //if check_if_first_run=true and reset==true, set check_if_first_run to false and return true
+    //if check_if_first_run=true and reset==false, return true
+    //if check_if_first_run=false and reset==true, return false
+    //if check_if_first_run=false and reset==false, return false
+    //it returns true if it is the first run and false if it is not
+    //the parameter indicates whether to set check_if_first_run to false or not
     public boolean isFirstRun(boolean reset) {
         SharedPreferences preferences=PreferenceManager.getDefaultSharedPreferences(VoicesApplication.getContext());
         if(preferences.getBoolean(CHECK_IF_FIRST_RUN, true)) {

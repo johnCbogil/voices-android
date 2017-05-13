@@ -174,6 +174,7 @@ public enum GroupManager {
 
             ((EntityContainer) groupPage.findViewById(R.id.actions_container)).setType(groupType);
             toolbar.findViewById(R.id.toolbar_add).setVisibility(View.VISIBLE);
+            toolbar.findViewById(R.id.toolbar_add_linear_layout).setVisibility(View.VISIBLE);
 
             ((AvenirBoldTextView)(groupPage.findViewById(R.id.actions_container))
                     .findViewById(R.id.actions_button)).setTextColor(indicatorBlue);
@@ -192,6 +193,7 @@ public enum GroupManager {
             ((EntityContainer) groupPage.findViewById(R.id.user_groups_container)).setType(groupType);
 
             toolbar.findViewById(R.id.toolbar_add).setVisibility(View.VISIBLE);
+            toolbar.findViewById(R.id.toolbar_add_linear_layout).setVisibility(View.VISIBLE);
 
             MODE = GroupType.USER;
 
@@ -211,6 +213,7 @@ public enum GroupManager {
             toolbar.findViewById(R.id.toolbar_previous).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.allgroups_text).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.toolbar_add).setVisibility(View.GONE);
+            toolbar.findViewById(R.id.toolbar_add_linear_layout).setVisibility(View.GONE);
             toolbar.findViewById(R.id.toolbar_reps).setVisibility(View.GONE);
             toolbar.findViewById(R.id.toolbar_groups).setVisibility(View.GONE);
             toolbar.findViewById(R.id.groups_horizontal).setVisibility(View.GONE);
@@ -522,12 +525,10 @@ public enum GroupManager {
                 RepresentativesManager.INSTANCE.selectRepresentativesTab();
                 RepresentativesManager.INSTANCE.setPageByIndex(actionLevel);
                 RepresentativesManager.INSTANCE
-                        .setLastActionSelectedForContact(action.getActionKey(), action.getGroupKey());
+                        .setLastActionSelectedForContact(action.getActionKey(), action.getGroupKey(), action.getScript());
                 actionDialog.dismiss();
             }
         });
-
-
         actionDialog.show();
     }
 

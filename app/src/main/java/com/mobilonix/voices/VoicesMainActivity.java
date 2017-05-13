@@ -85,7 +85,7 @@ public class VoicesMainActivity extends AppCompatActivity {
     //The initial app work goes here
     private void initialTransition() {
         SplashManager.INSTANCE.toggleSplashScreen(this, true, null);
-        if(!SessionManager.INSTANCE.isFirstRun(false)) {
+        if(!SessionManager.INSTANCE.isFirstRun(true)) {
             SplashManager.INSTANCE.toggleOnBoardingCopy(false);
             SplashManager.INSTANCE.toggleSplashScreen(VoicesMainActivity.this, false, new Callback<Boolean>() {
                 @Override
