@@ -135,6 +135,12 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
             mViewHolder.mCallImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    String bigTextString;
+                    if(!RepresentativesManager.INSTANCE.getLastActionSelectedForContact().equals("<NOT COMING FROM GROUP>")){
+                        bigTextString = RepresentativesManager.INSTANCE.getActionScript();
+                    } else {
+                        bigTextString = "Hello my name is [your name] and I am a constituent. I would like the representative to [support or oppose] [an issue that you care about] and I will be voting in the next election.";
+                    }
 
                     AnalyticsManager.INSTANCE.trackEvent("CALL_REPRESENTATIVES_EVENT",
                             representatives.get(position).getName(),
@@ -148,7 +154,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                     NotificationCompat.Builder b = new NotificationCompat.Builder(VoicesApplication.getContext());
                     NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
                     bigText.setBigContentTitle("What To Say");
-                    bigText.bigText("Hello my name is [your name] and I am a constituent. I would like the representative to [support or oppose] [an issue that you care about] and I will be voting in the next election.");
+                    bigText.bigText(bigTextString);
                     b.setDefaults(Notification.DEFAULT_ALL)
                             .setWhen(System.currentTimeMillis())
                             .setSmallIcon(R.drawable.ic_launcher)
@@ -164,6 +170,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                     Intent phoneIntent = new Intent(Intent.ACTION_DIAL);
                     phoneIntent.setData(Uri.parse("tel:" + representatives.get(position).getPhoneNumber()));
                     v.getContext().startActivity(phoneIntent);
+                    RepresentativesManager.INSTANCE.setLastActionSelectedForContact("<NOT COMING FROM GROUP>","<NOT COMING FROM GROUP>","");
                 }
             });
         }

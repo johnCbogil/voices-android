@@ -60,6 +60,7 @@ public enum RepresentativesManager {
 
     String lastActionSelectedForContact = "<NOT COMING FROM GROUP>";
     String groupForLastAction = "<NOT COMING FROM GROUP>";
+    String actionScript = "";
 
     FrameLayout representativesFrame;
 
@@ -142,10 +143,12 @@ public enum RepresentativesManager {
 
             primaryToolbar = activity.getToolbar();
             dropShadow = activity.findViewById(R.id.toolbar_dropshadow);
+            final LinearLayout addGroupLinearLayout = (LinearLayout) primaryToolbar.findViewById(R.id.toolbar_add_linear_layout);
             final ImageView addGroupIcon = (ImageView) primaryToolbar.findViewById(R.id.toolbar_add);
             primaryToolbar.setVisibility(View.VISIBLE);
             dropShadow.setVisibility(View.VISIBLE);
             addGroupIcon.setVisibility(View.GONE);
+            addGroupLinearLayout.setVisibility(View.GONE);
 
             pages = new ArrayList<>();
             representativesPager = (ViewPager) representativesFrame.findViewById(R.id.representatives_pager);
@@ -227,6 +230,7 @@ public enum RepresentativesManager {
         final FrameLayout groupsView = (FrameLayout) representativesFrame.findViewById(R.id.groups_view);
         final ImageView backArrow = (ImageView) primaryToolbar.findViewById(R.id.toolbar_previous);
         final AvenirTextView allGroupsText = (AvenirTextView) primaryToolbar.findViewById(R.id.allgroups_text);
+        final LinearLayout addGroupLinearLayout = (LinearLayout)primaryToolbar.findViewById(R.id.toolbar_add_linear_layout);
         final ImageView addGroupIcon = (ImageView) primaryToolbar.findViewById(R.id.toolbar_add);
         final ImageView searchIcon = (ImageView) primaryToolbar.findViewById(R.id.toolbar_search);
         final AvenirBoldTextView findReps = (AvenirBoldTextView) primaryToolbar.findViewById(R.id.findreps);
@@ -259,7 +263,7 @@ public enum RepresentativesManager {
             }
         });
 
-        addGroupIcon.setOnClickListener(new View.OnClickListener() {
+        addGroupLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ALL);
@@ -276,6 +280,7 @@ public enum RepresentativesManager {
                 backArrow.setVisibility(View.GONE);
                 allGroupsText.setVisibility(View.GONE);
                 addGroupIcon.setVisibility(View.VISIBLE);
+                addGroupLinearLayout.setVisibility(View.VISIBLE);
                 searchIcon.setVisibility(View.GONE);
                 findReps.setVisibility(View.GONE);
                 takeAction.setVisibility(View.VISIBLE);
@@ -298,6 +303,7 @@ public enum RepresentativesManager {
                 backArrow.setVisibility(View.GONE);
                 allGroupsText.setVisibility(View.GONE);
                 addGroupIcon.setVisibility(View.GONE);
+                addGroupLinearLayout.setVisibility(View.GONE);
                 searchIcon.setVisibility(View.VISIBLE);
                 findReps.setVisibility(View.VISIBLE);
                 takeAction.setVisibility(View.GONE);
@@ -495,9 +501,10 @@ public enum RepresentativesManager {
         return representativesScreenVisible;
     }
 
-    public void setLastActionSelectedForContact(String lastActionSelected, String groupForLastAction) {
+    public void setLastActionSelectedForContact(String lastActionSelected, String groupForLastAction, String actionScript) {
         this.lastActionSelectedForContact = lastActionSelected;
         this.groupForLastAction = groupForLastAction;
+        this.actionScript = actionScript;
     }
 
     public String getLastActionSelectedForContact() {
@@ -506,6 +513,10 @@ public enum RepresentativesManager {
 
     public String getGroupForLastAction() {
         return groupForLastAction;
+    }
+
+    public String getActionScript(){
+        return actionScript;
     }
 
     public ArrayList<RepresentativesPage> getPages() {

@@ -71,16 +71,23 @@
                         android:src="@drawable/toolbar_kebab"
                         android:tint="#FFF"
                         android:visibility="visible"/>
-                    <ImageView
-                        android:id="@+id/toolbar_add"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:padding="50sp"
+                    <LinearLayout
+                        android:id="@+id/toolbar_add_linear_layout"
+                        android:orientation="horizontal"
                         android:layout_gravity="right|top"
-                        android:src="@drawable/toolbar_add"
-                        android:layout_marginTop="4dp"
-                        android:tint="#FFF"
-                        android:visibility="gone"/>
+                        android:layout_height="30dp"
+                        android:layout_width="40dp"
+                        android:visibility="gone">
+                        <ImageView
+                            android:id="@+id/toolbar_add"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/toolbar_add"
+                            android:layout_marginTop="4dp"
+                            android:tint="#FFF"
+                            android:visibility="gone"/>
+                    </LinearLayout>
                     <ImageView
                         android:id="@+id/toolbar_reps"
                         android:layout_width="50sp"
