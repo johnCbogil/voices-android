@@ -487,7 +487,7 @@ public enum GroupManager {
         Picasso.with(context)
                 .load(action.getImageUrl())
                 .placeholder(R.drawable.spinner_moving)
-                .error(R.drawable.reps_male)
+                //.error(R.drawable.reps_male)
                 .fit()
                 .into(actionImage);
 
