@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:layout_gravity="center_vertical|right"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="5dp"
+        android:id="@+id/arrow_image"
+        android:src="@drawable/right_carat"
+        android:tint="@color/voices_orange"
+        android:visibility="visible" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:id="@+id/cell_group_image"
+            android:src="@drawable/representatives_place_holder_male"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.mobilonix.voices.util.AvenirTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cell_group_name"
+                android:textSize="20dp"
+                android:textColor="#000"/>
+
+            <com.mobilonix.voices.util.AvenirTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cell_group_category"
+                android:textSize="17dp"
+                android:textColor="@color/medium_grey"/>
+
+            <com.mobilonix.voices.util.AvenirTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cell_group_description"
+                android:textSize="17dp"
+                android:textColor="#000"/>
+
+            <FrameLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.mobilonix.voices.util.AvenirButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:padding="10dp"
+                    android:text="@string/button_learnmore"
+                    android:textColor="#FFF"
+                    android:textSize="17sp"
+                    android:id="@+id/cell_group_learn_more_button"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp" />
+            </FrameLayout>
+        </LinearLayout>
+</LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/divider"
+        android:background="@color/light_grey"
+        android:layout_gravity="bottom"
+        android:visibility="visible">
+    </View>
+</FrameLayout>

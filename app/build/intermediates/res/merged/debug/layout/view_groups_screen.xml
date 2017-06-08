@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mobilonix.voices.groups.ui.GroupPage xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/layout_entity_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/actions_container">
+    </include>
+
+    <include layout="@layout/layout_entity_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:id="@+id/user_groups_container">
+    </include>
+
+    <include layout="@layout/layout_entity_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:id="@+id/all_groups_container">
+    </include>
+
+</com.mobilonix.voices.groups.ui.GroupPage>

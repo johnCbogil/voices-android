@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@android:color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1.0"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:id="@+id/auto_complete_holder">
+            <fragment
+                    android:id="@+id/place_autocomplete_fragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/pager_meta_frame"
+            android:layout_weight="0.1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <com.mobilonix.voices.representatives.ui.PagerIndicator
+                android:id="@+id/pager_indicator"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="bottom|center">
+            </com.mobilonix.voices.representatives.ui.PagerIndicator>
+
+        </FrameLayout>
+
+        <!-- The primary view for the reps window -->
+        <android.support.v4.view.ViewPager
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.7"
+            android:id="@+id/representatives_pager">
+        </android.support.v4.view.ViewPager>
+
+        <!-- The primary view for the groups view -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.9"
+            android:id="@+id/groups_view"
+            android:visibility="gone">
+            <com.mobilonix.voices.util.AvenirTextView
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
+
+        <!-- Tabs View to switch between above views -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:id="@+id/divider"
+            android:background="@color/grey"
+            android:layout_marginRight="-10dp"
+            android:layout_marginLeft="-10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="bottom" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="#FFF"
+                android:id="@+id/representatives_tab"
+                android:weightSum="1"
+                android:layout_weight="0.5">
+                <ImageView
+                    android:id="@+id/representatives_tab_icon"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.5"
+                    android:src="@drawable/representatives_tab_icon"
+                    android:tint="@color/voices_orange"
+                    android:layout_width="25sp"
+                    android:layout_height="wrap_content"/>
+                <com.mobilonix.voices.util.AvenirTextView
+                    android:layout_weight="0.5"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/reps"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#FFF"
+                android:orientation="vertical"
+                android:id="@+id/groups_tab"
+                android:weightSum="1"
+                android:layout_weight="0.5">
+                <ImageView
+                    android:id="@+id/groups_tab_icon"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.5"
+                    android:src="@drawable/groups_tab_icon"
+                    android:tint="@color/grey"
+                    android:layout_width="25sp"
+                    android:layout_height="wrap_content"/>
+                <com.mobilonix.voices.util.AvenirTextView
+                    android:layout_weight="0.5"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/groups"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

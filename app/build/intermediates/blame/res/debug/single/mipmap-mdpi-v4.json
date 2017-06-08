@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/mipmap-mdpi-v4/representatives_place_holder.png",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/mipmap-mdpi/representatives_place_holder.png"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/mipmap-mdpi-v4/representatives_tab_icon.png",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/mipmap-mdpi/representatives_tab_icon.png"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/mipmap-mdpi-v4/ic_launcher.png",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/mipmap-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/mipmap-mdpi-v4/groups_icon.png",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/mipmap-mdpi/groups_icon.png"
+    }
+]

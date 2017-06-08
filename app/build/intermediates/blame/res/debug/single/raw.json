@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/raw/rep_contact_forms.json",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/raw/rep_contact_forms.json"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/raw/nyc_district_data.json",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/raw/nyc_district_data.json"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/raw/nyc_reps.json",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/raw/nyc_reps.json"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/raw/district_sampling.json",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/raw/district_sampling.json"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/raw/state_governors.json",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/raw/state_governors.json"
+    }
+]

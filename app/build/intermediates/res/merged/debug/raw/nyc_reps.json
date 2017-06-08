@@ -1,0 +1,43 @@
+{
+	"reps" : {
+		"1" : {
+			"title": "Mayor",
+			"firstName": "Bill",
+			"lastName": "De Blasio",
+			"phoneNumber": "311",
+			"email": "",
+			"party": "D",
+			"photoURLPath": "https://thenypost.files.wordpress.com/2013/08/bill-de-blasio-headshot-2134541-525x525.jpg?quality=90&strip=all&w=525",
+			"twitter": "BillDeBlasio",
+			"facebook": "",
+			"gender": "M",
+			"nextElection": "7 Nov 2017"
+		},
+		"2": {
+			"title": "Comptroller",
+			"firstName": "Scott",
+			"lastName": "Stringer",
+			"phoneNumber": "212-669-3916",
+			"email": "action@comptroller.nyc.gov",
+			"party": "D",
+			"photoURLPath": "http://www.mygovnyc.org/img/photos/otherofficials/SStringer_Nov2011_vertical.jpg",
+			"twitter": "ScottMStringer",
+			"facebook": "scottstringernyc",
+			"gender": "M",
+			"nextElection": "7 Nov 2017"
+		},
+		"3": {
+			"title": "Public Advocate",
+			"firstName": "Letitia",
+			"lastName": "James",
+			"phoneNumber": "212-669-7250",
+			"email": "gethelp@pubadvocate.nyc.gov",
+			"party": "D",
+			"photoURLPath": "http://www.mygovnyc.org/img/photos/otherofficials/letitiajames.jpg",
+			"twitter": "NYCPA",
+			"facebook": "PALetitiaJames",
+			"gender": "F",
+			"nextElection": "7 Nov 2017"
+		}
+	}
+}

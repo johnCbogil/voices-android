@@ -1,0 +1,242 @@
+[
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/representatives_page.xml",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/layout/representatives_page.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/abc_screen_toolbar.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/abc_screen_toolbar.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/support_simple_spinner_dropdown_item.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/support_simple_spinner_dropdown_item.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/cell_group.xml",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/layout/cell_group.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/notification_media_action.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/notification_media_action.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/dialog_instructions.xml",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/layout/dialog_instructions.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/notification_template_part_chronometer.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/notification_template_part_chronometer.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/abc_action_bar_up_container.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/abc_action_bar_up_container.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/abc_activity_chooser_view.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/abc_activity_chooser_view.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/abc_list_menu_item_radio.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/abc_list_menu_item_radio.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/api_test.xml",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/layout/api_test.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/abc_expanded_menu_layout.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/abc_expanded_menu_layout.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/view_splash_screen.xml",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/layout/view_splash_screen.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/dialog_nocontactinfo.xml",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/layout/dialog_nocontactinfo.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/abc_action_bar_title_item.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/abc_action_bar_title_item.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/notification_template_lines.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/notification_template_lines.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/place_autocomplete_item_prediction.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/0ea435a3babdbe1525d4f7d73af07417b8fb828b/output/res/layout/place_autocomplete_item_prediction.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/dialog_follow.xml",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/layout/dialog_follow.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/abc_screen_simple.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/abc_screen_simple.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/abc_action_mode_close_item_material.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/abc_action_mode_close_item_material.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/abc_list_menu_item_layout.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/abc_list_menu_item_layout.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/abc_list_menu_item_checkbox.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/abc_list_menu_item_checkbox.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/abc_alert_dialog_material.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/abc_alert_dialog_material.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/abc_screen_simple_overlay_action_mode.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/abc_screen_simple_overlay_action_mode.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/abc_action_menu_layout.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/abc_action_menu_layout.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/notification_template_media.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/notification_template_media.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/view_representatives.xml",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/layout/view_representatives.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/abc_action_bar_view_list_nav_layout.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/abc_action_bar_view_list_nav_layout.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/select_dialog_singlechoice_material.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/select_dialog_singlechoice_material.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/abc_dialog_title_material.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/abc_dialog_title_material.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/policy_list_item.xml",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/layout/policy_list_item.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/abc_select_dialog_material.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/abc_select_dialog_material.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/activity_voices_main.xml",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/layout/activity_voices_main.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/dialog_policies.xml",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/layout/dialog_policies.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/abc_action_menu_item_layout.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/abc_action_menu_item_layout.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/representatives_list_item.xml",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/layout/representatives_list_item.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/abc_list_menu_item_icon.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/abc_list_menu_item_icon.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/abc_search_view.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/abc_search_view.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/place_autocomplete_fragment.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/0ea435a3babdbe1525d4f7d73af07417b8fb828b/output/res/layout/place_autocomplete_fragment.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/abc_action_mode_bar.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/abc_action_mode_bar.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/place_autocomplete_progress.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/0ea435a3babdbe1525d4f7d73af07417b8fb828b/output/res/layout/place_autocomplete_progress.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/select_dialog_item_material.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/select_dialog_item_material.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/notification_media_cancel_action.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/notification_media_cancel_action.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/notification_template_big_media.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/notification_template_big_media.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/abc_screen_content_include.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/abc_screen_content_include.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/layout_entity_list.xml",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/layout/layout_entity_list.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/abc_popup_menu_item_layout.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/abc_popup_menu_item_layout.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/dialog_repsdetails.xml",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/layout/dialog_repsdetails.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/place_autocomplete_item_powered_by_google.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/0ea435a3babdbe1525d4f7d73af07417b8fb828b/output/res/layout/place_autocomplete_item_powered_by_google.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/notification_template_part_time.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/notification_template_part_time.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/dialog_groups.xml",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/layout/dialog_groups.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/abc_search_dropdown_item_icons_2line.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/abc_search_dropdown_item_icons_2line.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/dialog_actions.xml",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/layout/dialog_actions.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/notification_template_big_media_narrow.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/notification_template_big_media_narrow.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/abc_simple_dropdown_hint.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/abc_simple_dropdown_hint.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/select_dialog_multichoice_material.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/select_dialog_multichoice_material.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/view_location_request_screen.xml",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/layout/view_location_request_screen.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/view_groups_screen.xml",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/layout/view_groups_screen.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/dialog_info.xml",
+        "source": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/src/main/res/layout/dialog_info.xml"
+    },
+    {
+        "merged": "/Users/angelicaschreyer/Desktop/Projects/voices-android/app/build/intermediates/res/merged/debug/layout/abc_activity_chooser_view_list_item.xml",
+        "source": "/Users/angelicaschreyer/.android/build-cache/bdebe04ad1113c441b0fd2d1b1c0d1e73afea9e2/output/res/layout/abc_activity_chooser_view_list_item.xml"
+    }
+]
