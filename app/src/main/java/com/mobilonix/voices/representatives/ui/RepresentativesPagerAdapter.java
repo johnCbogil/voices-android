@@ -1,16 +1,11 @@
 package com.mobilonix.voices.representatives.ui;
 
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.text.Html;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -18,10 +13,7 @@ import android.widget.TextView;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesApplication;
-import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.model.RepresentativesPage;
-import com.mobilonix.voices.util.GeneralUtil;
-import com.mobilonix.voices.util.ViewUtil;
 
 import java.util.ArrayList;
 
@@ -64,9 +56,6 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
                         (representativesList.getContext(),
                                 R.layout.reps_item, representatives.get(position).getRepresentatives()));
 
-
-        /**********Start experiment*************/
-
         if(representatives.get(position).getType().getIdentifier().equalsIgnoreCase("Federal")) {
             FrameLayout frameLayout = (FrameLayout) layout.getChildAt(0);
             frameLayout.findViewById(R.id.layout_error_page).setVisibility(View.VISIBLE);
@@ -76,8 +65,6 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
                     .getString(R.string.reps_fetch_error)
             ));
         }
-
-        /**********End experiment*************/
 
         collection.addView(layout);
 
