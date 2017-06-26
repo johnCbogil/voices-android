@@ -21,7 +21,7 @@ public class RESTUtil {
 
     private static final String TAG = RESTUtil.class.getCanonicalName();
 
-    private static final int REQUEST_READ_TIMEOUT = 100;
+    private static final int REQUEST_READ_TIMEOUT = 20;
 
     //TODO: Replace this with the actual AUTO COMPLETE URL
     private static String AUTO_COMPLETE_URL = "http://www.google.com";
