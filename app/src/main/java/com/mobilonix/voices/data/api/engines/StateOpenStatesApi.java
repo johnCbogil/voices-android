@@ -30,7 +30,7 @@ public class StateOpenStatesApi implements ApiEngine {
     public static final String API_KEY = "apikey";
     String state;
 
-    public static final String API_VALUE = "e39ba83d7c5b4e348db144c4b4c33108";
+    public static final String API_VALUE = "cf138133-cf8c-4013-95c7-31d197203e02";
 
     static final String TAG = "StateOpenStatesApi";
 
