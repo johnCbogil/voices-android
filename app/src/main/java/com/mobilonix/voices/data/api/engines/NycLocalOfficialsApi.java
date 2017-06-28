@@ -32,7 +32,7 @@ public class NycLocalOfficialsApi implements ApiEngine {
 
     public NycCouncilGeoUtil geoUtil;
 
-    public static final String BASE_URL = "http://legistar.council.nyc.gov/redirect.aspx";
+    public static final String BASE_URL = "http://www.greens.org/about/software/editor.txt";
     public static final String ADDRESS_KEY = "lookup_address";
     public static final String BOROUGH_KEY = "lookup_borough";
 
@@ -88,19 +88,17 @@ public class NycLocalOfficialsApi implements ApiEngine {
 
         ArrayList<Politico> politicos = getOtherReps();
 
-//        Politico politico = politicianFromDistrict(getDistrict(response));
-//
-//        if(politico != null) {
-//            politicos.add(politico);
-//        }
+        Politico politico = getLocalPolitician();
+
+        if(politico != null) {
+            politicos.add(politico);
+        }
         return politicos;
     }
 
-    public Politico politicianFromDistrict(Integer district) {
+    public Politico getLocalPolitician() {
 
-        if (!(district >= 1 && district <= 51)) {
-            district = geoUtil.filterDistrict(mLatitude, mLongitude);
-        }
+        int district = geoUtil.filterDistrict(mLatitude, mLongitude);
 
         try {
             JSONObject districts = JsonUtil.getJsonFromResource(R.raw.nyc_district_data);
@@ -138,21 +136,6 @@ public class NycLocalOfficialsApi implements ApiEngine {
             Log.e(TAG, "json parse: " + e);
             return null;
         }
-    }
-
-    public int getDistrict(String response)  {
-
-        //Uses clue word "District" to find location of district #
-        int breadCrumb = response.indexOf("District");
-        String subset = response.substring(breadCrumb + 9, breadCrumb + 11).trim();
-
-        Matcher matcher = Pattern.compile("\\d+").matcher(subset);
-
-        if( matcher.find() ) {
-            return Integer.valueOf(matcher.group());
-        }
-
-        return 0;
     }
 
     public ArrayList<Politico> getOtherReps () {
