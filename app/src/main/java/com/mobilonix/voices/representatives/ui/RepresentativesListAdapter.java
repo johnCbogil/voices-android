@@ -191,36 +191,35 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                     }
                 });
             }
+        }
+        check = representatives.get(position).getTwitterHandle();
+        if (check == null || check.equals("")) {
+            mViewHolder.mTwitterImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
+            mViewHolder.mTwitterImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String callInstead = getContext().getResources().getString(R.string.call_instead);
+                    toggleNoContactInfoDialog(callInstead);
+                }
+            });
+        } else {
+            mViewHolder.mTwitterImage.setOnClickListener(new View.OnClickListener() {
 
-            check = representatives.get(position).getTwitterHandle();
-            if (check == null || check.equals("")) {
-                mViewHolder.mTwitterImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
-                mViewHolder.mTwitterImage.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String callInstead = getContext().getResources().getString(R.string.call_instead);
-                        toggleNoContactInfoDialog(callInstead);
-                    }
-                });
-            } else {
-                mViewHolder.mTwitterImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AnalyticsManager.INSTANCE.trackEvent("" + "TWEET_REPRESENTATIVES_EVENT",
+                            representatives.get(position).getName(),
+                            SessionManager.INSTANCE.getCurrentUserToken(),
+                            "ACTION=" + RepresentativesManager.INSTANCE.getLastActionSelectedForContact() +
+                                    ";GROUP=" + RepresentativesManager.INSTANCE.getGroupForLastAction(), null);
 
-                    @Override
-                    public void onClick(View v) {
-                        AnalyticsManager.INSTANCE.trackEvent("" + "TWEET_REPRESENTATIVES_EVENT",
-                                representatives.get(position).getName(),
-                                SessionManager.INSTANCE.getCurrentUserToken(),
-                                "ACTION=" + RepresentativesManager.INSTANCE.getLastActionSelectedForContact() +
-                                        ";GROUP=" + RepresentativesManager.INSTANCE.getGroupForLastAction(), null);
-
-                        String url = "https://twitter.com/intent/tweet?text="
-                                + "@" + representatives.get(position).getTwitterHandle();
-                        Intent i = new Intent(Intent.ACTION_VIEW);
-                        i.setData(Uri.parse(url));
-                        v.getContext().startActivity(i);
-                    }
-                });
-            }
+                    String url = "https://twitter.com/intent/tweet?text="
+                            + "@" + representatives.get(position).getTwitterHandle();
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    v.getContext().startActivity(i);
+                }
+            });
         }
         return convertView;
     }

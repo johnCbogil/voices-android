@@ -20,7 +20,7 @@ import okhttp3.Request;
 
 public class UsCongressSunlightApi implements ApiEngine {
 
-    public static final String BASE_URL = "https://congress.api.sunlightfoundation.com/legislators/locate";
+    public static final String BASE_URL = "http://congress.api.sunlightfoundation.com/legislators/locate";
     public static final String LATITUDE_KEY = "latitude";
     public static final String LONGITUDE_KEY = "longitude";
     public static final String API_KEY = "apikey";
