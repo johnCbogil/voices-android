@@ -13,6 +13,9 @@
 
     <!--Representatives Tab-->
     <string name="search_text">Find Your Reps</string>
+    <string name="representatives_onboarding">Add your address to save your reps</string>
+    <string name="add_address">Add Address</string>
+    <string name="no_address">Voices does not share your address with anyone.</string>
     <string name="representatives_error_message">Officials are not available in your area yet.</string>
     <string name="local_not_yet_error">Local reps are not available in this area yet.</string>
     <string name="reps_fetch_error">Enter your address: use the search button above to find your reps.</string>

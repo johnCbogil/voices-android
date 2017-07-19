@@ -3,7 +3,9 @@ package com.mobilonix.voices.representatives;
 import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -259,7 +261,11 @@ public enum RepresentativesManager {
         searchIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.callPlaceAutocompleteActivityIntent();
+                activity.saveAddress();
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(VoicesApplication.getContext());
+                String url = prefs.getString("address", "");
+                GeneralUtil.toast(url);
+                //activity.callPlaceAutocompleteActivityIntent();
             }
         });
 
@@ -466,15 +472,16 @@ public enum RepresentativesManager {
         if (errorLayout != null) {
             errorLayout.setVisibility(state ? View.VISIBLE : View.GONE);
 
-            TextView errorMessageText
-                    = (TextView) errorLayout.findViewById(R.id.representatives_error_message);
+            TextView errorMessageText = (TextView) errorLayout.findViewById(R.id.representatives_error_message);
+            ImageView repsImage = (ImageView) errorLayout.findViewById(R.id.reps_image);
+            repsImage.setVisibility(View.GONE);
 
             /* TODO: When we get the local officials available, we'll need to amend this logic */
             if (!identifier.equals(RepresentativesType.COUNCIL_MEMBERS.getIdentifier())) {
                 errorMessageText
                         .setText(Html.fromHtml(VoicesApplication.getContext()
                                 .getResources()
-                                .getString(R.string.reps_fetch_error)
+                                .getString(R.string.representatives_onboarding)
                         ));
             } else {
                 errorMessageText.setText(R.string.local_not_yet_error);

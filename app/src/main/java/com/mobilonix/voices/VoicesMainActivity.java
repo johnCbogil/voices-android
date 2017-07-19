@@ -4,8 +4,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -246,6 +248,21 @@ public class VoicesMainActivity extends AppCompatActivity {
             f.printStackTrace();
         }
     }
+
+    public void saveAddress(){
+        try {
+            Intent intent =
+                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                            .build(this);
+            startActivityForResult(intent, 2);
+
+        } catch (GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException f) {
+            f.printStackTrace();
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -259,6 +276,27 @@ public class VoicesMainActivity extends AppCompatActivity {
                         this,
                         RepresentativesManager.INSTANCE.getPages(),
                         RepresentativesManager.INSTANCE.getRepresentativesPager());
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                Status status = PlaceAutocomplete.getStatus(this, data);
+                Log.i(TAG, status.getStatusMessage());
+            } else if (requestCode == RESULT_CANCELED) {
+            }
+        }
+        if (requestCode == 2) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(this, data);
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(VoicesApplication.getContext());
+                SharedPreferences.Editor edit = prefs.edit();
+                edit.putString("address", place.getAddress().toString());
+                edit.apply();
+
+//                RepresentativesManager.INSTANCE.refreshRepresentativesContent(
+//                        place.getAddress().toString(),
+//                        place.getLatLng().latitude,
+//                        place.getLatLng().longitude,
+//                        this,
+//                        RepresentativesManager.INSTANCE.getPages(),
+//                        RepresentativesManager.INSTANCE.getRepresentativesPager());
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
                 Log.i(TAG, status.getStatusMessage());

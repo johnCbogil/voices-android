@@ -5,7 +5,9 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.representatives.model.RepresentativesPage;
+import com.mobilonix.voices.util.GeneralUtil;
 
 import java.util.ArrayList;
 
@@ -51,20 +54,47 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
         errorLayout.setTag(representatives.get(position).getType().getIdentifier() + "_ERROR");
         progressSpinner.setTag(representatives.get(position).getType().getIdentifier() + "_PROGRESS");
 
-        representativesList
-                .setAdapter(new RepresentativesListAdapter
-                        (representativesList.getContext(),
-                                R.layout.reps_item, representatives.get(position).getRepresentatives()));
+        //representativesList
+                //.setAdapter(new RepresentativesListAdapter
+                        //(representativesList.getContext(),
+                                //R.layout.reps_item, representatives.get(position).getRepresentatives()));
 
-        if(representatives.get(position).getType().getIdentifier().equalsIgnoreCase("Federal")) {
+        //if(representatives.get(position).getType().getIdentifier().equalsIgnoreCase("Federal")) {
             FrameLayout frameLayout = (FrameLayout) layout.getChildAt(0);
             frameLayout.findViewById(R.id.layout_error_page).setVisibility(View.VISIBLE);
+            ImageView repsImage = (ImageView) errorLayout.findViewById(R.id.reps_image);
+            final Button addressButton = (Button) errorLayout.findViewById(R.id.address_button);
+//            addressButton.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    GeneralUtil.toast("toCUHED BUTTED");
+//                    return false;
+//                }
+//            });
+        addressButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    GeneralUtil.toast("Hello!");
+//                    final Dialog addressDialog = new Dialog(VoicesApplication.getContext());
+//                    addressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                    addressDialog.setContentView(R.layout.dialog_address);
+//                    Button okButton = (Button) addressDialog.findViewById(R.id.ok_button);
+//                    okButton.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            addressDialog.dismiss();
+//                        }
+//                    });
+//                    addressDialog.show();
+                }
+            });
+            repsImage.setVisibility(View.GONE);
             ((TextView)frameLayout.findViewById(R.id.representatives_error_message))
                     .setText(Html.fromHtml(VoicesApplication.getContext()
                     .getResources()
-                    .getString(R.string.reps_fetch_error)
+                    .getString(R.string.representatives_onboarding)
             ));
-        }
+        //}
 
         collection.addView(layout);
 
@@ -90,5 +120,4 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
     public CharSequence getPageTitle(int position) {
         return "REPRESENTATIVES";
     }
-
 }

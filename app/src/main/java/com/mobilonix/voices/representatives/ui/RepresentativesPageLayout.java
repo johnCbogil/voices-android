@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 
-import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesMainActivity;
 
 public class RepresentativesPageLayout extends LinearLayout {
@@ -22,7 +21,7 @@ public class RepresentativesPageLayout extends LinearLayout {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
 
-        findViewById(R.id.google_are_assholes_layout).requestFocus();
+        //findViewById(R.id.google_are_assholes_layout).requestFocus();
 
         hideKeyboard((VoicesMainActivity)getContext());
 
