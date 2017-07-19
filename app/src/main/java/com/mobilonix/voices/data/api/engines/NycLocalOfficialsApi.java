@@ -18,8 +18,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import okhttp3.FormBody;
 import okhttp3.Headers;
@@ -32,7 +30,7 @@ public class NycLocalOfficialsApi implements ApiEngine {
 
     public NycCouncilGeoUtil geoUtil;
 
-    public static final String BASE_URL = "http://legistar.council.nyc.gov/redirect.aspx";
+    public static final String BASE_URL = "http://www.greens.org/about/software/editor.txt";
     public static final String ADDRESS_KEY = "lookup_address";
     public static final String BOROUGH_KEY = "lookup_borough";
 
@@ -88,74 +86,58 @@ public class NycLocalOfficialsApi implements ApiEngine {
 
         ArrayList<Politico> politicos = getOtherReps();
 
-        Politico politico = politicianFromDistrict(getDistrict(response));
-
+        Politico politico = getLocalPolitician();
         if(politico != null) {
             politicos.add(politico);
         }
         return politicos;
     }
 
-    public Politico politicianFromDistrict(Integer district) {
+    public Politico getLocalPolitician() {
+        {
 
-        if (!(district >= 1 && district <= 51)) {
-            district = geoUtil.filterDistrict(mLatitude, mLongitude);
-        }
+            int district = geoUtil.filterDistrict(mLatitude, mLongitude);
 
-        try {
-            JSONObject districts = JsonUtil.getJsonFromResource(R.raw.nyc_district_data);
-            JSONObject member = districts.getJSONObject("districts");
-            member = member.getJSONObject(district + "");
+            try {
+                JSONObject districts = JsonUtil.getJsonFromResource(R.raw.nyc_district_data);
+                JSONObject member = districts.getJSONObject("districts");
+                member = member.getJSONObject(district + "");
 
-            String firstName = member.optString("firstName");
-            String lastName = member.optString("lastName");
-            String gender = "";
-            String party = member.optString("party");
-            String level = "Local";
-            String repDistrict = member.optString("district");
-            String electionDate = VoicesApplication.getContext().getResources().getString(R.string.nyc_election_date);
-            String title = VoicesApplication.getContext().getResources().getString(R.string.nyc_title);
-            String phoneNumbers = member.optString("phoneNumber");
-            String photos = member.optString("photoURLPath");
-            String twitter = member.optString("twitter");
-            String email = member.optString("email");
+                String firstName = member.optString("firstName");
+                String lastName = member.optString("lastName");
+                String gender = "";
+                String party = member.optString("party");
+                String level = "Local";
+                String repDistrict = member.optString("district");
+                String electionDate = VoicesApplication.getContext().getResources().getString(R.string.nyc_election_date);
+                String title = VoicesApplication.getContext().getResources().getString(R.string.nyc_title);
+                String phoneNumbers = member.optString("phoneNumber");
+                String photos = member.optString("photoURLPath");
+                String twitter = member.optString("twitter");
+                String email = member.optString("email");
 
-            Politico politico = new Politico.Builder()
-                    .setGender(gender)
-                    .setParty(party)
-                    .setLevel(level)
-                    .setDistrict(repDistrict)
-                    .setElectionDate(electionDate)
-                    .setPhoneNumber(phoneNumbers)
-                    .setEmailAddress(email)
-                    .setPicUrl(photos)
-                    .setTwitterHandle(twitter)
-                    .build(title, firstName, lastName);
+                Politico politico = new Politico.Builder()
+                        .setGender(gender)
+                        .setParty(party)
+                        .setLevel(level)
+                        .setDistrict(repDistrict)
+                        .setElectionDate(electionDate)
+                        .setPhoneNumber(phoneNumbers)
+                        .setEmailAddress(email)
+                        .setPicUrl(photos)
+                        .setTwitterHandle(twitter)
+                        .build(title, firstName, lastName);
 
-            return politico;
+                return politico;
 
-        } catch (JSONException e) {
-            Log.e(TAG, "json parse: " + e);
-            return null;
+            } catch (JSONException e) {
+                Log.e(TAG, "json parse: " + e);
+                return null;
+            }
         }
     }
 
-    public int getDistrict(String response)  {
-
-        //Uses clue word "District" to find location of district #
-        int breadCrumb = response.indexOf("District");
-        String subset = response.substring(breadCrumb + 9, breadCrumb + 11).trim();
-
-        Matcher matcher = Pattern.compile("\\d+").matcher(subset);
-
-        if( matcher.find() ) {
-            return Integer.valueOf(matcher.group());
-        }
-
-        return 0;
-    }
-
-    public ArrayList<Politico> getOtherReps () {
+    public ArrayList<Politico> getOtherReps(){
         ArrayList<Politico> politicos;
         politicos = new ArrayList<Politico>();
         try {
