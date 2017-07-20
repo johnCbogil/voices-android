@@ -13,7 +13,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.ListView;
 
 import com.badoo.mobile.util.WeakHandler;
 import com.google.android.gms.appinvite.AppInvite;
@@ -37,7 +39,12 @@ import com.mobilonix.voices.splash.SplashManager;
 import com.mobilonix.voices.util.DeeplinkUtil;
 import com.mobilonix.voices.util.GeneralUtil;
 
+import java.util.ArrayList;
+
 public class VoicesMainActivity extends AppCompatActivity {
+
+    private ListView navigationList;
+    private ArrayAdapter<String> navigationAdapter;
 
     private static final int SPLASH_FADE_TIME = 2000;
 
@@ -65,6 +72,7 @@ public class VoicesMainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
         initViews();
 
         initialTransition();
@@ -73,6 +81,8 @@ public class VoicesMainActivity extends AppCompatActivity {
     private void initViews() {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         mainContentFrame = (FrameLayout)findViewById(R.id.main_content_frame);
+        navigationList = (ListView)findViewById(R.id.drawer_list);
+        addDrawerItems();
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.primary_toolbar));
         findViewById(R.id.primary_toolbar).setVisibility(View.INVISIBLE);
     }
@@ -288,20 +298,25 @@ public class VoicesMainActivity extends AppCompatActivity {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(VoicesApplication.getContext());
                 SharedPreferences.Editor edit = prefs.edit();
                 edit.putString("address", place.getAddress().toString());
-                edit.apply();
-
-//                RepresentativesManager.INSTANCE.refreshRepresentativesContent(
-//                        place.getAddress().toString(),
-//                        place.getLatLng().latitude,
-//                        place.getLatLng().longitude,
-//                        this,
-//                        RepresentativesManager.INSTANCE.getPages(),
-//                        RepresentativesManager.INSTANCE.getRepresentativesPager());
+                edit.commit();
+                RepresentativesManager.INSTANCE.refreshRepresentativesContent(
+                        place.getAddress().toString(),
+                        place.getLatLng().latitude,
+                        place.getLatLng().longitude,
+                        this,
+                        RepresentativesManager.INSTANCE.getPages(),
+                        RepresentativesManager.INSTANCE.getRepresentativesPager());
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
                 Log.i(TAG, status.getStatusMessage());
             } else if (requestCode == RESULT_CANCELED) {
             }
         }
+    }
+    private void addDrawerItems() {
+        ArrayList<String> drawerArray = new ArrayList<String>();
+        drawerArray.add("List1");
+        navigationAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, drawerArray);
+        navigationList.setAdapter(navigationAdapter);
     }
 }

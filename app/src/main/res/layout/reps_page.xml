@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.mobilonix.voices.representatives.ui.RepresentativesPageLayout
+<!--<com.mobilonix.voices.representatives.ui.RepresentativesPageLayout-->
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:background="#FFF"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusable="true"
     android:id="@+id/representatives_page_layout_view"
     android:weightSum="1">
     <!--android:focusableInTouchMode="true"-->
@@ -19,7 +19,8 @@
             android:layout_height="match_parent"
             android:id="@+id/layout_error_page"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:clickable="true">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="200dp"
@@ -41,6 +42,7 @@
                 android:padding="10dp"
                 android:textSize="20sp"
                 android:textColor="#FFF"
+                android:clickable="true"
                 android:id="@+id/address_button"
                 android:text="@string/add_address"
                 android:layout_gravity="center"/>
@@ -82,4 +84,5 @@
             android:id="@+id/reps_progress_spinner"
             android:layout_gravity="center" />
     </FrameLayout>
-</com.mobilonix.voices.representatives.ui.RepresentativesPageLayout>
+    </LinearLayout>
+<!--</com.mobilonix.voices.representatives.ui.RepresentativesPageLayout>-->
