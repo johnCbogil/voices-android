@@ -399,4 +399,12 @@ public class VoicesMainActivity extends AppCompatActivity {
         DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         drawerLayout.openDrawer(navigationList);
     }
+
+    public boolean locationSaved() {
+        if (prefs.getString("address", "").equals("")) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
