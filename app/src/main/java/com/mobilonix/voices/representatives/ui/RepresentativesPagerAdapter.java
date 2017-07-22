@@ -67,7 +67,7 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
 //            addressButton.setOnTouchListener(new View.OnTouchListener() {
 //                @Override
 //                public boolean onTouch(View v, MotionEvent event) {
-//                    GeneralUtil.toast("toCUHED BUTTED");
+//                    GeneralUtil.toast("");
 //                    return false;
 //                }
 //            });

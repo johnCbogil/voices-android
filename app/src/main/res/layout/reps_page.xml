@@ -73,7 +73,8 @@
                 android:layout_height="match_parent"
                 android:id="@+id/representatives_list"
                 android:divider="@null"
-                android:dividerHeight="0dp"/>
+                android:dividerHeight="0dp"
+                android:visibility="gone"/>
         </LinearLayout>
 
         <ProgressBar

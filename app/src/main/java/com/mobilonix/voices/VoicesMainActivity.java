@@ -305,6 +305,8 @@ public class VoicesMainActivity extends AppCompatActivity {
                 Place place = PlaceAutocomplete.getPlace(this, data);
                 SharedPreferences.Editor edit = prefs.edit();
                 edit.putString("address", place.getAddress().toString());
+                edit.putString("lat", Double.toString(place.getLatLng().latitude));
+                edit.putString("lon", Double.toString(place.getLatLng().longitude));
                 edit.commit();
 
                 /* Update first row of the Drawer Navigation List with address */

@@ -210,6 +210,19 @@ public enum RepresentativesManager {
                     return false;
                 }
             });
+            if(activity.locationSaved()){
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(VoicesApplication.getContext());
+                String savedLocation = prefs.getString("address", "");
+                double lat = Double.parseDouble(prefs.getString("lat", "38.8976763"));
+                double lon = Double.parseDouble(prefs.getString("lon", "-77.0387238"));
+                refreshRepresentativesContent(
+                        savedLocation,
+                        lat,
+                        lon,
+                        activity,
+                        pages,
+                        representativesPager);
+            }
             initTabView(activity);
             activity.getMainContentFrame().addView(representativesFrame);
             representativesScreenVisible = state;
