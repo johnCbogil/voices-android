@@ -27,12 +27,9 @@ import com.google.android.gms.appinvite.AppInvite;
 import com.google.android.gms.appinvite.AppInviteInvitationResult;
 import com.google.android.gms.appinvite.AppInviteReferral;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mobilonix.voices.callbacks.Callback;
@@ -254,31 +251,25 @@ public class VoicesMainActivity extends AppCompatActivity {
     }
 
     public void callPlaceAutocompleteActivityIntent() {
-        try {
-            Intent intent =
-                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                            .build(this);
-            startActivityForResult(intent, 1);
-
-        } catch (GooglePlayServicesRepairableException e) {
-            e.printStackTrace();
-        } catch (GooglePlayServicesNotAvailableException f) {
-            f.printStackTrace();
-        }
+        Intent i = new Intent(VoicesMainActivity.this, AutocompleteActivity.class);
+        VoicesMainActivity.this.startActivityForResult(i,1);
+//        try {
+//        } catch (GooglePlayServicesRepairableException e) {
+//            e.printStackTrace();
+//        } catch (GooglePlayServicesNotAvailableException f) {
+//            f.printStackTrace();
+//        }
     }
 
     public void saveAddress(){
-        try {
-            Intent intent =
-                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                            .build(this);
-            startActivityForResult(intent, 2);
-
-        } catch (GooglePlayServicesRepairableException e) {
-            e.printStackTrace();
-        } catch (GooglePlayServicesNotAvailableException f) {
-            f.printStackTrace();
-        }
+        Intent i = new Intent(VoicesMainActivity.this, AutocompleteActivity.class);
+        VoicesMainActivity.this.startActivityForResult(i,2);
+//        try {
+//        } catch (GooglePlayServicesRepairableException e) {
+//            e.printStackTrace();
+//        } catch (GooglePlayServicesNotAvailableException f) {
+//            f.printStackTrace();
+//        }
     }
 
     @Override
@@ -286,11 +277,13 @@ public class VoicesMainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
-                Place place = PlaceAutocomplete.getPlace(this, data);
+                String addressString = data.getStringExtra("address");
+                Double latitudeDouble = data.getDoubleExtra("latitude", 38.8976763);
+                Double longitudeDouble = data.getDoubleExtra("longitude", -77.0387238);
                 RepresentativesManager.INSTANCE.refreshRepresentativesContent(
-                        place.getAddress().toString(),
-                        place.getLatLng().latitude,
-                        place.getLatLng().longitude,
+                        addressString,
+                        latitudeDouble,
+                        longitudeDouble,
                         this,
                         RepresentativesManager.INSTANCE.getPages(),
                         RepresentativesManager.INSTANCE.getRepresentativesPager());
@@ -302,23 +295,25 @@ public class VoicesMainActivity extends AppCompatActivity {
         }
         if (requestCode == 2) {
             if (resultCode == RESULT_OK) {
-                Place place = PlaceAutocomplete.getPlace(this, data);
+                String addressString = data.getStringExtra("address");
+                Double latitudeDouble = data.getDoubleExtra("latitude", 38.8976763);
+                Double longitudeDouble = data.getDoubleExtra("longitude", -77.0387238);
                 SharedPreferences.Editor edit = prefs.edit();
-                edit.putString("address", place.getAddress().toString());
-                edit.putString("lat", Double.toString(place.getLatLng().latitude));
-                edit.putString("lon", Double.toString(place.getLatLng().longitude));
+                edit.putString("address", addressString);
+                edit.putString("lat", Double.toString(latitudeDouble));
+                edit.putString("lon", Double.toString(longitudeDouble));
                 edit.commit();
 
                 /* Update first row of the Drawer Navigation List with address */
                 NavigationAdapter adapter = ((NavigationAdapter)navigationList.getAdapter());
                 if(adapter != null) {
-                    adapter.updateTopCell(place.getAddress().toString());
+                    adapter.updateTopCell(addressString);
                 }
 
                 RepresentativesManager.INSTANCE.refreshRepresentativesContent(
-                        place.getAddress().toString(),
-                        place.getLatLng().latitude,
-                        place.getLatLng().longitude,
+                        addressString,
+                        latitudeDouble,
+                        longitudeDouble,
                         this,
                         RepresentativesManager.INSTANCE.getPages(),
                         RepresentativesManager.INSTANCE.getRepresentativesPager());

@@ -51,7 +51,7 @@
                         android:layout_marginLeft="40dp"
                         android:layout_marginTop="5dp"
                         android:textSize="25dp"
-                        android:text="@string/all_groups_info"
+                        android:text="@string/toolbar_all_groups_info"
                         android:textColor="#FFF"
                         android:visibility="gone"/>
                     <ImageView

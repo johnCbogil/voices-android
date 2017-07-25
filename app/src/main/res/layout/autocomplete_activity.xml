@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/primary_toolbar"
+        android:background="@color/voices_orange"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom">
+        <ImageView
+            android:id="@+id/toolbar_previous_2"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="left|top"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/toolbar_previous"
+            android:tint="#FFF" />
+        <com.mobilonix.voices.util.AvenirTextView
+            android:id="@+id/toolbar_add_address_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:textSize="20dp"
+            android:text="@string/toolbar_add_home_address"
+            android:textColor="#FFF" />
+        <ImageView
+            android:id="@+id/toolbar_info"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="right|top"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/hamburger_icon"
+            android:tint="#FFF" />
+    </android.support.v7.widget.Toolbar>
+    <View
+        android:id="@+id/toolbar_dropshadow"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@drawable/toolbar_dropshadow" />
+    <fragment
+        android:id="@+id/place_autocomplete_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+        />
+</LinearLayout>

@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
     <com.mobilonix.voices.util.AvenirBoldTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
+        android:layout_margin="10dp"
         android:textSize="20sp"
-        android:text="Privacy is a human right."/>
+        android:text="@string/address_title"/>
     <com.mobilonix.voices.util.AvenirTextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:text="Voices does not share your address with anyone."/>
+        android:layout_margin="10dp"
+        android:textSize="15sp"
+        android:text="@string/address_body"/>
     <com.mobilonix.voices.util.AvenirButton
         android:id="@+id/ok_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:textColor="#FFF"
-        android:layout_marginTop="10dp"
-        android:text="OK"/>
+        android:layout_margin="10dp"
+        android:textSize="20dp"
+        android:text="@string/ok"/>
 </LinearLayout>

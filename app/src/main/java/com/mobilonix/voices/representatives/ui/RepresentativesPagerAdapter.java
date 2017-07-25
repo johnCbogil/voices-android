@@ -15,12 +15,14 @@ import android.widget.TextView;
 
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesApplication;
+import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.representatives.model.RepresentativesPage;
-import com.mobilonix.voices.util.GeneralUtil;
 
 import java.util.ArrayList;
 
 public class RepresentativesPagerAdapter extends PagerAdapter {
+
+    VoicesMainActivity activity = new VoicesMainActivity();
 
     private ArrayList<RepresentativesPage> representatives;
 
@@ -39,7 +41,7 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup collection, final int position) {
+    public Object instantiateItem(final ViewGroup collection, final int position) {
 
         pageArray.add(collection);
 
@@ -54,10 +56,12 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
         errorLayout.setTag(representatives.get(position).getType().getIdentifier() + "_ERROR");
         progressSpinner.setTag(representatives.get(position).getType().getIdentifier() + "_PROGRESS");
 
-        //representativesList
-                //.setAdapter(new RepresentativesListAdapter
-                        //(representativesList.getContext(),
-                                //R.layout.reps_item, representatives.get(position).getRepresentatives()));
+        if(activity.locationSaved()){
+            representativesList.setVisibility(View.VISIBLE);
+            representativesList.setAdapter(new RepresentativesListAdapter(representativesList.getContext(),
+                    R.layout.reps_item, representatives.get(position).getRepresentatives()));
+        }
+
 
         //if(representatives.get(position).getType().getIdentifier().equalsIgnoreCase("Federal")) {
             FrameLayout frameLayout = (FrameLayout) layout.getChildAt(0);
@@ -72,20 +76,11 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
 //                }
 //            });
         addressButton.setOnClickListener(new View.OnClickListener() {
-                @Override
+            @Override
                 public void onClick(View v) {
-                    GeneralUtil.toast("Hello!");
-//                    final Dialog addressDialog = new Dialog(VoicesApplication.getContext());
-//                    addressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                    addressDialog.setContentView(R.layout.dialog_address);
-//                    Button okButton = (Button) addressDialog.findViewById(R.id.ok_button);
-//                    okButton.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            addressDialog.dismiss();
-//                        }
-//                    });
-//                    addressDialog.show();
+
+                    VoicesMainActivity activity =(VoicesMainActivity)v.getContext();
+                    activity.saveAddress();
                 }
             });
             repsImage.setVisibility(View.GONE);
