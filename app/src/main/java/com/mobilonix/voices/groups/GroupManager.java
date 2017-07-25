@@ -217,6 +217,7 @@ public enum GroupManager {
             toolbar.findViewById(R.id.toolbar_reps).setVisibility(View.GONE);
             toolbar.findViewById(R.id.toolbar_groups).setVisibility(View.GONE);
             toolbar.findViewById(R.id.groups_horizontal).setVisibility(View.GONE);
+            toolbar.findViewById(R.id.hamburger_icon).setVisibility(View.GONE);
             toolbar.findViewById(R.id.toolbar_previous).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -439,6 +440,7 @@ public enum GroupManager {
         toolbar.findViewById(R.id.allgroups_text).setVisibility(View.GONE);
         toolbar.findViewById(R.id.takeaction).setVisibility(View.VISIBLE);
         toolbar.findViewById(R.id.groups_horizontal).setVisibility(View.VISIBLE);
+        toolbar.findViewById(R.id.hamburger_icon).setVisibility(View.VISIBLE);
     }
 
     /**

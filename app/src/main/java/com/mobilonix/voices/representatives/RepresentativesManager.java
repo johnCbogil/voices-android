@@ -1,14 +1,14 @@
 package com.mobilonix.voices.representatives;
 
 import android.annotation.TargetApi;
-import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -76,8 +76,6 @@ public enum RepresentativesManager {
 
     ArrayList<RepresentativesPage> pages;
     ViewPager representativesPager;
-
-    Dialog infoDialog;
 
     /**
      * The enum value contains the URL that needs to be called to make the representatives request
@@ -212,6 +210,19 @@ public enum RepresentativesManager {
                     return false;
                 }
             });
+            if(activity.locationSaved()){
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(VoicesApplication.getContext());
+                String savedLocation = prefs.getString("address", "");
+                double lat = Double.parseDouble(prefs.getString("lat", "38.8976763"));
+                double lon = Double.parseDouble(prefs.getString("lon", "-77.0387238"));
+                refreshRepresentativesContent(
+                        savedLocation,
+                        lat,
+                        lon,
+                        activity,
+                        pages,
+                        representativesPager);
+            }
             initTabView(activity);
             activity.getMainContentFrame().addView(representativesFrame);
             representativesScreenVisible = state;
@@ -237,22 +248,12 @@ public enum RepresentativesManager {
         final AvenirBoldTextView takeAction = (AvenirBoldTextView) primaryToolbar.findViewById(R.id.takeaction);
         final ImageView repsHorizontal = (ImageView) primaryToolbar.findViewById(R.id.reps_horizontal);
         final ImageView groupsHorizontal = (ImageView) primaryToolbar.findViewById(R.id.groups_horizontal);
-        final ImageView kebabIcon = (ImageView) primaryToolbar.findViewById(R.id.toolbar_kebab);
+        final ImageView hamburgerIcon = (ImageView) primaryToolbar.findViewById(R.id.hamburger_icon);
 
-        kebabIcon.setOnClickListener(new View.OnClickListener() {
+        hamburgerIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                infoDialog = new Dialog(primaryToolbar.getContext());
-                infoDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                infoDialog.setContentView(R.layout.dialog_info);
-                infoDialog.show();
-                TextView infoCloseButton = (TextView) infoDialog.findViewById(R.id.info_close_button);
-                infoCloseButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        infoDialog.dismiss();
-                    }
-                });
+                activity.getDrawer();
             }
         });
 
@@ -286,7 +287,7 @@ public enum RepresentativesManager {
                 takeAction.setVisibility(View.VISIBLE);
                 groupsHorizontal.setVisibility(View.VISIBLE);
                 repsHorizontal.setVisibility(View.INVISIBLE);
-                kebabIcon.setVisibility(View.GONE);
+                hamburgerIcon.setVisibility(View.VISIBLE);
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(false);
                 GroupManager.INSTANCE.toggleGroupPage(groupsView, true);
             }
@@ -309,7 +310,7 @@ public enum RepresentativesManager {
                 takeAction.setVisibility(View.GONE);
                 groupsHorizontal.setVisibility(View.INVISIBLE);
                 repsHorizontal.setVisibility(View.VISIBLE);
-                kebabIcon.setVisibility(View.VISIBLE);
+                hamburgerIcon.setVisibility(View.VISIBLE);
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(true);
                 GroupManager.INSTANCE.toggleGroupPage(groupsView, false);
             }
@@ -466,15 +467,16 @@ public enum RepresentativesManager {
         if (errorLayout != null) {
             errorLayout.setVisibility(state ? View.VISIBLE : View.GONE);
 
-            TextView errorMessageText
-                    = (TextView) errorLayout.findViewById(R.id.representatives_error_message);
+            TextView errorMessageText = (TextView) errorLayout.findViewById(R.id.representatives_error_message);
+            ImageView repsImage = (ImageView) errorLayout.findViewById(R.id.reps_image);
+            repsImage.setVisibility(View.GONE);
 
             /* TODO: When we get the local officials available, we'll need to amend this logic */
             if (!identifier.equals(RepresentativesType.COUNCIL_MEMBERS.getIdentifier())) {
                 errorMessageText
                         .setText(Html.fromHtml(VoicesApplication.getContext()
                                 .getResources()
-                                .getString(R.string.reps_fetch_error)
+                                .getString(R.string.representatives_onboarding)
                         ));
             } else {
                 errorMessageText.setText(R.string.local_not_yet_error);
