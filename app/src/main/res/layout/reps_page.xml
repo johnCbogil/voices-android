@@ -31,11 +31,15 @@
             <com.mobilonix.voices.util.AvenirTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:textSize="25sp"
+                android:textSize="22sp"
                 android:text="@string/representatives_onboarding"
                 android:id="@+id/representatives_error_message"
                 android:gravity="center" />
+            <ImageView
+                android:layout_width="140dp"
+                android:layout_height="100dp"
+                android:src="@drawable/house_citizen"
+                android:layout_gravity="center_horizontal"/>
             <com.mobilonix.voices.util.AvenirButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
