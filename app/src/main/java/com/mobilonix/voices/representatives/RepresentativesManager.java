@@ -429,6 +429,8 @@ public enum RepresentativesManager {
         ListView representativesListView =
                 (ListView) representativesPager
                         .findViewWithTag(type.getIdentifier());
+
+
         if (representativesListView != null) {
             representativesListView.setAdapter(
                     new RepresentativesListAdapter(representativesPager.getContext(),
@@ -460,6 +462,10 @@ public enum RepresentativesManager {
 
 
     private void toggleErrorDisplay(String identifier, boolean state) {
+
+        if(!state) {
+            GeneralUtil.toast("Turning error page off");
+        }
 
         LinearLayout errorLayout = (LinearLayout)
                 representativesPager.findViewWithTag(identifier + "_ERROR");
