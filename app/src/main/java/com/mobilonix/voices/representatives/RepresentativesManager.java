@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -389,8 +390,6 @@ public enum RepresentativesManager {
                                 @Override
                                 public void run() {
 
-                                    toggleErrorDisplay(type, false);
-
                                     finalizePageOrder(result, type, pages, representativesPager);
 
                                     String location = VoicesApplication.EMPTY;
@@ -406,6 +405,7 @@ public enum RepresentativesManager {
                                             GeneralUtil.toast("Found "
                                                     + type.getIdentifier() + " representatives for " + location);
                                         }
+
                                     } else {
                                         toggleErrorDisplay(type, true);
                                     }
@@ -433,6 +433,7 @@ public enum RepresentativesManager {
             representativesListView.setAdapter(
                     new RepresentativesListAdapter(representativesPager.getContext(),
                             R.layout.reps_item, data));
+            representativesListView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -481,6 +482,7 @@ public enum RepresentativesManager {
             } else {
                 errorMessageText.setText(R.string.local_not_yet_error);
             }
+
         }
 
     }
