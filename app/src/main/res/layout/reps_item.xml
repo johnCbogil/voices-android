@@ -35,7 +35,8 @@
                 android:id="@+id/more_info_arrow_image"
                 android:src="@drawable/right_carat"
                 android:tint="@color/voices_orange"
-                android:layout_weight="0.25"/>
+                android:layout_weight="0.25"
+                android:visibility="gone"/>
             </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

@@ -9,8 +9,9 @@ import java.util.ArrayList;
 import okhttp3.Request;
 
 public interface ApiEngine {
+    Request generateRequestForFederal(String address);
+    Request generateRequestForState(double latitude, double longitude);
 
-    Request generateRequest(double latitude, double longitude);
     ArrayList<Politico> parseData(String response) throws IOException;
     //TODO: Do we need this or not?
     RepresentativesManager.RepresentativesType getRepresentativeType();

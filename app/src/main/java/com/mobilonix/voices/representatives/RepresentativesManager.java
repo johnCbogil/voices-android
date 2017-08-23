@@ -9,7 +9,6 @@ import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -49,7 +48,7 @@ public enum RepresentativesManager {
 
     INSTANCE;
 
-    public String TAG = RepresentativesManager.class.getCanonicalName();
+    public static String TAG = RepresentativesManager.class.getCanonicalName();
 
     public String CURRENT_LOCATION = "CURRENT_LOCATION";
 
@@ -90,7 +89,6 @@ public enum RepresentativesManager {
 
     public enum RepresentativesType {
 
-
         CONGRESS(sunlightApiEngine, "Federal"),
         STATE_LEGISLATORS(openStatesApiEngine, "State"),
         COUNCIL_MEMBERS(nycScraperApi, "Local");
@@ -104,9 +102,18 @@ public enum RepresentativesManager {
         }
 
         //TODO have this throw an error on API failure rather than network failure
-        public Request getRequest(double lat, double lon) throws IOException {
 
-            Request a = mApi.generateRequest(lat, lon);
+        public Request getRequestForFederal(String address) throws IOException {
+            Request a = mApi.generateRequestForFederal(address);
+            if(a==null){
+                throw new IOException("API Failure");
+            }
+            return a;
+        }
+
+        public Request getRequestForState(double lat, double lon) throws IOException {
+
+            Request a = mApi.generateRequestForState(lat, lon);
 
             if (a == null) {
                 throw new IOException("API Failure");
@@ -115,8 +122,7 @@ public enum RepresentativesManager {
             return a;
         }
 
-
-        public ArrayList<Politico> parseJsonResponse(String response) {
+        public ArrayList<Politico> parseJsonResponse(final String response) {
 
             try {
                 return mApi.parseData(response);
@@ -357,7 +363,7 @@ public enum RepresentativesManager {
             }
 
 
-            RESTUtil.makeRepresentativesRequest(repLat, repLong, type,
+            RESTUtil.makeRepresentativesRequest(locationString, repLat, repLong, type,
                     new Callback2<ArrayList<Representative>, RepresentativesType>() {
                         @Override
                         public boolean onExecuted(final ArrayList<Representative> data, final RepresentativesType type) {
@@ -405,7 +411,6 @@ public enum RepresentativesManager {
                                             GeneralUtil.toast("Found "
                                                     + type.getIdentifier() + " representatives for " + location);
                                         }
-
                                     } else {
                                         toggleErrorDisplay(type, true);
                                     }
@@ -469,8 +474,8 @@ public enum RepresentativesManager {
             errorLayout.setVisibility(state ? View.VISIBLE : View.GONE);
 
             TextView errorMessageText = (TextView) errorLayout.findViewById(R.id.representatives_error_message);
-            ImageView repsImage = (ImageView) errorLayout.findViewById(R.id.reps_image);
-            repsImage.setVisibility(View.GONE);
+            //ImageView repsImage = (ImageView) errorLayout.findViewById(R.id.reps_image);
+            //repsImage.setVisibility(View.GONE);
 
             /* TODO: When we get the local officials available, we'll need to amend this logic */
             if (!identifier.equals(RepresentativesType.COUNCIL_MEMBERS.getIdentifier())) {

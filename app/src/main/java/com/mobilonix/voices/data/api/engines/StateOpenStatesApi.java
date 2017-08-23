@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import okhttp3.Request;
 
 public class StateOpenStatesApi implements ApiEngine {
-
     public static final String BASE_URL = "http://openstates.org/api/v1//legislators/geo/";
     public static final String LATITUDE_KEY = "lat";
     public static final String LONGITUDE_KEY = "long";
@@ -39,8 +38,12 @@ public class StateOpenStatesApi implements ApiEngine {
     }
 
     @Override
-    public Request generateRequest(double latitude, double longitude) {
+    public Request generateRequestForFederal(String address) {
+        return null;
+    }
 
+    @Override
+    public Request generateRequestForState(double latitude, double longitude) {
         Bundle urlBundle = new Bundle();
 
         urlBundle.putString(LATITUDE_KEY, Double.toString(latitude));
@@ -57,12 +60,17 @@ public class StateOpenStatesApi implements ApiEngine {
     }
 
     @Override
-    public ArrayList<Politico> parseData(String response){
+    public ArrayList<Politico> parseData(String response) throws IOException {
+
+        VoicesApplication.getGlobalHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                //GeneralUtil.toast("Got State api response");
+            }
+        });
 
         ArrayList<Politico> politicos = new ArrayList<>();
-
         try {
-
             JSONArray rawJsonArray = new JSONArray(response);
 
             for(int i = 0; i < rawJsonArray.length(); i++){
@@ -123,7 +131,6 @@ public class StateOpenStatesApi implements ApiEngine {
         } catch (JSONException e) {
             e.printStackTrace(); //TODO handle exception
         }
-
         return politicos;
     }
 

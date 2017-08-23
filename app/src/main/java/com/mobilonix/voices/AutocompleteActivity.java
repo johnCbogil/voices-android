@@ -27,6 +27,8 @@ public class AutocompleteActivity extends AppCompatActivity {
         ImageView backButton = (ImageView)findViewById(R.id.toolbar_previous_2);
         ImageView infoButton = (ImageView)findViewById(R.id.toolbar_info);
 
+
+
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

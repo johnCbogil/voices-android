@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -66,24 +65,14 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
         //if(representatives.get(position).getType().getIdentifier().equalsIgnoreCase("Federal")) {
             FrameLayout frameLayout = (FrameLayout) layout.getChildAt(0);
             frameLayout.findViewById(R.id.layout_error_page).setVisibility(View.VISIBLE);
-            ImageView repsImage = (ImageView) errorLayout.findViewById(R.id.reps_image);
             final Button addressButton = (Button) errorLayout.findViewById(R.id.address_button);
-//            addressButton.setOnTouchListener(new View.OnTouchListener() {
-//                @Override
-//                public boolean onTouch(View v, MotionEvent event) {
-//                    GeneralUtil.toast("");
-//                    return false;
-//                }
-//            });
-        addressButton.setOnClickListener(new View.OnClickListener() {
+            addressButton.setOnClickListener(new View.OnClickListener() {
             @Override
                 public void onClick(View v) {
-
                     VoicesMainActivity activity =(VoicesMainActivity)v.getContext();
                     activity.saveAddress();
                 }
             });
-            repsImage.setVisibility(View.GONE);
             ((TextView)frameLayout.findViewById(R.id.representatives_error_message))
                     .setText(Html.fromHtml(VoicesApplication.getContext()
                     .getResources()
