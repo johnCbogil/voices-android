@@ -67,7 +67,8 @@ public class RESTUtil {
      * @param representativesCallback
      */
 
-    public static void makeRepresentativesRequest(double repLat,
+    public static void makeRepresentativesRequest(String address,
+                                                  double repLat,
                                                   double repLong,
                                                   final RepresentativesManager.RepresentativesType type,
                                                   final Callback2<ArrayList<Representative>,
@@ -80,7 +81,19 @@ public class RESTUtil {
 
         /* Make call to auto-complete api */
         try {
-            client.newCall(type.getRequest(repLat, repLong)).enqueue(new okhttp3.Callback() {
+
+            /* Create a new API request based on the representative type. Federal uses address and
+            * State and city use lat long */
+            Request request = null;
+            if(type == RepresentativesManager.RepresentativesType.CONGRESS) {
+                request = type.getRequestForFederal(address);
+            } else if(type == RepresentativesManager.RepresentativesType.STATE_LEGISLATORS) {
+                request = type.getRequestForState(repLat, repLong);
+            } else {
+                request = type.getRequestForState(repLat, repLong);
+            }
+
+            client.newCall(request).enqueue(new okhttp3.Callback() {
 
                 @Override
                 public void onFailure(Call call, IOException e) {

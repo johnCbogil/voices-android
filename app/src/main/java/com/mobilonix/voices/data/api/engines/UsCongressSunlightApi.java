@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.mobilonix.voices.R;
+import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.data.api.ApiEngine;
 import com.mobilonix.voices.data.api.util.UrlGenerator;
 import com.mobilonix.voices.data.model.Politico;
@@ -14,35 +15,40 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import okhttp3.Request;
 
 public class UsCongressSunlightApi implements ApiEngine {
 
-    public static final String BASE_URL = "https://congress.api.sunlightfoundation.com/legislators/locate";
-    public static final String LATITUDE_KEY = "latitude";
-    public static final String LONGITUDE_KEY = "longitude";
-    public static final String API_KEY = "apikey";
+    public static final String TAG = UsCongressSunlightApi.class.getCanonicalName();
+
+    public static final String BASE_URL_FEDERAL = "https://www.googleapis.com/civicinfo/v2/representatives";
+    public static final String ADDRESS_KEY = "address";
+    public static final String API_KEY_FEDERAL = "key";
 
     public static final String IMAGE_BASE_URL = "https://theunitedstates.io/images/congress/225x275/";
     public static final String IMAGE_FILE_EXTENSION = ".jpg";
 
-    public static final String API_VALUE = "939e3373a07c468bac51ddd604ebba1f";
+    /* TODO: Extract to config.xml */
+    public static final String API_KEY_VALUE_FEDERAL = "AIzaSyD2DCNhYOdx8t2GsGbvlXd8nfVcugl4nK8";
 
     public UsCongressSunlightApi() {
     }
 
     @Override
-    public Request generateRequest(double latitude, double longitude) {
-
+    public Request generateRequestForFederal(String address){
         Bundle urlBundle = new Bundle();
 
-        urlBundle.putString(LATITUDE_KEY, Double.toString(latitude));
-        urlBundle.putString(LONGITUDE_KEY, Double.toString(longitude));
-        urlBundle.putString(API_KEY, API_VALUE);
+        Log.e(TAG, "FEDERAL REQUEST ADDRESS: " + address);
 
-        UrlGenerator generator = new UrlGenerator(BASE_URL, urlBundle);
+        urlBundle.putString(ADDRESS_KEY, address);
+        urlBundle.putString(API_KEY_FEDERAL, API_KEY_VALUE_FEDERAL);
+
+        UrlGenerator generator = new UrlGenerator(BASE_URL_FEDERAL, urlBundle);
+
+        Log.e(TAG, "API Request: " + generator.generateGetUrlString());
 
         final Request recordRequest = new Request.Builder()
                 .url(generator.generateGetUrl())
@@ -52,63 +58,118 @@ public class UsCongressSunlightApi implements ApiEngine {
     }
 
     @Override
-    public ArrayList<Politico> parseData(String response) {
-        return httpResponseToPoliticos(response);
+    public Request generateRequestForState(double latitude, double longitude) {
+        return null;
     }
 
-    private ArrayList<Politico> httpResponseToPoliticos(String response){
-
-
+    public ArrayList<Politico> parseData(String response) throws IOException  {
         ArrayList<Politico> politicos = new ArrayList<>();
+
+        VoicesApplication.getGlobalHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                //GeneralUtil.toast("Got Federal api response");
+            }
+        });
+
+        //Log.e(TAG, "FEDERAL API RESPONSE: " + response);
 
         try {
             JSONObject rawJson = new JSONObject(response);
-            JSONArray p = rawJson.getJSONArray("results");
+            JSONArray officeArray = rawJson.getJSONArray("offices");
+            JSONArray indices = new JSONArray();
+            ArrayList<Integer> integerArrayList = new ArrayList<Integer>();
+            for(int i=0; i<officeArray.length(); i++) {
+                JSONObject officeObject = officeArray.getJSONObject(i);
+                Log.e(TAG, "Office object " + i + ": " + officeObject.toString());
 
-            int count = rawJson.getInt("count");
+                String level = null;
+                String name = null;
 
-            for (int i = 0; i < count; i++) {
-
-                JSONObject jsonPolitico = (JSONObject) p.get(i);
-
-                String firstName = jsonPolitico.optString("first_name");
-                String lastName = jsonPolitico.optString("last_name");
-                String title = setTitle(jsonPolitico.optString("title"));
-                String gender = jsonPolitico.optString("gender");
-                String party = jsonPolitico.optString("party");
-                String level = "Federal";
-                String district;
-                if(jsonPolitico.optString("district").equals("null")){
-                    district = "";
-                } else {
-                    district = jsonPolitico.optString("district");
+                try {
+                    level = officeObject.optJSONArray("levels").optString(0);
+                    name = officeObject.optString("name");
+                } catch (Exception e) {
+                    level = "None";
+                    name = "None";
                 }
-                String electionDate = setElectionDate(jsonPolitico.optString("term_end"));
-                String phoneNumber = jsonPolitico.optString("phone");
-                String twitter = jsonPolitico.optString("twitter_id");
-                String bioguideId = jsonPolitico.optString("bioguide_id");
-                String contactForm = getContactFormUrl(bioguideId);
+
+                if(level.equals("country") || level.equals("federal")){
+                    if(!name.equals("President of the United States")
+                            &&!name.equals("Vice-President of the United States")) {
+                        indices = officeObject.getJSONArray("officialIndices");
+                        for (int j = 0; j < indices.length(); j++) {
+                            integerArrayList.add(indices.getInt(j));
+                        }
+                    }
+                }
+            }
+
+//            try {
+//                phone = jsonPolitico.optJSONArray("phones").optJSONObject(0).getString("phones");
+//            } catch (Exception e) {
+//                phone = "NONE";
+//            }
+
+            Log.e(TAG, "Federal Official indices: " + integerArrayList);
+            Log.e(TAG, "Federal Official indices Array: " + indices.toString());
+
+            JSONArray officialsArray = rawJson.getJSONArray("officials");
+            Log.e(TAG, "Federal Officials: " + officialsArray);
+            for(int i=0; i < integerArrayList.size(); i++){
+                JSONObject jsonPolitico = officialsArray.getJSONObject(integerArrayList.get(i));
+                String name = jsonPolitico.optString("name");
+                String party = jsonPolitico.optString("party");
+
+                String phone = "";
+                if(jsonPolitico.optJSONArray("phones") != null) {
+                    phone = jsonPolitico.optJSONArray("phones").getString(0);
+                }
+
+                String email = "";
+                if(jsonPolitico.optJSONArray("emails") != null) {
+                    phone = jsonPolitico.optJSONArray("emails").getString(0);
+                }
+
+                String twitter = safeGetArrayIndex(jsonPolitico, "channels", 0, "id");
+                String picUrl = jsonPolitico.optString("photoUrl");
+                String gender = "";
+                String level = "Federal";
+                String district = "";
+                String electionDate = "";
+
                 Politico politico = new Politico.Builder()
-                        .setGender(gender)
-                        .setParty(party)
                         .setLevel(level)
+                        .setParty(party)
+                        .setPhoneNumber(phone)
+                        .setEmailAddress(email)
+                        .setTwitterHandle(twitter)
+                        .setPicUrl(picUrl)
+                        .setGender(gender)
                         .setDistrict(district)
                         .setElectionDate(electionDate)
-                        .setPhoneNumber(phoneNumber)
-                        .setTwitterHandle(twitter)
-                        .setContactForm(contactForm)
-                        .setEmailAddress("")
-                        .setPicUrl(IMAGE_BASE_URL + bioguideId + IMAGE_FILE_EXTENSION)
-                        .build(title, firstName, lastName);
+                        .build(name);
 
                 politicos.add(politico);
             }
         } catch (JSONException e) {
+
+            Log.e(TAG, "JSON PARSING Exception: " + e.getMessage());
             e.printStackTrace();
-            Log.e("TAG",e.getMessage());//TODO handle exception
+        }
+        return politicos;
+    }
+
+    public String safeGetArrayIndex(JSONObject object, String arrayKey, int index, String keyIndex) {
+        String value = "";
+
+        try {
+            value = object.optJSONArray(arrayKey).optJSONObject(index).getString(keyIndex);
+        } catch (Exception e) {
+            value = "NONE";
         }
 
-        return politicos;
+        return value;
     }
 
     public String setTitle(String title) {

@@ -18,8 +18,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import okhttp3.FormBody;
 import okhttp3.Headers;
@@ -44,7 +42,7 @@ public class NycLocalOfficialsApi implements ApiEngine {
     double mLatitude, mLongitude;
 
     @Override
-    public Request generateRequest(double latitude, double longitude) {
+    public Request generateRequestForState(double latitude, double longitude) {
 
         mLatitude = latitude;
         mLongitude = longitude;
@@ -81,6 +79,11 @@ public class NycLocalOfficialsApi implements ApiEngine {
             return recordRequest;
         }
         return  null;
+    }
+
+    @Override
+    public Request generateRequestForFederal(String address) {
+        return null;
     }
 
     @Override
