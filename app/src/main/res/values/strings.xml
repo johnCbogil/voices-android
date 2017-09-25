@@ -10,7 +10,7 @@
     <string name="findreps">Find Reps</string>
     <string name="takeaction">Take Action</string>
     <string name="toolbar_all_groups_info">Select A Group To Learn More</string>
-    <string name="toolbar_add_home_address">Add Home Address</string>
+    <string name="toolbar_add_home_address">Edit Address</string>
 
     <!--Representatives Tab-->
     <string name="search_text">Find Your Reps</string>
@@ -65,6 +65,7 @@
     <string name="follow_question">Are you sure you want to unfollow this group?</string>
     <string name="unfollow">Unfollow Group</string>
     <string name="cancel">Cancel</string>
+    <string name="visit_website">Visit website</string>
 
     <!--Instructions Dialog-->
     <string name="instructions_title">To View Your Representatives</string>

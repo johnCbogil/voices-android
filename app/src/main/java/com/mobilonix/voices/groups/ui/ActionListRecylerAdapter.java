@@ -103,7 +103,8 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
             learnMoreButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    GroupManager.INSTANCE.toggleActionDialog(v.getContext(), actions.get(position));
+                    GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ACTION_DETAIL);
+                            //toggleActionDialog(v.getContext(), actions.get(position));
                 }
             });
 

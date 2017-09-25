@@ -260,16 +260,16 @@ public class VoicesMainActivity extends AppCompatActivity {
         findViewById(R.id.app_progress_spinner).setVisibility(state ? View.VISIBLE : View.GONE);
     }
 
-    public void callPlaceAutocompleteActivityIntent() {
-        Intent i = new Intent(VoicesMainActivity.this, AutocompleteActivity.class);
-        VoicesMainActivity.this.startActivityForResult(i,1);
+//  public void callPlaceAutocompleteActivityIntent() {
+//        Intent i = new Intent(VoicesMainActivity.this, AutocompleteActivity.class);
+//        VoicesMainActivity.this.startActivityForResult(i,1);
 //        try {
 //        } catch (GooglePlayServicesRepairableException e) {
 //            e.printStackTrace();
 //        } catch (GooglePlayServicesNotAvailableException f) {
 //            f.printStackTrace();
 //        }
-    }
+//    }
 
     public void saveAddress(){
         Intent i = new Intent(VoicesMainActivity.this, AutocompleteActivity.class);

@@ -79,24 +79,27 @@ public class UsCongressSunlightApi implements ApiEngine {
             JSONArray officeArray = rawJson.getJSONArray("offices");
             JSONArray indices = new JSONArray();
             ArrayList<Integer> integerArrayList = new ArrayList<Integer>();
+            ArrayList<String> roleList = new ArrayList<String>();
+            String levelName = null;
+            String title = null;
+            String role = null;
             for(int i=0; i<officeArray.length(); i++) {
                 JSONObject officeObject = officeArray.getJSONObject(i);
                 Log.e(TAG, "Office object " + i + ": " + officeObject.toString());
-
-                String level = null;
-                String name = null;
-
                 try {
-                    level = officeObject.optJSONArray("levels").optString(0);
-                    name = officeObject.optString("name");
+                    levelName = officeObject.optJSONArray("levels").optString(0);
+                    title = officeObject.optString("name");
+                    role = officeObject.optJSONArray("roles").optString(0);
+                    roleList.add(role);
                 } catch (Exception e) {
-                    level = "None";
-                    name = "None";
+                    levelName = "None";
+                    title = "";
+                    role = "";
                 }
 
-                if(level.equals("country") || level.equals("federal")){
-                    if(!name.equals("President of the United States")
-                            &&!name.equals("Vice-President of the United States")) {
+                if(levelName.equals("country") || levelName.equals("federal")){
+                    if(!title.equals("President of the United States")
+                            &&!title.equals("Vice-President of the United States")) {
                         indices = officeObject.getJSONArray("officialIndices");
                         for (int j = 0; j < indices.length(); j++) {
                             integerArrayList.add(indices.getInt(j));
@@ -118,7 +121,8 @@ public class UsCongressSunlightApi implements ApiEngine {
             Log.e(TAG, "Federal Officials: " + officialsArray);
             for(int i=0; i < integerArrayList.size(); i++){
                 JSONObject jsonPolitico = officialsArray.getJSONObject(integerArrayList.get(i));
-                String name = jsonPolitico.optString("name");
+                String roleTitle = roleList.get(i);
+                String name = roleTitle + " " + jsonPolitico.optString("name");
                 String party = jsonPolitico.optString("party");
 
                 String phone = "";
@@ -173,16 +177,16 @@ public class UsCongressSunlightApi implements ApiEngine {
     }
 
     public String setTitle(String title) {
-        if (title.equals("Sen")) {
+        if (title.equals("legislatorUpperBody")) {
             return "Senator";
-        } else if (title.equals("Rep")) {
+        } else if (title.equals("legislatorLowerBody")) {
             return "Representative";
-        } else if (title.equals("Del")) {
-            return "Delegate";
-        } else if (title.equals("Com")) {
-            return "Com";
+//        } else if (title.equals("Del")) {
+//            return "Delegate";
+//        } else if (title.equals("Com")) {
+//            return "Com";
         } else {
-            return title;
+            return "";
         }
     }
 

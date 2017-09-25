@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/actions_detail_group_icon"
+        android:src="@drawable/reps_male"
+        android:layout_centerHorizontal="true" />
+    <com.mobilonix.voices.util.AvenirBoldTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/actions_detail_title"
+        android:text="Sample Text"
+        android:textSize="25dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/actions_detail_group_icon" />
+        <!--android:layout_above="@+id/actions_detail_contact_reps"-->
+    <include layout="@layout/view_expanding"
+        android:id="@+id/view_expanding_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/actions_detail_title"/>
+    <include layout="@layout/view_expanding"
+        android:id="@+id/view_expanding_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view_expanding_1"/>
+    <include layout="@layout/view_expanding"
+        android:id="@+id/view_expanding_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view_expanding_2"/>
+    <com.mobilonix.voices.util.AvenirBoldTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/actions_detail_contact_reps"
+        android:text="Contact Reps"
+        android:textSize="25dp"
+        android:layout_below="@+id/view_expanding_3"
+        android:layout_centerHorizontal="true"/>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/actions_detail_reps_list"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:layout_below="@+id/actions_detail_contact_reps"/>
+</RelativeLayout>

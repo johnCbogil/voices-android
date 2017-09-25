@@ -264,12 +264,12 @@ public enum RepresentativesManager {
             }
         });
 
-        searchIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.callPlaceAutocompleteActivityIntent();
-            }
-        });
+//        searchIcon.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                activity.callPlaceAutocompleteActivityIntent();
+//            }
+//        });
 
         addGroupLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -289,7 +289,7 @@ public enum RepresentativesManager {
                 allGroupsText.setVisibility(View.GONE);
                 addGroupIcon.setVisibility(View.VISIBLE);
                 addGroupLinearLayout.setVisibility(View.VISIBLE);
-                searchIcon.setVisibility(View.GONE);
+                //searchIcon.setVisibility(View.GONE);
                 findReps.setVisibility(View.GONE);
                 takeAction.setVisibility(View.VISIBLE);
                 groupsHorizontal.setVisibility(View.VISIBLE);
@@ -312,7 +312,7 @@ public enum RepresentativesManager {
                 allGroupsText.setVisibility(View.GONE);
                 addGroupIcon.setVisibility(View.GONE);
                 addGroupLinearLayout.setVisibility(View.GONE);
-                searchIcon.setVisibility(View.VISIBLE);
+                //searchIcon.setVisibility(View.VISIBLE);
                 findReps.setVisibility(View.VISIBLE);
                 takeAction.setVisibility(View.GONE);
                 groupsHorizontal.setVisibility(View.INVISIBLE);

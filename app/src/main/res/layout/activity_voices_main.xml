@@ -70,7 +70,7 @@
                         android:layout_gravity="right|top"
                         android:src="@drawable/toolbar_search"
                         android:tint="#FFF"
-                        android:visibility="visible"/>
+                        android:visibility="gone"/>
                     <LinearLayout
                         android:id="@+id/toolbar_add_linear_layout"
                         android:orientation="horizontal"
