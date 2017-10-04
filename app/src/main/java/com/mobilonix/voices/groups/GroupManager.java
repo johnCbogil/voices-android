@@ -6,14 +6,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.badoo.mobile.util.WeakHandler;
@@ -33,6 +40,7 @@ import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.ui.RoundedTransformation;
 import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.util.AvenirBoldTextView;
+import com.mobilonix.voices.util.AvenirTextView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -69,8 +77,10 @@ public enum GroupManager {
 
     Dialog responseDialog;
 
-    public void toggleGroupPage(ViewGroup pageRoot, boolean state) {
+    boolean isExpanded1;
+    boolean isExpanded2;
 
+    public void toggleGroupPage(ViewGroup pageRoot, boolean state) {
         if (isRefreshing) {
             ((VoicesMainActivity) pageRoot.getContext()).toggleProgressSpinner(true);
         } else {
@@ -82,7 +92,6 @@ public enum GroupManager {
                 LayoutInflater inflater = (LayoutInflater) pageRoot.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 groupPage = (GroupPage) inflater.inflate(R.layout.view_groups_screen, null, false);
             }
-
 
             /* Add the groups view to the main page*/
             if (groupPage.getParent() != null)
@@ -166,10 +175,14 @@ public enum GroupManager {
             groupPage.findViewById(R.id.actions_container).setVisibility(View.VISIBLE);
             groupPage.findViewById(R.id.user_groups_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.all_groups_container).setVisibility(View.GONE);
+            groupPage.findViewById(R.id.actions_details_container).setVisibility(View.GONE);
             toolbar.findViewById(R.id.toolbar_reps).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.toolbar_groups).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.groups_horizontal).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.reps_horizontal).setVisibility(View.INVISIBLE);
+            toolbar.findViewById(R.id.takeaction).setVisibility(View.VISIBLE);
+            toolbar.findViewById(R.id.toolbar_previous).setVisibility(View.GONE);
+            toolbar.findViewById(R.id.allgroups_text).setVisibility(View.GONE);
 
             ((EntityContainer) groupPage.findViewById(R.id.actions_container)).setType(groupType);
             toolbar.findViewById(R.id.toolbar_add).setVisibility(View.VISIBLE);
@@ -186,6 +199,7 @@ public enum GroupManager {
             groupPage.findViewById(R.id.actions_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.user_groups_container).setVisibility(View.VISIBLE);
             groupPage.findViewById(R.id.all_groups_container).setVisibility(View.GONE);
+            groupPage.findViewById(R.id.actions_details_container).setVisibility(View.GONE);
             toolbar.findViewById(R.id.toolbar_reps).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.toolbar_groups).setVisibility(View.VISIBLE);
 
@@ -205,6 +219,7 @@ public enum GroupManager {
             groupPage.findViewById(R.id.actions_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.user_groups_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.all_groups_container).setVisibility(View.VISIBLE);
+            groupPage.findViewById(R.id.actions_details_container).setVisibility(View.GONE);
 
             ((EntityContainer) groupPage.findViewById(R.id.all_groups_container)).setType(groupType);
 
@@ -233,6 +248,33 @@ public enum GroupManager {
             groupPage.findViewById(R.id.user_groups_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.all_groups_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.actions_details_container).setVisibility(View.VISIBLE);
+            toolbar.findViewById(R.id.toolbar_reps).setVisibility(View.GONE);
+            toolbar.findViewById(R.id.toolbar_groups).setVisibility(View.GONE);
+            ((EntityContainer) groupPage.findViewById(R.id.user_groups_container)).setType(groupType);
+            toolbar.findViewById(R.id.toolbar_add).setVisibility(View.GONE);
+            toolbar.findViewById(R.id.toolbar_add_linear_layout).setVisibility(View.GONE);
+            toolbar.findViewById(R.id.toolbar_previous).setVisibility(View.VISIBLE);
+
+            TextView actionsDetailsTitle = (TextView)toolbar.findViewById(R.id.allgroups_text);
+            actionsDetailsTitle.setVisibility(View.VISIBLE);
+            actionsDetailsTitle.setText("Title");
+
+            toolbar.findViewById(R.id.toolbar_add).setVisibility(View.GONE);
+            toolbar.findViewById(R.id.toolbar_add_linear_layout).setVisibility(View.GONE);
+            toolbar.findViewById(R.id.toolbar_reps).setVisibility(View.GONE);
+            toolbar.findViewById(R.id.toolbar_groups).setVisibility(View.GONE);
+            toolbar.findViewById(R.id.groups_horizontal).setVisibility(View.GONE);
+            toolbar.findViewById(R.id.reps_horizontal).setVisibility(View.GONE);
+            toolbar.findViewById(R.id.hamburger_icon).setVisibility(View.GONE);
+            toolbar.findViewById(R.id.takeaction).setVisibility(View.GONE);
+
+            toolbar.findViewById(R.id.toolbar_previous).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toggleGroups(GroupType.ACTION);
+                }
+            });
+
             MODE = GroupType.ACTION_DETAIL;
         }
     }
@@ -478,71 +520,82 @@ public enum GroupManager {
         return groupPageVisible;
     }
 
-    public void toggleActionDialog(Context context, final Action action) {
-        final Dialog actionDialog = new Dialog(context);
-        actionDialog.setTitle("Take Action");
-        actionDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        actionDialog.setContentView(R.layout.actions_details);
-
-//        TextView actionTitle = (TextView) actionDialog.findViewById(R.id.actions_title);
-//        TextView actionSubject = (TextView) actionDialog.findViewById(R.id.actions_subject);
-//        TextView actionDescription = (TextView) actionDialog.findViewById(R.id.actions_description);
-//        ImageView actionImage = (ImageView) actionDialog.findViewById(R.id.actions_image);
-//
-//        Button contactRepresentativesButton = (Button) actionDialog.findViewById(R.id.actions_button_contact_representatives);
-//
-//        actionTitle.setText(action.getGroupName());
-//        actionSubject.setText(action.getSubject());
-//        actionDescription.setText(action.getBody());
-//
-//        final int actionLevel = (int) action.getLevel();
-//
-//        Picasso.with(context)
-//                .load(action.getImageUrl())
-//                .placeholder(R.drawable.spinner_moving)
-//                //.error(R.drawable.reps_male)
-//                .fit()
-//                .into(actionImage);
-//
-//        contactRepresentativesButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                int voicesOrange = VoicesApplication.getContext().getResources().getColor(R.color.voices_orange);
-//                responseDialog = new Dialog(v.getContext());
-//                responseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                responseDialog.setContentView(R.layout.dialog_info);
-//                responseDialog.setTitle(VoicesApplication.getContext().getString(R.string.response_title));
-//                TextView responseTextView = (TextView)responseDialog.findViewById(R.id.response);
-//                String response;
-//                String script = action.getScript();
-//
-//                if((action == null) || (script == null)) {
-//                    response = VoicesApplication.getContext().getString(R.string.response_4);
-//                    responseTextView.setText(response);
-//                    Spannable span = new SpannableString(response);
-//                    span.setSpan(new ForegroundColorSpan(voicesOrange), 17, 28, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//                    span.setSpan(new ForegroundColorSpan(voicesOrange), 94, 149, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//                    responseTextView.setText(span);
-//                } else {
-//                    response = action.getScript();
-//                    responseTextView.setText(response);
-//                }
-//                AvenirTextView infoCloseButton = (AvenirTextView)responseDialog.findViewById(R.id.info_close_button);
-//                infoCloseButton.setOnClickListener(new View.OnClickListener(){
-//                    @Override
-//                    public void onClick(View v){
-//                        responseDialog.dismiss();
-//                    }
-//                });
-//                responseDialog.show();
-//                RepresentativesManager.INSTANCE.selectRepresentativesTab();
-//                RepresentativesManager.INSTANCE.setPageByIndex(actionLevel);
-//                RepresentativesManager.INSTANCE
-//                        .setLastActionSelectedForContact(action.getActionKey(), action.getGroupKey(), action.getScript());
-//                actionDialog.dismiss();
-//            }
-//        });
-        actionDialog.show();
+    public void toggleActionDetailView(final Context context, final Action action) {
+        RelativeLayout actionDetails = (RelativeLayout)groupPage.findViewById(R.id.actions_details_container);
+        ImageView actionImage = (ImageView)actionDetails.findViewById(R.id.actions_detail_group_icon);
+        Picasso.with(context)
+                .load(action.getImageUrl())
+                .placeholder(R.drawable.spinner_moving)
+                .error(R.drawable.reps_male)
+                .fit()
+                .into(actionImage);
+        TextView actionTitle = (TextView)actionDetails.findViewById(R.id.actions_detail_title);
+        actionTitle.setText(action.getTitle());
+        final Animation animShow = AnimationUtils.loadAnimation(context, R.anim.view_show);
+        final Animation animHide = AnimationUtils.loadAnimation(context, R.anim.view_hide);
+        isExpanded1 = false;
+        isExpanded2 = false;
+        final LinearLayout expandingView1 = (LinearLayout)actionDetails.findViewById(R.id.view_expanding_1);
+        AvenirTextView expandingViewText1 = (AvenirTextView)expandingView1.findViewById(R.id.expanding_title);
+        expandingViewText1.setText("Why It's Important");
+        expandingView1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AvenirTextView hiddenView = (AvenirTextView)expandingView1.findViewById(R.id.hidden_view);
+                if(isExpanded1 == false) {
+                    hiddenView.setText(action.getBody());
+                    hiddenView.setVisibility(View.VISIBLE);
+                    hiddenView.startAnimation(animShow);
+                    isExpanded1=true;
+                } else {
+                    hiddenView.setVisibility(View.GONE);
+                    hiddenView.startAnimation(animHide);
+                    isExpanded1=false;
+                }
+            }
+        });
+        final LinearLayout expandingView2 = (LinearLayout)actionDetails.findViewById(R.id.view_expanding_2);
+        AvenirTextView expandingViewText2 = (AvenirTextView)expandingView2.findViewById(R.id.expanding_title);
+        expandingViewText2.setText("What to say (Call Script)");
+        expandingView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView hiddenView = (TextView)expandingView2.findViewById(R.id.hidden_view);
+                if(isExpanded2 == false) {
+                    int voicesOrange = VoicesApplication.getContext().getResources().getColor(R.color.voices_orange);
+                    String response;
+                    String script = action.getScript();
+                    if((action == null) || (script == null)) {
+                        response = VoicesApplication.getContext().getString(R.string.response_4);
+                        hiddenView.setText(response);
+                        Spannable span = new SpannableString(response);
+                        span.setSpan(new ForegroundColorSpan(voicesOrange), 17, 28, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        span.setSpan(new ForegroundColorSpan(voicesOrange), 94, 149, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        hiddenView.setText(span);
+                    } else {
+                        response = action.getScript();
+                        hiddenView.setText(response);
+                    }
+                    hiddenView.setVisibility(View.VISIBLE);
+                    hiddenView.startAnimation(animShow);
+                    isExpanded2=true;
+                } else {
+                    hiddenView.setVisibility(View.GONE);
+                    hiddenView.startAnimation(animHide);
+                    isExpanded2=false;
+                }
+            }
+        });
+        final LinearLayout expandingView3 = (LinearLayout)actionDetails.findViewById(R.id.view_expanding_3);
+        AvenirTextView expandingViewText3 = (AvenirTextView)expandingView3.findViewById(R.id.expanding_title);
+        expandingViewText3.setText("Share action");
+        ImageView expandingViewImage3 = (ImageView)expandingView3.findViewById(R.id.expanding_button);
+        expandingViewImage3.setImageDrawable(VoicesApplication.getContext().getResources().getDrawable(R.drawable.share_button));
+        expandingView3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
     }
 
     public void togglePolicyDialog(Context context, Policy policy, final Action action, final Dialog parentDialog) {

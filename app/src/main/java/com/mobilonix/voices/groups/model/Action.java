@@ -1,5 +1,7 @@
 package com.mobilonix.voices.groups.model;
 
+import java.util.ArrayList;
+
 public class Action implements Comparable<Action> {
 
     String actionKey;
@@ -12,6 +14,7 @@ public class Action implements Comparable<Action> {
     long timeStamp;
     String title;
     String script;
+    ArrayList<ActionDetail> actionDetails;
 
     public Action(String actionKey,
                   String body,
@@ -22,7 +25,9 @@ public class Action implements Comparable<Action> {
                   String subject,
                   long timeStamp,
                   String title,
-                  String script) {
+                  String script
+                  //ArrayList<ActionDetail> actionDetails
+                  ) {
 
         this.actionKey = actionKey;
         this.body = body;
@@ -34,6 +39,7 @@ public class Action implements Comparable<Action> {
         this.timeStamp = timeStamp;
         this.title = title;
         this.script = script;
+        //this.actionDetails = actionDetails;
 
     }
 
@@ -80,6 +86,10 @@ public class Action implements Comparable<Action> {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+    //public ArrayList<ActionDetail> getActionDetails() {
+        //return actionDetails;
+    // }
 
     @Override
     public int compareTo(Action compareAction) {

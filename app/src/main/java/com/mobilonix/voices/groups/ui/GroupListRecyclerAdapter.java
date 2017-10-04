@@ -20,11 +20,11 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class GroupListRecylerAdapter extends RecyclerView.Adapter<GroupListRecylerAdapter.GroupListHolder> {
+public class GroupListRecyclerAdapter extends RecyclerView.Adapter<GroupListRecyclerAdapter.GroupListHolder> {
     ArrayList<Group> groups;
     GroupManager.GroupType groupType;
 
-    public GroupListRecylerAdapter(Context context, ArrayList<Group> groups, GroupManager.GroupType groupType) {
+    public GroupListRecyclerAdapter(Context context, ArrayList<Group> groups, GroupManager.GroupType groupType) {
         this.groups = groups;
         this.groupType = groupType;
 

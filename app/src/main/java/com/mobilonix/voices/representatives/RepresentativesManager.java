@@ -250,7 +250,6 @@ public enum RepresentativesManager {
         final AvenirTextView allGroupsText = (AvenirTextView) primaryToolbar.findViewById(R.id.allgroups_text);
         final LinearLayout addGroupLinearLayout = (LinearLayout)primaryToolbar.findViewById(R.id.toolbar_add_linear_layout);
         final ImageView addGroupIcon = (ImageView) primaryToolbar.findViewById(R.id.toolbar_add);
-        final ImageView searchIcon = (ImageView) primaryToolbar.findViewById(R.id.toolbar_search);
         final AvenirBoldTextView findReps = (AvenirBoldTextView) primaryToolbar.findViewById(R.id.findreps);
         final AvenirBoldTextView takeAction = (AvenirBoldTextView) primaryToolbar.findViewById(R.id.takeaction);
         final ImageView repsHorizontal = (ImageView) primaryToolbar.findViewById(R.id.reps_horizontal);
@@ -263,13 +262,6 @@ public enum RepresentativesManager {
                 activity.getDrawer();
             }
         });
-
-//        searchIcon.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                activity.callPlaceAutocompleteActivityIntent();
-//            }
-//        });
 
         addGroupLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -289,7 +281,6 @@ public enum RepresentativesManager {
                 allGroupsText.setVisibility(View.GONE);
                 addGroupIcon.setVisibility(View.VISIBLE);
                 addGroupLinearLayout.setVisibility(View.VISIBLE);
-                //searchIcon.setVisibility(View.GONE);
                 findReps.setVisibility(View.GONE);
                 takeAction.setVisibility(View.VISIBLE);
                 groupsHorizontal.setVisibility(View.VISIBLE);
@@ -312,7 +303,6 @@ public enum RepresentativesManager {
                 allGroupsText.setVisibility(View.GONE);
                 addGroupIcon.setVisibility(View.GONE);
                 addGroupLinearLayout.setVisibility(View.GONE);
-                //searchIcon.setVisibility(View.VISIBLE);
                 findReps.setVisibility(View.VISIBLE);
                 takeAction.setVisibility(View.GONE);
                 groupsHorizontal.setVisibility(View.INVISIBLE);
