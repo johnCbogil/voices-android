@@ -50,6 +50,9 @@
     <string name="no_follow_actions">To receive actions from advocacy groups, tap the + button above to follow groups.</string>
     <string name="no_follow_actions_top">You haven\'t received any actions yet.</string>
     <string name="contact_representatives">Contact My Representatives</string>
+    <string name="important">Why it\'s important</string>
+    <string name="say">What to say (Call Script)</string>
+    <string name="share">Share action</string>
 
     <!--Groups Tab-->
     <string name="my_groups">My Groups</string>

@@ -297,6 +297,8 @@ public class VoicesMainActivity extends AppCompatActivity {
                         this,
                         RepresentativesManager.INSTANCE.getPages(),
                         RepresentativesManager.INSTANCE.getRepresentativesPager());
+                GroupManager.INSTANCE.refreshActionDetailReps(addressString, latitudeDouble,
+                        longitudeDouble, this, RepresentativesManager.RepresentativesType.CONGRESS);
                 final LinearLayout errorLayout = (LinearLayout)findViewById(R.id.layout_error_page);
                 errorLayout.setVisibility(View.GONE);
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
@@ -331,6 +333,8 @@ public class VoicesMainActivity extends AppCompatActivity {
                         RepresentativesManager.INSTANCE.getRepresentativesPager());
                 final LinearLayout errorLayout = (LinearLayout)findViewById(R.id.layout_error_page);
                 errorLayout.setVisibility(View.GONE);
+                GroupManager.INSTANCE.refreshActionDetailReps(addressString, latitudeDouble,
+                        longitudeDouble, this, RepresentativesManager.RepresentativesType.CONGRESS);
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
                 Log.i(TAG, status.getStatusMessage());

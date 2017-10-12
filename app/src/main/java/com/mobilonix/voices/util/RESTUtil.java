@@ -74,14 +74,12 @@ public class RESTUtil {
                                                   final Callback2<ArrayList<Representative>,
                                                           RepresentativesManager.RepresentativesType>
                                                           representativesCallback) {
-
         final OkHttpClient client = new OkHttpClient.Builder()
                 .readTimeout(REQUEST_READ_TIMEOUT, TimeUnit.SECONDS)
                 .build();
 
         /* Make call to auto-complete api */
         try {
-
             /* Create a new API request based on the representative type. Federal uses address and
             * State and city use lat long */
             Request request = null;
