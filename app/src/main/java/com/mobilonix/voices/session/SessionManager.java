@@ -414,30 +414,37 @@ public enum SessionManager {
                     String groupKey;
                     String groupName;
                     String imageUrl;
+                    String actionType;
 
-                    //try{
+                    try{
                         body = (String) action.child("body").getValue();
-//                    } catch(NullPointerException e){
-//                        body = "";
-//                    }
+                    } catch(NullPointerException e){
+                        body = "";
+                    }
 
-                    //try{
+                    try{
                         groupKey = (String) action.child("groupKey").getValue();
-//                    } catch(NullPointerException e){
-//                        groupKey = "";
-//                    }
+                    } catch(NullPointerException e){
+                        groupKey = "";
+                    }
 
-                    //try{
+                    try{
                         groupName = (String) action.child("groupName").getValue();
-//                    } catch(NullPointerException e){
-//                        groupName = "";
-//                    }
+                    } catch(NullPointerException e){
+                        groupName = "";
+                    }
 
-                    //try{
+                    try{
                         imageUrl = (String) action.child("imageURL").getValue();
-//                    } catch(NullPointerException e){
-//                        imageUrl="";
-//                    }
+                    } catch(NullPointerException e){
+                        imageUrl="";
+                    }
+
+                    try {
+                        actionType = (String) action.child("actionType").getValue();
+                    } catch(NullPointerException e){
+                        actionType = "";
+                    }
 
                     long level = 3;
                     if(action.child("level").exists()) {
@@ -451,23 +458,27 @@ public enum SessionManager {
                         script = VoicesApplication.getContext().getString(R.string.response_4);
                     }
 
-                    //try{
+                    try{
                         subject =(String) action.child("subject").getValue();
-//                    } catch(NullPointerException e){
-//                        subject="";
-//                    }
+                    } catch(NullPointerException e){
+                        subject="";
+                    }
 
-                    //try{
+                    try{
                         timestamp = (long)action.child("timestamp").getValue();
-//                    } catch(NullPointerException e){
-//                        timestamp = 0;
-//                    }
+                    } catch(NullPointerException e){
+                        timestamp = 0;
+                    }
 
-                    //try{
+                    try{
                         title = (String) action.child("title").getValue();
-//                    } catch(NullPointerException e){
-//                        title = "";
-//                    }
+                    } catch(NullPointerException e){
+                        title = "";
+                    }
+
+                    if(actionType.equals("singleRep")){
+
+                    }
 
                     allActions.add(new Action(action.getKey(),
                             (String) action.child("body").getValue(),
@@ -478,7 +489,9 @@ public enum SessionManager {
                             (String) action.child("subject").getValue(),
                             (long) action.child("timestamp").getValue(),
                             (String) action.child("title").getValue(),
-                            (String) action.child("script").getValue()));
+                            (String) action.child("script").getValue(),
+                            (String) action.child("actionType").getValue(),
+                            null ));
 
                     Action actionToAdd =
                             new Action(actionKey,
@@ -490,7 +503,9 @@ public enum SessionManager {
                                     subject,
                                     timestamp,
                                     title,
-                                    script);
+                                    script,
+                                    actionType,
+                                    null );
 
                     allActions.add(actionToAdd);
                 }

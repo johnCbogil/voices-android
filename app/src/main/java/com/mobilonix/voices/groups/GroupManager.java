@@ -611,7 +611,9 @@ public enum GroupManager {
                                         double repLat,
                                         double repLong,
                                         final VoicesMainActivity activity,
-                                        final RepresentativesManager.RepresentativesType type) {
+                                        final RepresentativesManager.RepresentativesType type,
+                                        final String actionType,
+                                        final Representative singleRep) {
         LinearLayout contactRepsEmptyState = (LinearLayout)actionDetails.findViewById(R.id.actions_detail_reps_error);
         contactRepsEmptyState.setVisibility(View.GONE);
         RESTUtil.makeRepresentativesRequest(locationString, repLat, repLong, type,
@@ -626,10 +628,15 @@ public enum GroupManager {
                             });
 
                             final ArrayList<Representative> result;
+
                             if ((data == null) || data.isEmpty()) {
                                 result = new ArrayList<>();
                             } else {
                                 result = data;
+                            }
+
+                            if(actionType.equals("singleRep")){
+                                Representative representative = singleRep;
                             }
 
                             activity.getHandler().post(new Runnable() {
