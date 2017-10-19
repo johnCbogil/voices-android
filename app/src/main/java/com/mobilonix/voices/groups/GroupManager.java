@@ -34,6 +34,7 @@ import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
 import com.mobilonix.voices.groups.model.Policy;
 import com.mobilonix.voices.groups.ui.EntityContainer;
+import com.mobilonix.voices.groups.ui.GroupDetailContainer;
 import com.mobilonix.voices.groups.ui.GroupPage;
 import com.mobilonix.voices.groups.ui.PolicyListAdapter;
 import com.mobilonix.voices.representatives.RepresentativesManager;
@@ -69,9 +70,9 @@ public enum GroupManager {
 
     ArrayList<Group> allGroupsData = new ArrayList<>();
 
-    ArrayList<Group> userGroups = new ArrayList<Group>();
+    ArrayList<Group> userGroups = new ArrayList<>();
 
-    ArrayList<Group> allGroups = new ArrayList<Group>();
+    ArrayList<Group> allGroups = new ArrayList<>();
 
     String defferredGroupKey = null;
 
@@ -637,6 +638,7 @@ public enum GroupManager {
 
         this.defferredGroupKey = defferredGroupKey;
         this.defferredGroupKey = this.defferredGroupKey.toUpperCase().replace("HTTPS://TRYVOICES.COM/", "");
+
 
         if(!subscribe) {
             return;

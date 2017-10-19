@@ -20,11 +20,11 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class GroupListRecyclerAdapter extends RecyclerView.Adapter<GroupListRecyclerAdapter.GroupListHolder> {
-    ArrayList<Group> groups;
-    GroupManager.GroupType groupType;
+class GroupListRecyclerAdapter extends RecyclerView.Adapter<GroupListRecyclerAdapter.GroupListHolder> {
+    private ArrayList<Group> groups;
+    private GroupManager.GroupType groupType;
 
-    public GroupListRecyclerAdapter(Context context, ArrayList<Group> groups, GroupManager.GroupType groupType) {
+    GroupListRecyclerAdapter(Context context, ArrayList<Group> groups, GroupManager.GroupType groupType) {
         this.groups = groups;
         this.groupType = groupType;
 
@@ -44,8 +44,7 @@ public class GroupListRecyclerAdapter extends RecyclerView.Adapter<GroupListRecy
         View actionCell = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.groups_item, parent, false);
 
-        GroupListHolder pvh = new GroupListHolder(actionCell, groups);
-        return pvh;
+        return new GroupListHolder(actionCell, groups);
     }
 
     @Override
@@ -89,7 +88,6 @@ public class GroupListRecyclerAdapter extends RecyclerView.Adapter<GroupListRecy
 
         }
 
-
     }
 
     @Override
@@ -102,7 +100,7 @@ public class GroupListRecyclerAdapter extends RecyclerView.Adapter<GroupListRecy
         return groups.size();
     }
 
-    public static class GroupListHolder extends RecyclerView.ViewHolder {
+    static class GroupListHolder extends RecyclerView.ViewHolder {
 
         ImageView groupImage;
         ImageView arrowImage;
@@ -117,7 +115,7 @@ public class GroupListRecyclerAdapter extends RecyclerView.Adapter<GroupListRecy
 
         int position;
 
-        public GroupListHolder(View itemView, ArrayList<Group> groups) {
+        GroupListHolder(View itemView, ArrayList<Group> groups) {
             super(itemView);
 
             this.groupView = itemView;
@@ -133,7 +131,7 @@ public class GroupListRecyclerAdapter extends RecyclerView.Adapter<GroupListRecy
 
         }
 
-        public void setPosition(int position) {
+        void setPosition(int position) {
             this.position = position;
         }
     }

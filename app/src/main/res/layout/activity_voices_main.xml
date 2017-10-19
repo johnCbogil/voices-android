@@ -3,147 +3,163 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawer_layout">
-    <LinearLayout
-        xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="vertical"
+
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/activity_main_ll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFF"
+        android:orientation="vertical"
         tools:context="com.mobilonix.voices.VoicesMainActivity">
+
         <android.support.v7.widget.Toolbar
             android:id="@+id/primary_toolbar"
-            android:background="@color/voices_orange"
-            android:layout_height="100dp"
             android:layout_width="match_parent"
-            android:minHeight="100dp"
-            android:gravity="bottom">
+            android:layout_height="100dp"
+            android:background="@color/voices_orange"
+            android:gravity="bottom"
+            android:minHeight="100dp">
+
             <FrameLayout
+                android:id="@+id/primary_toolbar_basic_controls"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/primary_toolbar_basic_controls"
                 android:layout_marginRight="10dp">
-                    <com.mobilonix.voices.util.AvenirBoldTextView
-                        android:id="@+id/findreps"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left|top"
-                        android:layout_marginTop="5dp"
-                        android:textSize="25dp"
-                        android:text="@string/findreps"
-                        android:textColor="#FFF"
-                        android:visibility="visible"/>
-                    <com.mobilonix.voices.util.AvenirBoldTextView
-                        android:id="@+id/takeaction"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left|top"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="25dp"
-                        android:text="@string/takeaction"
-                        android:textColor="#FFF"
-                        android:visibility="gone"/>
-                    <com.mobilonix.voices.util.AvenirTextView
-                        android:id="@+id/allgroups_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="40dp"
-                        android:layout_marginTop="5dp"
-                        android:textSize="25dp"
-                        android:text="@string/toolbar_all_groups_info"
-                        android:textColor="#FFF"
-                        android:visibility="gone"/>
+
+                <com.mobilonix.voices.util.AvenirBoldTextView
+                    android:id="@+id/findreps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|top"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/findreps"
+                    android:textColor="#FFF"
+                    android:textSize="25dp"
+                    android:visibility="visible" />
+
+                <com.mobilonix.voices.util.AvenirBoldTextView
+                    android:id="@+id/takeaction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|top"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/takeaction"
+                    android:textColor="#FFF"
+                    android:textSize="25dp"
+                    android:visibility="gone" />
+
+                <com.mobilonix.voices.util.AvenirTextView
+                    android:id="@+id/allgroups_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/toolbar_all_groups_info"
+                    android:textColor="#FFF"
+                    android:textSize="25dp"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/hamburger_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="right|top"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/hamburger_icon"
+                    android:tint="#FFF"
+                    android:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/toolbar_search"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="right|top"
+                    android:layout_marginRight="50dp"
+                    android:src="@drawable/toolbar_search"
+                    android:tint="#FFF"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/toolbar_add_linear_layout"
+                    android:layout_width="40dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="right|top"
+                    android:layout_marginRight="50dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
                     <ImageView
-                        android:id="@+id/hamburger_icon"
+                        android:id="@+id/toolbar_add"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_gravity="right|top"
-                        android:layout_marginTop="5dp"
-                        android:src="@drawable/hamburger_icon"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
+                        android:src="@drawable/toolbar_add"
                         android:tint="#FFF"
-                        android:visibility="visible"/>
-                    <ImageView
-                        android:id="@+id/toolbar_search"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginRight="50dp"
-                        android:layout_gravity="right|top"
-                        android:src="@drawable/toolbar_search"
-                        android:tint="#FFF"
-                        android:visibility="gone"/>
-                    <LinearLayout
-                        android:id="@+id/toolbar_add_linear_layout"
-                        android:orientation="horizontal"
-                        android:layout_gravity="right|top"
-                        android:layout_height="30dp"
-                        android:layout_width="40dp"
-                        android:layout_marginRight="50dp"
-                        android:visibility="gone">
-                        <ImageView
-                            android:id="@+id/toolbar_add"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/toolbar_add"
-                            android:layout_marginTop="4dp"
-                            android:tint="#FFF"
-                            android:visibility="gone"/>
-                    </LinearLayout>
-                    <ImageView
-                        android:id="@+id/toolbar_reps"
-                        android:layout_width="50sp"
-                        android:layout_height="50sp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_gravity="left|bottom"
-                        android:src="@drawable/reps_zero"
-                        android:tint="#FFF" />
-                    <ImageView
-                        android:id="@+id/reps_horizontal"
-                        android:layout_width="50sp"
-                        android:layout_height="10sp"
-                        android:layout_gravity="left|bottom"
-                        android:src="@drawable/toolbar_horizontal"
-                        android:tint="#FFF" />
-                    <ImageView
-                        android:id="@+id/toolbar_groups"
-                        android:layout_width="50sp"
-                        android:layout_height="50sp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginLeft="100dp"
-                        android:layout_gravity="left|bottom"
-                        android:src="@drawable/toolbar_groups"
-                        android:tint="#FFF" />
-                    <ImageView
-                        android:id="@+id/groups_horizontal"
-                        android:layout_width="50sp"
-                        android:layout_height="10sp"
-                        android:layout_marginLeft="100dp"
-                        android:layout_gravity="left|bottom"
-                        android:src="@drawable/toolbar_horizontal"
-                        android:tint="#FFF"
-                        android:visibility="invisible"/>
-                    <ImageView
-                        android:id="@+id/toolbar_previous"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left|top"
-                        android:layout_marginTop="5dp"
-                        android:src="@drawable/toolbar_previous"
-                        android:tint="#FFF"
-                        android:visibility="gone"/>
-                </FrameLayout>
-            </android.support.v7.widget.Toolbar>
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/toolbar_reps"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:layout_gravity="left|bottom"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/reps_zero"
+                    android:tint="#FFF" />
+
+                <ImageView
+                    android:id="@+id/reps_horizontal"
+                    android:layout_width="50sp"
+                    android:layout_height="10sp"
+                    android:layout_gravity="left|bottom"
+                    android:src="@drawable/toolbar_horizontal"
+                    android:tint="#FFF" />
+
+                <ImageView
+                    android:id="@+id/toolbar_groups"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
+                    android:layout_gravity="left|bottom"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="100dp"
+                    android:src="@drawable/toolbar_groups"
+                    android:tint="#FFF" />
+
+                <ImageView
+                    android:id="@+id/groups_horizontal"
+                    android:layout_width="50sp"
+                    android:layout_height="10sp"
+                    android:layout_gravity="left|bottom"
+                    android:layout_marginLeft="100dp"
+                    android:src="@drawable/toolbar_horizontal"
+                    android:tint="#FFF"
+                    android:visibility="invisible" />
+
+                <ImageView
+                    android:id="@+id/toolbar_previous"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|top"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/toolbar_previous"
+                    android:tint="#FFF"
+                    android:visibility="gone" />
+            </FrameLayout>
+        </android.support.v7.widget.Toolbar>
+
         <View
             android:id="@+id/toolbar_dropshadow"
             android:layout_width="match_parent"
             android:layout_height="5dp"
             android:background="@drawable/toolbar_dropshadow"
-            android:visibility="gone"/>
+            android:visibility="gone" />
+
         <FrameLayout
             android:id="@+id/main_content_frame"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </FrameLayout>
+            android:layout_height="wrap_content"></FrameLayout>
     </LinearLayout>
 
     <ListView
@@ -153,11 +169,6 @@
         android:layout_gravity="right"
         android:background="#ffeeeeee"/>
 
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        android:id="@+id/app_progress_spinner"/>
+
 </android.support.v4.widget.DrawerLayout>
 

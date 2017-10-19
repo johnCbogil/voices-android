@@ -5,6 +5,9 @@
     <string name="splash_voices_intro">Support the groups and causes you care about.</string>
     <string name="splash_button">Get Started</string>
 
+    <!-- Group Detail -->
+    <string name="follow_group">Follow Group</string>
+
     <!--Toolbar-->
     <string name="settings">Settings</string>
     <string name="findreps">Find Reps</string>
@@ -65,7 +68,7 @@
     <string name="follow_question">Are you sure you want to unfollow this group?</string>
     <string name="unfollow">Unfollow Group</string>
     <string name="cancel">Cancel</string>
-    <string name="visit_website">Visit website</string>
+    <string name="visit_website">Visit Website</string>
 
     <!--Instructions Dialog-->
     <string name="instructions_title">To View Your Representatives</string>
