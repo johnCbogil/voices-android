@@ -14,9 +14,11 @@ import java.util.List;
 
 //Converts NYC lat / lon to physical address String and provides address String and mBorough
 
-public class NycCouncilGeoUtil extends VoicesGeoUtil{
+public class NycCouncilGeoUtil extends VoicesGeoUtil {
 
     int mBorough;
+
+    private int[] districtReference = new int[]{1,2,5,7,8,16,18,20,21,23,24,33,34,35,36,39,40,41,43,47,49,13,19,11,12,4,42,45,29,30,3,6,50,51,46,48,37,14,9,10,15,17,22,25,26,27,28,38,44,31,32};
 
     public NycCouncilGeoUtil(double lat, double lon) {
         List<Address> addresses = super.resetLocation(lat,lon);
@@ -24,6 +26,8 @@ public class NycCouncilGeoUtil extends VoicesGeoUtil{
     }
 
     //TODO: switch to regex match in order to take advantage of matches() method for multiple terms
+    //TODO: this area can be gutted since we're using PIP algorithm rather than checking website
+
     private void parseBorough(List<Address> addresses) {
         String allAddys = null;
 
@@ -44,48 +48,69 @@ public class NycCouncilGeoUtil extends VoicesGeoUtil{
             } else if (allAddys.contains("queens")
                     || allAddys.contains("long island city")) {
                 mBorough = 4;
-            } else if (allAddys.contains("manhattan")) {
+            } else if (allAddys.contains("manhattan") || allAddys.contains("new york, ny")) {
                 mBorough = 1;
             }
         }
     }
 
     public int filterDistrict(double lat, double lon) {
-        JSONObject jObj = JsonUtil.getJsonFromResource(R.raw.district_sampling);
-
-        int district=-1;
 
         try {
-            JSONArray map = jObj.getJSONArray("map");
+            JSONObject jObj = JsonUtil.getJsonFromResource(R.raw.city_council_districts);
 
-            double shortestDistance = Double.MAX_VALUE;
+            JSONArray districts = jObj.getJSONArray("features");
 
-            for(int i = 0; i < map.length(); i++) {
+            for(int i = 0; i < districts.length(); i++) {
 
-                double shapeLat = ((JSONObject) map.get(i)).getDouble("lat");
-                double shapeLon = ((JSONObject) map.get(i)).getDouble("lon");
+                JSONArray shapes = districts.getJSONObject(i).getJSONObject("geometry").getJSONArray("coordinates");
 
-                double distance = distanceCalc(shapeLat, shapeLon, lat, lon);
+                for(int j = 0; j < shapes.length(); j++) {
 
-                if(distance < shortestDistance) {
-                    shortestDistance = distance;
-                    district = ((JSONObject) map.get(i)).getInt("dist");
+
+                    JSONArray shape = shapes.getJSONArray(j).getJSONArray(0);
+
+                    double[] lats = new double[shape.length()];
+                    double[] lons = new double[shape.length()];
+
+                    for(int k = 0; k < shape.length(); k++) {
+
+                            JSONArray latlon = shape.getJSONArray(k);
+
+                            lats[k] = Double.parseDouble(latlon.get(1).toString());
+                            lons[k] = Double.parseDouble(latlon.get(0).toString());
+                    }
+                    if(isPointInPoly(lats.length,lats,lons,lat,lon)) {
+                        return districtReference[i];
+                    }
                 }
             }
 
         } catch(JSONException e) {
             e.printStackTrace();
         }
-        return district+1;
+        return -1;
     }
 
-    private static double distanceCalc(double x1, double y1, double x2, double y2) {
-        return Math.sqrt( (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+    private boolean isPointInPoly(int numVert, double[] vertX, double[] vertY, double testX, double testY) {
+
+        int i, j;
+        boolean c = false;
+        
+        for (i = 0, j = numVert-1; i < numVert; j = i++) {
+
+            if ( ((vertY[i]>testY) != (vertY[j]>testY)) &&
+                (testX < (vertX[j]-vertX[i]) * (testY-vertY[i]) / (vertY[j]-vertY[i]) + vertX[i])) {
+                c = !c; 
+            }
+        }
+        return c;
     }
 
     public String getAddressLine() {
         return  mAddressLine;
     }
+
     public String getBorough() {
         return Integer.toString(mBorough);
     }

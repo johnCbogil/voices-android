@@ -15,7 +15,7 @@ public class VoicesGeoUtil {
     String mState;
     String mCity;
 
-    public static final int NUMBER_OF_LISTINGS = 5;
+    public static final int NUMBER_OF_LISTINGS = 10;
 
     public VoicesGeoUtil() {}
 
