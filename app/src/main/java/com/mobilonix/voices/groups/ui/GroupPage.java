@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import com.mobilonix.voices.R;
 import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.groups.model.Action;
+import com.mobilonix.voices.groups.model.ActionDetail;
 import com.mobilonix.voices.groups.model.Group;
 import com.mobilonix.voices.util.AvenirBoldTextView;
 
@@ -19,6 +20,7 @@ public class GroupPage extends FrameLayout {
     ArrayList<Action> actions;
     ArrayList<Group> userGroups;
     ArrayList<Group> allGroups;
+    ArrayList<ActionDetail> actionDetails;
 
     boolean userGroupsSet = false;
     boolean actionsSet = false;
@@ -42,6 +44,8 @@ public class GroupPage extends FrameLayout {
         actionsContainer = (EntityContainer)findViewById(R.id.actions_container);
         actionsContainer.addItems(selectUserActions(actions, userGroups),
                 GroupManager.GroupType.ACTION);
+
+
 
         actionsSet = true;
     }

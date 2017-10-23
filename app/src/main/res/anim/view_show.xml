@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--from http://findnerd.com/list/view/HideShow-a-View-with-slide-updown-animation-in-Android/2537/-->
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <translate
+        android:duration="1000"
+        android:fromYDelta="100%p"
+        android:toYDelta="0" />
+</set>

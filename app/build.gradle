@@ -1,7 +1,8 @@
 import java.text.SimpleDateFormat
 
 apply plugin: 'com.android.application'
-
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 23
     buildToolsVersion '25.0.0'
@@ -43,9 +44,7 @@ dependencies {
     compile ('com.android.support:appcompat-v7:22.+') {
         exclude group: 'com.android.support'
     }
-    compile ('com.android.support:recyclerview-v7:22.+') {
-        exclude group: 'com.android.support'
-    }
+
 
     //compile ('com.android.support:multidex:1.0.1')
 
@@ -59,6 +58,9 @@ dependencies {
     compile ('com.google.android.gms:play-services-base:9.4.0')
     compile ('com.google.android.gms:play-services-places:9.4.0')
     compile ('com.google.android.gms:play-services-location:9.4.0')
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:design:23.+'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
 }
 

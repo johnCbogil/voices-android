@@ -18,11 +18,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.badoo.mobile.util.WeakHandler;
@@ -56,15 +58,16 @@ public class VoicesMainActivity extends AppCompatActivity {
 
     public final static String TAG = VoicesMainActivity.class.getCanonicalName();
 
+    private LinearLayout layoutContainer;
     public FrameLayout mainContentFrame;
     boolean leaveAppDialogShowing = false;
     WeakHandler handler = new WeakHandler();
-
+    LinearLayout spinnerLayout;
     DrawerLayout drawerLayout;
 
     GoogleApiClient googleApiClient;
 
-    Boolean autoLaunchDeepLink = new Boolean(false);
+    Boolean autoLaunchDeepLink = Boolean.FALSE;
 
     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(VoicesApplication.getContext());
 
@@ -92,6 +95,7 @@ public class VoicesMainActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         mainContentFrame = (FrameLayout)findViewById(R.id.main_content_frame);
         navigationList = (ListView)findViewById(R.id.drawer_list);
+        layoutContainer = (LinearLayout)findViewById(R.id.activity_main_ll);
         addDrawerItems();
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.primary_toolbar));
         findViewById(R.id.primary_toolbar).setVisibility(View.INVISIBLE);
@@ -153,7 +157,7 @@ public class VoicesMainActivity extends AppCompatActivity {
         });
 
         autoLaunchDeepLink = true;
-        AppInvite.AppInviteApi.getInvitation(googleApiClient, this, autoLaunchDeepLink)
+        AppInvite.AppInviteApi.getInvitation(googleApiClient, this, true)
                 .setResultCallback(
                         new ResultCallback<AppInviteInvitationResult>() {
                             @Override
@@ -165,6 +169,7 @@ public class VoicesMainActivity extends AppCompatActivity {
                                     if(deepLink != null) {
                                         deepLink = deepLink.replace("http://tryvoices.com/","");
                                     }
+                                    assert deepLink != null;
                                     GroupManager.INSTANCE.setDefferredGroupKey(deepLink.toUpperCase(), true);
                                 } else {
                                     Log.e(TAG, "getInvitation: no deep link found.");
@@ -202,7 +207,7 @@ public class VoicesMainActivity extends AppCompatActivity {
         }
 
         if(drawerLayout.isDrawerOpen(GravityCompat.END)){
-            drawerLayout.closeDrawer(Gravity.RIGHT);
+            drawerLayout.closeDrawer(Gravity.END);
             return;
         }
 
@@ -256,20 +261,18 @@ public class VoicesMainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public void toggleProgressSpinner(boolean state) {
-        findViewById(R.id.app_progress_spinner).setVisibility(state ? View.VISIBLE : View.GONE);
-    }
 
-    public void callPlaceAutocompleteActivityIntent() {
-        Intent i = new Intent(VoicesMainActivity.this, AutocompleteActivity.class);
-        VoicesMainActivity.this.startActivityForResult(i,1);
+
+//  public void callPlaceAutocompleteActivityIntent() {
+//        Intent i = new Intent(VoicesMainActivity.this, AutocompleteActivity.class);
+//        VoicesMainActivity.this.startActivityForResult(i,1);
 //        try {
 //        } catch (GooglePlayServicesRepairableException e) {
 //            e.printStackTrace();
 //        } catch (GooglePlayServicesNotAvailableException f) {
 //            f.printStackTrace();
 //        }
-    }
+//    }
 
     public void saveAddress(){
         Intent i = new Intent(VoicesMainActivity.this, AutocompleteActivity.class);
@@ -298,6 +301,7 @@ public class VoicesMainActivity extends AppCompatActivity {
                         RepresentativesManager.INSTANCE.getPages(),
                         RepresentativesManager.INSTANCE.getRepresentativesPager());
                 final LinearLayout errorLayout = (LinearLayout)findViewById(R.id.layout_error_page);
+                assert errorLayout != null;
                 errorLayout.setVisibility(View.GONE);
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
@@ -314,7 +318,7 @@ public class VoicesMainActivity extends AppCompatActivity {
                 edit.putString("address", addressString);
                 edit.putString("lat", Double.toString(latitudeDouble));
                 edit.putString("lon", Double.toString(longitudeDouble));
-                edit.commit();
+                edit.apply();
 
                 /* Update first row of the Drawer Navigation List with address */
                 NavigationAdapter adapter = ((NavigationAdapter)navigationList.getAdapter());
@@ -330,6 +334,7 @@ public class VoicesMainActivity extends AppCompatActivity {
                         RepresentativesManager.INSTANCE.getPages(),
                         RepresentativesManager.INSTANCE.getRepresentativesPager());
                 final LinearLayout errorLayout = (LinearLayout)findViewById(R.id.layout_error_page);
+                assert errorLayout != null;
                 errorLayout.setVisibility(View.GONE);
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
@@ -408,6 +413,7 @@ public class VoicesMainActivity extends AppCompatActivity {
 
     public void getDrawer(){
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        assert drawerLayout != null;
         drawerLayout.openDrawer(navigationList);
     }
 
@@ -418,4 +424,20 @@ public class VoicesMainActivity extends AppCompatActivity {
             return true;
         }
     }
+
+    public void toggleProgressSpinner(boolean state) {
+        if(spinnerLayout == null){
+            spinnerLayout = new LinearLayout(this);
+            spinnerLayout.setGravity(Gravity.CENTER);
+            ProgressBar spinner = new ProgressBar(this);
+            spinner.setLayoutParams(
+                    new DrawerLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT));
+            spinnerLayout.addView(spinner);
+        }
+        if(state)layoutContainer.addView(spinnerLayout);
+        else layoutContainer.removeView(spinnerLayout);
+    }
+
 }

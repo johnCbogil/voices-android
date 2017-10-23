@@ -19,10 +19,10 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRecylerAdapter.ActionListHolder> {
+public class ActionListRecyclerAdapter extends RecyclerView.Adapter<ActionListRecyclerAdapter.ActionListHolder> {
     ArrayList<Action> actions;
 
-    public ActionListRecylerAdapter(Context context, ArrayList<Action> actions) {
+    public ActionListRecyclerAdapter(Context context, ArrayList<Action> actions) {
 
         ArrayList<Action> modifiedActionsList = new ArrayList<>();
 
@@ -103,12 +103,11 @@ public class ActionListRecylerAdapter extends RecyclerView.Adapter<ActionListRec
             learnMoreButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    GroupManager.INSTANCE.toggleActionDialog(v.getContext(), actions.get(position));
+                    GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ACTION_DETAIL);
+                    GroupManager.INSTANCE.toggleActionDetailView(v.getContext(), actions.get(position));
                 }
             });
-
         }
-
         public void setPosition(int position) {
             this.position = position;
         }

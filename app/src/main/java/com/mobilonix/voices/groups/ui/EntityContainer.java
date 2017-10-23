@@ -34,8 +34,8 @@ public class EntityContainer extends FrameLayout {
     }
 
     @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
+        protected void onAttachedToWindow() {
+            super.onAttachedToWindow();
 
         entityList = (RecyclerView)findViewById(R.id.entity_list);
 
@@ -93,11 +93,10 @@ public class EntityContainer extends FrameLayout {
 
         entityList.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        if(type == (GroupManager.GroupType.ACTION)) {
-
-            entityList.setAdapter(new ActionListRecylerAdapter(getContext(), list));
+        if (type == (GroupManager.GroupType.ACTION)) {
+            entityList.setAdapter(new ActionListRecyclerAdapter(getContext(), list));
         } else {
-            entityList.setAdapter(new GroupListRecylerAdapter(getContext(), list, type));
+            entityList.setAdapter(new GroupListRecyclerAdapter(getContext(), list, type));
         }
     }
 

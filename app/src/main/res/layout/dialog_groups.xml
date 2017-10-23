@@ -49,12 +49,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/group_website"
+        android:text="@string/visit_website"
         android:textStyle="bold"
         android:textSize="15dp"
         android:gravity="center"
         android:layout_marginBottom="5dp"
-        android:autoLink="web"
+        android:clickable="true"
         android:textColorLink="#1A8CFF"/>
+
+    <!--android:autoLink="web"-->
 
     <com.mobilonix.voices.util.AvenirButton
         android:layout_width="wrap_content"
