@@ -1,123 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
-        android:id="@+id/fake_actionbar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:background="@color/voices_orange">
-        <ImageView
-            android:id="@+id/action_detail_previous_icon"
-            android:layout_width="50dp"
+        <LinearLayout
+            android:id="@+id/fake_actionbar"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:src="@drawable/toolbar_previous"/>
-        <com.mobilonix.voices.util.AvenirTextView
-            android:id="@+id/actions_detail_group_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="Sample"
-            android:textSize="20dp"
-            android:textColor="#FFF"/>
-    </LinearLayout>
-    <View
-        android:id="@+id/fake_toolbar_dropshadow"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:background="@drawable/toolbar_dropshadow"
-        android:layout_below="@+id/fake_actionbar"/>
-    <ImageView
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:id="@+id/actions_detail_group_icon"
-        android:src="@drawable/reps_male"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp"
-        android:layout_below="@+id/fake_toolbar_dropshadow"/>
-    <com.mobilonix.voices.util.AvenirBoldTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:id="@+id/actions_detail_title"
-        android:textSize="25dp"
-        android:textColor="#000"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/actions_detail_group_icon"
-        android:layout_marginBottom="15dp"/>
-    <include layout="@layout/view_expanding"
-        android:id="@+id/view_expanding_1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/actions_detail_title" />
-    <include layout="@layout/view_expanding"
-        android:id="@+id/view_expanding_2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/view_expanding_1" />
-    <include layout="@layout/view_expanding"
-        android:id="@+id/view_expanding_3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_below="@+id/view_expanding_2"/>
-    <com.mobilonix.voices.util.AvenirBoldTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/actions_detail_contact_reps"
-        android:text="Contact Reps"
-        android:textSize="25dp"
-        android:textColor="#000"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/view_expanding_3"/>
-    <LinearLayout
-        android:id="@+id/actions_detail_reps_error"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@+id/actions_detail_contact_reps">
-        <com.mobilonix.voices.util.AvenirTextView
+            android:orientation="horizontal"
+            android:background="@color/voices_orange">
+            <ImageView
+                android:id="@+id/action_detail_previous_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/toolbar_previous"/>
+            <com.mobilonix.voices.util.AvenirTextView
+                android:id="@+id/actions_detail_group_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Sample"
+                android:textSize="20dp"
+                android:textColor="#FFF"/>
+        </LinearLayout>
+        <View
+            android:id="@+id/fake_toolbar_dropshadow"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/toolbar_dropshadow"
+            android:layout_below="@+id/fake_actionbar"/>
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/fake_toolbar_dropshadow">
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:id="@+id/actions_detail_group_icon"
+                    android:src="@drawable/reps_male"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="15dp" />
+                <com.mobilonix.voices.util.AvenirBoldTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/actions_detail_title"
+                    android:textSize="25dp"
+                    android:textColor="#000"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/actions_detail_group_icon"
+                    android:layout_marginBottom="15dp"/>
+                <include layout="@layout/view_expanding"
+                    android:id="@+id/view_expanding_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/actions_detail_title" />
+                <include layout="@layout/view_expanding"
+                    android:id="@+id/view_expanding_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/view_expanding_1" />
+                <include layout="@layout/view_expanding"
+                    android:id="@+id/view_expanding_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_below="@+id/view_expanding_2"/>
+                <com.mobilonix.voices.util.AvenirBoldTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/actions_detail_contact_reps"
+                    android:text="Contact Reps"
+                    android:textSize="25dp"
+                    android:textColor="#000"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/view_expanding_3"/>
+        <LinearLayout
+            android:id="@+id/actions_detail_reps_error"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="22sp"
-            android:text="@string/representatives_onboarding"
-            android:id="@+id/actions_detail_address_text"
-            android:gravity="center" />
-        <ImageView
-            android:layout_width="140dp"
-            android:layout_height="100dp"
-            android:src="@drawable/house_citizen"
-            android:layout_gravity="center_horizontal"/>
-        <com.mobilonix.voices.util.AvenirButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:textSize="20sp"
-            android:textColor="#FFF"
-            android:clickable="true"
-            android:id="@+id/actions_detail_address_button"
-            android:text="@string/add_address"
-            android:layout_gravity="center"/>
-        <com.mobilonix.voices.util.AvenirTextView
+            android:orientation="vertical"
+            android:layout_below="@+id/actions_detail_contact_reps">
+            <com.mobilonix.voices.util.AvenirTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:text="@string/representatives_onboarding"
+                android:id="@+id/actions_detail_address_text"
+                android:gravity="center" />
+            <ImageView
+                android:layout_width="140dp"
+                android:layout_height="100dp"
+                android:src="@drawable/house_citizen"
+                android:layout_gravity="center_horizontal"/>
+            <com.mobilonix.voices.util.AvenirButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="20sp"
+                android:textColor="#FFF"
+                android:clickable="true"
+                android:id="@+id/actions_detail_address_button"
+                android:text="@string/add_address"
+                android:layout_gravity="center"/>
+            <com.mobilonix.voices.util.AvenirTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textSize="15sp"
+                android:text="@string/no_address"
+                android:id="@+id/actions_detail_no_address"
+                android:gravity="center" />
+        </LinearLayout>
+        <ListView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textSize="15sp"
-            android:text="@string/no_address"
-            android:id="@+id/actions_detail_no_address"
-            android:gravity="center" />
-    </LinearLayout>
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/actions_detail_reps_list"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        android:layout_below="@+id/actions_detail_contact_reps"
-        android:visibility="gone"/>
+            android:layout_height="400dp"
+            android:id="@+id/actions_detail_reps_list"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:layout_below="@+id/actions_detail_contact_reps"
+            android:visibility="gone"/>
+            </RelativeLayout>
+        </ScrollView>
 </RelativeLayout>
-</ScrollView>

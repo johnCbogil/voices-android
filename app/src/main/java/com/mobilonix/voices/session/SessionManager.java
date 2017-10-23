@@ -26,6 +26,7 @@ import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
 import com.mobilonix.voices.groups.model.Policy;
+import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.util.GeneralUtil;
 
 import java.io.ByteArrayInputStream;
@@ -415,6 +416,7 @@ public enum SessionManager {
                     String groupName;
                     String imageUrl;
                     String actionType;
+                    Representative singleRep=null;
 
                     try{
                         body = (String) action.child("body").getValue();
@@ -476,40 +478,57 @@ public enum SessionManager {
                         title = "";
                     }
 
-                    if(actionType.equals("singleRep")){
-
+                    if(actionType!=null && actionType.equals("singleRep")) {
+                        Map<String, Object> map = (Map<String, Object>)action.child("representative").getValue();
+                        String repTitle = (String) map.get("title");
+                        String name = (String) map.get("name");
+                        //String phone = (String) map.get("phone");
+                        String twitter = (String) map.get("twitter");
+                        String email = (String) map.get("email");
+                        singleRep = new Representative(repTitle,
+                                name,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                twitter,
+                                null,
+                                email,
+                                null,
+                                null);
                     }
+                        allActions.add(new Action(action.getKey(),
+                                (String) action.child("body").getValue(),
+                                (String) action.child("groupKey").getValue(),
+                                (String) action.child("groupName").getValue(),
+                                (String) action.child("imageUrl").getValue(),
+                                level,
+                                (String) action.child("subject").getValue(),
+                                (long) action.child("timestamp").getValue(),
+                                (String) action.child("title").getValue(),
+                                (String) action.child("script").getValue(),
+                                (String) action.child("actionType").getValue(),
+                                singleRep));
 
-                    allActions.add(new Action(action.getKey(),
-                            (String) action.child("body").getValue(),
-                            (String) action.child("groupKey").getValue(),
-                            (String) action.child("groupName").getValue(),
-                            (String) action.child("imageUrl").getValue(),
-                            level,
-                            (String) action.child("subject").getValue(),
-                            (long) action.child("timestamp").getValue(),
-                            (String) action.child("title").getValue(),
-                            (String) action.child("script").getValue(),
-                            (String) action.child("actionType").getValue(),
-                            null ));
+                        Action actionToAdd =
+                                new Action(actionKey,
+                                        body,
+                                        groupKey,
+                                        groupName,
+                                        imageUrl,
+                                        level,
+                                        subject,
+                                        timestamp,
+                                        title,
+                                        script,
+                                        actionType,
+                                        singleRep);
 
-                    Action actionToAdd =
-                            new Action(actionKey,
-                                    body,
-                                    groupKey,
-                                    groupName,
-                                    imageUrl,
-                                    level,
-                                    subject,
-                                    timestamp,
-                                    title,
-                                    script,
-                                    actionType,
-                                    null );
-
-                    allActions.add(actionToAdd);
+                        allActions.add(actionToAdd);
+                        callback.onExecuted(allActions);
                 }
-                callback.onExecuted(allActions);
             }
 
             @Override

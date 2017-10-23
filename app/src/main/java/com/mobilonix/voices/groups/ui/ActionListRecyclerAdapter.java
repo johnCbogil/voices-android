@@ -22,7 +22,6 @@ import java.util.Collections;
 
 public class ActionListRecyclerAdapter extends RecyclerView.Adapter<ActionListRecyclerAdapter.ActionListHolder> {
     VoicesMainActivity activity = new VoicesMainActivity();
-
     ArrayList<Action> actions;
 
     public ActionListRecyclerAdapter(Context context, ArrayList<Action> actions) {
@@ -107,7 +106,7 @@ public class ActionListRecyclerAdapter extends RecyclerView.Adapter<ActionListRe
                 @Override
                 public void onClick(View v) {
                     GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ACTION_DETAIL);
-                    GroupManager.INSTANCE.toggleActionDetailView(v.getContext(), actions.get(position));
+                    GroupManager.INSTANCE.toggleActionDetailView(activity, v.getContext(), actions.get(position));
                 }
             });
         }
