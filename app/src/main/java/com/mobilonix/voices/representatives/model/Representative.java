@@ -19,6 +19,7 @@ public class Representative {
     private String location;
     private String level;
 
+
     public String getGender() { return gender; }
 
     public String getParty() { return party; }

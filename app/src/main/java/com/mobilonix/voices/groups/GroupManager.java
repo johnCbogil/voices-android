@@ -598,7 +598,7 @@ public enum GroupManager {
                 intent.setAction(Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_TEXT, action.getTitle() + " " + action.getBody());
-                activity.startActivity(Intent.createChooser(intent, "Share"));
+                ((VoicesMainActivity)expandingView3.getContext()).startActivity(Intent.createChooser(intent, "Share"));
             }
         });
         LinearLayout contactRepsEmptyState = (LinearLayout)actionDetails.findViewById(R.id.actions_detail_reps_error);
@@ -610,7 +610,11 @@ public enum GroupManager {
                 activity.saveAddressForDetail(action.getLevel(), action.getActionType());
             }
         });
-        if(activity.locationSaved()){
+
+        LinearLayout actionsDetailsErrorLayout = (LinearLayout)actionDetails.findViewById(R.id.actions_detail_reps_error);
+
+        if(activity.locationSaved() && (action.getActionType()==null || !(action.getActionType().equals("singleRep")))){
+            //actionsDetailsErrorLayout.setVisibility(View.GONE);
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(VoicesApplication.getContext());
             String savedLocation = prefs.getString("address", "");
             double lat = Double.parseDouble(prefs.getString("lat", "38.8976763"));
@@ -624,6 +628,19 @@ public enum GroupManager {
                     action.getActionType(),
                     null);
         }
+
+        if(action.getActionType()!=null && action.getActionType().equals("singleRep")){
+            actionsDetailsErrorLayout.setVisibility(View.GONE);
+            Representative representative = action.getSingleRep();
+            ListView actionsDetailListView = (ListView)actionDetails.findViewById(R.id.actions_detail_reps_list);
+            actionsDetailListView.setVisibility(View.VISIBLE);
+            ArrayList<Representative> representatives = new ArrayList<Representative>();
+            representatives.add(0, representative);
+            actionsDetailListView.setAdapter(new RepresentativesListAdapter(actionsDetailListView.getContext(),
+                    R.layout.reps_item,
+                    representatives));
+        }
+
         previousButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -665,17 +682,7 @@ public enum GroupManager {
                             }
                         });
 
-                        final ArrayList<Representative> result;
-
-                        if(actionType!=null&&actionType.equals("singleRep")){
-                            Representative representative = singleRep;
-                            result = new ArrayList<>();
-                            result.add(0, representative);
-                        } else if ((data == null) || data.isEmpty()) {
-                            result = new ArrayList<>();
-                        } else {
-                            result = data;
-                        }
+                        final ArrayList<Representative> result = data;
 
                         activity.getHandler().post(new Runnable() {
                             @Override

@@ -416,7 +416,7 @@ public enum SessionManager {
                     String groupName;
                     String imageUrl;
                     String actionType;
-                    Representative singleRep=null;
+                    Representative singleRep;
 
                     try{
                         body = (String) action.child("body").getValue();
@@ -440,12 +440,6 @@ public enum SessionManager {
                         imageUrl = (String) action.child("imageURL").getValue();
                     } catch(NullPointerException e){
                         imageUrl="";
-                    }
-
-                    try {
-                        actionType = (String) action.child("actionType").getValue();
-                    } catch(NullPointerException e){
-                        actionType = "";
                     }
 
                     long level = 3;
@@ -478,6 +472,18 @@ public enum SessionManager {
                         title = "";
                     }
 
+                    try {
+                        actionType = (String) action.child("actionType").getValue();
+                    } catch(NullPointerException e){
+                        actionType = "";
+                    }
+
+                    try{
+                        body = (String) action.child("body").getValue();
+                    } catch(NullPointerException e){
+                        body = "";
+                    }
+
                     if(actionType!=null && actionType.equals("singleRep")) {
                         Map<String, Object> map = (Map<String, Object>)action.child("representative").getValue();
                         String repTitle = (String) map.get("title");
@@ -488,16 +494,18 @@ public enum SessionManager {
                         singleRep = new Representative(repTitle,
                                 name,
                                 null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
+                                "M",
+                                "Test",
+                                "Test",
+                                "Test",
+                                "2012012012",
                                 twitter,
-                                null,
+                                "http://google.com",
                                 email,
-                                null,
-                                null);
+                                "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Rick_Astley_Dallas.jpg/1200px-Rick_Astley_Dallas.jpg",
+                                "1");
+                    } else {
+                        singleRep=null;
                     }
                         allActions.add(new Action(action.getKey(),
                                 (String) action.child("body").getValue(),
