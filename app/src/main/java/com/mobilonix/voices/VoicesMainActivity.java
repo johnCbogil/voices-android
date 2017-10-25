@@ -455,7 +455,7 @@ public class VoicesMainActivity extends AppCompatActivity {
                             ViewGroup.LayoutParams.MATCH_PARENT));
             spinnerLayout.addView(spinner);
         }
-        if(state)layoutContainer.addView(spinnerLayout);
+        if(state && spinnerLayout.getParent() == null)layoutContainer.addView(spinnerLayout);
         else layoutContainer.removeView(spinnerLayout);
     }
 

@@ -82,7 +82,6 @@ public enum GroupManager {
 
     ArrayList<Group> allGroupsData = new ArrayList<>();
 
-    ArrayList<Group> userGroups = new ArrayList<>();
 
     ArrayList<Group> allGroups = new ArrayList<>();
 
@@ -282,38 +281,18 @@ public enum GroupManager {
         LayoutInflater inflater = (LayoutInflater) pageRoot.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
         GroupDetailContainer gc = (GroupDetailContainer) inflater.inflate(R.layout.group_detail, null, false);
-        pageRoot.addView(gc);
         gc.setGroup(group);
+        gc.setUserGroups(groupPage.getUserGroups());
+        pageRoot.addView(gc);
 
+        Callback<Boolean> cb = new Callback<Boolean>() {
+            @Override
+            public boolean onExecuted(Boolean data) {
+                return false;
+            }
+        };
 
 //
-//        final Dialog dialog = new Dialog(context);
-//        dialog.setContentView(R.layout.dialog_groups);
-//        dialog.setTitle(group.getGroupName());
-//
-//        ImageView groupsImage = (ImageView) dialog.findViewById(R.id.group_info_image);
-//
-//
-//
-//        TextView groupsInfoDescription = (TextView) dialog.findViewById(R.id.group_info_description);
-//        TextView groupsInfoPolicyText = (TextView) dialog
-//                .findViewById(R.id.group_info_policy_text);
-//        TextView groupsWebsite = (TextView) dialog
-//                .findViewById(R.id.group_website);
-//        final Button groupsFollowGroupsButton =
-//                (Button) dialog.findViewById(R.id.follow_groups_button);
-//        ListView policyList = (ListView) dialog.findViewById(R.id.groups_policy_list);
-//
-//        groupsInfoDescription.setText(group.getGroupDescription());
-//        groupsInfoPolicyText.setText(group.getGroupCategory());
-//        groupsWebsite.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
-//                //group.getGroupWebsite())
-//                dialog.getContext().startActivity(intent);
-//            }
-//        });
 //        groupsWebsite.setText(group.getGroupWebsite());
 //
 //        final ArrayList<Group> userGroups = groupPage.getUserGroups();
@@ -405,7 +384,7 @@ public enum GroupManager {
 //            }
 //        });
 //
-//        policyList.setAdapter(new PolicyListAdapter(context,
+//        policyList.setAlAdapter(new PolicyListAdapter(context,
 //                R.layout.policy_list_item,
 //                group.getPolicies(),
 //                dialog));

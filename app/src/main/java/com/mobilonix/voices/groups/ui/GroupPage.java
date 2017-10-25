@@ -57,8 +57,7 @@ public class GroupPage extends FrameLayout {
         this.userGroups = userGroups;
 
         userGroupsContainer = (EntityContainer)findViewById(R.id.user_groups_container);
-        userGroupsContainer.addItems(userGroups,
-                GroupManager.GroupType.USER);
+        userGroupsContainer.addItems(userGroups, GroupManager.GroupType.USER);
 
         userGroupsSet = true;
     }

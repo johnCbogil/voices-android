@@ -26,6 +26,8 @@ public class EntityContainer extends FrameLayout {
 
     ImageView noFollowImage;
 
+
+
     AvenirBoldTextView actionSelectionButton;
     AvenirBoldTextView groupsSelectionButton;
 
