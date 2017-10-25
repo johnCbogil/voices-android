@@ -263,16 +263,18 @@ public class VoicesMainActivity extends AppCompatActivity {
 
 
 
-//  public void callPlaceAutocompleteActivityIntent() {
-//        Intent i = new Intent(VoicesMainActivity.this, AutocompleteActivity.class);
-//        VoicesMainActivity.this.startActivityForResult(i,1);
-//        try {
-//        } catch (GooglePlayServicesRepairableException e) {
-//            e.printStackTrace();
-//        } catch (GooglePlayServicesNotAvailableException f) {
-//            f.printStackTrace();
-//        }
+  public void saveAddressForDetail(long repsType, String actionType) {
+      Intent i = new Intent(VoicesMainActivity.this, AutocompleteActivity.class);
+      i.putExtra("repsType",repsType);
+      i.putExtra("actionType", actionType);
+      VoicesMainActivity.this.startActivityForResult(i,1);
+//    try {
+//    } catch (GooglePlayServicesRepairableException e) {
+//      e.printStackTrace();
+//    } catch (GooglePlayServicesNotAvailableException f) {
+//      f.printStackTrace();
 //    }
+    }
 
     public void saveAddress(){
         Intent i = new Intent(VoicesMainActivity.this, AutocompleteActivity.class);
@@ -293,6 +295,14 @@ public class VoicesMainActivity extends AppCompatActivity {
                 String addressString = data.getStringExtra("address");
                 Double latitudeDouble = data.getDoubleExtra("latitude", 38.8976763);
                 Double longitudeDouble = data.getDoubleExtra("longitude", -77.0387238);
+                long repsType = data.getLongExtra("repsType", 1);
+                String actionType = data.getStringExtra("actionType");
+                SharedPreferences.Editor edit = prefs.edit();
+                edit.putString("address", addressString);
+                edit.putString("lat", Double.toString(latitudeDouble));
+                edit.putString("lon", Double.toString(longitudeDouble));
+                edit.commit();
+
                 RepresentativesManager.INSTANCE.refreshRepresentativesContent(
                         addressString,
                         latitudeDouble,
@@ -303,6 +313,15 @@ public class VoicesMainActivity extends AppCompatActivity {
                 final LinearLayout errorLayout = (LinearLayout)findViewById(R.id.layout_error_page);
                 assert errorLayout != null;
                 errorLayout.setVisibility(View.GONE);
+
+                GroupManager.INSTANCE.refreshActionDetailReps(
+                        addressString,
+                        latitudeDouble,
+                        longitudeDouble,
+                        this,
+                        repsType,
+                        actionType,
+                        null);
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
                 Log.i(TAG, status.getStatusMessage());

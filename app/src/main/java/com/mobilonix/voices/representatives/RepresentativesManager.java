@@ -339,7 +339,6 @@ public enum RepresentativesManager {
                                               final VoicesMainActivity activity,
                                               final ArrayList<RepresentativesPage> pages,
                                               final ViewPager representativesPager) {
-
         for (RepresentativesType type : RepresentativesType.values()) {
 
             /* reset the error state */

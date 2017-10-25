@@ -26,6 +26,7 @@ import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
 import com.mobilonix.voices.groups.model.Policy;
+import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.util.GeneralUtil;
 
 import java.io.ByteArrayInputStream;
@@ -414,30 +415,32 @@ public enum SessionManager {
                     String groupKey;
                     String groupName;
                     String imageUrl;
+                    String actionType;
+                    Representative singleRep;
 
-                    //try{
+                    try{
                         body = (String) action.child("body").getValue();
-//                    } catch(NullPointerException e){
-//                        body = "";
-//                    }
+                    } catch(NullPointerException e){
+                        body = "";
+                    }
 
-                    //try{
+                    try{
                         groupKey = (String) action.child("groupKey").getValue();
-//                    } catch(NullPointerException e){
-//                        groupKey = "";
-//                    }
+                    } catch(NullPointerException e){
+                        groupKey = "";
+                    }
 
-                    //try{
+                    try{
                         groupName = (String) action.child("groupName").getValue();
-//                    } catch(NullPointerException e){
-//                        groupName = "";
-//                    }
+                    } catch(NullPointerException e){
+                        groupName = "";
+                    }
 
-                    //try{
+                    try{
                         imageUrl = (String) action.child("imageURL").getValue();
-//                    } catch(NullPointerException e){
-//                        imageUrl="";
-//                    }
+                    } catch(NullPointerException e){
+                        imageUrl="";
+                    }
 
                     long level = 3;
                     if(action.child("level").exists()) {
@@ -451,50 +454,89 @@ public enum SessionManager {
                         script = VoicesApplication.getContext().getString(R.string.response_4);
                     }
 
-                    //try{
+                    try{
                         subject =(String) action.child("subject").getValue();
-//                    } catch(NullPointerException e){
-//                        subject="";
-//                    }
+                    } catch(NullPointerException e){
+                        subject="";
+                    }
 
-                    //try{
+                    try{
                         timestamp = (long)action.child("timestamp").getValue();
-//                    } catch(NullPointerException e){
-//                        timestamp = 0;
-//                    }
+                    } catch(NullPointerException e){
+                        timestamp = 0;
+                    }
 
-                    //try{
+                    try{
                         title = (String) action.child("title").getValue();
-//                    } catch(NullPointerException e){
-//                        title = "";
-//                    }
+                    } catch(NullPointerException e){
+                        title = "";
+                    }
 
-                    allActions.add(new Action(action.getKey(),
-                            (String) action.child("body").getValue(),
-                            (String) action.child("groupKey").getValue(),
-                            (String) action.child("groupName").getValue(),
-                            (String) action.child("imageUrl").getValue(),
-                            level,
-                            (String) action.child("subject").getValue(),
-                            (long) action.child("timestamp").getValue(),
-                            (String) action.child("title").getValue(),
-                            (String) action.child("script").getValue()));
+                    try {
+                        actionType = (String) action.child("actionType").getValue();
+                    } catch(NullPointerException e){
+                        actionType = "";
+                    }
 
-                    Action actionToAdd =
-                            new Action(actionKey,
-                                    body,
-                                    groupKey,
-                                    groupName,
-                                    imageUrl,
-                                    level,
-                                    subject,
-                                    timestamp,
-                                    title,
-                                    script);
+                    try{
+                        body = (String) action.child("body").getValue();
+                    } catch(NullPointerException e){
+                        body = "";
+                    }
 
-                    allActions.add(actionToAdd);
+                    if(actionType!=null && actionType.equals("singleRep")) {
+                        Map<String, Object> map = (Map<String, Object>)action.child("representative").getValue();
+                        String repTitle = (String) map.get("title");
+                        String name = (String) map.get("name");
+                        //String phone = (String) map.get("phone");
+                        String twitter = (String) map.get("twitter");
+                        String email = (String) map.get("email");
+                        singleRep = new Representative(repTitle,
+                                name,
+                                null,
+                                "M",
+                                "Test",
+                                "Test",
+                                "Test",
+                                "2012012012",
+                                twitter,
+                                "http://google.com",
+                                email,
+                                "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Rick_Astley_Dallas.jpg/1200px-Rick_Astley_Dallas.jpg",
+                                "1");
+                    } else {
+                        singleRep=null;
+                    }
+                        allActions.add(new Action(action.getKey(),
+                                (String) action.child("body").getValue(),
+                                (String) action.child("groupKey").getValue(),
+                                (String) action.child("groupName").getValue(),
+                                (String) action.child("imageUrl").getValue(),
+                                level,
+                                (String) action.child("subject").getValue(),
+                                (long) action.child("timestamp").getValue(),
+                                (String) action.child("title").getValue(),
+                                (String) action.child("script").getValue(),
+                                (String) action.child("actionType").getValue(),
+                                singleRep));
+
+                        Action actionToAdd =
+                                new Action(actionKey,
+                                        body,
+                                        groupKey,
+                                        groupName,
+                                        imageUrl,
+                                        level,
+                                        subject,
+                                        timestamp,
+                                        title,
+                                        script,
+                                        actionType,
+                                        singleRep);
+
+                        allActions.add(actionToAdd);
+                        callback.onExecuted(allActions);
                 }
-                callback.onExecuted(allActions);
             }
 
             @Override

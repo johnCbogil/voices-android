@@ -82,19 +82,29 @@ public class UsCongressSunlightApi implements ApiEngine {
             ArrayList<String> roleList = new ArrayList<String>();
             String levelName = null;
             String title = null;
-            String role = null;
             for(int i=0; i<officeArray.length(); i++) {
                 JSONObject officeObject = officeArray.getJSONObject(i);
                 Log.e(TAG, "Office object " + i + ": " + officeObject.toString());
                 try {
                     levelName = officeObject.optJSONArray("levels").optString(0);
                     title = officeObject.optString("name");
-                    role = officeObject.optJSONArray("roles").optString(0);
-                    roleList.add(role);
+                    JSONArray officialIndices = officeObject.optJSONArray("officialIndices");
+
+                    if(!title.equals("President of the United States")
+                            &&!title.equals("Vice-President of the United States")) {
+                        if(title.contains("Senate")){
+                            title = "Senator";
+                        }
+                        if(title.contains("Representatives")){
+                            title = "Representative";
+                        }
+                        for(int j=0; j<officialIndices.length(); j++){
+                            roleList.add(title);
+                        }
+                    }
                 } catch (Exception e) {
                     levelName = "None";
                     title = "";
-                    role = "";
                 }
 
                 if(levelName.equals("country") || levelName.equals("federal")){

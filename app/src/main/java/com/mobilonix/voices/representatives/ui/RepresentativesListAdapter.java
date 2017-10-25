@@ -355,23 +355,23 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
 
         int id;
 
-        switch (gender) {
-            case "M": {
-                id = R.drawable.reps_male;
-                break;
-            }
-            case "F": {
-                id = R.drawable.reps_female;
-                break;
-            }
-            default: {
-                double random = Math.random();
-                id = random > 0.5
-                        ? R.drawable.reps_male
-                        : R.drawable.reps_female;
-                break;
-            }
-        }
+        //switch (gender) {
+            //case "M": {
+                //id = R.drawable.reps_male;
+                //break;
+//            }
+//            case "F": {
+//                id = R.drawable.reps_female;
+//                break;
+//            }
+//            default: {
+//                double random = Math.random();
+//                id = random > 0.5
+//                        ? R.drawable.reps_male
+//                        : R.drawable.reps_female;
+//                break;
+//            }
+//        }
         int imageHeight = Math.round(ViewUtil.convertDpToPixel(100, VoicesApplication.getContext()));
         int imageWidth = Math.round(ViewUtil.convertDpToPixel(80, VoicesApplication.getContext()));
 
@@ -380,7 +380,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                 .resize(imageWidth, imageHeight)
                 .centerCrop()
                 .placeholder(R.drawable.spinner_moving)
-                .error(id)
+                //.error(id)
                 .transform(new RoundedTransformation(10, 4))
                 .into(image);
     }

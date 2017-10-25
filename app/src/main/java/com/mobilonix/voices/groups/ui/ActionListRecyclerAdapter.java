@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobilonix.voices.R;
+import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.representatives.ui.RoundedTransformation;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class ActionListRecyclerAdapter extends RecyclerView.Adapter<ActionListRecyclerAdapter.ActionListHolder> {
+    VoicesMainActivity activity = new VoicesMainActivity();
     ArrayList<Action> actions;
 
     public ActionListRecyclerAdapter(Context context, ArrayList<Action> actions) {
@@ -76,7 +78,7 @@ public class ActionListRecyclerAdapter extends RecyclerView.Adapter<ActionListRe
         return actions.size();
     }
 
-    public static class ActionListHolder extends RecyclerView.ViewHolder {
+    public class ActionListHolder extends RecyclerView.ViewHolder {
 
         ImageView actionImage;
         ImageView arrowImage;
@@ -104,7 +106,7 @@ public class ActionListRecyclerAdapter extends RecyclerView.Adapter<ActionListRe
                 @Override
                 public void onClick(View v) {
                     GroupManager.INSTANCE.toggleGroups(GroupManager.GroupType.ACTION_DETAIL);
-                    GroupManager.INSTANCE.toggleActionDetailView(v.getContext(), actions.get(position));
+                    GroupManager.INSTANCE.toggleActionDetailView(activity, v.getContext(), actions.get(position));
                 }
             });
         }
