@@ -138,13 +138,12 @@
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="issues" />
+                android:text="@string/issues" />
 
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="actions" />
-
+                android:text="@string/actions" />
         </android.support.design.widget.TabLayout>
 
         <android.support.constraint.ConstraintLayout

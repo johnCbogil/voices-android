@@ -59,6 +59,8 @@ public enum GroupManager {
 
     INSTANCE;
 
+    ViewGroup pageRoot;
+
     boolean isRefreshing = false;
 
     private final String TAG = GroupManager.class.getCanonicalName();
@@ -92,6 +94,7 @@ public enum GroupManager {
     boolean isExpanded2;
 
     public void toggleGroupPage(ViewGroup pageRoot, boolean state) {
+        this.pageRoot = pageRoot;
         if (isRefreshing) {
             ((VoicesMainActivity) pageRoot.getContext()).toggleProgressSpinner(true);
         } else {
@@ -201,9 +204,9 @@ public enum GroupManager {
             toolbar.findViewById(R.id.toolbar_add).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.toolbar_add_linear_layout).setVisibility(View.VISIBLE);
 
-            ((AvenirBoldTextView)(groupPage.findViewById(R.id.actions_container))
+            ((AvenirBoldTextView) (groupPage.findViewById(R.id.actions_container))
                     .findViewById(R.id.actions_button)).setTextColor(indicatorBlue);
-            ((AvenirBoldTextView)(groupPage.findViewById(R.id.actions_container))
+            ((AvenirBoldTextView) (groupPage.findViewById(R.id.actions_container))
                     .findViewById(R.id.groups_button)).setTextColor(indicatorGrey);
             MODE = GroupType.ACTION;
 
@@ -225,9 +228,9 @@ public enum GroupManager {
 
             MODE = GroupType.USER;
 
-            ((AvenirBoldTextView)(groupPage.findViewById(R.id.user_groups_container))
+            ((AvenirBoldTextView) (groupPage.findViewById(R.id.user_groups_container))
                     .findViewById(R.id.actions_button)).setTextColor(indicatorGrey);
-            ((AvenirBoldTextView)(groupPage.findViewById(R.id.user_groups_container))
+            ((AvenirBoldTextView) (groupPage.findViewById(R.id.user_groups_container))
                     .findViewById(R.id.groups_button)).setTextColor(indicatorBlue);
 
         } else if (groupType == GroupType.ALL) {
@@ -253,9 +256,9 @@ public enum GroupManager {
                 }
             });
 
-            ((AvenirBoldTextView)(groupPage.findViewById(R.id.all_groups_container))
+            ((AvenirBoldTextView) (groupPage.findViewById(R.id.all_groups_container))
                     .findViewById(R.id.actions_button)).setTextColor(indicatorGrey);
-            ((AvenirBoldTextView)(groupPage.findViewById(R.id.all_groups_container))
+            ((AvenirBoldTextView) (groupPage.findViewById(R.id.all_groups_container))
                     .findViewById(R.id.groups_button)).setTextColor(indicatorBlue);
             MODE = GroupType.ALL;
         } else if (groupType == GroupType.ACTION_DETAIL) {
@@ -276,141 +279,173 @@ public enum GroupManager {
      * @param group
      */
     public void toggleSubscribeToGroupDialog(Context context, final Group group) {
+        LayoutInflater inflater = (LayoutInflater) pageRoot.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        assert inflater != null;
+        GroupDetailContainer gc = (GroupDetailContainer) inflater.inflate(R.layout.group_detail, null, false);
+        pageRoot.addView(gc);
+        gc.setGroup(group);
 
-        final Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.dialog_groups);
-        dialog.setTitle(group.getGroupName());
 
-        ImageView groupsImage = (ImageView) dialog.findViewById(R.id.group_info_image);
-
-        Picasso.with(context)
-                .load(group.getGroupImageUrl())
-                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .placeholder(R.drawable.voices_icon)
-                .error(R.drawable.voices_icon)
-                .transform(new RoundedTransformation(10, 0))
-                .fit()
-                .into(groupsImage);
-
-        TextView groupsInfoDescription = (TextView) dialog.findViewById(R.id.group_info_description);
-        TextView groupsInfoPolicyText = (TextView) dialog
-                .findViewById(R.id.group_info_policy_text);
-        TextView groupsWebsite = (TextView) dialog
-                .findViewById(R.id.group_website);
-        final Button groupsFollowGroupsButton =
-                (Button) dialog.findViewById(R.id.follow_groups_button);
-        ListView policyList = (ListView) dialog.findViewById(R.id.groups_policy_list);
-
-        groupsInfoDescription.setText(group.getGroupDescription());
-        groupsInfoPolicyText.setText(group.getGroupCategory());
-        groupsWebsite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
-                //group.getGroupWebsite())
-                dialog.getContext().startActivity(intent);
-            }
-        });
-        groupsWebsite.setText(group.getGroupWebsite());
-
-        final ArrayList<Group> userGroups = groupPage.getUserGroups();
-        if (userGroups != null) {
-            for (Group g : groupPage.getUserGroups()) {
-                if (g.getGroupKey().equals(group.getGroupKey())) {
-                    groupsFollowGroupsButton.setText(R.string.following_groups_text);
-                }
-            }
-        }
-
-        final ProgressDialog pd = new ProgressDialog(dialog.getContext());
-        pd.setTitle("Following....");
-        pd.setMessage("");
-        pd.setIndeterminate(true);
-        pd.setCancelable(false);
-
-        groupsFollowGroupsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(!groupsFollowGroupsButton.getText().toString().equals(v.getContext()
-                        .getString(R.string.following_groups_text))) {
-                    pd.show();
-                }
-                /* check if we're already subscribed to the group */
-                if (userGroups != null) {
-                    for (Group g : groupPage.getUserGroups()) {
-                        if (g.getGroupKey().equals(group.getGroupKey())) {
-                            final Dialog followDialog;
-                            followDialog = new Dialog(groupPage.getContext());
-                            followDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                            followDialog.setContentView(R.layout.dialog_follow);
-                            Button unfollowButton = (Button) followDialog.findViewById(R.id.unfollow_button);
-                            Button cancelButton = (Button) followDialog.findViewById(R.id.cancel_button);
-                            unfollowButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    pd.setTitle("Unfollowing....");
-                                    pd.show();
-                                    unSubscribeFromGroup(group, true, new Callback<Boolean>() {
-                                        @Override
-                                        public boolean onExecuted(Boolean data) {
-                                            pd.dismiss();
-                                            groupsFollowGroupsButton.setText(R.string.follow_groups_text);
-                                            if (data) {
-                                                AnalyticsManager.INSTANCE.trackEvent("UNSUBSCRIBE_EVENT",
-                                                        group.getGroupKey(),
-                                                        SessionManager.INSTANCE.getCurrentUserToken(), "none", null);
-                                            }
-                                            followDialog.dismiss();
-                                            return false;
-                                        }
-                                    });
-                                    return;
-                                }
-                            });
-                            cancelButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    pd.dismiss();
-                                    followDialog.dismiss();
-                                }
-                            });
-                            followDialog.show();
-                        }
-                    }
-                }
-
-                if(!groupPage.hasUserGroupWithKey(group.getGroupKey())) {
-
-                    subscribeToGroup(group, true, new Callback<Boolean>() {
-                        @Override
-                        public boolean onExecuted(Boolean data) {
-                            groupsFollowGroupsButton.setText(R.string.following_groups_text);
-
-                            pd.dismiss();
-
-                            if (data) {
-                                AnalyticsManager.INSTANCE.trackEvent("SUBSCRIBE_EVENT",
-                                        group.getGroupKey(),
-                                        SessionManager.INSTANCE.getCurrentUserToken(), "none", null);
-                            }
-
-                            return false;
-                        }
-                    });
-                }
-            }
-        });
-
-        policyList.setAdapter(new PolicyListAdapter(context,
-                R.layout.policy_list_item,
-                group.getPolicies(),
-                dialog));
-
-        dialog.show();
+//
+//        final Dialog dialog = new Dialog(context);
+//        dialog.setContentView(R.layout.dialog_groups);
+//        dialog.setTitle(group.getGroupName());
+//
+//        ImageView groupsImage = (ImageView) dialog.findViewById(R.id.group_info_image);
+//
+//
+//
+//        TextView groupsInfoDescription = (TextView) dialog.findViewById(R.id.group_info_description);
+//        TextView groupsInfoPolicyText = (TextView) dialog
+//                .findViewById(R.id.group_info_policy_text);
+//        TextView groupsWebsite = (TextView) dialog
+//                .findViewById(R.id.group_website);
+//        final Button groupsFollowGroupsButton =
+//                (Button) dialog.findViewById(R.id.follow_groups_button);
+//        ListView policyList = (ListView) dialog.findViewById(R.id.groups_policy_list);
+//
+//        groupsInfoDescription.setText(group.getGroupDescription());
+//        groupsInfoPolicyText.setText(group.getGroupCategory());
+//        groupsWebsite.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+//                //group.getGroupWebsite())
+//                dialog.getContext().startActivity(intent);
+//            }
+//        });
+//        groupsWebsite.setText(group.getGroupWebsite());
+//
+//        final ArrayList<Group> userGroups = groupPage.getUserGroups();
+//        if (userGroups != null) {
+//            for (Group g : groupPage.getUserGroups()) {
+//                if (g.getGroupKey().equals(group.getGroupKey())) {
+//                    groupsFollowGroupsButton.setText(R.string.following_groups_text);
+//                }
+//            }
+//        }
+//
+//        final ProgressDialog pd = new ProgressDialog(dialog.getContext());
+//        pd.setTitle("Following....");
+//        pd.setMessage("");
+//        pd.setIndeterminate(true);
+//        pd.setCancelable(false);
+//
+//        groupsFollowGroupsButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                if(!groupsFollowGroupsButton.getText().toString().equals(v.getContext()
+//                        .getString(R.string.following_groups_text))) {
+//                    pd.show();
+//                }
+//                /* check if we're already subscribed to the group */
+//                if (userGroups != null) {
+//                    for (Group g : groupPage.getUserGroups()) {
+//                        if (g.getGroupKey().equals(group.getGroupKey())) {
+//                            final Dialog followDialog;
+//                            followDialog = new Dialog(groupPage.getContext());
+//                            followDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                            followDialog.setContentView(R.layout.dialog_follow);
+//                            Button unfollowButton = (Button) followDialog.findViewById(R.id.unfollow_button);
+//                            Button cancelButton = (Button) followDialog.findViewById(R.id.cancel_button);
+//                            unfollowButton.setOnClickListener(new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    pd.setTitle("Unfollowing....");
+//                                    pd.show();
+//                                    unSubscribeFromGroup(group, true, new Callback<Boolean>() {
+//                                        @Override
+//                                        public boolean onExecuted(Boolean data) {
+//                                            pd.dismiss();
+//                                            groupsFollowGroupsButton.setText(R.string.follow_groups_text);
+//                                            if (data) {
+//                                                AnalyticsManager.INSTANCE.trackEvent("UNSUBSCRIBE_EVENT",
+//                                                        group.getGroupKey(),
+//                                                        SessionManager.INSTANCE.getCurrentUserToken(), "none", null);
+//                                            }
+//                                            followDialog.dismiss();
+//                                            return false;
+//                                        }
+//                                    });
+//                                    return;
+//                                }
+//                            });
+//                            cancelButton.setOnClickListener(new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    pd.dismiss();
+//                                    followDialog.dismiss();
+//                                }
+//                            });
+//                            followDialog.show();
+//                        }
+//                    }
+//                }
+//
+//                if(!groupPage.hasUserGroupWithKey(group.getGroupKey())) {
+//
+//                    subscribeToGroup(group, true, new Callback<Boolean>() {
+//                        @Override
+//                        public boolean onExecuted(Boolean data) {
+//                            groupsFollowGroupsButton.setText(R.string.following_groups_text);
+//
+//                            pd.dismiss();
+//
+//                            if (data) {
+//                                AnalyticsManager.INSTANCE.trackEvent("SUBSCRIBE_EVENT",
+//                                        group.getGroupKey(),
+//                                        SessionManager.INSTANCE.getCurrentUserToken(), "none", null);
+//                            }
+//
+//                            return false;
+//                        }
+//                    });
+//                }
+//            }
+//        });
+//
+//        policyList.setAdapter(new PolicyListAdapter(context,
+//                R.layout.policy_list_item,
+//                group.getPolicies(),
+//                dialog));
+//
+//        dialog.show();
 
     }
+    public void togglePolicyDialog(Context context, Policy policy) {
 
+//        final Dialog actionDialog;
+//
+//        actionDialog = new Dialog(context);
+//        actionDialog.setTitle("Take Action");
+//        actionDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        actionDialog.setContentView(R.layout.dialog_policies);
+//
+//        TextView policiesTitle = (TextView) actionDialog.findViewById(R.id.policies_title);
+//        TextView policiesDescription = (TextView) actionDialog.findViewById(R.id.policies_description);
+//        Button contactRepresentativesButton = (Button) actionDialog.findViewById(R.id.button_contact_representatives);
+//
+//        if (policy != null) {
+//            policiesTitle.setText(policy.getPolicyName());
+//            policiesDescription.setText(policy.getPolicyDescription());
+//        }
+//
+//        contactRepresentativesButton.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                if (parentDialog != null) {
+//                    parentDialog.dismiss();
+//                }
+//
+//                actionDialog.dismiss();
+//                RepresentativesManager.INSTANCE.selectRepresentativesTab();
+//
+//            }
+//        });
+//        actionDialog.show();
+    }
     boolean subscriptionCompleted = false;
 
     /**
@@ -512,59 +547,59 @@ public enum GroupManager {
 
     public void toggleActionDetailView(final VoicesMainActivity activity, final Context context, final Action action) {
         actionDetails = (RelativeLayout) groupPage.findViewById(R.id.actions_details_container);
-        AvenirTextView groupTitle = (AvenirTextView)actionDetails.findViewById(R.id.actions_detail_group_title);
+        AvenirTextView groupTitle = (AvenirTextView) actionDetails.findViewById(R.id.actions_detail_group_title);
         groupTitle.setText(action.getGroupName());
-        ImageView previousButton = (ImageView)actionDetails.findViewById(R.id.action_detail_previous_icon);
-        ImageView actionImage = (ImageView)actionDetails.findViewById(R.id.actions_detail_group_icon);
+        ImageView previousButton = (ImageView) actionDetails.findViewById(R.id.action_detail_previous_icon);
+        ImageView actionImage = (ImageView) actionDetails.findViewById(R.id.actions_detail_group_icon);
         Picasso.with(context)
                 .load(action.getImageUrl())
                 .placeholder(R.drawable.spinner_moving)
                 .error(R.drawable.reps_male)
                 .fit()
                 .into(actionImage);
-        AvenirBoldTextView actionTitle = (AvenirBoldTextView)actionDetails.findViewById(R.id.actions_detail_title);
+        AvenirBoldTextView actionTitle = (AvenirBoldTextView) actionDetails.findViewById(R.id.actions_detail_title);
         actionTitle.setText(action.getTitle());
         final Animation animShow = AnimationUtils.loadAnimation(context, R.anim.view_show);
         final Animation animHide = AnimationUtils.loadAnimation(context, R.anim.view_hide);
         isExpanded1 = false;
         isExpanded2 = false;
-        final LinearLayout expandingView1 = (LinearLayout)actionDetails.findViewById(R.id.view_expanding_1);
-        AvenirTextView expandingViewText1 = (AvenirTextView)expandingView1.findViewById(R.id.expanding_title);
-        final ImageView expandingViewImage1 = (ImageView)expandingView1.findViewById(R.id.expanding_button);
-        final AvenirTextView hiddenView1 = (AvenirTextView)expandingView1.findViewById(R.id.hidden_view);
+        final LinearLayout expandingView1 = (LinearLayout) actionDetails.findViewById(R.id.view_expanding_1);
+        AvenirTextView expandingViewText1 = (AvenirTextView) expandingView1.findViewById(R.id.expanding_title);
+        final ImageView expandingViewImage1 = (ImageView) expandingView1.findViewById(R.id.expanding_button);
+        final AvenirTextView hiddenView1 = (AvenirTextView) expandingView1.findViewById(R.id.hidden_view);
         expandingViewText1.setText(VoicesApplication.getContext().getString(R.string.important));
         expandingView1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isExpanded1 == false) {
+                if (isExpanded1 == false) {
                     expandingViewImage1.setImageDrawable(VoicesApplication.getContext().getDrawable(R.drawable.minus_icon));
                     hiddenView1.setText(action.getBody());
                     hiddenView1.setVisibility(View.VISIBLE);
                     hiddenView1.startAnimation(animShow);
-                    isExpanded1=true;
+                    isExpanded1 = true;
                 } else {
                     expandingViewImage1.setImageDrawable(VoicesApplication.getContext().getDrawable(R.drawable.toolbar_add));
                     hiddenView1.setText("");
                     hiddenView1.setVisibility(View.GONE);
                     hiddenView1.startAnimation(animHide);
-                    isExpanded1=false;
+                    isExpanded1 = false;
                 }
             }
         });
-        final LinearLayout expandingView2 = (LinearLayout)actionDetails.findViewById(R.id.view_expanding_2);
-        AvenirTextView expandingViewText2 = (AvenirTextView)expandingView2.findViewById(R.id.expanding_title);
-        final ImageView expandingViewImage2 = (ImageView)expandingView2.findViewById(R.id.expanding_button);
-        final TextView hiddenView2 = (TextView)expandingView2.findViewById(R.id.hidden_view);
+        final LinearLayout expandingView2 = (LinearLayout) actionDetails.findViewById(R.id.view_expanding_2);
+        AvenirTextView expandingViewText2 = (AvenirTextView) expandingView2.findViewById(R.id.expanding_title);
+        final ImageView expandingViewImage2 = (ImageView) expandingView2.findViewById(R.id.expanding_button);
+        final TextView hiddenView2 = (TextView) expandingView2.findViewById(R.id.hidden_view);
         expandingViewText2.setText(VoicesApplication.getContext().getString(R.string.say));
         expandingView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isExpanded2 == false) {
+                if (isExpanded2 == false) {
                     expandingViewImage2.setImageDrawable(VoicesApplication.getContext().getDrawable(R.drawable.minus_icon));
                     int voicesOrange = VoicesApplication.getContext().getResources().getColor(R.color.voices_orange);
                     String response;
                     String script = action.getScript();
-                    if((action == null) || (script == null)) {
+                    if ((action == null) || (script == null)) {
                         response = VoicesApplication.getContext().getString(R.string.response_4);
                         hiddenView2.setText(response);
                         Spannable span = new SpannableString(response);
@@ -577,20 +612,20 @@ public enum GroupManager {
                     }
                     hiddenView2.setVisibility(View.VISIBLE);
                     hiddenView2.startAnimation(animShow);
-                    isExpanded2=true;
+                    isExpanded2 = true;
                 } else {
                     expandingViewImage2.setImageDrawable(VoicesApplication.getContext().getDrawable(R.drawable.toolbar_add));
                     hiddenView2.setText("");
                     hiddenView2.setVisibility(View.GONE);
                     hiddenView2.startAnimation(animHide);
-                    isExpanded2=false;
+                    isExpanded2 = false;
                 }
             }
         });
-        final LinearLayout expandingView3 = (LinearLayout)actionDetails.findViewById(R.id.view_expanding_3);
-        AvenirTextView expandingViewText3 = (AvenirTextView)expandingView3.findViewById(R.id.expanding_title);
+        final LinearLayout expandingView3 = (LinearLayout) actionDetails.findViewById(R.id.view_expanding_3);
+        AvenirTextView expandingViewText3 = (AvenirTextView) expandingView3.findViewById(R.id.expanding_title);
         expandingViewText3.setText(VoicesApplication.getContext().getString(share));
-        ImageView expandingViewImage3 = (ImageView)expandingView3.findViewById(R.id.expanding_button);
+        ImageView expandingViewImage3 = (ImageView) expandingView3.findViewById(R.id.expanding_button);
         expandingViewImage3.setImageDrawable(VoicesApplication.getContext().getResources().getDrawable(R.drawable.share_button));
         expandingView3.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -599,22 +634,22 @@ public enum GroupManager {
                 intent.setAction(Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_TEXT, action.getTitle() + " " + action.getBody());
-                ((VoicesMainActivity)expandingView3.getContext()).startActivity(Intent.createChooser(intent, "Share"));
+                ((VoicesMainActivity) expandingView3.getContext()).startActivity(Intent.createChooser(intent, "Share"));
             }
         });
-        LinearLayout contactRepsEmptyState = (LinearLayout)actionDetails.findViewById(R.id.actions_detail_reps_error);
-        Button addAddressButton = (Button)contactRepsEmptyState.findViewById(R.id.actions_detail_address_button);
+        LinearLayout contactRepsEmptyState = (LinearLayout) actionDetails.findViewById(R.id.actions_detail_reps_error);
+        Button addAddressButton = (Button) contactRepsEmptyState.findViewById(R.id.actions_detail_address_button);
         addAddressButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VoicesMainActivity activity =(VoicesMainActivity)v.getContext();
+                VoicesMainActivity activity = (VoicesMainActivity) v.getContext();
                 activity.saveAddressForDetail(action.getLevel(), action.getActionType());
             }
         });
 
-        LinearLayout actionsDetailsErrorLayout = (LinearLayout)actionDetails.findViewById(R.id.actions_detail_reps_error);
+        LinearLayout actionsDetailsErrorLayout = (LinearLayout) actionDetails.findViewById(R.id.actions_detail_reps_error);
 
-        if(activity.locationSaved() && (action.getActionType()==null || !(action.getActionType().equals("singleRep")))){
+        if (activity.locationSaved() && (action.getActionType() == null || !(action.getActionType().equals("singleRep")))) {
             //actionsDetailsErrorLayout.setVisibility(View.GONE);
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(VoicesApplication.getContext());
             String savedLocation = prefs.getString("address", "");
@@ -630,10 +665,10 @@ public enum GroupManager {
                     null);
         }
 
-        if(action.getActionType()!=null && action.getActionType().equals("singleRep")){
+        if (action.getActionType() != null && action.getActionType().equals("singleRep")) {
             actionsDetailsErrorLayout.setVisibility(View.GONE);
             Representative representative = action.getSingleRep();
-            ListView actionsDetailListView = (ListView)actionDetails.findViewById(R.id.actions_detail_reps_list);
+            ListView actionsDetailListView = (ListView) actionDetails.findViewById(R.id.actions_detail_reps_list);
             actionsDetailListView.setVisibility(View.VISIBLE);
             ArrayList<Representative> representatives = new ArrayList<Representative>();
             representatives.add(0, representative);
@@ -664,13 +699,13 @@ public enum GroupManager {
                                         final String actionType,
                                         final Representative singleRep) {
         RepresentativesManager.RepresentativesType repType = RepresentativesManager.RepresentativesType.CONGRESS;
-        if(repsType==2){
-             repType = RepresentativesManager.RepresentativesType.STATE_LEGISLATORS;
+        if (repsType == 2) {
+            repType = RepresentativesManager.RepresentativesType.STATE_LEGISLATORS;
         }
-        if(repsType==3){
+        if (repsType == 3) {
             repType = RepresentativesManager.RepresentativesType.COUNCIL_MEMBERS;
         }
-        LinearLayout contactRepsEmptyState = (LinearLayout)actionDetails.findViewById(R.id.actions_detail_reps_error);
+        LinearLayout contactRepsEmptyState = (LinearLayout) actionDetails.findViewById(R.id.actions_detail_reps_error);
         contactRepsEmptyState.setVisibility(View.GONE);
         RESTUtil.makeRepresentativesRequest(locationString, repLat, repLong, repType,
                 new Callback2<ArrayList<Representative>, RepresentativesManager.RepresentativesType>() {
@@ -688,55 +723,23 @@ public enum GroupManager {
                         activity.getHandler().post(new Runnable() {
                             @Override
                             public void run() {
-                                ListView representativesListView = (ListView)actionDetails.findViewById(R.id.actions_detail_reps_list);
-                                    if (representativesListView != null) {
-                                        representativesListView.setAdapter(
+                                ListView representativesListView = (ListView) actionDetails.findViewById(R.id.actions_detail_reps_list);
+                                if (representativesListView != null) {
+                                    representativesListView.setAdapter(
                                             new RepresentativesListAdapter(actionDetails.getContext(), R.layout.reps_item, data));
-                                        representativesListView.setVisibility(View.VISIBLE);
-                                    }
-                                    if ((result != null) && (result.size() > 0)) {
-                                    } else {
-                                    }
+                                    representativesListView.setVisibility(View.VISIBLE);
                                 }
-                            });
-                            return false;
-                        }
-                    });
+                                if ((result != null) && (result.size() > 0)) {
+                                } else {
+                                }
+                            }
+                        });
+                        return false;
+                    }
+                });
     }
 
-    public void togglePolicyDialog(Context context, Policy policy, final Action action, final Dialog parentDialog) {
 
-        final Dialog actionDialog;
-
-        actionDialog = new Dialog(context);
-        actionDialog.setTitle("Take Action");
-        actionDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        actionDialog.setContentView(R.layout.dialog_policies);
-
-        TextView policiesTitle = (TextView) actionDialog.findViewById(R.id.policies_title);
-        TextView policiesDescription = (TextView) actionDialog.findViewById(R.id.policies_description);
-        Button contactRepresentativesButton = (Button) actionDialog.findViewById(R.id.button_contact_representatives);
-
-        if (policy != null) {
-            policiesTitle.setText(policy.getPolicyName());
-            policiesDescription.setText(policy.getPolicyDescription());
-        }
-
-        contactRepresentativesButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (parentDialog != null) {
-                    parentDialog.dismiss();
-                }
-
-                actionDialog.dismiss();
-                RepresentativesManager.INSTANCE.selectRepresentativesTab();
-
-            }
-        });
-        actionDialog.show();
-    }
 
 
     public void setDefferredGroupKey(final String defferredGroupKey, boolean subscribe) {
@@ -745,7 +748,7 @@ public enum GroupManager {
         this.defferredGroupKey = this.defferredGroupKey.toUpperCase().replace("HTTPS://TRYVOICES.COM/", "");
 
 
-        if(!subscribe) {
+        if (!subscribe) {
             return;
         }
 
@@ -763,7 +766,7 @@ public enum GroupManager {
                     @Override
                     public void run() {
                         ArrayList<Group> userGroups = groupPage.getUserGroups();
-                        if(userGroups != null) {
+                        if (userGroups != null) {
                             for (Group group : userGroups) {
                                 if (group.getGroupKey().equals(GroupManager.this.defferredGroupKey)) {
                                     return;

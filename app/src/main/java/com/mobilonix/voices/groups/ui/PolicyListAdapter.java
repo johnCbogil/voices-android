@@ -19,14 +19,12 @@ import java.util.ArrayList;
 public class PolicyListAdapter extends ArrayAdapter<Policy>{
     private final Context context;
     private final ArrayList<Policy> policies;
-    private final Dialog parentDialog;
 
 
-    public PolicyListAdapter(Context context, int resource, ArrayList<Policy> policies, Dialog parentDialog) {
+    public PolicyListAdapter(Context context,ArrayList<Policy> policies) {
         super(context, R.layout.policy_list_item, policies);
         this.context = context;
         this.policies = policies;
-        this.parentDialog = parentDialog;
     }
 
     @Override
@@ -45,7 +43,7 @@ public class PolicyListAdapter extends ArrayAdapter<Policy>{
                 public void onClick(View v) {
                     GroupManager.INSTANCE
                             .togglePolicyDialog(v.getContext(),
-                                    policies.get(position), null, parentDialog);
+                                    policies.get(position));
                 }
             });
         }
