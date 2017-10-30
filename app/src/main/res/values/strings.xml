@@ -103,4 +103,5 @@
     <string name="group_detail_less">Group Detail Less</string>
     <string name="group_detail_more">Group Detail More</string>
     <string name="group_image">Group Image</string>
+    <string name="group_name">Group Name</string>
 </resources>

@@ -30,7 +30,7 @@ import com.mobilonix.voices.util.AvenirTextView
 /**
  * Created by pc on 10/19/2017.
  */
-class GroupDetailContainer(context: Context, attributes: AttributeSet,val tv:AvenirTextView) : FrameLayout(context, attributes), TabLayout.OnTabSelectedListener,
+class GroupDetailContainer(context: Context, attributes: AttributeSet) : FrameLayout(context, attributes), TabLayout.OnTabSelectedListener,
 ActionSheet.ActionSheetListener{
 
     private var isFollowing: Boolean = false
@@ -45,7 +45,6 @@ ActionSheet.ActionSheetListener{
         actions_rv.layoutManager = LinearLayoutManager(context)
         filterActionList()
         alAdapter = ActionListRecyclerAdapter(context, actions)
-        tv.text = group.groupName
         actions_rv.adapter = alAdapter
         SessionManager.INSTANCE.fetchAllActions{refreshActionList(it)}
         issues_list_view.adapter = PolicyListAdapter(context, group.policies,(context as VoicesMainActivity).supportFragmentManager)
@@ -75,6 +74,7 @@ ActionSheet.ActionSheetListener{
         bundle.putString("Website",group.groupWebsite)
         val groupWebsite:Fragment = GroupWebsite()
         groupWebsite.arguments = bundle
+        groupWebsite.toolbar 
         ft.add(R.id.group_detail_container,groupWebsite).addToBackStack(null).commit()
     }
 

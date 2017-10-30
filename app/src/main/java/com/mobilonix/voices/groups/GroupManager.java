@@ -1,11 +1,9 @@
 package com.mobilonix.voices.groups;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
@@ -15,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -35,24 +32,20 @@ import com.mobilonix.voices.callbacks.Callback;
 import com.mobilonix.voices.callbacks.Callback2;
 import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
-import com.mobilonix.voices.groups.model.Policy;
 import com.mobilonix.voices.groups.ui.EntityContainer;
 import com.mobilonix.voices.groups.ui.GroupDetailContainer;
 import com.mobilonix.voices.groups.ui.GroupPage;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.representatives.ui.RepresentativesListAdapter;
-import com.mobilonix.voices.representatives.ui.RoundedTransformation;
 import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.util.AvenirBoldTextView;
 import com.mobilonix.voices.util.AvenirTextView;
 import com.mobilonix.voices.util.RESTUtil;
-import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import static com.mobilonix.voices.R.string.actions;
 import static com.mobilonix.voices.R.string.share;
 
 public enum GroupManager {
@@ -71,6 +64,8 @@ public enum GroupManager {
     GroupDetailContainer gc;
 
     GroupPage groupPage;
+
+    Toolbar mainTB;
 
     GroupType MODE;
 
@@ -180,38 +175,41 @@ public enum GroupManager {
         });
     }
 
+    View.OnClickListener back = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            onBackPress();
+
+        }
+    };
+
     public void toggleGroups(GroupType groupType) {
 
-        Toolbar toolbar = ((VoicesMainActivity) groupPage.getContext()).getToolbar();
+        mainTB = ((VoicesMainActivity) groupPage.getContext()).getToolbar();
 
         int indicatorBlue = VoicesApplication.getContext()
                 .getResources().getColor(R.color.indicator_blue);
         int indicatorGrey = VoicesApplication.getContext()
                 .getResources().getColor(R.color.indicator_grey);
-        toolbar.findViewById(R.id.toolbar_previous).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPress();
-            }
-        });
+        mainTB.findViewById(R.id.toolbar_previous).setOnClickListener(back);
         if (groupType == GroupType.ACTION) {
             groupPage.findViewById(R.id.actions_container).setVisibility(View.VISIBLE);
             groupPage.findViewById(R.id.user_groups_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.all_groups_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.actions_details_container).setVisibility(View.GONE);
 
-            toolbar.setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.toolbar_reps).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.toolbar_groups).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.groups_horizontal).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.reps_horizontal).setVisibility(View.INVISIBLE);
-            toolbar.findViewById(R.id.takeaction).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.toolbar_previous).setVisibility(View.GONE);
-            toolbar.findViewById(R.id.allgroups_text).setVisibility(View.GONE);
+            mainTB.setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.toolbar_reps).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.toolbar_groups).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.groups_horizontal).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.reps_horizontal).setVisibility(View.INVISIBLE);
+            mainTB.findViewById(R.id.takeaction).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.toolbar_previous).setVisibility(View.GONE);
+            mainTB.findViewById(R.id.allgroups_text).setVisibility(View.GONE);
 
             ((EntityContainer) groupPage.findViewById(R.id.actions_container)).setType(groupType);
-            toolbar.findViewById(R.id.toolbar_add).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.toolbar_add_linear_layout).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.toolbar_add).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.toolbar_add_linear_layout).setVisibility(View.VISIBLE);
 
             ((AvenirBoldTextView)(groupPage.findViewById(R.id.actions_container))
                     .findViewById(R.id.actions_button)).setTextColor(indicatorBlue);
@@ -226,14 +224,14 @@ public enum GroupManager {
             groupPage.findViewById(R.id.all_groups_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.actions_details_container).setVisibility(View.GONE);
 
-            toolbar.setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.toolbar_reps).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.toolbar_groups).setVisibility(View.VISIBLE);
+            mainTB.setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.toolbar_reps).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.toolbar_groups).setVisibility(View.VISIBLE);
 
             ((EntityContainer) groupPage.findViewById(R.id.user_groups_container)).setType(groupType);
 
-            toolbar.findViewById(R.id.toolbar_add).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.toolbar_add_linear_layout).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.toolbar_add).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.toolbar_add_linear_layout).setVisibility(View.VISIBLE);
 
             MODE = GroupType.USER;
 
@@ -250,14 +248,14 @@ public enum GroupManager {
 
             ((EntityContainer) groupPage.findViewById(R.id.all_groups_container)).setType(groupType);
 
-            toolbar.findViewById(R.id.toolbar_previous).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.allgroups_text).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.toolbar_add).setVisibility(View.GONE);
-            toolbar.findViewById(R.id.toolbar_add_linear_layout).setVisibility(View.GONE);
-            toolbar.findViewById(R.id.toolbar_reps).setVisibility(View.GONE);
-            toolbar.findViewById(R.id.toolbar_groups).setVisibility(View.GONE);
-            toolbar.findViewById(R.id.groups_horizontal).setVisibility(View.GONE);
-            toolbar.findViewById(R.id.hamburger_icon).setVisibility(View.GONE);
+            mainTB.findViewById(R.id.toolbar_previous).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.allgroups_text).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.toolbar_add).setVisibility(View.GONE);
+            mainTB.findViewById(R.id.toolbar_add_linear_layout).setVisibility(View.GONE);
+            mainTB.findViewById(R.id.toolbar_reps).setVisibility(View.GONE);
+            mainTB.findViewById(R.id.toolbar_groups).setVisibility(View.GONE);
+            mainTB.findViewById(R.id.groups_horizontal).setVisibility(View.GONE);
+            mainTB.findViewById(R.id.hamburger_icon).setVisibility(View.GONE);
 
 
             ((AvenirBoldTextView)(groupPage.findViewById(R.id.all_groups_container))
@@ -271,7 +269,7 @@ public enum GroupManager {
             groupPage.findViewById(R.id.all_groups_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.actions_details_container).setVisibility(View.VISIBLE);
             ((EntityContainer) groupPage.findViewById(R.id.user_groups_container)).setType(groupType);
-            toolbar.setVisibility(View.GONE);
+            mainTB.setVisibility(View.GONE);
             MODE = GroupType.ACTION_DETAIL;
         }
     }
@@ -289,15 +287,8 @@ public enum GroupManager {
         LayoutInflater inflater = (LayoutInflater) pageRoot.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
         if (gc == null) {
-            gc = (GroupDetailContainer) inflater.inflate(R.layout.group_detail, null, false); Toolbar toolbar = ((VoicesMainActivity) gc.getContext()).getToolbar();
-//            toolbar.findViewById(R.id.toolbar_previous).setVisibility(View.VISIBLE);
-//            toolbar.findViewById(R.id.allgroups_text).setVisibility(View.VISIBLE);
-//            toolbar.findViewById(R.id.toolbar_add).setVisibility(View.GONE);
-//            toolbar.findViewById(R.id.toolbar_add_linear_layout).setVisibility(View.GONE);
-//            toolbar.findViewById(R.id.toolbar_reps).setVisibility(View.GONE);
-//            toolbar.findViewById(R.id.toolbar_groups).setVisibility(View.GONE);
-//            toolbar.findViewById(R.id.groups_horizontal).setVisibility(View.GONE);
-//            toolbar.findViewById(R.id.hamburger_icon).setVisibility(View.GONE);
+            gc = (GroupDetailContainer) inflater.inflate(R.layout.group_detail, null, false);
+
         }
         try {
             gc.setUserGroups(groupPage.getUserGroups());
@@ -306,6 +297,15 @@ public enum GroupManager {
         } catch (IllegalArgumentException e) {
             return;
         }
+        mainTB.findViewById(R.id.toolbar_previous).setVisibility(View.VISIBLE);
+        mainTB.findViewById(R.id.allgroups_text).setVisibility(View.GONE);
+        mainTB.findViewById(R.id.toolbar_add).setVisibility(View.GONE);
+        mainTB.findViewById(R.id.toolbar_add_linear_layout).setVisibility(View.GONE);
+        mainTB.findViewById(R.id.toolbar_reps).setVisibility(View.GONE);
+        mainTB.findViewById(R.id.toolbar_groups).setVisibility(View.GONE);
+        mainTB.findViewById(R.id.groups_horizontal).setVisibility(View.GONE);
+        mainTB.findViewById(R.id.hamburger_icon).setVisibility(View.GONE);
+        mainTB.findViewById(R.id.takeaction).setVisibility(View.GONE);
 
 
         pageRoot.addView(gc);
@@ -313,6 +313,7 @@ public enum GroupManager {
     }
 
     public void removeGroupDetailPage() {
+
         if (gc != null && gc.getParent() != null) pageRoot.removeView(gc);
         gc = null;
     }
@@ -384,12 +385,12 @@ public enum GroupManager {
         removeGroupDetailPage();
         MODE = GroupType.USER;
         toggleGroups(GroupType.USER);
-        Toolbar toolbar = ((VoicesMainActivity) groupPage.getContext()).getToolbar();
-        toolbar.findViewById(R.id.toolbar_previous).setVisibility(View.GONE);
-        toolbar.findViewById(R.id.allgroups_text).setVisibility(View.GONE);
-        toolbar.findViewById(R.id.takeaction).setVisibility(View.VISIBLE);
-        toolbar.findViewById(R.id.groups_horizontal).setVisibility(View.VISIBLE);
-        toolbar.findViewById(R.id.hamburger_icon).setVisibility(View.VISIBLE);
+        mainTB.findViewById(R.id.toolbar_previous).setVisibility(View.GONE);
+        mainTB.findViewById(R.id.allgroups_text).setVisibility(View.GONE);
+        mainTB.findViewById(R.id.takeaction).setVisibility(View.VISIBLE);
+        mainTB.findViewById(R.id.groups_horizontal).setVisibility(View.VISIBLE);
+        mainTB.findViewById(R.id.hamburger_icon).setVisibility(View.VISIBLE);
+
     }
 
     /**

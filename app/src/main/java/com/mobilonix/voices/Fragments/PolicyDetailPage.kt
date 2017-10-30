@@ -21,16 +21,15 @@ class PolicyDetailPage:Fragment(){
     lateinit var policy:Policy
 
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.policy_detail_page,container,false)
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.policy_detail_page,container,false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         policies_title.text = policy.policyName
         policies_description.text = policy.policyDescription
         button_contact_representatives.setOnClickListener{RepresentativesManager.INSTANCE.selectRepresentativesTab()}
-        back_from_policy_detail.setOnClickListener{fragmentManager.popBackStackImmediate()}
+        back_from_policy_detail.setOnClickListener{ fragmentManager?.popBackStackImmediate() }
     }
 
     override fun onResume() {

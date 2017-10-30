@@ -43,9 +43,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|top"
+                    android:text="@string/takeaction"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
-                    android:text="@string/takeaction"
                     android:textColor="#FFF"
                     android:textSize="25sp"
                     android:visibility="gone" />
@@ -151,6 +151,7 @@
                     android:src="@drawable/toolbar_previous"
                     android:tint="#FFF"
                     android:visibility="gone" />
+
             </FrameLayout>
         </android.support.v7.widget.Toolbar>
 
