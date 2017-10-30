@@ -75,7 +75,7 @@ public class VoicesMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voices_main);
-
+        setTheme(R.style.Iphone7);
         VoicesApplication.setGlobalHandler(new WeakHandler());
 
         SessionManager.INSTANCE.signIn(new Callback<Boolean>() {
@@ -206,10 +206,13 @@ public class VoicesMainActivity extends AppCompatActivity {
             }
         }
 
-        if(drawerLayout.isDrawerOpen(GravityCompat.END)){
-            drawerLayout.closeDrawer(Gravity.END);
-            return;
+        if(drawerLayout != null){
+            if(drawerLayout.isDrawerOpen(GravityCompat.END)){
+                drawerLayout.closeDrawer(Gravity.END);
+                return;
+            }
         }
+
 
         //If we back out too far, we want to make sure the user is ok leaving the app
         if(!leaveAppDialogShowing) {

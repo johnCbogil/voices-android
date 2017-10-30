@@ -24,7 +24,7 @@ class GroupListRecyclerAdapter extends RecyclerView.Adapter<GroupListRecyclerAda
     private ArrayList<Group> groups;
     private GroupManager.GroupType groupType;
 
-    GroupListRecyclerAdapter(Context context, ArrayList<Group> groups, GroupManager.GroupType groupType) {
+    GroupListRecyclerAdapter(ArrayList<Group> groups, GroupManager.GroupType groupType) {
         this.groups = groups;
         this.groupType = groupType;
 
@@ -49,13 +49,14 @@ class GroupListRecyclerAdapter extends RecyclerView.Adapter<GroupListRecyclerAda
 
     @Override
     public void onBindViewHolder(GroupListHolder holder, final int position) {
+        final Group group = groups.get(position);
         holder.setPosition(position);
-        holder.groupName.setText(groups.get(position).getGroupName());
-        holder.groupCategory.setText(groups.get(position).getGroupCategory());
-        holder.groupDescription.setText(groups.get(position).getGroupDescription());
+        holder.groupName.setText(group.getGroupName());
+        holder.groupCategory.setText(group.getGroupCategory());
+        holder.groupDescription.setText(group.getGroupDescription());
 
         Picasso.with(holder.groupImage.getContext())
-                .load(groups.get(position).getGroupImageUrl())
+                .load(group.getGroupImageUrl())
                 .fit()
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .placeholder(R.drawable.spinner_moving)
@@ -82,7 +83,7 @@ class GroupListRecyclerAdapter extends RecyclerView.Adapter<GroupListRecyclerAda
             holder.groupView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    GroupManager.INSTANCE.toggleSubscribeToGroupDialog(v.getContext(), groups.get(position));
+                    GroupManager.INSTANCE.goToGroupDetailPage( group);
                 }
             });
 

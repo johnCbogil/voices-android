@@ -3,6 +3,8 @@ package com.mobilonix.voices.splash;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -45,6 +47,8 @@ public enum  SplashManager {
                 }
             });
             splashScreenVisible = true;
+            ViewGroup parent =(ViewGroup)splashContentFrame.getParent();
+            if(parent != null)parent.removeView(splashContentFrame);
             activity.getMainContentFrame().addView(splashContentFrame);
         } else {
             final Animation animationFadeOut

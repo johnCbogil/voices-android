@@ -39,7 +39,6 @@ import com.mobilonix.voices.groups.model.Policy;
 import com.mobilonix.voices.groups.ui.EntityContainer;
 import com.mobilonix.voices.groups.ui.GroupDetailContainer;
 import com.mobilonix.voices.groups.ui.GroupPage;
-import com.mobilonix.voices.groups.ui.PolicyListAdapter;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.representatives.ui.RepresentativesListAdapter;
@@ -53,6 +52,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import static com.mobilonix.voices.R.string.actions;
 import static com.mobilonix.voices.R.string.share;
 
 public enum GroupManager {
@@ -63,7 +63,12 @@ public enum GroupManager {
 
     boolean isRefreshing = false;
 
+    boolean subscriptionCompleted = false;
+
+
     private final String TAG = GroupManager.class.getCanonicalName();
+
+    GroupDetailContainer gc;
 
     GroupPage groupPage;
 
@@ -274,158 +279,33 @@ public enum GroupManager {
     /**
      * This is a quick way to test if group subscriptions are working
      *
-     * @param context
      * @param group
      */
-    public void toggleSubscribeToGroupDialog(Context context, final Group group) {
+    public void goToGroupDetailPage(final Group group) {
+        if(group.getActions() == null)return;
         LayoutInflater inflater = (LayoutInflater) pageRoot.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
-        GroupDetailContainer gc = (GroupDetailContainer) inflater.inflate(R.layout.group_detail, null, false);
-        gc.setGroup(group);
-        gc.setUserGroups(groupPage.getUserGroups());
+        if (gc == null) {
+            gc = (GroupDetailContainer) inflater.inflate(R.layout.group_detail, null, false);
+        }
+        try{
+            gc.setUserGroups(groupPage.getUserGroups());
+            gc.setGroup(group);
+            gc.setActions(groupPage.getActions());
+        }
+       catch (IllegalArgumentException e){
+            return;
+       }
+
         pageRoot.addView(gc);
 
-        Callback<Boolean> cb = new Callback<Boolean>() {
-            @Override
-            public boolean onExecuted(Boolean data) {
-                return false;
-            }
-        };
-
-//
-//        groupsWebsite.setText(group.getGroupWebsite());
-//
-//        final ArrayList<Group> userGroups = groupPage.getUserGroups();
-//        if (userGroups != null) {
-//            for (Group g : groupPage.getUserGroups()) {
-//                if (g.getGroupKey().equals(group.getGroupKey())) {
-//                    groupsFollowGroupsButton.setText(R.string.following_groups_text);
-//                }
-//            }
-//        }
-//
-//        final ProgressDialog pd = new ProgressDialog(dialog.getContext());
-//        pd.setTitle("Following....");
-//        pd.setMessage("");
-//        pd.setIndeterminate(true);
-//        pd.setCancelable(false);
-//
-//        groupsFollowGroupsButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                if(!groupsFollowGroupsButton.getText().toString().equals(v.getContext()
-//                        .getString(R.string.following_groups_text))) {
-//                    pd.show();
-//                }
-//                /* check if we're already subscribed to the group */
-//                if (userGroups != null) {
-//                    for (Group g : groupPage.getUserGroups()) {
-//                        if (g.getGroupKey().equals(group.getGroupKey())) {
-//                            final Dialog followDialog;
-//                            followDialog = new Dialog(groupPage.getContext());
-//                            followDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                            followDialog.setContentView(R.layout.dialog_follow);
-//                            Button unfollowButton = (Button) followDialog.findViewById(R.id.unfollow_button);
-//                            Button cancelButton = (Button) followDialog.findViewById(R.id.cancel_button);
-//                            unfollowButton.setOnClickListener(new View.OnClickListener() {
-//                                @Override
-//                                public void onClick(View v) {
-//                                    pd.setTitle("Unfollowing....");
-//                                    pd.show();
-//                                    unSubscribeFromGroup(group, true, new Callback<Boolean>() {
-//                                        @Override
-//                                        public boolean onExecuted(Boolean data) {
-//                                            pd.dismiss();
-//                                            groupsFollowGroupsButton.setText(R.string.follow_groups_text);
-//                                            if (data) {
-//                                                AnalyticsManager.INSTANCE.trackEvent("UNSUBSCRIBE_EVENT",
-//                                                        group.getGroupKey(),
-//                                                        SessionManager.INSTANCE.getCurrentUserToken(), "none", null);
-//                                            }
-//                                            followDialog.dismiss();
-//                                            return false;
-//                                        }
-//                                    });
-//                                    return;
-//                                }
-//                            });
-//                            cancelButton.setOnClickListener(new View.OnClickListener() {
-//                                @Override
-//                                public void onClick(View v) {
-//                                    pd.dismiss();
-//                                    followDialog.dismiss();
-//                                }
-//                            });
-//                            followDialog.show();
-//                        }
-//                    }
-//                }
-//
-//                if(!groupPage.hasUserGroupWithKey(group.getGroupKey())) {
-//
-//                    subscribeToGroup(group, true, new Callback<Boolean>() {
-//                        @Override
-//                        public boolean onExecuted(Boolean data) {
-//                            groupsFollowGroupsButton.setText(R.string.following_groups_text);
-//
-//                            pd.dismiss();
-//
-//                            if (data) {
-//                                AnalyticsManager.INSTANCE.trackEvent("SUBSCRIBE_EVENT",
-//                                        group.getGroupKey(),
-//                                        SessionManager.INSTANCE.getCurrentUserToken(), "none", null);
-//                            }
-//
-//                            return false;
-//                        }
-//                    });
-//                }
-//            }
-//        });
-//
-//        policyList.setAlAdapter(new PolicyListAdapter(context,
-//                R.layout.policy_list_item,
-//                group.getPolicies(),
-//                dialog));
-//
-//        dialog.show();
-
     }
-    public void togglePolicyDialog(Context context, Policy policy) {
 
-//        final Dialog actionDialog;
-//
-//        actionDialog = new Dialog(context);
-//        actionDialog.setTitle("Take Action");
-//        actionDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        actionDialog.setContentView(R.layout.dialog_policies);
-//
-//        TextView policiesTitle = (TextView) actionDialog.findViewById(R.id.policies_title);
-//        TextView policiesDescription = (TextView) actionDialog.findViewById(R.id.policies_description);
-//        Button contactRepresentativesButton = (Button) actionDialog.findViewById(R.id.button_contact_representatives);
-//
-//        if (policy != null) {
-//            policiesTitle.setText(policy.getPolicyName());
-//            policiesDescription.setText(policy.getPolicyDescription());
-//        }
-//
-//        contactRepresentativesButton.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                if (parentDialog != null) {
-//                    parentDialog.dismiss();
-//                }
-//
-//                actionDialog.dismiss();
-//                RepresentativesManager.INSTANCE.selectRepresentativesTab();
-//
-//            }
-//        });
-//        actionDialog.show();
+    public void removeGroupDetailPage() {
+        if (gc != null && gc.getParent() != null) pageRoot.removeView(gc);
+        gc = null;
     }
-    boolean subscriptionCompleted = false;
+
 
     /**
      * Subscribing to a topic is at this point as simple as subscribing to a topic via the name of
@@ -490,6 +370,7 @@ public enum GroupManager {
     }
 
     public void onBackPress() {
+        removeGroupDetailPage();
         MODE = GroupType.USER;
         toggleGroups(GroupType.USER);
         Toolbar toolbar = ((VoicesMainActivity) groupPage.getContext()).getToolbar();
@@ -717,8 +598,6 @@ public enum GroupManager {
                     }
                 });
     }
-
-
 
 
     public void setDefferredGroupKey(final String defferredGroupKey, boolean subscribe) {

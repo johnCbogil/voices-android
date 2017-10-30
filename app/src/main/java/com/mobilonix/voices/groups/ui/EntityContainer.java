@@ -98,7 +98,7 @@ public class EntityContainer extends FrameLayout {
         if (type == (GroupManager.GroupType.ACTION)) {
             entityList.setAdapter(new ActionListRecyclerAdapter(getContext(), list));
         } else {
-            entityList.setAdapter(new GroupListRecyclerAdapter(getContext(), list, type));
+            entityList.setAdapter(new GroupListRecyclerAdapter(list, type));
         }
     }
 
