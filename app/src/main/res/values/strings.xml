@@ -100,4 +100,7 @@
     <string name="open_states_api_key">e39ba83d7c5b4e348db144c4b4c33108</string>
     <string name="firebase_endpoint">https://voices-430ae.firebaseio.com</string>
     <string name="issues">Issues</string>
+    <string name="group_detail_less">Group Detail Less</string>
+    <string name="group_detail_more">Group Detail More</string>
+    <string name="group_image">Group Image</string>
 </resources>

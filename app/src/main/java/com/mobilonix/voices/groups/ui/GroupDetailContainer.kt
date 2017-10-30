@@ -3,12 +3,16 @@ package com.mobilonix.voices.groups.ui
 
 import android.app.ProgressDialog
 import android.content.Context
+import android.os.Bundle
 import android.support.design.widget.TabLayout
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentTransaction
 import android.support.v7.widget.LinearLayoutManager
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import com.baoyz.actionsheet.ActionSheet
+import com.mobilonix.voices.Fragments.GroupWebsite
 import com.mobilonix.voices.R
 import com.mobilonix.voices.VoicesMainActivity
 import com.mobilonix.voices.groups.model.Action
@@ -19,12 +23,14 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.group_detail.view.*
 import com.mobilonix.voices.analytics.AnalyticsManager
 import com.mobilonix.voices.groups.GroupManager
+import com.mobilonix.voices.util.AvenirBoldTextView
+import com.mobilonix.voices.util.AvenirTextView
 
 
 /**
  * Created by pc on 10/19/2017.
  */
-class GroupDetailContainer(context: Context, attributes: AttributeSet) : FrameLayout(context, attributes), TabLayout.OnTabSelectedListener,
+class GroupDetailContainer(context: Context, attributes: AttributeSet,val tv:AvenirTextView) : FrameLayout(context, attributes), TabLayout.OnTabSelectedListener,
 ActionSheet.ActionSheetListener{
 
     private var isFollowing: Boolean = false
@@ -39,6 +45,7 @@ ActionSheet.ActionSheetListener{
         actions_rv.layoutManager = LinearLayoutManager(context)
         filterActionList()
         alAdapter = ActionListRecyclerAdapter(context, actions)
+        tv.text = group.groupName
         actions_rv.adapter = alAdapter
         SessionManager.INSTANCE.fetchAllActions{refreshActionList(it)}
         issues_list_view.adapter = PolicyListAdapter(context, group.policies,(context as VoicesMainActivity).supportFragmentManager)
@@ -61,7 +68,15 @@ ActionSheet.ActionSheetListener{
         toggleVisibility(group_detail_more_button)
     }
 
-    private fun visitWebsite() {}
+    private fun visitWebsite() {
+
+        val ft: FragmentTransaction = (context as VoicesMainActivity).supportFragmentManager.beginTransaction()
+        val bundle = Bundle()
+        bundle.putString("Website",group.groupWebsite)
+        val groupWebsite:Fragment = GroupWebsite()
+        groupWebsite.arguments = bundle
+        ft.add(R.id.group_detail_container,groupWebsite).addToBackStack(null).commit()
+    }
 
     private fun refreshActionList(data: ArrayList<Action>?): Boolean {
         if (data == null || data.isEmpty()) {

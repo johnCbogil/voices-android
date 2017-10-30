@@ -188,7 +188,12 @@ public enum GroupManager {
                 .getResources().getColor(R.color.indicator_blue);
         int indicatorGrey = VoicesApplication.getContext()
                 .getResources().getColor(R.color.indicator_grey);
-
+        toolbar.findViewById(R.id.toolbar_previous).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPress();
+            }
+        });
         if (groupType == GroupType.ACTION) {
             groupPage.findViewById(R.id.actions_container).setVisibility(View.VISIBLE);
             groupPage.findViewById(R.id.user_groups_container).setVisibility(View.GONE);
@@ -208,9 +213,9 @@ public enum GroupManager {
             toolbar.findViewById(R.id.toolbar_add).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.toolbar_add_linear_layout).setVisibility(View.VISIBLE);
 
-            ((AvenirBoldTextView) (groupPage.findViewById(R.id.actions_container))
+            ((AvenirBoldTextView)(groupPage.findViewById(R.id.actions_container))
                     .findViewById(R.id.actions_button)).setTextColor(indicatorBlue);
-            ((AvenirBoldTextView) (groupPage.findViewById(R.id.actions_container))
+            ((AvenirBoldTextView)(groupPage.findViewById(R.id.actions_container))
                     .findViewById(R.id.groups_button)).setTextColor(indicatorGrey);
             MODE = GroupType.ACTION;
 
@@ -232,9 +237,9 @@ public enum GroupManager {
 
             MODE = GroupType.USER;
 
-            ((AvenirBoldTextView) (groupPage.findViewById(R.id.user_groups_container))
+            ((AvenirBoldTextView)(groupPage.findViewById(R.id.user_groups_container))
                     .findViewById(R.id.actions_button)).setTextColor(indicatorGrey);
-            ((AvenirBoldTextView) (groupPage.findViewById(R.id.user_groups_container))
+            ((AvenirBoldTextView)(groupPage.findViewById(R.id.user_groups_container))
                     .findViewById(R.id.groups_button)).setTextColor(indicatorBlue);
 
         } else if (groupType == GroupType.ALL) {
@@ -253,16 +258,11 @@ public enum GroupManager {
             toolbar.findViewById(R.id.toolbar_groups).setVisibility(View.GONE);
             toolbar.findViewById(R.id.groups_horizontal).setVisibility(View.GONE);
             toolbar.findViewById(R.id.hamburger_icon).setVisibility(View.GONE);
-            toolbar.findViewById(R.id.toolbar_previous).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onBackPress();
-                }
-            });
 
-            ((AvenirBoldTextView) (groupPage.findViewById(R.id.all_groups_container))
+
+            ((AvenirBoldTextView)(groupPage.findViewById(R.id.all_groups_container))
                     .findViewById(R.id.actions_button)).setTextColor(indicatorGrey);
-            ((AvenirBoldTextView) (groupPage.findViewById(R.id.all_groups_container))
+            ((AvenirBoldTextView)(groupPage.findViewById(R.id.all_groups_container))
                     .findViewById(R.id.groups_button)).setTextColor(indicatorBlue);
             MODE = GroupType.ALL;
         } else if (groupType == GroupType.ACTION_DETAIL) {
@@ -281,21 +281,32 @@ public enum GroupManager {
      *
      * @param group
      */
+
+
     public void goToGroupDetailPage(final Group group) {
-        if(group.getActions() == null)return;
+        if (group.getActions() == null) return;
+
         LayoutInflater inflater = (LayoutInflater) pageRoot.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
         if (gc == null) {
-            gc = (GroupDetailContainer) inflater.inflate(R.layout.group_detail, null, false);
+            gc = (GroupDetailContainer) inflater.inflate(R.layout.group_detail, null, false); Toolbar toolbar = ((VoicesMainActivity) gc.getContext()).getToolbar();
+//            toolbar.findViewById(R.id.toolbar_previous).setVisibility(View.VISIBLE);
+//            toolbar.findViewById(R.id.allgroups_text).setVisibility(View.VISIBLE);
+//            toolbar.findViewById(R.id.toolbar_add).setVisibility(View.GONE);
+//            toolbar.findViewById(R.id.toolbar_add_linear_layout).setVisibility(View.GONE);
+//            toolbar.findViewById(R.id.toolbar_reps).setVisibility(View.GONE);
+//            toolbar.findViewById(R.id.toolbar_groups).setVisibility(View.GONE);
+//            toolbar.findViewById(R.id.groups_horizontal).setVisibility(View.GONE);
+//            toolbar.findViewById(R.id.hamburger_icon).setVisibility(View.GONE);
         }
-        try{
+        try {
             gc.setUserGroups(groupPage.getUserGroups());
             gc.setGroup(group);
             gc.setActions(groupPage.getActions());
-        }
-       catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return;
-       }
+        }
+
 
         pageRoot.addView(gc);
 
@@ -431,7 +442,7 @@ public enum GroupManager {
         expandingView1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isExpanded1 == false) {
+                if (!isExpanded1) {
                     expandingViewImage1.setImageDrawable(VoicesApplication.getContext().getDrawable(R.drawable.minus_icon));
                     hiddenView1.setText(action.getBody());
                     hiddenView1.setVisibility(View.VISIBLE);
@@ -454,7 +465,7 @@ public enum GroupManager {
         expandingView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isExpanded2 == false) {
+                if (!isExpanded2) {
                     expandingViewImage2.setImageDrawable(VoicesApplication.getContext().getDrawable(R.drawable.minus_icon));
                     int voicesOrange = VoicesApplication.getContext().getResources().getColor(R.color.voices_orange);
                     String response;
@@ -640,4 +651,6 @@ public enum GroupManager {
         });
         thread.start();
     }
+
+
 }

@@ -44,7 +44,8 @@
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/rounded_button_white_background_orange_border" />
+                            app:srcCompat="@drawable/rounded_button_white_background_orange_border"
+                            android:contentDescription="@string/group_image" />
 
                         <TextView
                             android:id="@+id/group_detail_group_name_tv"
@@ -117,7 +118,8 @@
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/group_detail_description_tv"
-                            app:srcCompat="@drawable/ic_keyboard_arrow_up_black_24dp" />
+                            app:srcCompat="@drawable/ic_keyboard_arrow_up_black_24dp"
+                            android:contentDescription="@string/group_detail_less" />
 
                         <ImageButton
                             android:id="@+id/group_detail_more_button"
@@ -131,7 +133,8 @@
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/group_detail_description_tv"
-                            app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp" />
+                            app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp"
+                            android:contentDescription="@string/group_detail_more" />
 
                         <view
                             android:id="@+id/view2"
