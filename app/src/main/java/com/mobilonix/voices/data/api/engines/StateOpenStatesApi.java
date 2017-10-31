@@ -75,7 +75,6 @@ public class StateOpenStatesApi implements ApiEngine {
             for(int i = 0; i < rawJsonArray.length(); i++){
 
                 JSONObject jsonPolitico = rawJsonArray.getJSONObject(i);
-                String state;
                 String chamber;
                 String name;
                 String party;
