@@ -37,7 +37,6 @@ import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
 import com.mobilonix.voices.groups.model.Policy;
 import com.mobilonix.voices.groups.ui.EntityContainer;
-import com.mobilonix.voices.groups.ui.GroupDetailContainer;
 import com.mobilonix.voices.groups.ui.GroupPage;
 import com.mobilonix.voices.groups.ui.PolicyListAdapter;
 import com.mobilonix.voices.representatives.RepresentativesManager;
@@ -519,7 +518,7 @@ public enum GroupManager {
         Picasso.with(context)
                 .load(action.getImageUrl())
                 .placeholder(R.drawable.spinner_moving)
-                .error(R.drawable.reps_male)
+                .error(R.drawable.voices_icon)
                 .fit()
                 .into(actionImage);
         AvenirBoldTextView actionTitle = (AvenirBoldTextView)actionDetails.findViewById(R.id.actions_detail_title);

@@ -3,7 +3,6 @@ package com.mobilonix.voices.data.model;
 public class Politico {
 
     String mFullName;
-    String mGender;
     String mParty;
     String mDistrict;
     String mTermEnd;
@@ -19,11 +18,10 @@ public class Politico {
     public Politico(){
 
     }
-    private Politico(String fullName, String gender, String party, String district, String termEnd, String electionDate,
+    private Politico(String fullName, String party, String district, String termEnd, String electionDate,
                      String phoneNumber, String twitterHandle, String contactForm, String emailAddress,
                      String picUrl, String level, String bioguideId) {
         mFullName = fullName;
-        mGender = gender;
         mParty = party;
         mDistrict = district;
         mTermEnd = termEnd;
@@ -39,8 +37,6 @@ public class Politico {
     }
 
     public String getFullName() {return mFullName;}
-
-    public String getGender() {return mGender;}
 
     public String getParty() { return mParty; }
 
@@ -83,7 +79,6 @@ public class Politico {
     public static class Builder {
 
         String fullName;
-        String gender;
         String party;
         String district;
         String termEnd;
@@ -100,12 +95,10 @@ public class Politico {
 
             fullName = title + " " + firstName + " " + lastName;
 
-            Politico a = new Politico(fullName, gender, party, district, termEnd, electionDate,
+            Politico a = new Politico(fullName, party, district, termEnd, electionDate,
                     phoneNumber, twitterHandle, contactForm, emailAddress, picUrl, level, bioguideId);
             return a ;
         }
-
-        public Builder setGender(String gender) { this.gender = gender; return this; }
 
         public Builder setParty(String party) { this.party = party; return this; }
 
@@ -140,7 +133,7 @@ public class Politico {
 
         public Politico build(String fullName) {
 
-            Politico a = new Politico(fullName, gender, party, district, termEnd, electionDate,
+            Politico a = new Politico(fullName, party, district, termEnd, electionDate,
                     phoneNumber, twitterHandle, contactForm, emailAddress, picUrl, level, bioguideId);
             return a ;
 

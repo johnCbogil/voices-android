@@ -4,8 +4,6 @@ package com.mobilonix.voices.representatives.model;
  * This model holds the representative info
  */
 public class Representative {
-
-    private String gender;
     private String party;
     private String district;
     private String electionDate;
@@ -18,9 +16,6 @@ public class Representative {
     private String name;
     private String location;
     private String level;
-
-
-    public String getGender() { return gender; }
 
     public String getParty() { return party; }
 
@@ -67,7 +62,6 @@ public class Representative {
     public Representative(String title,
                           String name,
                           String location,
-                          String gender,
                           String party,
                           String district,
                           String electionDate,
@@ -81,7 +75,6 @@ public class Representative {
         this.title = title;
         this.name = name;
         this.location = location;
-        this.gender = gender;
         this.party = party;
         this.district = district;
         this.electionDate = electionDate;
