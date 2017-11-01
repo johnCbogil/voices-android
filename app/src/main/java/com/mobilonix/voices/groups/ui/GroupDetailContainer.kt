@@ -66,8 +66,11 @@ ActionSheet.ActionSheetListener{
     }
 
     private fun setListeners(){
+        //when you collapsing tool bar changes positions, this is called
         group_detail_collapsing_tb.addOnOffsetChangedListener{ _, verticalOffset ->  if (group_detail_less_button.visibility == View.VISIBLE && verticalOffset < -20) seeMoreOrLess(false)}
+        //when person clicks to see more of description
         group_detail_less_button.setOnClickListener {seeMoreOrLess(false) }
+        //when person clicks to see less of description
         group_detail_more_button.setOnClickListener{ seeMoreOrLess(true)}
         group_detail_visit_site_button.setOnClickListener { visitWebsite() }
         group_detail_follow_group_button.setOnClickListener { if (isFollowing) buildUnFollowActionSheet() else  follow() }
@@ -86,6 +89,7 @@ ActionSheet.ActionSheetListener{
         val bundle = Bundle()
         val groupWebsite = GroupWebsite()
         bundle.putString("Website",group.groupWebsite)
+        //when user goes back to this screen
         ft.addOnBackStackChangedListener {back.setOnClickListener{GroupManager.INSTANCE.onBackPress()}}
 
         groupWebsite.arguments = bundle

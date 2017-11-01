@@ -1,6 +1,5 @@
 package com.mobilonix.voices.groups;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -87,7 +86,7 @@ public enum GroupManager {
         this.allActions = allActions;
     }
 
-    String defferredGroupKey = null;
+    String deferredGroupKey = null;
 
     boolean isExpanded1;
     boolean isExpanded2;
@@ -113,7 +112,7 @@ public enum GroupManager {
             pageRoot.addView(groupPage);
 
             /* TODO: Make a request here via asynchronous callback to load the actual group data*/
-            /* TODO: We wanto retrieve this from cache first, otherwise if not present, re-request it from backend */
+            /* TODO: We want to retrieve this from cache first, otherwise if not present, re-request it from backend */
             refreshGroupsAndActionList();
 
             toggleGroups(GroupType.ACTION);
@@ -166,9 +165,9 @@ public enum GroupManager {
                     }
                 });
 
-                if (defferredGroupKey != null) {
-                    subscribeToGroup(findGroupWithKey(defferredGroupKey), true, null);
-                    defferredGroupKey = null;
+                if (deferredGroupKey != null) {
+                    subscribeToGroup(findGroupWithKey(deferredGroupKey), true, null);
+                    deferredGroupKey = null;
                 }
 
                 return false;
@@ -197,6 +196,7 @@ public enum GroupManager {
             groupPage.findViewById(R.id.user_groups_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.all_groups_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.actions_details_container).setVisibility(View.GONE);
+            mainTB.findViewById(R.id.hamburger_icon).setVisibility(View.VISIBLE);
 
             mainTB.setVisibility(View.VISIBLE);
             mainTB.findViewById(R.id.toolbar_reps).setVisibility(View.VISIBLE);
@@ -218,6 +218,7 @@ public enum GroupManager {
             MODE = GroupType.ACTION;
 
         } else if (groupType == GroupType.USER) {
+            mainTB.findViewById(R.id.hamburger_icon).setVisibility(View.VISIBLE);
 
             groupPage.findViewById(R.id.actions_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.user_groups_container).setVisibility(View.VISIBLE);
@@ -225,6 +226,7 @@ public enum GroupManager {
             groupPage.findViewById(R.id.actions_details_container).setVisibility(View.GONE);
 
             mainTB.setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.toolbar_previous).setVisibility(View.GONE);
             mainTB.findViewById(R.id.toolbar_reps).setVisibility(View.VISIBLE);
             mainTB.findViewById(R.id.toolbar_groups).setVisibility(View.VISIBLE);
 
@@ -283,7 +285,9 @@ public enum GroupManager {
 
     public void goToGroupDetailPage(final Group group) {
         if (group.getActions() == null) return;
-
+        GroupType temp = MODE;
+        toggleGroupPage(pageRoot,true);
+        MODE = temp;
         LayoutInflater inflater = (LayoutInflater) pageRoot.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
         if (gc == null) {
@@ -292,7 +296,7 @@ public enum GroupManager {
 
         try {
             gc.setBack(mainTB.findViewById(R.id.toolbar_previous));
-            gc.setUserGroups(groupPage.getUserGroups());
+            gc.setUserGroups(allGroupsData);
             gc.setGroup(group);
             gc.setActions(allActions);
         } catch (IllegalArgumentException | NullPointerException e) {
@@ -311,13 +315,6 @@ public enum GroupManager {
         mainTB.findViewById(R.id.takeaction).setVisibility(View.GONE);
 
         pageRoot.addView(gc);
-
-    }
-
-    public void removeGroupDetailPage() {
-
-        if (gc != null && gc.getParent() != null) pageRoot.removeView(gc);
-        gc = null;
     }
 
 
@@ -384,15 +381,19 @@ public enum GroupManager {
     }
 
     public void onBackPress() {
-        removeGroupDetailPage();
-        MODE = GroupType.USER;
-        toggleGroups(GroupType.USER);
-        mainTB.findViewById(R.id.toolbar_previous).setVisibility(View.GONE);
-        mainTB.findViewById(R.id.allgroups_text).setVisibility(View.GONE);
-        mainTB.findViewById(R.id.takeaction).setVisibility(View.VISIBLE);
-        mainTB.findViewById(R.id.groups_horizontal).setVisibility(View.VISIBLE);
-        mainTB.findViewById(R.id.hamburger_icon).setVisibility(View.VISIBLE);
-
+        if (gc != null && gc.getParent() != null) {
+            pageRoot.removeView(gc);
+            gc = null;
+        }
+        else {
+            MODE = GroupType.USER;
+            mainTB.findViewById(R.id.toolbar_previous).setVisibility(View.GONE);
+            mainTB.findViewById(R.id.allgroups_text).setVisibility(View.GONE);
+            mainTB.findViewById(R.id.takeaction).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.groups_horizontal).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.hamburger_icon).setVisibility(View.VISIBLE);
+        }
+        toggleGroups(MODE);
     }
 
     /**
@@ -616,8 +617,8 @@ public enum GroupManager {
 
     public void setDefferredGroupKey(final String defferredGroupKey, boolean subscribe) {
 
-        this.defferredGroupKey = defferredGroupKey;
-        this.defferredGroupKey = this.defferredGroupKey.toUpperCase().replace("HTTPS://TRYVOICES.COM/", "");
+        this.deferredGroupKey = defferredGroupKey;
+        this.deferredGroupKey = this.deferredGroupKey.toUpperCase().replace("HTTPS://TRYVOICES.COM/", "");
 
 
         if (!subscribe) {
@@ -640,13 +641,13 @@ public enum GroupManager {
                         ArrayList<Group> userGroups = groupPage.getUserGroups();
                         if (userGroups != null) {
                             for (Group group : userGroups) {
-                                if (group.getGroupKey().equals(GroupManager.this.defferredGroupKey)) {
+                                if (group.getGroupKey().equals(GroupManager.this.deferredGroupKey)) {
                                     return;
                                 }
                             }
                         }
                         AnalyticsManager.INSTANCE.trackEvent("SUBSCRIBE_EVENT",
-                                GroupManager.this.defferredGroupKey,
+                                GroupManager.this.deferredGroupKey,
                                 SessionManager.INSTANCE.getCurrentUserToken(), "none", null);
                     }
                 });
@@ -655,5 +656,7 @@ public enum GroupManager {
         thread.start();
     }
 
-
+    public void setAllGroupsData(ArrayList<Group> allGroupsData) {
+        this.allGroupsData = allGroupsData;
+    }
 }
