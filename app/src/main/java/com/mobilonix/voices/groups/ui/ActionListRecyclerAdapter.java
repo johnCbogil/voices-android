@@ -35,6 +35,7 @@ public class ActionListRecyclerAdapter extends RecyclerView.Adapter<ActionListRe
             }
         }
 
+
         Collections.sort(modifiedActionsList);
         this.actions = modifiedActionsList;
     }

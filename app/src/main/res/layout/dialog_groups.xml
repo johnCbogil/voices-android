@@ -20,9 +20,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <com.mobilonix.voices.util.AvenirTextView
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/group_info_description" />
         </ScrollView>
     </LinearLayout>
@@ -55,7 +55,8 @@
         android:gravity="center"
         android:layout_marginBottom="5dp"
         android:clickable="true"
-        android:textColorLink="#1A8CFF"/>
+        android:textColorLink="#1A8CFF"
+        android:focusable="true" />
 
     <!--android:autoLink="web"-->
 

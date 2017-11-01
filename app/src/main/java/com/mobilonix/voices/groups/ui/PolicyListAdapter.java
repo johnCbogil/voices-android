@@ -1,32 +1,27 @@
 package com.mobilonix.voices.groups.ui;
 
-import android.app.Dialog;
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mobilonix.voices.fragments.PolicyDetailPage;
 import com.mobilonix.voices.R;
-import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.groups.model.Policy;
 
 import java.util.ArrayList;
 
 public class PolicyListAdapter extends ArrayAdapter<Policy>{
-    private final Context context;
     private final ArrayList<Policy> policies;
-    private final Dialog parentDialog;
+    private FragmentManager manager;
 
-
-    public PolicyListAdapter(Context context, int resource, ArrayList<Policy> policies, Dialog parentDialog) {
+    public PolicyListAdapter(Context context,ArrayList<Policy> policies, FragmentManager manager) {
         super(context, R.layout.policy_list_item, policies);
-        this.context = context;
+        this.manager = manager;
         this.policies = policies;
-        this.parentDialog = parentDialog;
     }
 
     @Override
@@ -43,9 +38,9 @@ public class PolicyListAdapter extends ArrayAdapter<Policy>{
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    GroupManager.INSTANCE
-                            .togglePolicyDialog(v.getContext(),
-                                    policies.get(position), null, parentDialog);
+                    PolicyDetailPage p = new PolicyDetailPage();
+                    p.setPolicy(policies.get(position));
+                    manager.beginTransaction().add(R.id.group_detail_container,p).addToBackStack(null).commit();
                 }
             });
         }

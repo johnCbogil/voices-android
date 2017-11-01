@@ -52,7 +52,7 @@
     <string name="actions">Actions</string>
     <string name="no_follow_actions">To receive actions from advocacy groups, tap the + button above to follow groups.</string>
     <string name="no_follow_actions_top">You haven\'t received any actions yet.</string>
-    <string name="contact_representatives">Contact My Representatives</string>
+    <string name="contact_representatives">Contact Reps</string>
     <string name="important">Why it\'s important</string>
     <string name="say">What to say (Call Script)</string>
     <string name="share">Share action</string>
@@ -99,4 +99,9 @@
     <string name="sunlight_api_key">939e3373a07c468bac51ddd604ebba1f</string>
     <string name="open_states_api_key">e39ba83d7c5b4e348db144c4b4c33108</string>
     <string name="firebase_endpoint">https://voices-430ae.firebaseio.com</string>
+    <string name="issues">Issues</string>
+    <string name="group_detail_less">Group Detail Less</string>
+    <string name="group_detail_more">Group Detail More</string>
+    <string name="group_image">Group Image</string>
+    <string name="group_name">Group Name</string>
 </resources>

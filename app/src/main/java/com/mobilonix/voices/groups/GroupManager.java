@@ -1,11 +1,8 @@
 package com.mobilonix.voices.groups;
 
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
@@ -15,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -35,20 +31,16 @@ import com.mobilonix.voices.callbacks.Callback;
 import com.mobilonix.voices.callbacks.Callback2;
 import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
-import com.mobilonix.voices.groups.model.Policy;
 import com.mobilonix.voices.groups.ui.EntityContainer;
 import com.mobilonix.voices.groups.ui.GroupDetailContainer;
 import com.mobilonix.voices.groups.ui.GroupPage;
-import com.mobilonix.voices.groups.ui.PolicyListAdapter;
 import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.representatives.ui.RepresentativesListAdapter;
-import com.mobilonix.voices.representatives.ui.RoundedTransformation;
 import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.util.AvenirBoldTextView;
 import com.mobilonix.voices.util.AvenirTextView;
 import com.mobilonix.voices.util.RESTUtil;
-import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -59,11 +51,20 @@ public enum GroupManager {
 
     INSTANCE;
 
+    ViewGroup pageRoot;
+
     boolean isRefreshing = false;
+
+    boolean subscriptionCompleted = false;
+
 
     private final String TAG = GroupManager.class.getCanonicalName();
 
+    GroupDetailContainer gc;
+
     GroupPage groupPage;
+
+    Toolbar mainTB;
 
     GroupType MODE;
 
@@ -79,19 +80,19 @@ public enum GroupManager {
     boolean groupPageVisible = false;
 
     ArrayList<Group> allGroupsData = new ArrayList<>();
+    ArrayList<Action> allActions= new ArrayList<>();
 
-    ArrayList<Group> userGroups = new ArrayList<>();
+    public void setAllActions(ArrayList<Action> allActions) {
+        this.allActions = allActions;
+    }
 
-    ArrayList<Group> allGroups = new ArrayList<>();
-
-    String defferredGroupKey = null;
-
-    Dialog responseDialog;
+    String deferredGroupKey = null;
 
     boolean isExpanded1;
     boolean isExpanded2;
 
     public void toggleGroupPage(ViewGroup pageRoot, boolean state) {
+        this.pageRoot = pageRoot;
         if (isRefreshing) {
             ((VoicesMainActivity) pageRoot.getContext()).toggleProgressSpinner(true);
         } else {
@@ -111,7 +112,7 @@ public enum GroupManager {
             pageRoot.addView(groupPage);
 
             /* TODO: Make a request here via asynchronous callback to load the actual group data*/
-            /* TODO: We wanto retrieve this from cache first, otherwise if not present, re-request it from backend */
+            /* TODO: We want to retrieve this from cache first, otherwise if not present, re-request it from backend */
             refreshGroupsAndActionList();
 
             toggleGroups(GroupType.ACTION);
@@ -155,6 +156,7 @@ public enum GroupManager {
                     public boolean onExecuted(ArrayList<Action> data) {
 
                         groupPage.setActions(data);
+                        allActions = data;
                         isRefreshing = false;
                         ((VoicesMainActivity) groupPage.getContext())
                                 .toggleProgressSpinner(isRefreshing);
@@ -163,9 +165,9 @@ public enum GroupManager {
                     }
                 });
 
-                if (defferredGroupKey != null) {
-                    subscribeToGroup(findGroupWithKey(defferredGroupKey), true, null);
-                    defferredGroupKey = null;
+                if (deferredGroupKey != null) {
+                    subscribeToGroup(findGroupWithKey(deferredGroupKey), true, null);
+                    deferredGroupKey = null;
                 }
 
                 return false;
@@ -173,33 +175,41 @@ public enum GroupManager {
         });
     }
 
+
+
     public void toggleGroups(GroupType groupType) {
 
-        Toolbar toolbar = ((VoicesMainActivity) groupPage.getContext()).getToolbar();
+        mainTB = ((VoicesMainActivity) groupPage.getContext()).getToolbar();
 
         int indicatorBlue = VoicesApplication.getContext()
                 .getResources().getColor(R.color.indicator_blue);
         int indicatorGrey = VoicesApplication.getContext()
                 .getResources().getColor(R.color.indicator_grey);
-
+        mainTB.findViewById(R.id.toolbar_previous).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPress();
+            }
+        });
         if (groupType == GroupType.ACTION) {
             groupPage.findViewById(R.id.actions_container).setVisibility(View.VISIBLE);
             groupPage.findViewById(R.id.user_groups_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.all_groups_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.actions_details_container).setVisibility(View.GONE);
+            mainTB.findViewById(R.id.hamburger_icon).setVisibility(View.VISIBLE);
 
-            toolbar.setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.toolbar_reps).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.toolbar_groups).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.groups_horizontal).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.reps_horizontal).setVisibility(View.INVISIBLE);
-            toolbar.findViewById(R.id.takeaction).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.toolbar_previous).setVisibility(View.GONE);
-            toolbar.findViewById(R.id.allgroups_text).setVisibility(View.GONE);
+            mainTB.setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.toolbar_reps).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.toolbar_groups).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.groups_horizontal).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.reps_horizontal).setVisibility(View.INVISIBLE);
+            mainTB.findViewById(R.id.takeaction).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.toolbar_previous).setVisibility(View.GONE);
+            mainTB.findViewById(R.id.allgroups_text).setVisibility(View.GONE);
 
             ((EntityContainer) groupPage.findViewById(R.id.actions_container)).setType(groupType);
-            toolbar.findViewById(R.id.toolbar_add).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.toolbar_add_linear_layout).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.toolbar_add).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.toolbar_add_linear_layout).setVisibility(View.VISIBLE);
 
             ((AvenirBoldTextView)(groupPage.findViewById(R.id.actions_container))
                     .findViewById(R.id.actions_button)).setTextColor(indicatorBlue);
@@ -208,20 +218,22 @@ public enum GroupManager {
             MODE = GroupType.ACTION;
 
         } else if (groupType == GroupType.USER) {
+            mainTB.findViewById(R.id.hamburger_icon).setVisibility(View.VISIBLE);
 
             groupPage.findViewById(R.id.actions_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.user_groups_container).setVisibility(View.VISIBLE);
             groupPage.findViewById(R.id.all_groups_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.actions_details_container).setVisibility(View.GONE);
 
-            toolbar.setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.toolbar_reps).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.toolbar_groups).setVisibility(View.VISIBLE);
+            mainTB.setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.toolbar_previous).setVisibility(View.GONE);
+            mainTB.findViewById(R.id.toolbar_reps).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.toolbar_groups).setVisibility(View.VISIBLE);
 
             ((EntityContainer) groupPage.findViewById(R.id.user_groups_container)).setType(groupType);
 
-            toolbar.findViewById(R.id.toolbar_add).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.toolbar_add_linear_layout).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.toolbar_add).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.toolbar_add_linear_layout).setVisibility(View.VISIBLE);
 
             MODE = GroupType.USER;
 
@@ -238,20 +250,15 @@ public enum GroupManager {
 
             ((EntityContainer) groupPage.findViewById(R.id.all_groups_container)).setType(groupType);
 
-            toolbar.findViewById(R.id.toolbar_previous).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.allgroups_text).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.toolbar_add).setVisibility(View.GONE);
-            toolbar.findViewById(R.id.toolbar_add_linear_layout).setVisibility(View.GONE);
-            toolbar.findViewById(R.id.toolbar_reps).setVisibility(View.GONE);
-            toolbar.findViewById(R.id.toolbar_groups).setVisibility(View.GONE);
-            toolbar.findViewById(R.id.groups_horizontal).setVisibility(View.GONE);
-            toolbar.findViewById(R.id.hamburger_icon).setVisibility(View.GONE);
-            toolbar.findViewById(R.id.toolbar_previous).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onBackPress();
-                }
-            });
+            mainTB.findViewById(R.id.toolbar_previous).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.allgroups_text).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.toolbar_add).setVisibility(View.GONE);
+            mainTB.findViewById(R.id.toolbar_add_linear_layout).setVisibility(View.GONE);
+            mainTB.findViewById(R.id.toolbar_reps).setVisibility(View.GONE);
+            mainTB.findViewById(R.id.toolbar_groups).setVisibility(View.GONE);
+            mainTB.findViewById(R.id.groups_horizontal).setVisibility(View.GONE);
+            mainTB.findViewById(R.id.hamburger_icon).setVisibility(View.GONE);
+
 
             ((AvenirBoldTextView)(groupPage.findViewById(R.id.all_groups_container))
                     .findViewById(R.id.actions_button)).setTextColor(indicatorGrey);
@@ -264,7 +271,7 @@ public enum GroupManager {
             groupPage.findViewById(R.id.all_groups_container).setVisibility(View.GONE);
             groupPage.findViewById(R.id.actions_details_container).setVisibility(View.VISIBLE);
             ((EntityContainer) groupPage.findViewById(R.id.user_groups_container)).setType(groupType);
-            toolbar.setVisibility(View.GONE);
+            mainTB.setVisibility(View.GONE);
             MODE = GroupType.ACTION_DETAIL;
         }
     }
@@ -272,146 +279,45 @@ public enum GroupManager {
     /**
      * This is a quick way to test if group subscriptions are working
      *
-     * @param context
      * @param group
      */
-    public void toggleSubscribeToGroupDialog(Context context, final Group group) {
 
-        final Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.dialog_groups);
-        dialog.setTitle(group.getGroupName());
 
-        ImageView groupsImage = (ImageView) dialog.findViewById(R.id.group_info_image);
-
-        Picasso.with(context)
-                .load(group.getGroupImageUrl())
-                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .placeholder(R.drawable.voices_icon)
-                .error(R.drawable.voices_icon)
-                .transform(new RoundedTransformation(10, 0))
-                .fit()
-                .into(groupsImage);
-
-        TextView groupsInfoDescription = (TextView) dialog.findViewById(R.id.group_info_description);
-        TextView groupsInfoPolicyText = (TextView) dialog
-                .findViewById(R.id.group_info_policy_text);
-        TextView groupsWebsite = (TextView) dialog
-                .findViewById(R.id.group_website);
-        final Button groupsFollowGroupsButton =
-                (Button) dialog.findViewById(R.id.follow_groups_button);
-        ListView policyList = (ListView) dialog.findViewById(R.id.groups_policy_list);
-
-        groupsInfoDescription.setText(group.getGroupDescription());
-        groupsInfoPolicyText.setText(group.getGroupCategory());
-        groupsWebsite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
-                //group.getGroupWebsite())
-                dialog.getContext().startActivity(intent);
-            }
-        });
-        groupsWebsite.setText(group.getGroupWebsite());
-
-        final ArrayList<Group> userGroups = groupPage.getUserGroups();
-        if (userGroups != null) {
-            for (Group g : groupPage.getUserGroups()) {
-                if (g.getGroupKey().equals(group.getGroupKey())) {
-                    groupsFollowGroupsButton.setText(R.string.following_groups_text);
-                }
-            }
+    public void goToGroupDetailPage(final Group group) {
+        if (group.getActions() == null) return;
+        //this tracks what the last screen was that we were looking at, before going to the group page
+        GroupType temp = MODE;
+        //we need to add group page behind it because without it, we get a cropped view; this is a workaround to a bug
+        toggleGroupPage(pageRoot,true);
+        MODE = temp;
+        LayoutInflater inflater = (LayoutInflater) pageRoot.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        assert inflater != null;
+        if (gc == null) {
+            gc = (GroupDetailContainer) inflater.inflate(R.layout.group_detail, null, false);
+        }
+        //if a user clicks on a group too quickly, some of these calls will be incomplete, so we catch the exception
+        try {
+            gc.setBack(mainTB.findViewById(R.id.toolbar_previous));
+            gc.setUserGroups(allGroupsData);
+            gc.setGroup(group);
+            gc.setActions(allActions);
+        } catch (IllegalArgumentException | NullPointerException e) {
+            return;
         }
 
-        final ProgressDialog pd = new ProgressDialog(dialog.getContext());
-        pd.setTitle("Following....");
-        pd.setMessage("");
-        pd.setIndeterminate(true);
-        pd.setCancelable(false);
+        mainTB.findViewById(R.id.toolbar_previous).setVisibility(View.VISIBLE);
+        mainTB.findViewById(R.id.allgroups_text).setVisibility(View.GONE);
+        mainTB.findViewById(R.id.toolbar_add).setVisibility(View.GONE);
+        mainTB.findViewById(R.id.toolbar_add_linear_layout).setVisibility(View.GONE);
+        mainTB.findViewById(R.id.toolbar_reps).setVisibility(View.GONE);
+        mainTB.findViewById(R.id.toolbar_groups).setVisibility(View.GONE);
+        mainTB.findViewById(R.id.groups_horizontal).setVisibility(View.GONE);
+        mainTB.findViewById(R.id.hamburger_icon).setVisibility(View.GONE);
+        mainTB.findViewById(R.id.takeaction).setVisibility(View.GONE);
 
-        groupsFollowGroupsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(!groupsFollowGroupsButton.getText().toString().equals(v.getContext()
-                        .getString(R.string.following_groups_text))) {
-                    pd.show();
-                }
-                /* check if we're already subscribed to the group */
-                if (userGroups != null) {
-                    for (Group g : groupPage.getUserGroups()) {
-                        if (g.getGroupKey().equals(group.getGroupKey())) {
-                            final Dialog followDialog;
-                            followDialog = new Dialog(groupPage.getContext());
-                            followDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                            followDialog.setContentView(R.layout.dialog_follow);
-                            Button unfollowButton = (Button) followDialog.findViewById(R.id.unfollow_button);
-                            Button cancelButton = (Button) followDialog.findViewById(R.id.cancel_button);
-                            unfollowButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    pd.setTitle("Unfollowing....");
-                                    pd.show();
-                                    unSubscribeFromGroup(group, true, new Callback<Boolean>() {
-                                        @Override
-                                        public boolean onExecuted(Boolean data) {
-                                            pd.dismiss();
-                                            groupsFollowGroupsButton.setText(R.string.follow_groups_text);
-                                            if (data) {
-                                                AnalyticsManager.INSTANCE.trackEvent("UNSUBSCRIBE_EVENT",
-                                                        group.getGroupKey(),
-                                                        SessionManager.INSTANCE.getCurrentUserToken(), "none", null);
-                                            }
-                                            followDialog.dismiss();
-                                            return false;
-                                        }
-                                    });
-                                    return;
-                                }
-                            });
-                            cancelButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    pd.dismiss();
-                                    followDialog.dismiss();
-                                }
-                            });
-                            followDialog.show();
-                        }
-                    }
-                }
-
-                if(!groupPage.hasUserGroupWithKey(group.getGroupKey())) {
-
-                    subscribeToGroup(group, true, new Callback<Boolean>() {
-                        @Override
-                        public boolean onExecuted(Boolean data) {
-                            groupsFollowGroupsButton.setText(R.string.following_groups_text);
-
-                            pd.dismiss();
-
-                            if (data) {
-                                AnalyticsManager.INSTANCE.trackEvent("SUBSCRIBE_EVENT",
-                                        group.getGroupKey(),
-                                        SessionManager.INSTANCE.getCurrentUserToken(), "none", null);
-                            }
-
-                            return false;
-                        }
-                    });
-                }
-            }
-        });
-
-        policyList.setAdapter(new PolicyListAdapter(context,
-                R.layout.policy_list_item,
-                group.getPolicies(),
-                dialog));
-
-        dialog.show();
-
+        pageRoot.addView(gc);
     }
 
-    boolean subscriptionCompleted = false;
 
     /**
      * Subscribing to a topic is at this point as simple as subscribing to a topic via the name of
@@ -476,14 +382,20 @@ public enum GroupManager {
     }
 
     public void onBackPress() {
-        MODE = GroupType.USER;
-        toggleGroups(GroupType.USER);
-        Toolbar toolbar = ((VoicesMainActivity) groupPage.getContext()).getToolbar();
-        toolbar.findViewById(R.id.toolbar_previous).setVisibility(View.GONE);
-        toolbar.findViewById(R.id.allgroups_text).setVisibility(View.GONE);
-        toolbar.findViewById(R.id.takeaction).setVisibility(View.VISIBLE);
-        toolbar.findViewById(R.id.groups_horizontal).setVisibility(View.VISIBLE);
-        toolbar.findViewById(R.id.hamburger_icon).setVisibility(View.VISIBLE);
+        //if prior screen was group detail container
+        if (gc != null && gc.getParent() != null) {
+            pageRoot.removeView(gc);
+            gc = null;
+        }
+        else {
+            MODE = GroupType.USER;
+            mainTB.findViewById(R.id.toolbar_previous).setVisibility(View.GONE);
+            mainTB.findViewById(R.id.allgroups_text).setVisibility(View.GONE);
+            mainTB.findViewById(R.id.takeaction).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.groups_horizontal).setVisibility(View.VISIBLE);
+            mainTB.findViewById(R.id.hamburger_icon).setVisibility(View.VISIBLE);
+        }
+        toggleGroups(MODE);
     }
 
     /**
@@ -512,59 +424,59 @@ public enum GroupManager {
 
     public void toggleActionDetailView(final VoicesMainActivity activity, final Context context, final Action action) {
         actionDetails = (RelativeLayout) groupPage.findViewById(R.id.actions_details_container);
-        AvenirTextView groupTitle = (AvenirTextView)actionDetails.findViewById(R.id.actions_detail_group_title);
+        AvenirTextView groupTitle = (AvenirTextView) actionDetails.findViewById(R.id.actions_detail_group_title);
         groupTitle.setText(action.getGroupName());
-        ImageView previousButton = (ImageView)actionDetails.findViewById(R.id.action_detail_previous_icon);
-        ImageView actionImage = (ImageView)actionDetails.findViewById(R.id.actions_detail_group_icon);
+        ImageView previousButton = (ImageView) actionDetails.findViewById(R.id.action_detail_previous_icon);
+        ImageView actionImage = (ImageView) actionDetails.findViewById(R.id.actions_detail_group_icon);
         Picasso.with(context)
                 .load(action.getImageUrl())
                 .placeholder(R.drawable.spinner_moving)
                 .error(R.drawable.reps_male)
                 .fit()
                 .into(actionImage);
-        AvenirBoldTextView actionTitle = (AvenirBoldTextView)actionDetails.findViewById(R.id.actions_detail_title);
+        AvenirBoldTextView actionTitle = (AvenirBoldTextView) actionDetails.findViewById(R.id.actions_detail_title);
         actionTitle.setText(action.getTitle());
         final Animation animShow = AnimationUtils.loadAnimation(context, R.anim.view_show);
         final Animation animHide = AnimationUtils.loadAnimation(context, R.anim.view_hide);
         isExpanded1 = false;
         isExpanded2 = false;
-        final LinearLayout expandingView1 = (LinearLayout)actionDetails.findViewById(R.id.view_expanding_1);
-        AvenirTextView expandingViewText1 = (AvenirTextView)expandingView1.findViewById(R.id.expanding_title);
-        final ImageView expandingViewImage1 = (ImageView)expandingView1.findViewById(R.id.expanding_button);
-        final AvenirTextView hiddenView1 = (AvenirTextView)expandingView1.findViewById(R.id.hidden_view);
+        final LinearLayout expandingView1 = (LinearLayout) actionDetails.findViewById(R.id.view_expanding_1);
+        AvenirTextView expandingViewText1 = (AvenirTextView) expandingView1.findViewById(R.id.expanding_title);
+        final ImageView expandingViewImage1 = (ImageView) expandingView1.findViewById(R.id.expanding_button);
+        final AvenirTextView hiddenView1 = (AvenirTextView) expandingView1.findViewById(R.id.hidden_view);
         expandingViewText1.setText(VoicesApplication.getContext().getString(R.string.important));
         expandingView1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isExpanded1 == false) {
+                if (!isExpanded1) {
                     expandingViewImage1.setImageDrawable(VoicesApplication.getContext().getDrawable(R.drawable.minus_icon));
                     hiddenView1.setText(action.getBody());
                     hiddenView1.setVisibility(View.VISIBLE);
                     hiddenView1.startAnimation(animShow);
-                    isExpanded1=true;
+                    isExpanded1 = true;
                 } else {
                     expandingViewImage1.setImageDrawable(VoicesApplication.getContext().getDrawable(R.drawable.toolbar_add));
                     hiddenView1.setText("");
                     hiddenView1.setVisibility(View.GONE);
                     hiddenView1.startAnimation(animHide);
-                    isExpanded1=false;
+                    isExpanded1 = false;
                 }
             }
         });
-        final LinearLayout expandingView2 = (LinearLayout)actionDetails.findViewById(R.id.view_expanding_2);
-        AvenirTextView expandingViewText2 = (AvenirTextView)expandingView2.findViewById(R.id.expanding_title);
-        final ImageView expandingViewImage2 = (ImageView)expandingView2.findViewById(R.id.expanding_button);
-        final TextView hiddenView2 = (TextView)expandingView2.findViewById(R.id.hidden_view);
+        final LinearLayout expandingView2 = (LinearLayout) actionDetails.findViewById(R.id.view_expanding_2);
+        AvenirTextView expandingViewText2 = (AvenirTextView) expandingView2.findViewById(R.id.expanding_title);
+        final ImageView expandingViewImage2 = (ImageView) expandingView2.findViewById(R.id.expanding_button);
+        final TextView hiddenView2 = (TextView) expandingView2.findViewById(R.id.hidden_view);
         expandingViewText2.setText(VoicesApplication.getContext().getString(R.string.say));
         expandingView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isExpanded2 == false) {
+                if (!isExpanded2) {
                     expandingViewImage2.setImageDrawable(VoicesApplication.getContext().getDrawable(R.drawable.minus_icon));
                     int voicesOrange = VoicesApplication.getContext().getResources().getColor(R.color.voices_orange);
                     String response;
                     String script = action.getScript();
-                    if((action == null) || (script == null)) {
+                    if ((action == null) || (script == null)) {
                         response = VoicesApplication.getContext().getString(R.string.response_4);
                         hiddenView2.setText(response);
                         Spannable span = new SpannableString(response);
@@ -577,20 +489,20 @@ public enum GroupManager {
                     }
                     hiddenView2.setVisibility(View.VISIBLE);
                     hiddenView2.startAnimation(animShow);
-                    isExpanded2=true;
+                    isExpanded2 = true;
                 } else {
                     expandingViewImage2.setImageDrawable(VoicesApplication.getContext().getDrawable(R.drawable.toolbar_add));
                     hiddenView2.setText("");
                     hiddenView2.setVisibility(View.GONE);
                     hiddenView2.startAnimation(animHide);
-                    isExpanded2=false;
+                    isExpanded2 = false;
                 }
             }
         });
-        final LinearLayout expandingView3 = (LinearLayout)actionDetails.findViewById(R.id.view_expanding_3);
-        AvenirTextView expandingViewText3 = (AvenirTextView)expandingView3.findViewById(R.id.expanding_title);
+        final LinearLayout expandingView3 = (LinearLayout) actionDetails.findViewById(R.id.view_expanding_3);
+        AvenirTextView expandingViewText3 = (AvenirTextView) expandingView3.findViewById(R.id.expanding_title);
         expandingViewText3.setText(VoicesApplication.getContext().getString(share));
-        ImageView expandingViewImage3 = (ImageView)expandingView3.findViewById(R.id.expanding_button);
+        ImageView expandingViewImage3 = (ImageView) expandingView3.findViewById(R.id.expanding_button);
         expandingViewImage3.setImageDrawable(VoicesApplication.getContext().getResources().getDrawable(R.drawable.share_button));
         expandingView3.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -599,22 +511,22 @@ public enum GroupManager {
                 intent.setAction(Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_TEXT, action.getTitle() + " " + action.getBody());
-                ((VoicesMainActivity)expandingView3.getContext()).startActivity(Intent.createChooser(intent, "Share"));
+                ((VoicesMainActivity) expandingView3.getContext()).startActivity(Intent.createChooser(intent, "Share"));
             }
         });
-        LinearLayout contactRepsEmptyState = (LinearLayout)actionDetails.findViewById(R.id.actions_detail_reps_error);
-        Button addAddressButton = (Button)contactRepsEmptyState.findViewById(R.id.actions_detail_address_button);
+        LinearLayout contactRepsEmptyState = (LinearLayout) actionDetails.findViewById(R.id.actions_detail_reps_error);
+        Button addAddressButton = (Button) contactRepsEmptyState.findViewById(R.id.actions_detail_address_button);
         addAddressButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VoicesMainActivity activity =(VoicesMainActivity)v.getContext();
+                VoicesMainActivity activity = (VoicesMainActivity) v.getContext();
                 activity.saveAddressForDetail(action.getLevel(), action.getActionType());
             }
         });
 
-        LinearLayout actionsDetailsErrorLayout = (LinearLayout)actionDetails.findViewById(R.id.actions_detail_reps_error);
 
-        if(activity.locationSaved() && (action.getActionType()==null || !(action.getActionType().equals("singleRep")))){
+
+        if (activity.locationSaved() && (action.getActionType() == null || !(action.getActionType().equals("singleRep")))) {
             //actionsDetailsErrorLayout.setVisibility(View.GONE);
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(VoicesApplication.getContext());
             String savedLocation = prefs.getString("address", "");
@@ -630,10 +542,10 @@ public enum GroupManager {
                     null);
         }
 
-        if(action.getActionType()!=null && action.getActionType().equals("singleRep")){
-            actionsDetailsErrorLayout.setVisibility(View.GONE);
+        if (action.getActionType() != null && action.getActionType().equals("singleRep")) {
+            contactRepsEmptyState.setVisibility(View.GONE);
             Representative representative = action.getSingleRep();
-            ListView actionsDetailListView = (ListView)actionDetails.findViewById(R.id.actions_detail_reps_list);
+            ListView actionsDetailListView = (ListView) actionDetails.findViewById(R.id.actions_detail_reps_list);
             actionsDetailListView.setVisibility(View.VISIBLE);
             ArrayList<Representative> representatives = new ArrayList<Representative>();
             representatives.add(0, representative);
@@ -664,13 +576,13 @@ public enum GroupManager {
                                         final String actionType,
                                         final Representative singleRep) {
         RepresentativesManager.RepresentativesType repType = RepresentativesManager.RepresentativesType.CONGRESS;
-        if(repsType==2){
-             repType = RepresentativesManager.RepresentativesType.STATE_LEGISLATORS;
+        if (repsType == 2) {
+            repType = RepresentativesManager.RepresentativesType.STATE_LEGISLATORS;
         }
-        if(repsType==3){
+        if (repsType == 3) {
             repType = RepresentativesManager.RepresentativesType.COUNCIL_MEMBERS;
         }
-        LinearLayout contactRepsEmptyState = (LinearLayout)actionDetails.findViewById(R.id.actions_detail_reps_error);
+        LinearLayout contactRepsEmptyState = (LinearLayout) actionDetails.findViewById(R.id.actions_detail_reps_error);
         contactRepsEmptyState.setVisibility(View.GONE);
         RESTUtil.makeRepresentativesRequest(locationString, repLat, repLong, repType,
                 new Callback2<ArrayList<Representative>, RepresentativesManager.RepresentativesType>() {
@@ -688,64 +600,30 @@ public enum GroupManager {
                         activity.getHandler().post(new Runnable() {
                             @Override
                             public void run() {
-                                ListView representativesListView = (ListView)actionDetails.findViewById(R.id.actions_detail_reps_list);
-                                    if (representativesListView != null) {
-                                        representativesListView.setAdapter(
+                                ListView representativesListView = (ListView) actionDetails.findViewById(R.id.actions_detail_reps_list);
+                                if (representativesListView != null) {
+                                    representativesListView.setAdapter(
                                             new RepresentativesListAdapter(actionDetails.getContext(), R.layout.reps_item, data));
-                                        representativesListView.setVisibility(View.VISIBLE);
-                                    }
-                                    if ((result != null) && (result.size() > 0)) {
-                                    } else {
-                                    }
+                                    representativesListView.setVisibility(View.VISIBLE);
                                 }
-                            });
-                            return false;
-                        }
-                    });
-    }
-
-    public void togglePolicyDialog(Context context, Policy policy, final Action action, final Dialog parentDialog) {
-
-        final Dialog actionDialog;
-
-        actionDialog = new Dialog(context);
-        actionDialog.setTitle("Take Action");
-        actionDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        actionDialog.setContentView(R.layout.dialog_policies);
-
-        TextView policiesTitle = (TextView) actionDialog.findViewById(R.id.policies_title);
-        TextView policiesDescription = (TextView) actionDialog.findViewById(R.id.policies_description);
-        Button contactRepresentativesButton = (Button) actionDialog.findViewById(R.id.button_contact_representatives);
-
-        if (policy != null) {
-            policiesTitle.setText(policy.getPolicyName());
-            policiesDescription.setText(policy.getPolicyDescription());
-        }
-
-        contactRepresentativesButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (parentDialog != null) {
-                    parentDialog.dismiss();
-                }
-
-                actionDialog.dismiss();
-                RepresentativesManager.INSTANCE.selectRepresentativesTab();
-
-            }
-        });
-        actionDialog.show();
+                                if ((result != null) && (result.size() > 0)) {
+                                } else {
+                                }
+                            }
+                        });
+                        return false;
+                    }
+                });
     }
 
 
     public void setDefferredGroupKey(final String defferredGroupKey, boolean subscribe) {
 
-        this.defferredGroupKey = defferredGroupKey;
-        this.defferredGroupKey = this.defferredGroupKey.toUpperCase().replace("HTTPS://TRYVOICES.COM/", "");
+        this.deferredGroupKey = defferredGroupKey;
+        this.deferredGroupKey = this.deferredGroupKey.toUpperCase().replace("HTTPS://TRYVOICES.COM/", "");
 
 
-        if(!subscribe) {
+        if (!subscribe) {
             return;
         }
 
@@ -763,20 +641,24 @@ public enum GroupManager {
                     @Override
                     public void run() {
                         ArrayList<Group> userGroups = groupPage.getUserGroups();
-                        if(userGroups != null) {
+                        if (userGroups != null) {
                             for (Group group : userGroups) {
-                                if (group.getGroupKey().equals(GroupManager.this.defferredGroupKey)) {
+                                if (group.getGroupKey().equals(GroupManager.this.deferredGroupKey)) {
                                     return;
                                 }
                             }
                         }
                         AnalyticsManager.INSTANCE.trackEvent("SUBSCRIBE_EVENT",
-                                GroupManager.this.defferredGroupKey,
+                                GroupManager.this.deferredGroupKey,
                                 SessionManager.INSTANCE.getCurrentUserToken(), "none", null);
                     }
                 });
             }
         });
         thread.start();
+    }
+
+    public void setAllGroupsData(ArrayList<Group> allGroupsData) {
+        this.allGroupsData = allGroupsData;
     }
 }
