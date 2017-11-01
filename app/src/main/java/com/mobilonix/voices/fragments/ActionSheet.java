@@ -1,4 +1,4 @@
-package com.mobilonix.voices.Fragments;
+package com.mobilonix.voices.fragments;
 
 import android.content.Context;
 import android.content.res.Resources;

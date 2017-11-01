@@ -1,26 +1,22 @@
 package com.mobilonix.voices.groups.ui;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mobilonix.voices.Fragments.PolicyDetailPage;
+import com.mobilonix.voices.fragments.PolicyDetailPage;
 import com.mobilonix.voices.R;
-import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.groups.model.Policy;
 
 import java.util.ArrayList;
 
 public class PolicyListAdapter extends ArrayAdapter<Policy>{
     private final ArrayList<Policy> policies;
-    FragmentManager manager;
+    private FragmentManager manager;
 
     public PolicyListAdapter(Context context,ArrayList<Policy> policies, FragmentManager manager) {
         super(context, R.layout.policy_list_item, policies);

@@ -81,13 +81,13 @@ public enum GroupManager {
     boolean groupPageVisible = false;
 
     ArrayList<Group> allGroupsData = new ArrayList<>();
+    ArrayList<Action> allActions= new ArrayList<>();
 
-
-    ArrayList<Group> allGroups = new ArrayList<>();
+    public void setAllActions(ArrayList<Action> allActions) {
+        this.allActions = allActions;
+    }
 
     String defferredGroupKey = null;
-
-    Dialog responseDialog;
 
     boolean isExpanded1;
     boolean isExpanded2;
@@ -157,6 +157,7 @@ public enum GroupManager {
                     public boolean onExecuted(ArrayList<Action> data) {
 
                         groupPage.setActions(data);
+                        allActions = data;
                         isRefreshing = false;
                         ((VoicesMainActivity) groupPage.getContext())
                                 .toggleProgressSpinner(isRefreshing);
@@ -175,13 +176,7 @@ public enum GroupManager {
         });
     }
 
-    View.OnClickListener back = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            onBackPress();
 
-        }
-    };
 
     public void toggleGroups(GroupType groupType) {
 
@@ -191,7 +186,12 @@ public enum GroupManager {
                 .getResources().getColor(R.color.indicator_blue);
         int indicatorGrey = VoicesApplication.getContext()
                 .getResources().getColor(R.color.indicator_grey);
-        mainTB.findViewById(R.id.toolbar_previous).setOnClickListener(back);
+        mainTB.findViewById(R.id.toolbar_previous).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPress();
+            }
+        });
         if (groupType == GroupType.ACTION) {
             groupPage.findViewById(R.id.actions_container).setVisibility(View.VISIBLE);
             groupPage.findViewById(R.id.user_groups_container).setVisibility(View.GONE);
@@ -288,15 +288,18 @@ public enum GroupManager {
         assert inflater != null;
         if (gc == null) {
             gc = (GroupDetailContainer) inflater.inflate(R.layout.group_detail, null, false);
-
         }
+
         try {
+            gc.setBack(mainTB.findViewById(R.id.toolbar_previous));
             gc.setUserGroups(groupPage.getUserGroups());
             gc.setGroup(group);
-            gc.setActions(groupPage.getActions());
-        } catch (IllegalArgumentException e) {
+            gc.setActions(allActions);
+        } catch (IllegalArgumentException | NullPointerException e) {
             return;
         }
+
+
         mainTB.findViewById(R.id.toolbar_previous).setVisibility(View.VISIBLE);
         mainTB.findViewById(R.id.allgroups_text).setVisibility(View.GONE);
         mainTB.findViewById(R.id.toolbar_add).setVisibility(View.GONE);
@@ -306,7 +309,6 @@ public enum GroupManager {
         mainTB.findViewById(R.id.groups_horizontal).setVisibility(View.GONE);
         mainTB.findViewById(R.id.hamburger_icon).setVisibility(View.GONE);
         mainTB.findViewById(R.id.takeaction).setVisibility(View.GONE);
-
 
         pageRoot.addView(gc);
 
@@ -519,7 +521,7 @@ public enum GroupManager {
             }
         });
 
-        LinearLayout actionsDetailsErrorLayout = (LinearLayout) actionDetails.findViewById(R.id.actions_detail_reps_error);
+
 
         if (activity.locationSaved() && (action.getActionType() == null || !(action.getActionType().equals("singleRep")))) {
             //actionsDetailsErrorLayout.setVisibility(View.GONE);
@@ -538,7 +540,7 @@ public enum GroupManager {
         }
 
         if (action.getActionType() != null && action.getActionType().equals("singleRep")) {
-            actionsDetailsErrorLayout.setVisibility(View.GONE);
+            contactRepsEmptyState.setVisibility(View.GONE);
             Representative representative = action.getSingleRep();
             ListView actionsDetailListView = (ListView) actionDetails.findViewById(R.id.actions_detail_reps_list);
             actionsDetailListView.setVisibility(View.VISIBLE);

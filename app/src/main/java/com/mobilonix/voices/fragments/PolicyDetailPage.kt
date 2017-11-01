@@ -1,4 +1,4 @@
-package com.mobilonix.voices.Fragments
+package com.mobilonix.voices.fragments
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -28,17 +28,21 @@ class PolicyDetailPage:Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         policies_title.text = policy.policyName
         policies_description.text = policy.policyDescription
+        //Brings you  to contact rep page
         button_contact_representatives.setOnClickListener{RepresentativesManager.INSTANCE.selectRepresentativesTab()}
-        back_from_policy_detail.setOnClickListener{ fragmentManager?.popBackStackImmediate() }
+        //Removes this page
+        back_from_policy_detail.setOnClickListener{ fragmentManager.popBackStackImmediate() }
     }
 
     override fun onResume() {
         super.onResume()
+        //gets rid of action bar
         (activity as AppCompatActivity).supportActionBar!!.hide()
     }
 
     override fun onStop() {
         super.onStop()
+        //when view is stopped, shows action bar again
         (activity as AppCompatActivity).supportActionBar!!.show()
     }
 
