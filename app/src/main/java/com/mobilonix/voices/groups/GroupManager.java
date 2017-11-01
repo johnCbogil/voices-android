@@ -285,7 +285,9 @@ public enum GroupManager {
 
     public void goToGroupDetailPage(final Group group) {
         if (group.getActions() == null) return;
+        //this tracks what the last screen was that we were looking at, before going to the group page
         GroupType temp = MODE;
+        //we need to add group page behind it because without it, we get a cropped view; this is a workaround to a bug
         toggleGroupPage(pageRoot,true);
         MODE = temp;
         LayoutInflater inflater = (LayoutInflater) pageRoot.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -293,7 +295,7 @@ public enum GroupManager {
         if (gc == null) {
             gc = (GroupDetailContainer) inflater.inflate(R.layout.group_detail, null, false);
         }
-
+        //if a user clicks on a group too quickly, some of these calls will be incomplete, so we catch the exception
         try {
             gc.setBack(mainTB.findViewById(R.id.toolbar_previous));
             gc.setUserGroups(allGroupsData);
@@ -302,7 +304,6 @@ public enum GroupManager {
         } catch (IllegalArgumentException | NullPointerException e) {
             return;
         }
-
 
         mainTB.findViewById(R.id.toolbar_previous).setVisibility(View.VISIBLE);
         mainTB.findViewById(R.id.allgroups_text).setVisibility(View.GONE);
@@ -381,6 +382,7 @@ public enum GroupManager {
     }
 
     public void onBackPress() {
+        //if prior screen was group detail container
         if (gc != null && gc.getParent() != null) {
             pageRoot.removeView(gc);
             gc = null;
