@@ -194,7 +194,6 @@ public class VoicesMainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-
         /* Since we aren't using fragments, we need to fabricate a back stack.
         * This absolutely OK because it's easy to do, and we get much better
         * control of the back flow than if we were relying on fragment/child
@@ -223,9 +222,9 @@ public class VoicesMainActivity extends AppCompatActivity {
     public void showLeaveAppDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Leave Voices");
-        builder.setMessage("Are you sure you want to leave the voices app?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.leave_title);
+        builder.setMessage(R.string.leave_message);
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         leaveAppDialogShowing = false;
@@ -234,7 +233,7 @@ public class VoicesMainActivity extends AppCompatActivity {
                     }
                 }
         );
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         leaveAppDialogShowing = false;
@@ -245,13 +244,12 @@ public class VoicesMainActivity extends AppCompatActivity {
         Dialog dialog = builder.create();
         leaveAppDialogShowing = true;
         dialog.show();
-
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//    }
 
     public Toolbar getToolbar() {
         return (Toolbar)findViewById(R.id.primary_toolbar);
@@ -260,7 +258,6 @@ public class VoicesMainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         FirebaseAuth.getInstance().signOut();
-
         super.onDestroy();
     }
 
@@ -271,23 +268,11 @@ public class VoicesMainActivity extends AppCompatActivity {
       i.putExtra("repsType",repsType);
       i.putExtra("actionType", actionType);
       VoicesMainActivity.this.startActivityForResult(i,1);
-//    try {
-//    } catch (GooglePlayServicesRepairableException e) {
-//      e.printStackTrace();
-//    } catch (GooglePlayServicesNotAvailableException f) {
-//      f.printStackTrace();
-//    }
     }
 
     public void saveAddress(){
         Intent i = new Intent(VoicesMainActivity.this, AutocompleteActivity.class);
         VoicesMainActivity.this.startActivityForResult(i,2);
-//        try {
-//        } catch (GooglePlayServicesRepairableException e) {
-//            e.printStackTrace();
-//        } catch (GooglePlayServicesNotAvailableException f) {
-//            f.printStackTrace();
-//        }
     }
 
     @Override
@@ -342,9 +327,9 @@ public class VoicesMainActivity extends AppCompatActivity {
                 edit.putString("lon", Double.toString(longitudeDouble));
                 edit.apply();
 
-                /* Update first row of the Drawer Navigation List with address */
+                //Update first row of the Drawer Navigation List with address
                 NavigationAdapter adapter = ((NavigationAdapter)navigationList.getAdapter());
-                if(adapter != null) {
+                if(adapter!=null) {
                     adapter.updateTopCell(addressString);
                 }
 

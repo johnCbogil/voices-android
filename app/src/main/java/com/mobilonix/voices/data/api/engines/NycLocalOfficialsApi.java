@@ -110,7 +110,6 @@ public class NycLocalOfficialsApi implements ApiEngine {
 
             String firstName = member.optString("firstName");
             String lastName = member.optString("lastName");
-            String gender = "";
             String party = member.optString("party");
             String level = "Local";
             String repDistrict = member.optString("district");
@@ -122,7 +121,6 @@ public class NycLocalOfficialsApi implements ApiEngine {
             String email = member.optString("email");
 
             Politico politico = new Politico.Builder()
-                    .setGender(gender)
                     .setParty(party)
                     .setLevel(level)
                     .setDistrict(repDistrict)
@@ -154,7 +152,6 @@ public class NycLocalOfficialsApi implements ApiEngine {
                 String firstName = rep.optString("firstName");
                 String lastName = rep.optString("lastName");
                 String title = rep.optString("title");
-                String gender = rep.optString("gender");
                 String party = rep.optString("party");
                 String level = "Local";
                 String district = "";
@@ -164,7 +161,6 @@ public class NycLocalOfficialsApi implements ApiEngine {
                 String twitter = rep.optString("twitter");
                 String email = rep.optString("email");
                 Politico politico = new Politico.Builder()
-                        .setGender(gender)
                         .setParty(party)
                         .setLevel(level)
                         .setDistrict(district)

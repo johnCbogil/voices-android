@@ -149,7 +149,6 @@ public class RESTUtil {
                             "TITLE",
                             poli.getFullName(),
                             "LOCATION",
-                            poli.getGender(),
                             poli.getParty(),
                             poli.getDistrict(),
                             poli.getElectionDate(),

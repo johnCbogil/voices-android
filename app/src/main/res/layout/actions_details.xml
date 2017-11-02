@@ -42,7 +42,7 @@
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:id="@+id/actions_detail_group_icon"
-                    android:src="@drawable/reps_male"
+                    android:src="@drawable/voices_icon"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="15dp" />
                 <com.mobilonix.voices.util.AvenirBoldTextView

@@ -486,38 +486,67 @@ public enum SessionManager {
 
                     if(actionType!=null && actionType.equals("singleRep")) {
                         Map<String, Object> map = (Map<String, Object>)action.child("representative").getValue();
-                        String repTitle = (String) map.get("title");
-                        String name = (String) map.get("name");
-                        //String phone = (String) map.get("phone");
-                        String twitter = (String) map.get("twitter");
-                        String email = (String) map.get("email");
+                        String repTitle;
+                        String name;
+                        String phone;
+                        String twitter;
+                        String email;
+
+                        try{
+                            repTitle = (String) map.get("title");
+                        } catch(NullPointerException e){
+                            repTitle = "";
+                        }
+
+                        try{
+                            name = (String) map.get("name");
+                        } catch(NullPointerException e){
+                            name = "";
+                        }
+
+                        try{
+                            phone = (String) map.get("phone");
+                        } catch(NullPointerException e){
+                            phone = "";
+                        }
+
+                        try{
+                            twitter = (String) map.get("twitter");
+                        } catch(NullPointerException e){
+                            twitter = "";
+                        }
+
+                        try{
+                            email = (String) map.get("email");
+                        } catch(NullPointerException e){
+                            email = "";
+                        }
                         singleRep = new Representative(repTitle,
                                 name,
                                 null,
-                                "M",
-                                "Test",
-                                "Test",
-                                "Test",
-                                "2012012012",
+                                "",
+                                "",
+                                "",
+                                phone,
                                 twitter,
-                                "http://google.com",
+                                "",
                                 email,
-                                "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Rick_Astley_Dallas.jpg/1200px-Rick_Astley_Dallas.jpg",
+                                null,
                                 "1");
                     } else {
                         singleRep=null;
                     }
-                        allActions.add(new Action(action.getKey(),
-                                (String) action.child("body").getValue(),
-                                (String) action.child("groupKey").getValue(),
-                                (String) action.child("groupName").getValue(),
-                                (String) action.child("imageUrl").getValue(),
+                        allActions.add(new Action(actionKey,
+                                body,
+                                groupKey,
+                                groupName,
+                                imageUrl,
                                 level,
-                                (String) action.child("subject").getValue(),
-                                (long) action.child("timestamp").getValue(),
-                                (String) action.child("title").getValue(),
-                                (String) action.child("script").getValue(),
-                                (String) action.child("actionType").getValue(),
+                                subject,
+                                timestamp,
+                                title,
+                                script,
+                                actionType,
                                 singleRep));
 
                         Action actionToAdd =

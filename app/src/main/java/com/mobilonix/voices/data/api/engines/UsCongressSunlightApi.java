@@ -3,13 +3,11 @@ package com.mobilonix.voices.data.api.engines;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.data.api.ApiEngine;
 import com.mobilonix.voices.data.api.util.UrlGenerator;
 import com.mobilonix.voices.data.model.Politico;
 import com.mobilonix.voices.representatives.RepresentativesManager;
-import com.mobilonix.voices.util.JsonUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,11 +66,8 @@ public class UsCongressSunlightApi implements ApiEngine {
         VoicesApplication.getGlobalHandler().post(new Runnable() {
             @Override
             public void run() {
-                //GeneralUtil.toast("Got Federal api response");
             }
         });
-
-        //Log.e(TAG, "FEDERAL API RESPONSE: " + response);
 
         try {
             JSONObject rawJson = new JSONObject(response);
@@ -118,22 +113,32 @@ public class UsCongressSunlightApi implements ApiEngine {
                 }
             }
 
-//            try {
-//                phone = jsonPolitico.optJSONArray("phones").optJSONObject(0).getString("phones");
-//            } catch (Exception e) {
-//                phone = "NONE";
-//            }
-
             Log.e(TAG, "Federal Official indices: " + integerArrayList);
             Log.e(TAG, "Federal Official indices Array: " + indices.toString());
 
             JSONArray officialsArray = rawJson.getJSONArray("officials");
             Log.e(TAG, "Federal Officials: " + officialsArray);
+
             for(int i=0; i < integerArrayList.size(); i++){
                 JSONObject jsonPolitico = officialsArray.getJSONObject(integerArrayList.get(i));
                 String roleTitle = roleList.get(i);
-                String name = roleTitle + " " + jsonPolitico.optString("name");
-                String party = jsonPolitico.optString("party");
+                String name;
+                String party;
+                String picUrl;
+
+                try{
+                    name = jsonPolitico.getString("name");
+                } catch(NullPointerException e){
+                    name = "";
+                }
+
+                try{
+                    party = jsonPolitico.getString("party");
+                } catch(NullPointerException e){
+                    party = "";
+                }
+
+                String fullName = roleTitle + " " + name;
 
                 String phone = "";
                 if(jsonPolitico.optJSONArray("phones") != null) {
@@ -146,8 +151,13 @@ public class UsCongressSunlightApi implements ApiEngine {
                 }
 
                 String twitter = safeGetArrayIndex(jsonPolitico, "channels", 0, "id");
-                String picUrl = jsonPolitico.optString("photoUrl");
-                String gender = "";
+
+                try{
+                    picUrl = jsonPolitico.getString("photoUrl");
+                } catch(NullPointerException e){
+                    picUrl = "";
+                }
+
                 String level = "Federal";
                 String district = "";
                 String electionDate = "";
@@ -159,10 +169,9 @@ public class UsCongressSunlightApi implements ApiEngine {
                         .setEmailAddress(email)
                         .setTwitterHandle(twitter)
                         .setPicUrl(picUrl)
-                        .setGender(gender)
                         .setDistrict(district)
                         .setElectionDate(electionDate)
-                        .build(name);
+                        .build(fullName);
 
                 politicos.add(politico);
             }
@@ -186,41 +195,6 @@ public class UsCongressSunlightApi implements ApiEngine {
         return value;
     }
 
-    public String setTitle(String title) {
-        if (title.equals("legislatorUpperBody")) {
-            return "Senator";
-        } else if (title.equals("legislatorLowerBody")) {
-            return "Representative";
-//        } else if (title.equals("Del")) {
-//            return "Delegate";
-//        } else if (title.equals("Com")) {
-//            return "Com";
-        } else {
-            return "";
-        }
-    }
-
-    public String setElectionDate(String termEnd) {
-        if (termEnd.contains("2018")) {
-            return "November 7, 2017";
-        } else if (termEnd.contains("2019")) {
-            return "November 6, 2018";
-        } else if (termEnd.contains("2020")) {
-            return "November 5, 2019";
-        } else if (termEnd.contains("2021")){
-            return "November 3, 2020";
-        } else {
-            return "N/A";
-        }
-    }
-
-    public String getContactFormUrl(String bioguideId){
-        JSONObject reps = JsonUtil.getJsonFromResource(R.raw.contact_forms);
-        if(reps.has(bioguideId)){
-            return reps.optString(bioguideId);
-        }
-        return "";
-    }
     @Override
     public RepresentativesManager.RepresentativesType getRepresentativeType() {
         return RepresentativesManager.RepresentativesType.CONGRESS;

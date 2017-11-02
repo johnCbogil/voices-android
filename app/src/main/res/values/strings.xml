@@ -94,6 +94,10 @@
     <string name="address_body">Voices does not share your address with anyone.</string>
     <string name="ok">OK</string>
 
+    <!--Leave App Dialog-->
+    <string name="leave_title">Leave Voices</string>
+    <string name="leave_message">Are you sure you want to leave the voices app?</string>
+
     <!--API Keys-->
     <string name="google_places_api_key">AIzaSyAT87ms7SyySJIG5OrimyKbrHAZRQ2qgcI</string>
     <string name="sunlight_api_key">939e3373a07c468bac51ddd604ebba1f</string>

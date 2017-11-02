@@ -65,7 +65,6 @@ public class StateOpenStatesApi implements ApiEngine {
         VoicesApplication.getGlobalHandler().post(new Runnable() {
             @Override
             public void run() {
-                //GeneralUtil.toast("Got State api response");
             }
         });
 
@@ -76,17 +75,47 @@ public class StateOpenStatesApi implements ApiEngine {
             for(int i = 0; i < rawJsonArray.length(); i++){
 
                 JSONObject jsonPolitico = rawJsonArray.getJSONObject(i);
+                String chamber;
+                String name;
+                String party;
+                String district;
+                String email;
+                String picUrl;
 
-                state = jsonPolitico.optString("state");
+                try{
+                    name = jsonPolitico.getString("full_name");
+                } catch(NullPointerException e){
+                    name = "";
+                }
 
-                String chamber = jsonPolitico.optString("chamber");
+                try{
+                    state = jsonPolitico.getString("state");
+                } catch(NullPointerException e){
+                    state = "";
+                }
+
+                try{
+                    chamber = jsonPolitico.getString("chamber");
+                } catch(NullPointerException e){
+                    chamber = "";
+                }
+
+                try{
+                    party = jsonPolitico.getString("party");
+                } catch(NullPointerException e){
+                    party = "";
+                }
+
+                try{
+                    district = jsonPolitico.getString("party");
+                } catch(NullPointerException e){
+                    district = "";
+                }
+
                 String title = setTitle(chamber);
                 String fullName = title + jsonPolitico.getString("full_name");
 
-                String gender = "";
-                String party = jsonPolitico.optString("party");
                 String level = "State";
-                String district = jsonPolitico.optString("district");
 
                 JSONObject rolesObject;
                 String electionDate;
@@ -109,12 +138,19 @@ public class StateOpenStatesApi implements ApiEngine {
                     phoneNumber = jsonPolitico.optJSONArray("offices").optJSONObject(1).getString("phone");
                 }
 
-                String email = jsonPolitico.optString("email");
+                try{
+                    email = jsonPolitico.getString("email");
+                } catch(NullPointerException e){
+                    email = "";
+                }
 
-                String picUrl = jsonPolitico.optString("photo_url");
+                try{
+                    picUrl = jsonPolitico.getString("photo_url");
+                } catch(NullPointerException e){
+                    picUrl = "";
+                }
 
                 Politico politico = new Politico.Builder()
-                        .setGender(gender)
                         .setParty(party)
                         .setLevel(level)
                         .setDistrict(district)
@@ -142,7 +178,6 @@ public class StateOpenStatesApi implements ApiEngine {
             String firstName = gov.optString("first_name");
             String lastName = gov.optString("last_name");
             String title = VoicesApplication.getContext().getResources().getString(R.string.gov_title);
-            String gender = gov.optString("gender");
             String party = gov.optString("party");
             String level = "State";
             String district = gov.optString("state");
@@ -152,7 +187,6 @@ public class StateOpenStatesApi implements ApiEngine {
             String twitter = gov.optString("twitter");
             String photo = gov.optString("photo_url");
             politico = new Politico.Builder()
-                .setGender(gender)
                 .setParty(party)
                 .setLevel(level)
                 .setDistrict(district)

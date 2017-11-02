@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,16 +111,10 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                 } else {
                     repsUpcomingElection.setText(" ");
                 }
-                //detailsDialog.show();
             }
         });
 
         String check = representatives.get(position).getPhoneNumber();
-        if(check!=null){
-            Log.e("phone",representatives.get(position).getName() + " " + check);
-        } else {
-            Log.e("phone",representatives.get(position).getName() + " " + "null");
-        }
         if (check == null || check.equals("")) {
             mViewHolder.mCallImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
             mViewHolder.mCallImage.setOnClickListener(new View.OnClickListener() {
@@ -175,7 +168,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
             });
         }
 
-        if (representatives.get(position).getLevel().equals("Federal")) {
+        if (representatives.get(position).getLevel()!=null && representatives.get(position).getLevel().equals("Federal")) {
             check = representatives.get(position).getContactForm();
             if (check == null || check.equals("")) {
                 mViewHolder.mEmailImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
@@ -224,11 +217,6 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                 });
             }
             check = representatives.get(position).getTwitterHandle();
-            if(check!=null){
-                Log.e("twitter",representatives.get(position).getName() + " " + check);
-            } else {
-                Log.e("twitter",representatives.get(position).getName() + " " + "null");
-            }
             if (check == null || check.equals("")) {
                 mViewHolder.mTwitterImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
                 mViewHolder.mTwitterImage.setOnClickListener(new View.OnClickListener() {
@@ -312,11 +300,6 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
             }
 
             check = representatives.get(position).getTwitterHandle();
-            if(check!=null){
-                Log.e("twitter",representatives.get(position).getName() + " " + check);
-            } else {
-                Log.e("twitter",representatives.get(position).getName() + " " + "null");
-            }
             if (check == null || check.equals("")) {
                 mViewHolder.mTwitterImage.setColorFilter(getContext().getResources().getColor(R.color.light_grey));
                 mViewHolder.mTwitterImage.setOnClickListener(new View.OnClickListener() {
@@ -350,28 +333,6 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
     }
 
     public void setImage(final ImageView image, final int position) {
-
-        String gender = representatives.get(position).getGender();
-
-        int id;
-
-        //switch (gender) {
-            //case "M": {
-                //id = R.drawable.reps_male;
-                //break;
-//            }
-//            case "F": {
-//                id = R.drawable.reps_female;
-//                break;
-//            }
-//            default: {
-//                double random = Math.random();
-//                id = random > 0.5
-//                        ? R.drawable.reps_male
-//                        : R.drawable.reps_female;
-//                break;
-//            }
-//        }
         int imageHeight = Math.round(ViewUtil.convertDpToPixel(100, VoicesApplication.getContext()));
         int imageWidth = Math.round(ViewUtil.convertDpToPixel(80, VoicesApplication.getContext()));
 
@@ -380,7 +341,7 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
                 .resize(imageWidth, imageHeight)
                 .centerCrop()
                 .placeholder(R.drawable.spinner_moving)
-                //.error(id)
+                .error(R.drawable.voices_icon)
                 .transform(new RoundedTransformation(10, 4))
                 .into(image);
     }
