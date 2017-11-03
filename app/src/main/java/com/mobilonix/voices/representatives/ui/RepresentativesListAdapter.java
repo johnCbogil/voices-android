@@ -336,14 +336,25 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
         int imageHeight = Math.round(ViewUtil.convertDpToPixel(100, VoicesApplication.getContext()));
         int imageWidth = Math.round(ViewUtil.convertDpToPixel(80, VoicesApplication.getContext()));
 
-        Picasso.with(image.getContext())
-                .load(representatives.get(position).getRepresentativeImageUrl())
-                .resize(imageWidth, imageHeight)
-                .centerCrop()
-                .placeholder(R.drawable.spinner_moving)
-                .error(R.drawable.voices_icon)
-                .transform(new RoundedTransformation(10, 4))
-                .into(image);
+        if(representatives.get(position).getRepresentativeImageUrl()==null){
+            Picasso.with(image.getContext())
+                    .load(R.drawable.voices_icon)
+                    .resize(imageWidth, imageHeight)
+                    .centerCrop()
+                    .placeholder(R.drawable.spinner_moving)
+                    .error(R.drawable.voices_icon)
+                    .transform(new RoundedTransformation(10, 4))
+                    .into(image);
+        } else {
+            Picasso.with(image.getContext())
+                    .load(representatives.get(position).getRepresentativeImageUrl())
+                    .resize(imageWidth, imageHeight)
+                    .centerCrop()
+                    .placeholder(R.drawable.spinner_moving)
+                    .error(R.drawable.voices_icon)
+                    .transform(new RoundedTransformation(10, 4))
+                    .into(image);
+        }
     }
 
     public void toggleNoContactInfoDialog(String text) {

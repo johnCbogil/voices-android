@@ -52,21 +52,32 @@ public class ActionListRecyclerAdapter extends RecyclerView.Adapter<ActionListRe
 
     @Override
     public void onBindViewHolder(ActionListHolder holder, int position) {
-
+        final Action action = actions.get(position);
         holder.setPosition(position);
 
         holder.actionName.setText(actions.get(position).getGroupName());
         holder.actionCategory.setText(actions.get(position).getSubject());
         holder.actionDescription.setText(actions.get(position).getTitle());
 
-        Picasso.with(holder.actionImage.getContext())
-                .load(actions.get(position).getImageUrl())
-                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .placeholder(R.drawable.spinner_moving)
-                .error(R.drawable.voices_icon)
-                .transform(new RoundedTransformation(10, 0))
-                .fit()
-                .into(holder.actionImage);
+        if(action.getImageUrl()==null){
+            Picasso.with(holder.actionImage.getContext())
+                    .load(R.drawable.voices_icon)
+                    .fit()
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                    .placeholder(R.drawable.spinner_moving)
+                    .error(R.drawable.voices_icon)
+                    .transform(new RoundedTransformation(10, 0))
+                    .into(holder.actionImage);
+        } else {
+            Picasso.with(holder.actionImage.getContext())
+                    .load(actions.get(position).getImageUrl())
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                    .placeholder(R.drawable.spinner_moving)
+                    .error(R.drawable.voices_icon)
+                    .transform(new RoundedTransformation(10, 0))
+                    .fit()
+                    .into(holder.actionImage);
+        }
 
         holder.arrowImage.setVisibility(View.GONE);
         holder.actionDescription.setVisibility(View.VISIBLE);
