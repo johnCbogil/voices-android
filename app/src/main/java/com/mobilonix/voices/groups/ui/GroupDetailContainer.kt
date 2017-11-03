@@ -66,8 +66,6 @@ ActionSheet.ActionSheetListener{
     }
 
     private fun setListeners(){
-        //when you collapsing tool bar changes positions, this is called
-        group_detail_collapsing_tb.addOnOffsetChangedListener{ _, verticalOffset ->  if (group_detail_less_button.visibility == View.VISIBLE && verticalOffset < -20) seeMoreOrLess(false)}
         //when person clicks to see more of description
         group_detail_less_button.setOnClickListener {seeMoreOrLess(false) }
         //when person clicks to see less of description
@@ -170,8 +168,7 @@ ActionSheet.ActionSheetListener{
         pd.isIndeterminate = true
         pd.setCancelable(false)
 
-
-        group_detail_group_name_tv.text = group.groupName
+        group_detail_group_type_tv.text = group.groupCategory
         group_detail_description_tv.text = group.groupDescription
     }
 

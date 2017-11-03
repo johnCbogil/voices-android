@@ -80,6 +80,7 @@ public enum GroupManager {
     boolean groupPageVisible = false;
 
     ArrayList<Group> allGroupsData = new ArrayList<>();
+    ArrayList<Group> userGroups = new ArrayList<>();
     ArrayList<Action> allActions= new ArrayList<>();
 
     public void setAllActions(ArrayList<Action> allActions) {
@@ -141,8 +142,8 @@ public enum GroupManager {
 
             @Override
             public boolean onExecuted(ArrayList<Group> data) {
-                allGroupsData = data;
                 groupPage.setAllGroups(data);
+                allGroupsData = data;
                 return false;
             }
         }, new Callback<ArrayList<Group>>() {
@@ -150,7 +151,7 @@ public enum GroupManager {
             public boolean onExecuted(ArrayList<Group> data) {
 
                 groupPage.setUserGroups(data);
-
+                userGroups = data;
                 SessionManager.INSTANCE.fetchAllActions(new Callback<ArrayList<Action>>() {
                     @Override
                     public boolean onExecuted(ArrayList<Action> data) {
@@ -298,7 +299,7 @@ public enum GroupManager {
         //if a user clicks on a group too quickly, some of these calls will be incomplete, so we catch the exception
         try {
             gc.setBack(mainTB.findViewById(R.id.toolbar_previous));
-            gc.setUserGroups(allGroupsData);
+            gc.setUserGroups(userGroups);
             gc.setGroup(group);
             gc.setActions(allActions);
         } catch (IllegalArgumentException | NullPointerException e) {
@@ -314,6 +315,10 @@ public enum GroupManager {
         mainTB.findViewById(R.id.groups_horizontal).setVisibility(View.GONE);
         mainTB.findViewById(R.id.hamburger_icon).setVisibility(View.GONE);
         mainTB.findViewById(R.id.takeaction).setVisibility(View.GONE);
+        AvenirTextView groupNameTV = (AvenirTextView) mainTB.findViewById(R.id.group_name_for_detail_page);
+        groupNameTV.setVisibility(View.VISIBLE);
+        groupNameTV.setText(group.getGroupName());
+
 
         pageRoot.addView(gc);
     }
@@ -385,6 +390,7 @@ public enum GroupManager {
         //if prior screen was group detail container
         if (gc != null && gc.getParent() != null) {
             pageRoot.removeView(gc);
+            mainTB.findViewById(R.id.group_name_for_detail_page).setVisibility(View.GONE);
             gc = null;
         }
         else {
