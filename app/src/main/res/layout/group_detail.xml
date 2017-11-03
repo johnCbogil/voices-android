@@ -48,7 +48,7 @@
                             android:contentDescription="@string/group_image" />
 
                         <TextView
-                            android:id="@+id/group_detail_group_name_tv"
+                            android:id="@+id/group_detail_group_type_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
@@ -70,7 +70,7 @@
                             android:textColor="#1A8CFF"
                             app:layout_constraintLeft_toLeftOf="@+id/group_detail_group_image"
                             app:layout_constraintRight_toRightOf="@+id/group_detail_group_image"
-                            app:layout_constraintTop_toBottomOf="@+id/group_detail_group_name_tv" />
+                            app:layout_constraintTop_toBottomOf="@+id/group_detail_group_type_tv" />
 
                         <TextView
                             android:id="@+id/group_detail_follow_group_button"

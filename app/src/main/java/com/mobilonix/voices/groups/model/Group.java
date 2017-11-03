@@ -4,17 +4,17 @@ import java.util.ArrayList;
 
 public class Group {
 
-    String groupName;
-    String groupCategory;
-    String groupDescription;
-    String groupImageUrl;
-    String extendedDescription;
-    String groupWebsite;
-    String groupKey;
-    boolean debug = false;
+    private String groupName;
+    private String groupCategory;
+    private String groupDescription;
+    private String groupImageUrl;
+    private String extendedDescription;
+    private String groupWebsite;
+    private String groupKey;
+    private boolean debug = false;
 
-    ArrayList<Policy> policies;
-    ArrayList<String> actions;
+    private ArrayList<Policy> policies;
+    private ArrayList<String> actions;
 
     public Group(String groupName,
                  String groupCategory,
