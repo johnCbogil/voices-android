@@ -28,11 +28,11 @@ import com.mobilonix.voices.groups.GroupManager
  * Created by pc on 10/19/2017.
  */
 class GroupDetailContainer(context: Context, attributes: AttributeSet) : FrameLayout(context, attributes), TabLayout.OnTabSelectedListener,
-ActionSheet.ActionSheetListener{
+        ActionSheet.ActionSheetListener {
 
 
     //Handle back press from website visit
-    lateinit var back:View
+    lateinit var back: View
     //Records if person clicks follow button, whether or not it is to follow or unfollow
     private var isFollowing: Boolean = false
     //Takes all groups a user is following
@@ -58,20 +58,20 @@ ActionSheet.ActionSheetListener{
         //Setting adapter
         actions_rv.adapter = alAdapter
         //Getting all actions to refresh action list
-        SessionManager.INSTANCE.fetchAllActions{/* this is the callback interface */refreshActionList(it)}
+        SessionManager.INSTANCE.fetchAllActions { /* this is the callback interface */refreshActionList(it) }
         //Takes action ListView and sets an adapter
-        issues_list_view.adapter = PolicyListAdapter(context, group.policies,(context as VoicesMainActivity).supportFragmentManager)
+        issues_list_view.adapter = PolicyListAdapter(context, group.policies, (context as VoicesMainActivity).supportFragmentManager)
         setUpViews()
         setListeners()
     }
 
-    private fun setListeners(){
+    private fun setListeners() {
         //when person clicks to see more of description
-        group_detail_less_button.setOnClickListener {seeMoreOrLess(false) }
+        group_detail_less_button.setOnClickListener { seeMoreOrLess(false) }
         //when person clicks to see less of description
-        group_detail_more_button.setOnClickListener{ seeMoreOrLess(true)}
+        group_detail_more_button.setOnClickListener { seeMoreOrLess(true) }
         group_detail_visit_site_button.setOnClickListener { visitWebsite() }
-        group_detail_follow_group_button.setOnClickListener { if (isFollowing) buildUnFollowActionSheet() else  follow() }
+        group_detail_follow_group_button.setOnClickListener { if (isFollowing) buildUnFollowActionSheet() else follow() }
         group_detail_tab_layout.setOnTabSelectedListener(this)
     }
 
@@ -86,32 +86,36 @@ ActionSheet.ActionSheetListener{
         val ft: FragmentManager = (context as VoicesMainActivity).supportFragmentManager
         val bundle = Bundle()
         val groupWebsite = GroupWebsite()
-        bundle.putString("Website",group.groupWebsite)
+        bundle.putString("Website", group.groupWebsite)
         //when user goes back to this screen
-        ft.addOnBackStackChangedListener {back.setOnClickListener{GroupManager.INSTANCE.onBackPress()}}
+        ft.addOnBackStackChangedListener { back.setOnClickListener { GroupManager.INSTANCE.onBackPress() } }
 
         groupWebsite.arguments = bundle
         groupWebsite.back = back
-        ft.beginTransaction().add(R.id.group_detail_container,groupWebsite).addToBackStack(null).commit()
+        ft.beginTransaction().add(R.id.group_detail_container, groupWebsite).addToBackStack(null).commit()
     }
 
+    //New Actions List Arrives
     private fun refreshActionList(data: ArrayList<Action>?): Boolean {
         if (data == null || data.isEmpty()) {
             return false
         }
         GroupManager.INSTANCE.setAllActions(data)
-        actions.run {
-            clear()
-            addAll(data)
-        }
         filterActionList()
         alAdapter.notifyDataSetChanged()
         return actions.isNotEmpty()
     }
+
+    //Refreshes action list and sets image url for list to populate 
     private fun filterActionList() {
-        actions
-                .filter { it.groupKey != group.groupKey}
-                .forEach { actions.remove(it) }
+        val tempList = ArrayList<Action>()
+        for (action in actions) {
+            if (action.groupKey == group.groupKey) {
+                action.imageUrl = group.groupImageUrl
+                tempList.add(action)
+            }
+        }
+        actions = tempList
     }
 
 
@@ -135,13 +139,13 @@ ActionSheet.ActionSheetListener{
     private fun follow() {
         pd.setTitle("Following....")
         pd.show()
-        GroupManager.INSTANCE.subscribeToGroup(group, true, {callBackFunction(it,true)})
+        GroupManager.INSTANCE.subscribeToGroup(group, true, { callBackFunction(it, true) })
     }
 
     private fun unFollow() {
         pd.setTitle("Unfollowing....")
         pd.show()
-        GroupManager.INSTANCE.unSubscribeFromGroup(group,true, {callBackFunction(it,false)})
+        GroupManager.INSTANCE.unSubscribeFromGroup(group, true, { callBackFunction(it, false) })
     }
 
 
@@ -173,7 +177,7 @@ ActionSheet.ActionSheetListener{
     }
 
     //Callback for follow/un-follow
-    private fun callBackFunction(data: Boolean, subscribing: Boolean):Boolean {
+    private fun callBackFunction(data: Boolean, subscribing: Boolean): Boolean {
         //if callback succeeded
         if (data) {
             //remove progress dialog
@@ -183,16 +187,16 @@ ActionSheet.ActionSheetListener{
             AnalyticsManager.INSTANCE.trackEvent(eventName, group.groupKey,
                     SessionManager.INSTANCE.currentUserToken, "none", null)
             //Takes the string based on whether the user is following or not and sets text accordingly
-            group_detail_follow_group_button.setText(if (subscribing) R.string.following_groups_text else  R.string.follow_group)
+            group_detail_follow_group_button.setText(if (subscribing) R.string.following_groups_text else R.string.follow_group)
             //sets whether or not the user is following to the new status
             isFollowing = subscribing
         }
         return data
     }
 
-    private fun buildUnFollowActionSheet(){
+    private fun buildUnFollowActionSheet() {
         //action sheet to un-follow, to make sure someone doesn't do it accidentally
-        com.baoyz.actionsheet.ActionSheet.createBuilder(context, (context as VoicesMainActivity).supportFragmentManager )
+        com.baoyz.actionsheet.ActionSheet.createBuilder(context, (context as VoicesMainActivity).supportFragmentManager)
                 .setCancelButtonTitle(R.string.cancel)
                 .setCancelableOnTouchOutside(true)
                 .setListener(this)
@@ -201,10 +205,11 @@ ActionSheet.ActionSheetListener{
     }
 
     //If the (non cancel) button is clicked
-    override fun onOtherButtonClick(actionSheet: ActionSheet?, index: Int) {unFollow()}
+    override fun onOtherButtonClick(actionSheet: ActionSheet?, index: Int) {
+        unFollow()
+    }
 
     override fun onDismiss(actionSheet: ActionSheet?, isCancel: Boolean) {}
-
 
 
 }

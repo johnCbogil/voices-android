@@ -75,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/actions_detail_contact_reps"
-                    android:text="Contact Reps"
+                    android:text="@string/contact_representatives"
                     android:textSize="25dp"
                     android:textColor="#000"
                     android:layout_centerHorizontal="true"
