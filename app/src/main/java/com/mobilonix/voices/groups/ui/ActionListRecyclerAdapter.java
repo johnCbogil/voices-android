@@ -42,12 +42,8 @@ public class ActionListRecyclerAdapter extends RecyclerView.Adapter<ActionListRe
 
     @Override
     public ActionListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        View actionCell = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.groups_item, parent, false);
-
-        ActionListHolder pvh = new ActionListHolder(actionCell, actions);
-        return pvh;
+        return new ActionListHolder( LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.groups_item, parent, false), actions);
     }
 
     @Override

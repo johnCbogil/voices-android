@@ -31,7 +31,7 @@ class PolicyDetailPage:Fragment(){
         //Brings you  to contact rep page
         button_contact_representatives.setOnClickListener{RepresentativesManager.INSTANCE.selectRepresentativesTab()}
         //Removes this page
-        back_from_policy_detail.setOnClickListener{ fragmentManager.popBackStackImmediate() }
+        back_from_policy_detail.setOnClickListener{ fragmentManager!!.popBackStackImmediate() }
     }
 
     override fun onResume() {

@@ -22,8 +22,8 @@ class GroupWebsite : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         //Sets website to group website
-        website_web_view.loadUrl(arguments.getString("Website"))
-        view.setOnClickListener{fragmentManager.popBackStackImmediate()}
+        website_web_view.loadUrl(arguments!!.getString("Website"))
+        view.setOnClickListener{ fragmentManager!!.popBackStackImmediate()}
     }
 
 

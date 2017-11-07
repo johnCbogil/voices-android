@@ -429,6 +429,8 @@ public enum GroupManager {
     }
 
     public void toggleActionDetailView(final VoicesMainActivity activity, final Context context, final Action action) {
+        if (gc != null) onBackPress();
+
         actionDetails = (RelativeLayout) groupPage.findViewById(R.id.actions_details_container);
         AvenirTextView groupTitle = (AvenirTextView) actionDetails.findViewById(R.id.actions_detail_group_title);
         groupTitle.setText(action.getGroupName());
