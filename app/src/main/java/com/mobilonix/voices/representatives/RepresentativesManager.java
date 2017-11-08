@@ -232,10 +232,10 @@ public enum RepresentativesManager {
                 String savedLocation = prefs.getString("address", "");
                 double lat = Double.parseDouble(prefs.getString("lat", "38.8976763"));
                 double lon = Double.parseDouble(prefs.getString("lon", "-77.0387238"));
-                final FrameLayout pagerMetaFrame = (FrameLayout)representativesFrame.findViewById(R.id.pager_meta_frame);
+                final PagerIndicator pagerIndicator = (PagerIndicator) representativesFrame.findViewById(R.id.pager_indicator);
                 final ViewPager repsPager = (ViewPager)representativesFrame.findViewById(R.id.representatives_pager);
                 emptyStateLayout.setVisibility(View.GONE);
-                pagerMetaFrame.setVisibility(View.VISIBLE);
+                pagerIndicator.setVisibility(View.VISIBLE);
                 repsPager.setVisibility(View.VISIBLE);
                 refreshRepresentativesContent(
                         savedLocation,
@@ -301,6 +301,8 @@ public enum RepresentativesManager {
                 groupsHorizontal.setVisibility(View.VISIBLE);
                 repsHorizontal.setVisibility(View.INVISIBLE);
                 hamburgerIcon.setVisibility(View.VISIBLE);
+                final LinearLayout emptyStateLayout = (LinearLayout)representativesFrame.findViewById(R.id.reps_empty_state);
+                emptyStateLayout.setVisibility(View.GONE);
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(false);
                 GroupManager.INSTANCE.toggleGroupPage(groupsView, true);
             }
@@ -323,6 +325,18 @@ public enum RepresentativesManager {
                 groupsHorizontal.setVisibility(View.INVISIBLE);
                 repsHorizontal.setVisibility(View.VISIBLE);
                 hamburgerIcon.setVisibility(View.VISIBLE);
+                final LinearLayout emptyStateLayout = (LinearLayout)representativesFrame.findViewById(R.id.reps_empty_state);
+                final PagerIndicator pagerIndicator = (PagerIndicator) representativesFrame.findViewById(R.id.pager_indicator);
+                final ViewPager repsPager = (ViewPager) representativesFrame.findViewById(R.id.representatives_pager);
+                if(!activity.locationSaved()){
+                    emptyStateLayout.setVisibility(View.VISIBLE);
+                    pagerIndicator.setVisibility(View.GONE);
+                    repsPager.setVisibility(View.GONE);
+                } else {
+                    emptyStateLayout.setVisibility(View.GONE);
+                    pagerIndicator.setVisibility(View.VISIBLE);
+                    repsPager.setVisibility(View.VISIBLE);
+                }
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(true);
                 GroupManager.INSTANCE.toggleGroupPage(groupsView, false);
             }

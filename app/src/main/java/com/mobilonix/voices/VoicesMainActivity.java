@@ -44,6 +44,7 @@ import com.mobilonix.voices.navigation.NavigationAdapter;
 import com.mobilonix.voices.navigation.NavigationObject;
 import com.mobilonix.voices.notifications.NotificationManager;
 import com.mobilonix.voices.representatives.RepresentativesManager;
+import com.mobilonix.voices.representatives.ui.PagerIndicator;
 import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.splash.SplashManager;
 import com.mobilonix.voices.util.DeeplinkUtil;
@@ -342,10 +343,10 @@ public class VoicesMainActivity extends AppCompatActivity {
                         RepresentativesManager.INSTANCE.getPages(),
                         RepresentativesManager.INSTANCE.getRepresentativesPager());
                 final LinearLayout emptyStateLayout = (LinearLayout)findViewById(R.id.reps_empty_state);
-                final FrameLayout pagerMetaFrame = (FrameLayout) findViewById(R.id.pager_meta_frame);
+                final PagerIndicator pagerIndicator = (PagerIndicator) findViewById(R.id.pager_indicator);
                 final ViewPager repsPager = (ViewPager) findViewById(R.id.representatives_pager);
                 emptyStateLayout.setVisibility(View.GONE);
-                pagerMetaFrame.setVisibility(View.VISIBLE);
+                pagerIndicator.setVisibility(View.VISIBLE);
                 repsPager.setVisibility(View.VISIBLE);
                // final LinearLayout errorLayout = (LinearLayout)findViewById(R.id.layout_error_page);
                 //assert errorLayout != null;
