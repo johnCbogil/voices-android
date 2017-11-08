@@ -13,7 +13,8 @@
             android:id="@+id/pager_meta_frame"
             android:layout_weight="0.1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="gone">
             <com.mobilonix.voices.representatives.ui.PagerIndicator
                 android:id="@+id/pager_indicator"
                 android:orientation="horizontal"
@@ -29,7 +30,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.9"
-            android:id="@+id/representatives_pager">
+            android:id="@+id/representatives_pager"
+            android:visibility="gone">
         </android.support.v4.view.ViewPager>
 
         <include layout="@layout/reps_error"
