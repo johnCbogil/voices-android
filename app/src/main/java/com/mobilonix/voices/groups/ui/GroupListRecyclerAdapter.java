@@ -1,6 +1,5 @@
 package com.mobilonix.voices.groups.ui;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,14 +54,25 @@ class GroupListRecyclerAdapter extends RecyclerView.Adapter<GroupListRecyclerAda
         holder.groupCategory.setText(group.getGroupCategory());
         holder.groupDescription.setText(group.getGroupDescription());
 
-        Picasso.with(holder.groupImage.getContext())
-                .load(group.getGroupImageUrl())
-                .fit()
-                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .placeholder(R.drawable.spinner_moving)
-                .error(R.drawable.voices_icon)
-                .transform(new RoundedTransformation(10, 0))
-                .into(holder.groupImage);
+        if(group.getGroupImageUrl()==null){
+            Picasso.with(holder.groupImage.getContext())
+                    .load(R.drawable.voices_icon)
+                    .fit()
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                    .placeholder(R.drawable.spinner_moving)
+                    .error(R.drawable.voices_icon)
+                    .transform(new RoundedTransformation(10, 0))
+                    .into(holder.groupImage);
+        } else {
+            Picasso.with(holder.groupImage.getContext())
+                    .load(group.getGroupImageUrl())
+                    .fit()
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                    .placeholder(R.drawable.spinner_moving)
+                    .error(R.drawable.voices_icon)
+                    .transform(new RoundedTransformation(10, 0))
+                    .into(holder.groupImage);
+        }
 
         holder.arrowImage.setVisibility(View.GONE);
         holder.groupDescription.setVisibility(View.VISIBLE);

@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -340,9 +341,15 @@ public class VoicesMainActivity extends AppCompatActivity {
                         this,
                         RepresentativesManager.INSTANCE.getPages(),
                         RepresentativesManager.INSTANCE.getRepresentativesPager());
-                final LinearLayout errorLayout = (LinearLayout)findViewById(R.id.layout_error_page);
-                assert errorLayout != null;
-                errorLayout.setVisibility(View.GONE);
+                final LinearLayout emptyStateLayout = (LinearLayout)findViewById(R.id.reps_empty_state);
+                final FrameLayout pagerMetaFrame = (FrameLayout) findViewById(R.id.pager_meta_frame);
+                final ViewPager repsPager = (ViewPager) findViewById(R.id.representatives_pager);
+                emptyStateLayout.setVisibility(View.GONE);
+                pagerMetaFrame.setVisibility(View.VISIBLE);
+                repsPager.setVisibility(View.VISIBLE);
+               // final LinearLayout errorLayout = (LinearLayout)findViewById(R.id.layout_error_page);
+                //assert errorLayout != null;
+                //errorLayout.setVisibility(View.GONE);
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
                 Log.i(TAG, status.getStatusMessage());

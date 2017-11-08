@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="350dp"
+    android:layout_height="350dp"
+    android:id="@+id/layout_error_page"
+    android:orientation="vertical"
+    android:clickable="true"
+    android:focusable="true">
+    <com.mobilonix.voices.util.AvenirTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:text="@string/representatives_onboarding"
+        android:id="@+id/representatives_error_message"
+        android:gravity="center" />
+    <ImageView
+            android:layout_width="140dp"
+            android:layout_height="100dp"
+            android:src="@drawable/house_citizen"
+            android:layout_gravity="center_horizontal"/>
+        <com.mobilonix.voices.util.AvenirButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:textColor="#FFF"
+            android:clickable="true"
+            android:id="@+id/address_button"
+            android:text="@string/add_address"
+            android:layout_gravity="center"/>
+        <com.mobilonix.voices.util.AvenirTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textSize="15sp"
+            android:text="@string/no_address"
+            android:id="@+id/no_address"
+            android:gravity="center" />
+</LinearLayout>

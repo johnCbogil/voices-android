@@ -32,6 +32,9 @@
             android:id="@+id/representatives_pager">
         </android.support.v4.view.ViewPager>
 
+        <include layout="@layout/reps_error"
+            android:id="@+id/reps_empty_state"></include>
+
         <!-- The primary view for the groups view -->
         <FrameLayout
             android:layout_width="match_parent"
