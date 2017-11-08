@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -155,6 +156,15 @@ public enum RepresentativesManager {
             addGroupIcon.setVisibility(View.GONE);
             addGroupLinearLayout.setVisibility(View.GONE);
 
+            final LinearLayout emptyStateLayout = (LinearLayout)representativesFrame.findViewById(R.id.reps_empty_state);
+            Button addressButton = (Button) emptyStateLayout.findViewById(R.id.address_button);
+            addressButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    activity.saveAddress();
+                }
+            });
+
             pages = new ArrayList<>();
             representativesPager = (ViewPager) representativesFrame.findViewById(R.id.representatives_pager);
 
@@ -222,6 +232,11 @@ public enum RepresentativesManager {
                 String savedLocation = prefs.getString("address", "");
                 double lat = Double.parseDouble(prefs.getString("lat", "38.8976763"));
                 double lon = Double.parseDouble(prefs.getString("lon", "-77.0387238"));
+                final FrameLayout pagerMetaFrame = (FrameLayout)representativesFrame.findViewById(R.id.pager_meta_frame);
+                final ViewPager repsPager = (ViewPager)representativesFrame.findViewById(R.id.representatives_pager);
+                emptyStateLayout.setVisibility(View.GONE);
+                pagerMetaFrame.setVisibility(View.VISIBLE);
+                repsPager.setVisibility(View.VISIBLE);
                 refreshRepresentativesContent(
                         savedLocation,
                         lat,
@@ -463,8 +478,6 @@ public enum RepresentativesManager {
             errorLayout.setVisibility(state ? View.VISIBLE : View.GONE);
 
             TextView errorMessageText = (TextView) errorLayout.findViewById(R.id.representatives_error_message);
-            //ImageView repsImage = (ImageView) errorLayout.findViewById(R.id.reps_image);
-            //repsImage.setVisibility(View.GONE);
 
             /* TODO: When we get the local officials available, we'll need to amend this logic */
             if (!identifier.equals(RepresentativesType.COUNCIL_MEMBERS.getIdentifier())) {
