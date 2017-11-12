@@ -40,6 +40,7 @@ import com.mobilonix.voices.representatives.ui.RepresentativesListAdapter;
 import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.util.AvenirBoldTextView;
 import com.mobilonix.voices.util.AvenirTextView;
+import com.mobilonix.voices.util.GeneralUtil;
 import com.mobilonix.voices.util.RESTUtil;
 import com.squareup.picasso.Picasso;
 
@@ -583,6 +584,7 @@ public enum GroupManager {
                                         final long repsType,
                                         final String actionType,
                                         final Representative singleRep) {
+
         RepresentativesManager.RepresentativesType repType = RepresentativesManager.RepresentativesType.CONGRESS;
         if (repsType == 2) {
             repType = RepresentativesManager.RepresentativesType.STATE_LEGISLATORS;
@@ -590,38 +592,33 @@ public enum GroupManager {
         if (repsType == 3) {
             repType = RepresentativesManager.RepresentativesType.COUNCIL_MEMBERS;
         }
+
+        ArrayList<Representative> representatives
+                = RepresentativesManager.INSTANCE.getCurrentRepsMap().get(repType.getIdentifier());
+
         LinearLayout contactRepsEmptyState = (LinearLayout) actionDetails.findViewById(R.id.actions_detail_reps_error);
         contactRepsEmptyState.setVisibility(View.GONE);
-        RESTUtil.makeRepresentativesRequest(locationString, repLat, repLong, repType,
-                new Callback2<ArrayList<Representative>, RepresentativesManager.RepresentativesType>() {
-                    @Override
-                    public boolean onExecuted(final ArrayList<Representative> data,
-                                              final RepresentativesManager.RepresentativesType type) {
-                        activity.getHandler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                            }
-                        });
 
-                        final ArrayList<Representative> result = data;
+        /* As a backup, choose congress*/
+        if((representatives == null) || (representatives.size() == 0)) {
+            representatives
+                    = RepresentativesManager.INSTANCE
+                    .getCurrentRepsMap().get(
+                            RepresentativesManager.RepresentativesType.CONGRESS.getIdentifier());
+        }
 
-                        activity.getHandler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                ListView representativesListView = (ListView) actionDetails.findViewById(R.id.actions_detail_reps_list);
-                                if (representativesListView != null) {
-                                    representativesListView.setAdapter(
-                                            new RepresentativesListAdapter(actionDetails.getContext(), R.layout.reps_item, data));
-                                    representativesListView.setVisibility(View.VISIBLE);
-                                }
-                                if ((result != null) && (result.size() > 0)) {
-                                } else {
-                                }
-                            }
-                        });
-                        return false;
-                    }
-                });
+        /* If congress equals null theres another issue */
+        if((representatives != null) && (representatives.size() != 0)) {
+
+            ListView representativesListView = (ListView) actionDetails.findViewById(R.id.actions_detail_reps_list);
+            if (representativesListView != null) {
+                representativesListView.setAdapter(
+                        new RepresentativesListAdapter(actionDetails.getContext(),
+                                R.layout.reps_item,
+                                representatives));
+                representativesListView.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
 

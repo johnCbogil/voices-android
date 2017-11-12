@@ -336,7 +336,8 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
         int imageHeight = Math.round(ViewUtil.convertDpToPixel(100, VoicesApplication.getContext()));
         int imageWidth = Math.round(ViewUtil.convertDpToPixel(80, VoicesApplication.getContext()));
 
-        if(representatives.get(position).getRepresentativeImageUrl()==null){
+        if(representatives.get(position).getRepresentativeImageUrl()==null ||
+                representatives.get(position).getRepresentativeImageUrl().trim().equals("")){
             Picasso.with(image.getContext())
                     .load(R.drawable.voices_icon)
                     .resize(imageWidth, imageHeight)
