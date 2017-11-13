@@ -17,6 +17,7 @@
     <ImageView
             android:layout_width="140dp"
             android:layout_height="100dp"
+            android:id="@+id/citizen_icon"
             android:src="@drawable/house_citizen"
             android:layout_gravity="center_horizontal"/>
         <com.mobilonix.voices.util.AvenirButton

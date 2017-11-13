@@ -508,6 +508,10 @@ public enum RepresentativesManager {
 
     }
 
+    public ConcurrentHashMap<String, ArrayList<Representative>> getCurrentRepsMap() {
+        return currentRepsMap;
+    }
+
     public void toggleErrorDisplay(RepresentativesType type, boolean state) {
         toggleErrorDisplay(type.getIdentifier(), state);
     }
