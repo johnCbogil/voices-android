@@ -27,8 +27,6 @@ public class AutocompleteActivity extends AppCompatActivity {
         ImageView backButton = (ImageView)findViewById(R.id.toolbar_previous_2);
         ImageView infoButton = (ImageView)findViewById(R.id.toolbar_info);
 
-
-
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,7 +38,7 @@ public class AutocompleteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final Dialog addressDialog;
-                addressDialog= new Dialog(AutocompleteActivity.this);
+                addressDialog = new Dialog(AutocompleteActivity.this);
                 addressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 addressDialog.setContentView(R.layout.dialog_address);
                 Button okButton = (Button) addressDialog.findViewById(R.id.ok_button);

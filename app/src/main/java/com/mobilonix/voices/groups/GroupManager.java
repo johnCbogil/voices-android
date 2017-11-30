@@ -28,7 +28,6 @@ import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.analytics.AnalyticsManager;
 import com.mobilonix.voices.callbacks.Callback;
-import com.mobilonix.voices.callbacks.Callback2;
 import com.mobilonix.voices.groups.model.Action;
 import com.mobilonix.voices.groups.model.Group;
 import com.mobilonix.voices.groups.ui.EntityContainer;
@@ -40,8 +39,6 @@ import com.mobilonix.voices.representatives.ui.RepresentativesListAdapter;
 import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.util.AvenirBoldTextView;
 import com.mobilonix.voices.util.AvenirTextView;
-import com.mobilonix.voices.util.GeneralUtil;
-import com.mobilonix.voices.util.RESTUtil;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -536,7 +533,6 @@ public enum GroupManager {
 
 
         if (activity.locationSaved() && (action.getActionType() == null || !(action.getActionType().equals("singleRep")))) {
-            //actionsDetailsErrorLayout.setVisibility(View.GONE);
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(VoicesApplication.getContext());
             String savedLocation = prefs.getString("address", "");
             double lat = Double.parseDouble(prefs.getString("lat", "38.8976763"));
@@ -605,20 +601,29 @@ public enum GroupManager {
                     = RepresentativesManager.INSTANCE
                     .getCurrentRepsMap().get(
                             RepresentativesManager.RepresentativesType.CONGRESS.getIdentifier());
+            if(representatives == null) {
+                representatives
+                        = RepresentativesManager.INSTANCE
+                        .getCurrentRepsMap().get(
+                                RepresentativesManager.RepresentativesType.STATE_LEGISLATORS.getIdentifier());
+            }
         }
 
         /* If congress equals null theres another issue */
-        if((representatives != null) && (representatives.size() != 0)) {
+        //if((representatives != null) && (representatives.size() != 0)) {
 
-            ListView representativesListView = (ListView) actionDetails.findViewById(R.id.actions_detail_reps_list);
-            if (representativesListView != null) {
+        ListView representativesListView = (ListView) actionDetails.findViewById(R.id.actions_detail_reps_list);
+        if (representativesListView != null) {
+            if(representatives != null) {
                 representativesListView.setAdapter(
                         new RepresentativesListAdapter(actionDetails.getContext(),
                                 R.layout.reps_item,
                                 representatives));
                 representativesListView.setVisibility(View.VISIBLE);
             }
+
         }
+        //}
     }
 
 

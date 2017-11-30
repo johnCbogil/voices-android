@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="#FFF"
+    android:layout_gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
@@ -8,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:weightSum="1.0"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:backgroundTint="@color/voices_orange">
         <FrameLayout
             android:id="@+id/pager_meta_frame"
             android:layout_weight="0.1"
@@ -35,7 +37,10 @@
         </android.support.v4.view.ViewPager>
 
         <include layout="@layout/reps_error"
-            android:id="@+id/reps_empty_state"></include>
+            android:id="@+id/reps_empty_state"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"></include>
 
         <!-- The primary view for the groups view -->
         <FrameLayout

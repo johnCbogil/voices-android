@@ -243,7 +243,7 @@ public enum RepresentativesManager {
                         lon,
                         activity,
                         pages,
-                        representativesPager);
+                        representativesPager, null);
             }
             initTabView(activity);
             activity.getMainContentFrame().addView(representativesFrame);
@@ -367,7 +367,8 @@ public enum RepresentativesManager {
                                               double repLong,
                                               final VoicesMainActivity activity,
                                               final ArrayList<RepresentativesPage> pages,
-                                              final ViewPager representativesPager) {
+                                              final ViewPager representativesPager,
+                                              final Callback<ArrayList<Representative>> callback) {
         for (RepresentativesType type : RepresentativesType.values()) {
 
             /* reset the error state */
@@ -429,6 +430,10 @@ public enum RepresentativesManager {
                                             GeneralUtil.toast("Found "
                                                     + type.getIdentifier() + " representatives for " + location);
                                         }
+                                        if(callback != null) {
+                                            callback.onExecuted(result);
+                                        }
+
                                     } else {
                                         toggleErrorDisplay(type, true);
                                     }

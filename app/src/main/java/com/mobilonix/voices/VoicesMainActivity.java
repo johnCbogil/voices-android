@@ -44,6 +44,7 @@ import com.mobilonix.voices.navigation.NavigationAdapter;
 import com.mobilonix.voices.navigation.NavigationObject;
 import com.mobilonix.voices.notifications.NotificationManager;
 import com.mobilonix.voices.representatives.RepresentativesManager;
+import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.representatives.ui.PagerIndicator;
 import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.splash.SplashManager;
@@ -282,11 +283,11 @@ public class VoicesMainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
-                String addressString = data.getStringExtra("address");
-                Double latitudeDouble = data.getDoubleExtra("latitude", 38.8976763);
-                Double longitudeDouble = data.getDoubleExtra("longitude", -77.0387238);
-                long repsType = data.getLongExtra("repsType", 1);
-                String actionType = data.getStringExtra("actionType");
+                final String addressString = data.getStringExtra("address");
+                final Double latitudeDouble = data.getDoubleExtra("latitude", 38.8976763);
+                final Double longitudeDouble = data.getDoubleExtra("longitude", -77.0387238);
+                final long repsType = data.getLongExtra("repsType", 1);
+                final String actionType = data.getStringExtra("actionType");
                 SharedPreferences.Editor edit = prefs.edit();
                 edit.putString("address", addressString);
                 edit.putString("lat", Double.toString(latitudeDouble));
@@ -299,19 +300,26 @@ public class VoicesMainActivity extends AppCompatActivity {
                         longitudeDouble,
                         this,
                         RepresentativesManager.INSTANCE.getPages(),
-                        RepresentativesManager.INSTANCE.getRepresentativesPager());
-                final LinearLayout errorLayout = (LinearLayout)findViewById(R.id.layout_error_page);
-                assert errorLayout != null;
-                errorLayout.setVisibility(View.GONE);
+                        RepresentativesManager.INSTANCE.getRepresentativesPager(),
+                        new Callback<ArrayList<Representative>>() {
+                            @Override
+                            public boolean onExecuted(ArrayList<Representative> data) {
+                                GroupManager.INSTANCE.refreshActionDetailReps(
+                                        addressString,
+                                        latitudeDouble,
+                                        longitudeDouble,
+                                        VoicesMainActivity.this,
+                                        repsType,
+                                        actionType,
+                                        null);
+                                return true;
+                            }
+                        });
+                //final LinearLayout errorLayout = (LinearLayout)findViewById(R.id.layout_error_page);
+                //assert errorLayout != null;
+                //errorLayout.setVisibility(View.GONE);
 
-                GroupManager.INSTANCE.refreshActionDetailReps(
-                        addressString,
-                        latitudeDouble,
-                        longitudeDouble,
-                        this,
-                        repsType,
-                        actionType,
-                        null);
+
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
                 Log.i(TAG, status.getStatusMessage());
@@ -341,7 +349,7 @@ public class VoicesMainActivity extends AppCompatActivity {
                         longitudeDouble,
                         this,
                         RepresentativesManager.INSTANCE.getPages(),
-                        RepresentativesManager.INSTANCE.getRepresentativesPager());
+                        RepresentativesManager.INSTANCE.getRepresentativesPager(), null);
                 final LinearLayout emptyStateLayout = (LinearLayout)findViewById(R.id.reps_empty_state);
                 final PagerIndicator pagerIndicator = (PagerIndicator) findViewById(R.id.pager_indicator);
                 final ViewPager repsPager = (ViewPager) findViewById(R.id.representatives_pager);
