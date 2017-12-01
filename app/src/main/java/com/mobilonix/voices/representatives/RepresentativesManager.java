@@ -336,6 +336,17 @@ public enum RepresentativesManager {
                     emptyStateLayout.setVisibility(View.GONE);
                     pagerIndicator.setVisibility(View.VISIBLE);
                     repsPager.setVisibility(View.VISIBLE);
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(VoicesApplication.getContext());
+                    String savedLocation = prefs.getString("address", "");
+                    double lat = Double.parseDouble(prefs.getString("lat", "38.8976763"));
+                    double lon = Double.parseDouble(prefs.getString("lon", "-77.0387238"));
+                    refreshRepresentativesContent(
+                            savedLocation,
+                            lat,
+                            lon,
+                            activity,
+                            pages,
+                            representativesPager, null);
                 }
                 RepresentativesManager.INSTANCE.togglePagerMetaFrame(true);
                 GroupManager.INSTANCE.toggleGroupPage(groupsView, false);

@@ -119,7 +119,7 @@
         </LinearLayout>
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="400dp"
             android:id="@+id/actions_detail_reps_list"
             android:divider="@null"
             android:dividerHeight="0dp"
