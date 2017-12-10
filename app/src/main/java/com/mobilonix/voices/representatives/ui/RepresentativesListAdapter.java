@@ -25,9 +25,7 @@ import com.mobilonix.voices.representatives.RepresentativesManager;
 import com.mobilonix.voices.representatives.model.Representative;
 import com.mobilonix.voices.session.SessionManager;
 import com.mobilonix.voices.util.AvenirTextView;
-import com.mobilonix.voices.util.GeneralUtil;
 import com.mobilonix.voices.util.ViewUtil;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -338,47 +336,25 @@ public class RepresentativesListAdapter extends ArrayAdapter<Representative> {
         int imageHeight = Math.round(ViewUtil.convertDpToPixel(100, VoicesApplication.getContext()));
         int imageWidth = Math.round(ViewUtil.convertDpToPixel(80, VoicesApplication.getContext()));
 
-        Picasso.with(image.getContext()).setLoggingEnabled(true);
-
-        if(representatives.get(position).getRepresentativeImageUrl()==null){
-            //||representatives.get(position).getRepresentativeImageUrl().trim().equals(""))
+        if(representatives.get(position).getRepresentativeImageUrl()==null
+            ||representatives.get(position).getRepresentativeImageUrl().trim().equals("")){
             Picasso.with(image.getContext())
                     .load(R.drawable.voices_icon)
                     .resize(imageWidth, imageHeight)
                     .centerCrop()
-                    //.placeholder(R.drawable.spinner_moving)
-                    //.error(R.drawable.voices_icon)
+                    .placeholder(R.drawable.spinner_moving)
+                    .error(R.drawable.voices_icon)
                     .transform(new RoundedTransformation(10, 4))
-                    .into(image, new Callback() {
-                        @Override
-                        public void onSuccess() {
-
-                        }
-
-                        @Override
-                        public void onError() {
-                            GeneralUtil.toast("There was error");
-                        }
-                    });
+                    .into(image);
         } else {
             Picasso.with(image.getContext())
                     .load(representatives.get(position).getRepresentativeImageUrl())
                     .resize(imageWidth, imageHeight)
                     .centerCrop()
-                    //.placeholder(R.drawable.spinner_moving)
-                    //.error(R.drawable.voices_icon)
+                    .placeholder(R.drawable.spinner_moving)
+                    .error(R.drawable.voices_icon)
                     .transform(new RoundedTransformation(10, 4))
-                    .into(image, new Callback() {
-                        @Override
-                        public void onSuccess() {
-
-                        }
-
-                        @Override
-                        public void onError() {
-                            GeneralUtil.toast("There was error");
-                        }
-                    });
+                    .into(image);
         }
     }
 

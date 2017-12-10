@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -156,11 +157,16 @@ public enum RepresentativesManager {
             addGroupIcon.setVisibility(View.GONE);
             addGroupLinearLayout.setVisibility(View.GONE);
 
-            final LinearLayout emptyStateLayout = (LinearLayout)representativesFrame.findViewById(R.id.reps_empty_state);
+            final LinearLayout emptyStateLayout = (LinearLayout)representativesFrame
+                    .findViewById(R.id.reps_empty_state);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT);
+            //emptyStateLayout.setLayoutParams(params);
             Button addressButton = (Button) emptyStateLayout.findViewById(R.id.address_button);
             addressButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    GeneralUtil.toast("SAVE ADDY TEST");
                     activity.saveAddress();
                 }
             });
@@ -187,8 +193,7 @@ public enum RepresentativesManager {
                     String tag = "";
 
                     if (data == null) {
-                        tag = pagerIndicator
-                                .getCurrentIndicatorTag();
+                        tag = pagerIndicator.getCurrentIndicatorTag();
                     } else if (data instanceof String) {
                         tag = (String) data;
                     } else if (data instanceof Integer) {
@@ -228,10 +233,12 @@ public enum RepresentativesManager {
                 }
             });
             if(activity.locationSaved()){
+                toggleErrorDisplay(RepresentativesType.COUNCIL_MEMBERS, false);
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(VoicesApplication.getContext());
                 String savedLocation = prefs.getString("address", "");
                 double lat = Double.parseDouble(prefs.getString("lat", "38.8976763"));
                 double lon = Double.parseDouble(prefs.getString("lon", "-77.0387238"));
+                GeneralUtil.toast("LOCAL REPS TESTING MESSAGE");
                 final PagerIndicator pagerIndicator = (PagerIndicator) representativesFrame.findViewById(R.id.pager_indicator);
                 final ViewPager repsPager = (ViewPager)representativesFrame.findViewById(R.id.representatives_pager);
                 emptyStateLayout.setVisibility(View.GONE);
@@ -333,6 +340,15 @@ public enum RepresentativesManager {
                     pagerIndicator.setVisibility(View.GONE);
                     repsPager.setVisibility(View.GONE);
                 } else {
+                    toggleErrorDisplay(RepresentativesType.COUNCIL_MEMBERS, false);
+
+                    ProgressBar progressSpinner = (ProgressBar) representativesPager
+                            .findViewWithTag(RepresentativesType.COUNCIL_MEMBERS.getIdentifier() + "_PROGRESS");
+
+                    if (progressSpinner != null) {
+                        progressSpinner.setVisibility(View.VISIBLE);
+                    }
+
                     emptyStateLayout.setVisibility(View.GONE);
                     pagerIndicator.setVisibility(View.VISIBLE);
                     repsPager.setVisibility(View.VISIBLE);
@@ -504,8 +520,13 @@ public enum RepresentativesManager {
         LinearLayout errorLayout = (LinearLayout)
                 representativesPager.findViewWithTag(identifier + "_ERROR");
 
+//        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(1000,1000);
+//        errorLayout.setLayoutParams(params);
+//        GeneralUtil.toast("Error layout");
+
         if (errorLayout != null) {
             errorLayout.setVisibility(state ? View.VISIBLE : View.GONE);
+
 
             TextView errorMessageText = (TextView) errorLayout.findViewById(R.id.representatives_error_message);
 

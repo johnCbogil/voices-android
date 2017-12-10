@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="#FFF"
-    android:layout_gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
@@ -15,7 +14,7 @@
             android:id="@+id/pager_meta_frame"
             android:layout_weight="0.1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp">
             <com.mobilonix.voices.representatives.ui.PagerIndicator
                 android:id="@+id/pager_indicator"
                 android:orientation="horizontal"
@@ -38,8 +37,8 @@
 
         <include layout="@layout/reps_error"
             android:id="@+id/reps_empty_state"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
+            android:layout_height="1000dp"
+            android:layout_width="1000dp"
             android:layout_gravity="center"></include>
 
         <!-- The primary view for the groups view -->

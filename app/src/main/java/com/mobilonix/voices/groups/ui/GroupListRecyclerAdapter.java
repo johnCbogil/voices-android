@@ -13,7 +13,6 @@ import com.mobilonix.voices.R;
 import com.mobilonix.voices.groups.GroupManager;
 import com.mobilonix.voices.groups.model.Group;
 import com.mobilonix.voices.representatives.ui.RoundedTransformation;
-import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -54,11 +53,13 @@ class GroupListRecyclerAdapter extends RecyclerView.Adapter<GroupListRecyclerAda
         holder.groupCategory.setText(group.getGroupCategory());
         holder.groupDescription.setText(group.getGroupDescription());
 
+        Picasso.with(holder.groupImage.getContext()).setLoggingEnabled(true);
+
         if(group.getGroupImageUrl()==null){
             Picasso.with(holder.groupImage.getContext())
                     .load(R.drawable.voices_icon)
                     .fit()
-                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                    //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                     .placeholder(R.drawable.spinner_moving)
                     .error(R.drawable.voices_icon)
                     .transform(new RoundedTransformation(10, 0))
@@ -67,7 +68,7 @@ class GroupListRecyclerAdapter extends RecyclerView.Adapter<GroupListRecyclerAda
             Picasso.with(holder.groupImage.getContext())
                     .load(group.getGroupImageUrl())
                     .fit()
-                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                    //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                     .placeholder(R.drawable.spinner_moving)
                     .error(R.drawable.voices_icon)
                     .transform(new RoundedTransformation(10, 0))

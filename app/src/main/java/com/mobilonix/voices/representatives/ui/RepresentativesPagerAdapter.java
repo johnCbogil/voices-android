@@ -16,6 +16,7 @@ import com.mobilonix.voices.R;
 import com.mobilonix.voices.VoicesApplication;
 import com.mobilonix.voices.VoicesMainActivity;
 import com.mobilonix.voices.representatives.model.RepresentativesPage;
+import com.mobilonix.voices.util.GeneralUtil;
 
 import java.util.ArrayList;
 
@@ -65,6 +66,7 @@ public class RepresentativesPagerAdapter extends PagerAdapter {
         //if(representatives.get(position).getType().getIdentifier().equalsIgnoreCase("Federal")) {
             FrameLayout frameLayout = (FrameLayout) layout.getChildAt(0);
             frameLayout.findViewById(R.id.layout_error_page).setVisibility(View.VISIBLE);
+            GeneralUtil.toast("Instantiate erro layout");
             final Button addressButton = (Button) errorLayout.findViewById(R.id.address_button);
             addressButton.setOnClickListener(new View.OnClickListener() {
             @Override
